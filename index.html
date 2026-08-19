@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - VetClinic</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <h1>🐾 VetClinic</h1>
+
+        <nav>
+
+            <a href="index.html" class="active">
+                Dashboard
+            </a>
+
+            <a href="patients.html">
+                Patients
+            </a>
+
+            <a href="appointments.html">
+                Appointments
+            </a>
+
+            <a href="medical-records.html">
+                Medical Records
+            </a>
+
+            <a href="medicines.html">
+                Medicines
+            </a>
+
+            <a href="billing.html">
+                Billing
+            </a>
+
+            <a href="reports.html">
+                Reports
+            </a>
+
+            <a href="backup.html">
+                Backup & Restore
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <header>
+
+            <div>
+
+                <h2>
+                    Dashboard
+                </h2>
+
+                <p>
+                    Welcome to VetClinic.
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <section class="appointments">
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <span>🐾</span>
+
+                    <div>
+
+                        <small>
+                            Total Patients
+                        </small>
+
+                        <h2 id="patientCount">
+                            0
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span>📋</span>
+
+                    <div>
+
+                        <small>
+                            Medical Records
+                        </small>
+
+                        <h2 id="recordCount">
+                            0
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span>📅</span>
+
+                    <div>
+
+                        <small>
+                            Appointments
+                        </small>
+
+                        <h2 id="appointmentCount">
+                            0
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span>💰</span>
+
+                    <div>
+
+                        <small>
+                            Unpaid Invoices
+                        </small>
+
+                        <h2 id="unpaidCount">
+                            0
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="appointments">
+
+            <h3>
+                Quick Actions
+            </h3>
+
+
+            <div class="quick-actions">
+
+                <a
+                    href="patients.html"
+                    class="action-card"
+                >
+
+                    <span>🐾</span>
+
+                    <strong>
+                        Patients
+                    </strong>
+
+                    <small>
+                        Manage patients
+                    </small>
+
+                </a>
+
+
+                <a
+                    href="add-record.html"
+                    class="action-card"
+                >
+
+                    <span>📋</span>
+
+                    <strong>
+                        Medical Record
+                    </strong>
+
+                    <small>
+                        Create clinical record
+                    </small>
+
+                </a>
+
+
+                <a
+                    href="appointments.html"
+                    class="action-card"
+                >
+
+                    <span>📅</span>
+
+                    <strong>
+                        Appointment
+                    </strong>
+
+                    <small>
+                        Schedule visit
+                    </small>
+
+                </a>
+
+
+                <a
+                    href="billing.html"
+                    class="action-card"
+                >
+
+                    <span>💳</span>
+
+                    <strong>
+                        Billing
+                    </strong>
+
+                    <small>
+                        Manage invoices
+                    </small>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <section class="appointments">
+
+            <h3>
+                Upcoming Appointments
+            </h3>
+
+            <div id="upcomingAppointments">
+
+                <p>
+                    No upcoming appointments.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <section class="appointments">
+
+            <h3>
+                Recent Medical Records
+            </h3>
+
+            <div id="recentRecords">
+
+                <p>
+                    No medical records yet.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+const patients =
+    JSON.parse(
+        localStorage.getItem("patients")
+    ) || [];
+
+
+const records =
+    JSON.parse(
+        localStorage.getItem("medicalRecords")
+    ) || [];
+
+
+const appointments =
+    JSON.parse(
+        localStorage.getItem("appointments")
+    ) || [];
+
+
+const invoices =
+    JSON.parse(
+        localStorage.getItem("invoices")
+    ) || [];
+
+
+document.getElementById(
+    "patientCount"
+).textContent =
+    patients.length;
+
+
+document.getElementById(
+    "recordCount"
+).textContent =
+    records.length;
+
+
+document.getElementById(
+    "appointmentCount"
+).textContent =
+    appointments.length;
+
+
+document.getElementById(
+    "unpaidCount"
+).textContent =
+    invoices.filter(
+        invoice =>
+            invoice.status !== "Paid"
+    ).length;
+
+
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+
+/* UPCOMING */
+
+const upcoming =
+    document.getElementById(
+        "upcomingAppointments"
+    );
+
+
+const today =
+    new Date()
+        .toISOString()
+        .split("T")[0];
+
+
+const upcomingList =
+    appointments
+        .filter(
+            appointment =>
+                appointment.date >= today &&
+                appointment.status !==
+                    "Cancelled"
+        )
+        .sort(
+            (a,b) =>
+                `${a.date}${a.time || ""}`
+                    .localeCompare(
+                        `${b.date}${b.time || ""}`
+                    )
+        )
+        .slice(0,5);
+
+
+if (upcomingList.length) {
+
+    upcoming.innerHTML = "";
+
+
+    upcomingList.forEach(
+        appointment => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "data-card";
+
+
+            card.innerHTML = `
+
+                <div class="record-row">
+
+                    <div>
+
+                        <strong>
+                            🐾
+                            ${
+                                escapeHtml(
+                                    appointment.patientName ||
+                                    "Unknown Patient"
+                                )
+                            }
+                        </strong>
+
+                        <p>
+                            ${
+                                escapeHtml(
+                                    appointment.date ||
+                                    "-"
+                                )
+                            }
+
+                            ${
+                                appointment.time
+                                ? " • " +
+                                  escapeHtml(
+                                      appointment.time
+                                  )
+                                : ""
+                            }
+                        </p>
+
+                        <small>
+                            ${
+                                escapeHtml(
+                                    appointment.reason ||
+                                    "-"
+                                )
+                            }
+                        </small>
+
+                    </div>
+
+                    <span class="status-badge">
+                        ${
+                            escapeHtml(
+                                appointment.status ||
+                                "Scheduled"
+                            )
+                        }
+                    </span>
+
+                </div>
+
+            `;
+
+
+            upcoming.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+
+/* RECENT RECORDS */
+
+const recent =
+    document.getElementById(
+        "recentRecords"
+    );
+
+
+const recentList =
+    records
+        .slice()
+        .reverse()
+        .slice(0,5);
+
+
+if (recentList.length) {
+
+    recent.innerHTML = "";
+
+
+    recentList.forEach(
+        record => {
+
+            const patient =
+                patients.find(
+                    item =>
+                        String(item.id) ===
+                        String(
+                            record.patientId
+                        )
+                );
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "data-card";
+
+
+            card.style.marginBottom =
+                "12px";
+
+
+            card.innerHTML = `
+
+                <div class="record-row">
+
+                    <div>
+
+                        <strong>
+                            🐾
+                            ${
+                                escapeHtml(
+                                    patient
+                                    ? patient.name
+                                    : "Unknown Patient"
+                                )
+                            }
+                        </strong>
+
+                        <p>
+                            Visit:
+                            ${
+                                escapeHtml(
+                                    record.visitDate ||
+                                    "-"
+                                )
+                            }
+                        </p>
+
+                        <small>
+                            Diagnosis:
+                            ${
+                                escapeHtml(
+                                    record.assessment ||
+                                    "-"
+                                )
+                            }
+                        </small>
+
+                    </div>
+
+                    <a
+                        href="patient-detail.html?id=${encodeURIComponent(
+                            record.patientId
+                        )}"
+                        class="text-link"
+                    >
+                        View →
+                    </a>
+
+                </div>
+
+            `;
+
+
+            recent.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+</script>
+
+</body>
+
+</html>

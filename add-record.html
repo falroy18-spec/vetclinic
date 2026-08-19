@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>New Medical Record - VetClinic</title>
+
+<link rel="stylesheet"
+href="style.css">
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+<aside class="sidebar">
+
+<h1>🐾 VetClinic</h1>
+
+<nav>
+
+<a href="index.html">
+Dashboard
+</a>
+
+<a href="patients.html">
+Patients
+</a>
+
+<a href="appointments.html">
+Appointments
+</a>
+
+<a href="medical-records.html"
+class="active">
+Medical Records
+</a>
+
+<a href="medicines.html">
+Medicines
+</a>
+
+<a href="billing.html">
+Billing
+</a>
+
+<a href="reports.html">
+Reports
+</a>
+
+<a href="backup.html">
+Backup & Restore
+</a>
+
+</nav>
+
+</aside>
+
+
+<main class="main-content">
+
+
+<header>
+
+<div>
+
+<h2 id="pageTitle">
+New Medical Record
+</h2>
+
+<p>
+Create a clinical record for a patient.
+</p>
+
+</div>
+
+
+<a
+href="medical-records.html"
+class="add-button"
+>
+← Back
+</a>
+
+</header>
+
+
+<section class="appointments">
+
+
+<form id="recordForm">
+
+
+<div class="form-group">
+
+<label>
+Patient *
+</label>
+
+<select
+id="patientId"
+required
+>
+
+<option value="">
+Select patient
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Visit Date *
+</label>
+
+<input
+type="date"
+id="visitDate"
+required
+>
+
+</div>
+
+
+<hr>
+
+
+<h3>
+SOAP Clinical Record
+</h3>
+
+
+<div class="form-group">
+
+<label>
+Subjective
+</label>
+
+<textarea
+id="subjective"
+placeholder="Owner complaints, history, appetite, drinking, vomiting, diarrhea, etc."
+></textarea>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Objective
+</label>
+
+<textarea
+id="objective"
+placeholder="Physical examination, temperature, HR, RR, CRT, mucous membrane, body weight, etc."
+></textarea>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Assessment / Diagnosis
+</label>
+
+<textarea
+id="assessment"
+placeholder="Clinical assessment and diagnosis"
+></textarea>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Plan / Treatment
+</label>
+
+<textarea
+id="plan"
+placeholder="Treatment, medication, procedure, monitoring and follow-up"
+></textarea>
+
+</div>
+
+
+<hr>
+
+
+<h3>
+Additional Information
+</h3>
+
+
+<div class="form-group">
+
+<label>
+Prescription / Medication
+</label>
+
+<textarea
+id="medication"
+placeholder="Drug name, dose, route and frequency"
+></textarea>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Procedure
+</label>
+
+<textarea
+id="procedure"
+placeholder="Procedure performed, if any"
+></textarea>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Follow-up
+</label>
+
+<textarea
+id="followUp"
+placeholder="Next visit or monitoring instructions"
+></textarea>
+
+</div>
+
+
+<div class="form-actions">
+
+<button
+type="button"
+id="cancelButton"
+class="cancel-button"
+>
+Cancel
+</button>
+
+
+<button type="submit">
+Save Medical Record
+</button>
+
+</div>
+
+
+</form>
+
+</section>
+
+</main>
+
+</div>
+
+
+<script>
+
+let records =
+JSON.parse(
+localStorage.getItem(
+"medicalRecords"
+)
+) || [];
+
+
+const patients =
+JSON.parse(
+localStorage.getItem(
+"patients"
+)
+) || [];
+
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+
+const editId =
+params.get("editId");
+
+
+const selectedPatientId =
+params.get("patientId");
+
+
+const patientSelect =
+document.getElementById(
+"patientId"
+);
+
+
+/* PATIENT OPTIONS */
+
+patients.forEach(
+patient => {
+
+const option =
+document.createElement(
+"option"
+);
+
+
+option.value =
+patient.id;
+
+
+option.textContent =
+`${patient.name || "Unnamed"} • ${
+patient.species || "-"
+}`;
+
+
+patientSelect.appendChild(
+option
+);
+
+});
+
+
+/* EDIT */
+
+let editingRecord = null;
+
+
+if (editId) {
+
+editingRecord =
+records.find(
+record =>
+String(record.id) ===
+String(editId)
+);
+
+
+if (editingRecord) {
+
+document.getElementById(
+"pageTitle"
+).textContent =
+"Edit Medical Record";
+
+
+patientSelect.value =
+editingRecord.patientId || "";
+
+
+document.getElementById(
+"visitDate"
+).value =
+editingRecord.visitDate || "";
+
+
+document.getElementById(
+"subjective"
+).value =
+editingRecord.subjective || "";
+
+
+document.getElementById(
+"objective"
+).value =
+editingRecord.objective || "";
+
+
+document.getElementById(
+"assessment"
+).value =
+editingRecord.assessment || "";
+
+
+document.getElementById(
+"plan"
+).value =
+editingRecord.plan || "";
+
+
+document.getElementById(
+"medication"
+).value =
+editingRecord.medication || "";
+
+
+document.getElementById(
+"procedure"
+).value =
+editingRecord.procedure || "";
+
+
+document.getElementById(
+"followUp"
+).value =
+editingRecord.followUp || "";
+
+}
+
+}
+
+
+/* PRESELECT PATIENT */
+
+if (
+!editId &&
+selectedPatientId
+) {
+
+patientSelect.value =
+selectedPatientId;
+
+}
+
+
+/* DEFAULT DATE */
+
+if (
+!editId &&
+!document.getElementById(
+"visitDate"
+).value
+) {
+
+document.getElementById(
+"visitDate"
+).value =
+new Date()
+.toISOString()
+.split("T")[0];
+
+}
+
+
+/* SAVE */
+
+document.getElementById(
+"recordForm"
+).addEventListener(
+"submit",
+function(event) {
+
+event.preventDefault();
+
+
+if (!patientSelect.value) {
+
+alert(
+"Please select a patient."
+);
+
+return;
+
+}
+
+
+const record = {
+
+id:
+editingRecord
+? editingRecord.id
+: Date.now(),
+
+patientId:
+patientSelect.value,
+
+visitDate:
+document.getElementById(
+"visitDate"
+).value,
+
+subjective:
+document.getElementById(
+"subjective"
+).value.trim(),
+
+objective:
+document.getElementById(
+"objective"
+).value.trim(),
+
+assessment:
+document.getElementById(
+"assessment"
+).value.trim(),
+
+plan:
+document.getElementById(
+"plan"
+).value.trim(),
+
+medication:
+document.getElementById(
+"medication"
+).value.trim(),
+
+procedure:
+document.getElementById(
+"procedure"
+).value.trim(),
+
+followUp:
+document.getElementById(
+"followUp"
+).value.trim(),
+
+updatedAt:
+new Date().toISOString()
+
+};
+
+
+if (editingRecord) {
+
+const index =
+records.findIndex(
+item =>
+String(item.id) ===
+String(editingRecord.id)
+);
+
+
+if (index !== -1) {
+
+records[index] =
+record;
+
+}
+
+}
+else {
+
+record.createdAt =
+new Date().toISOString();
+
+records.push(
+record
+);
+
+}
+
+
+localStorage.setItem(
+"medicalRecords",
+JSON.stringify(
+records
+)
+);
+
+
+alert(
+editingRecord
+? "Medical record updated."
+: "Medical record saved."
+);
+
+
+window.location.href =
+"medical-records.html";
+
+}
+);
+
+
+/* CANCEL */
+
+document.getElementById(
+"cancelButton"
+).addEventListener(
+"click",
+function() {
+
+window.location.href =
+"medical-records.html";
+
+}
+);
+
+</script>
+
+</body>
+
+</html>

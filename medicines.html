@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Medicines - VetClinic</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <h1>🐾 VetClinic</h1>
+
+        <nav>
+
+            <a href="index.html">
+                Dashboard
+            </a>
+
+            <a href="patients.html">
+                Patients
+            </a>
+
+            <a href="appointments.html">
+                Appointments
+            </a>
+
+            <a href="medical-records.html">
+                Medical Records
+            </a>
+
+            <a href="medicines.html" class="active">
+                Medicines
+            </a>
+
+            <a href="billing.html">
+                Billing
+            </a>
+
+            <a href="reports.html">
+                Reports
+            </a>
+
+            <a href="backup.html">
+                Backup & Restore
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <header>
+
+            <div>
+
+                <h2>
+                    Medicines
+                </h2>
+
+                <p>
+                    Manage clinic medicine inventory.
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                id="newMedicine"
+                class="add-button"
+            >
+                + New Medicine
+            </button>
+
+        </header>
+
+
+        <!-- FORM -->
+
+        <section
+            id="medicineFormSection"
+            class="appointments"
+            style="display:none;"
+        >
+
+            <h3 id="medicineTitle">
+                Add Medicine
+            </h3>
+
+
+            <form id="medicineForm">
+
+                <div class="form-group">
+
+                    <label>
+                        Medicine Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="medicineName"
+                        placeholder="e.g. Amoxicillin"
+                        required
+                    >
+
+                </div>
+
+
+                <div style="
+                    display:grid;
+                    grid-template-columns:
+                        repeat(
+                            auto-fit,
+                            minmax(180px,1fr)
+                        );
+                    gap:15px;
+                ">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Strength
+                        </label>
+
+                        <input
+                            type="text"
+                            id="strength"
+                            placeholder="e.g. 50 mg/ml"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Unit
+                        </label>
+
+                        <input
+                            type="text"
+                            id="unit"
+                            placeholder="tablet / bottle / vial"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Stock
+                        </label>
+
+                        <input
+                            type="number"
+                            id="stock"
+                            min="0"
+                            value="0"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Minimum Stock
+                        </label>
+
+                        <input
+                            type="number"
+                            id="minimumStock"
+                            min="0"
+                            value="5"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        id="cancelMedicine"
+                        class="cancel-button"
+                    >
+                        Cancel
+                    </button>
+
+                    <button type="submit">
+                        Save Medicine
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- LIST -->
+
+        <section class="appointments">
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                gap:15px;
+                flex-wrap:wrap;
+                margin-bottom:20px;
+            ">
+
+                <h3 style="margin:0;">
+                    Medicine Inventory
+                </h3>
+
+
+                <input
+                    type="text"
+                    id="searchMedicine"
+                    placeholder="Search medicine..."
+                    style="max-width:250px;"
+                >
+
+            </div>
+
+
+            <div id="medicineList">
+
+                <p>
+                    Loading medicines...
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+let medicines =
+    JSON.parse(
+        localStorage.getItem("medicines")
+    ) || [];
+
+
+let editingId = null;
+
+
+const form =
+    document.getElementById(
+        "medicineForm"
+    );
+
+
+const section =
+    document.getElementById(
+        "medicineFormSection"
+    );
+
+
+const medicineList =
+    document.getElementById(
+        "medicineList"
+    );
+
+
+const searchMedicine =
+    document.getElementById(
+        "searchMedicine"
+    );
+
+
+/* OPEN FORM */
+
+document.getElementById(
+    "newMedicine"
+).addEventListener(
+    "click",
+    function() {
+
+        editingId = null;
+
+        form.reset();
+
+        document.getElementById(
+            "medicineTitle"
+        ).textContent =
+            "Add Medicine";
+
+        document.getElementById(
+            "stock"
+        ).value = 0;
+
+        document.getElementById(
+            "minimumStock"
+        ).value = 5;
+
+        section.style.display =
+            "block";
+
+        section.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+);
+
+
+/* CANCEL */
+
+document.getElementById(
+    "cancelMedicine"
+).addEventListener(
+    "click",
+    function() {
+
+        form.reset();
+
+        editingId = null;
+
+        section.style.display =
+            "none";
+
+    }
+);
+
+
+/* SAVE */
+
+form.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+        const medicine = {
+
+            id:
+                editingId ||
+                Date.now(),
+
+            name:
+                document.getElementById(
+                    "medicineName"
+                ).value.trim(),
+
+            strength:
+                document.getElementById(
+                    "strength"
+                ).value.trim(),
+
+            unit:
+                document.getElementById(
+                    "unit"
+                ).value.trim(),
+
+            stock:
+                Number(
+                    document.getElementById(
+                        "stock"
+                    ).value
+                ) || 0,
+
+            minimumStock:
+                Number(
+                    document.getElementById(
+                        "minimumStock"
+                    ).value
+                ) || 0
+
+        };
+
+
+        if (editingId) {
+
+            const index =
+                medicines.findIndex(
+                    item =>
+                        String(item.id) ===
+                        String(editingId)
+                );
+
+
+            if (index !== -1) {
+
+                medicines[index] =
+                    medicine;
+
+            }
+
+        }
+        else {
+
+            medicines.push(
+                medicine
+            );
+
+        }
+
+
+        localStorage.setItem(
+            "medicines",
+            JSON.stringify(
+                medicines
+            )
+        );
+
+
+        alert(
+            editingId
+            ? "Medicine updated."
+            : "Medicine added."
+        );
+
+
+        form.reset();
+
+        editingId = null;
+
+        section.style.display =
+            "none";
+
+
+        displayMedicines();
+
+    }
+);
+
+
+/* DISPLAY */
+
+function displayMedicines() {
+
+    const keyword =
+        searchMedicine.value
+            .trim()
+            .toLowerCase();
+
+
+    const filtered =
+        medicines.filter(
+            medicine => {
+
+                const name =
+                    medicine.name || "";
+
+
+                const strength =
+                    medicine.strength || "";
+
+
+                return (
+                    name
+                        .toLowerCase()
+                        .includes(keyword)
+                    ||
+                    strength
+                        .toLowerCase()
+                        .includes(keyword)
+                );
+
+            }
+        );
+
+
+    if (!filtered.length) {
+
+        medicineList.innerHTML = `
+
+            <div class="data-card">
+
+                <p>
+                    No medicines found.
+                </p>
+
+                <button
+                    type="button"
+                    class="add-button"
+                    onclick="
+                        document.getElementById(
+                            'newMedicine'
+                        ).click()
+                    "
+                >
+                    + Add First Medicine
+                </button>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    medicineList.innerHTML = "";
+
+
+    filtered.forEach(
+        medicine => {
+
+            const stock =
+                Number(
+                    medicine.stock || 0
+                );
+
+
+            const minimum =
+                Number(
+                    medicine.minimumStock || 0
+                );
+
+
+            const lowStock =
+                stock <= minimum;
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "data-card";
+
+
+            card.style.marginBottom =
+                "15px";
+
+
+            card.innerHTML = `
+
+                <div class="record-row">
+
+
+                    <div>
+
+                        <h3 style="
+                            margin-top:0;
+                        ">
+
+                            💊
+                            ${
+                                escapeHtml(
+                                    medicine.name
+                                )
+                            }
+
+                        </h3>
+
+
+                        <p>
+
+                            <strong>
+                                Strength:
+                            </strong>
+
+                            ${
+                                escapeHtml(
+                                    medicine.strength ||
+                                    "-"
+                                )
+                            }
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>
+                                Unit:
+                            </strong>
+
+                            ${
+                                escapeHtml(
+                                    medicine.unit ||
+                                    "-"
+                                )
+                            }
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>
+                                Stock:
+                            </strong>
+
+                            ${stock}
+
+                        </p>
+
+
+                        <span class="status-badge">
+
+                            ${
+                                lowStock
+                                ? "⚠ Low Stock"
+                                : "Stock OK"
+                            }
+
+                        </span>
+
+                    </div>
+
+
+                    <div style="
+                        display:flex;
+                        gap:8px;
+                        flex-wrap:wrap;
+                    ">
+
+
+                        <button
+                            type="button"
+                            class="edit-medicine"
+                            data-id="${medicine.id}"
+                        >
+                            Edit
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="delete-medicine cancel-button"
+                            data-id="${medicine.id}"
+                        >
+                            Delete
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            medicineList.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* BUTTON ACTIONS */
+
+medicineList.addEventListener(
+    "click",
+    function(event) {
+
+
+        /* EDIT */
+
+        const editButton =
+            event.target.closest(
+                ".edit-medicine"
+            );
+
+
+        if (editButton) {
+
+            const medicine =
+                medicines.find(
+                    item =>
+                        String(item.id) ===
+                        String(
+                            editButton.dataset.id
+                        )
+                );
+
+
+            if (!medicine) {
+                return;
+            }
+
+
+            editingId =
+                medicine.id;
+
+
+            document.getElementById(
+                "medicineTitle"
+            ).textContent =
+                "Edit Medicine";
+
+
+            document.getElementById(
+                "medicineName"
+            ).value =
+                medicine.name || "";
+
+
+            document.getElementById(
+                "strength"
+            ).value =
+                medicine.strength || "";
+
+
+            document.getElementById(
+                "unit"
+            ).value =
+                medicine.unit || "";
+
+
+            document.getElementById(
+                "stock"
+            ).value =
+                medicine.stock || 0;
+
+
+            document.getElementById(
+                "minimumStock"
+            ).value =
+                medicine.minimumStock || 0;
+
+
+            section.style.display =
+                "block";
+
+
+            section.scrollIntoView({
+                behavior: "smooth"
+            });
+
+
+            return;
+
+        }
+
+
+        /* DELETE */
+
+        const deleteButton =
+            event.target.closest(
+                ".delete-medicine"
+            );
+
+
+        if (deleteButton) {
+
+            const medicine =
+                medicines.find(
+                    item =>
+                        String(item.id) ===
+                        String(
+                            deleteButton.dataset.id
+                        )
+                );
+
+
+            if (!medicine) {
+                return;
+            }
+
+
+            if (
+                !confirm(
+                    `Delete "${medicine.name}"?`
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            medicines =
+                medicines.filter(
+                    item =>
+                        String(item.id) !==
+                        String(
+                            deleteButton.dataset.id
+                        )
+                );
+
+
+            localStorage.setItem(
+                "medicines",
+                JSON.stringify(
+                    medicines
+                )
+            );
+
+
+            displayMedicines();
+
+        }
+
+    }
+);
+
+
+/* SEARCH */
+
+searchMedicine.addEventListener(
+    "input",
+    displayMedicines
+);
+
+
+/* ESCAPE */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+displayMedicines();
+
+</script>
+
+</body>
+
+</html>

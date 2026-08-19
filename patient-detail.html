@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Patient Detail - VetClinic</title>
+
+<link rel="stylesheet"
+href="style.css">
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+<aside class="sidebar">
+
+<h1>🐾 VetClinic</h1>
+
+<nav>
+
+<a href="index.html">Dashboard</a>
+
+<a href="patients.html"
+class="active">
+Patients
+</a>
+
+<a href="appointments.html">
+Appointments
+</a>
+
+<a href="medical-records.html">
+Medical Records
+</a>
+
+<a href="medicines.html">
+Medicines
+</a>
+
+<a href="billing.html">
+Billing
+</a>
+
+<a href="reports.html">
+Reports
+</a>
+
+<a href="backup.html">
+Backup & Restore
+</a>
+
+</nav>
+
+</aside>
+
+
+<main class="main-content">
+
+
+<header>
+
+<div>
+
+<h2 id="patientName">
+Patient Detail
+</h2>
+
+<p id="patientSubtitle">
+Patient information
+</p>
+
+</div>
+
+
+<div style="
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+">
+
+<button
+onclick="window.print()"
+>
+🖨 Print
+</button>
+
+
+<a
+href="patients.html"
+class="add-button"
+>
+← Back
+</a>
+
+</div>
+
+</header>
+
+
+<section class="appointments">
+
+
+<h3>
+Patient Information
+</h3>
+
+
+<div class="stats-grid">
+
+
+<div class="data-card">
+
+<strong>
+Species
+</strong>
+
+<p id="species">-</p>
+
+</div>
+
+
+<div class="data-card">
+
+<strong>
+Breed
+</strong>
+
+<p id="breed">-</p>
+
+</div>
+
+
+<div class="data-card">
+
+<strong>
+Sex
+</strong>
+
+<p id="sex">-</p>
+
+</div>
+
+
+<div class="data-card">
+
+<strong>
+Weight
+</strong>
+
+<p id="weight">-</p>
+
+</div>
+
+
+<div class="data-card">
+
+<strong>
+Owner
+</strong>
+
+<p id="owner">-</p>
+
+</div>
+
+
+<div class="data-card">
+
+<strong>
+Phone
+</strong>
+
+<p id="phone">-</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="appointments">
+
+
+<h3>
+Quick Actions
+</h3>
+
+
+<div class="quick-actions">
+
+
+<a
+id="recordLink"
+class="action-card"
+href="#"
+>
+
+<span>
+📋
+</span>
+
+<strong>
+New Medical Record
+</strong>
+
+<small>
+Add clinical record
+</small>
+
+</a>
+
+
+<a
+id="appointmentLink"
+class="action-card"
+href="#"
+>
+
+<span>
+📅
+</span>
+
+<strong>
+New Appointment
+</strong>
+
+<small>
+Schedule visit
+</small>
+
+</a>
+
+
+<a
+id="billingLink"
+class="action-card"
+href="#"
+>
+
+<span>
+💳
+</span>
+
+<strong>
+New Invoice
+</strong>
+
+<small>
+Create invoice
+</small>
+
+</a>
+
+</div>
+
+</section>
+
+
+<section class="appointments">
+
+<h3>
+Medical Records
+</h3>
+
+<div id="records">
+<p>No medical records.</p>
+</div>
+
+</section>
+
+
+<section class="appointments">
+
+<h3>
+Appointments
+</h3>
+
+<div id="appointments">
+<p>No appointments.</p>
+</div>
+
+</section>
+
+
+<section class="appointments">
+
+<h3>
+Billing
+</h3>
+
+<div id="billing">
+<p>No invoices.</p>
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<script>
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+
+const id =
+params.get("id");
+
+
+const patients =
+JSON.parse(
+localStorage.getItem("patients")
+) || [];
+
+
+const records =
+JSON.parse(
+localStorage.getItem("medicalRecords")
+) || [];
+
+
+const appointments =
+JSON.parse(
+localStorage.getItem("appointments")
+) || [];
+
+
+const invoices =
+JSON.parse(
+localStorage.getItem("invoices")
+) || [];
+
+
+const patient =
+patients.find(
+item =>
+String(item.id) ===
+String(id)
+);
+
+
+function escapeHtml(value) {
+
+return String(value ?? "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+function rupiah(value) {
+
+return new Intl.NumberFormat(
+"id-ID",
+{
+style:"currency",
+currency:"IDR",
+maximumFractionDigits:0
+}
+).format(
+Number(value) || 0
+);
+
+}
+
+
+if (!patient) {
+
+document.getElementById(
+"patientName"
+).textContent =
+"Patient Not Found";
+
+}
+else {
+
+
+document.getElementById(
+"patientName"
+).textContent =
+patient.name || "Patient";
+
+
+document.getElementById(
+"patientSubtitle"
+).textContent =
+`${patient.species || "-"}${
+patient.breed
+? " • " + patient.breed
+: ""
+}`;
+
+
+document.getElementById(
+"species"
+).textContent =
+patient.species || "-";
+
+
+document.getElementById(
+"breed"
+).textContent =
+patient.breed || "-";
+
+
+document.getElementById(
+"sex"
+).textContent =
+patient.sex || "-";
+
+
+document.getElementById(
+"weight"
+).textContent =
+patient.weight
+? patient.weight + " kg"
+: "-";
+
+
+document.getElementById(
+"owner"
+).textContent =
+patient.owner || "-";
+
+
+document.getElementById(
+"phone"
+).textContent =
+patient.phone || "-";
+
+
+document.getElementById(
+"recordLink"
+).href =
+"add-record.html?patientId=" +
+encodeURIComponent(
+patient.id
+);
+
+
+document.getElementById(
+"appointmentLink"
+).href =
+"appointments.html?patientId=" +
+encodeURIComponent(
+patient.id
+);
+
+
+document.getElementById(
+"billingLink"
+).href =
+"billing.html?patientId=" +
+encodeURIComponent(
+patient.id
+);
+
+
+/* RECORDS */
+
+const patientRecords =
+records.filter(
+record =>
+String(record.patientId) ===
+String(patient.id)
+);
+
+
+const recordBox =
+document.getElementById(
+"records"
+);
+
+
+if (patientRecords.length) {
+
+recordBox.innerHTML = "";
+
+
+patientRecords
+.slice()
+.reverse()
+.forEach(
+record => {
+
+const card =
+document.createElement(
+"div"
+);
+
+
+card.className =
+"data-card";
+
+
+card.style.marginBottom =
+"15px";
+
+
+card.innerHTML = `
+
+<strong>
+Visit:
+${escapeHtml(
+record.visitDate || "-"
+)}
+</strong>
+
+
+<p>
+
+<strong>
+Diagnosis:
+</strong>
+
+${escapeHtml(
+record.assessment || "-"
+)}
+
+</p>
+
+
+<p>
+
+<strong>
+Treatment:
+</strong>
+
+${escapeHtml(
+record.plan || "-"
+)}
+
+</p>
+
+
+${
+record.medication
+? `
+<p>
+
+<strong>
+Medication:
+</strong>
+
+${escapeHtml(
+record.medication
+)}
+
+</p>
+`
+: ""
+}
+
+`;
+
+
+recordBox.appendChild(
+card
+);
+
+});
+
+}
+
+
+/* APPOINTMENTS */
+
+const patientAppointments =
+appointments.filter(
+appointment =>
+String(appointment.patientId) ===
+String(patient.id)
+);
+
+
+const appointmentBox =
+document.getElementById(
+"appointments"
+);
+
+
+if (patientAppointments.length) {
+
+appointmentBox.innerHTML = "";
+
+
+patientAppointments
+.slice()
+.reverse()
+.forEach(
+appointment => {
+
+const card =
+document.createElement(
+"div"
+);
+
+
+card.className =
+"data-card";
+
+
+card.style.marginBottom =
+"15px";
+
+
+card.innerHTML = `
+
+<strong>
+
+${escapeHtml(
+appointment.date || "-"
+)}
+
+${
+appointment.time
+? " • " +
+escapeHtml(
+appointment.time
+)
+: ""
+}
+
+</strong>
+
+
+<p>
+
+${escapeHtml(
+appointment.reason || "-"
+)}
+
+</p>
+
+
+<span class="status-badge">
+
+${escapeHtml(
+appointment.status ||
+"Scheduled"
+)}
+
+</span>
+
+`;
+
+
+appointmentBox.appendChild(
+card
+);
+
+});
+
+}
+
+
+/* BILLING */
+
+const patientInvoices =
+invoices.filter(
+invoice =>
+String(invoice.patientId) ===
+String(patient.id)
+);
+
+
+const billingBox =
+document.getElementById(
+"billing"
+);
+
+
+if (patientInvoices.length) {
+
+billingBox.innerHTML = "";
+
+
+patientInvoices
+.slice()
+.reverse()
+.forEach(
+invoice => {
+
+const card =
+document.createElement(
+"div"
+);
+
+
+card.className =
+"data-card";
+
+
+card.style.marginBottom =
+"15px";
+
+
+card.innerHTML = `
+
+<strong>
+
+${escapeHtml(
+invoice.invoiceNumber ||
+"Invoice"
+)}
+
+</strong>
+
+
+<p>
+
+${escapeHtml(
+invoice.description || "-"
+)}
+
+</p>
+
+
+<p>
+
+<strong>
+${rupiah(
+invoice.total
+)}
+</strong>
+
+</p>
+
+
+<span class="status-badge">
+
+${escapeHtml(
+invoice.status ||
+"Unpaid"
+)}
+
+</span>
+
+`;
+
+
+billingBox.appendChild(
+card
+);
+
+});
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>

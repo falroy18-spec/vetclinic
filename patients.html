@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Patients - VetClinic</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <h1>🐾 VetClinic</h1>
+
+        <nav>
+
+            <a href="index.html">
+                Dashboard
+            </a>
+
+            <a href="patients.html" class="active">
+                Patients
+            </a>
+
+            <a href="appointments.html">
+                Appointments
+            </a>
+
+            <a href="medical-records.html">
+                Medical Records
+            </a>
+
+            <a href="medicines.html">
+                Medicines
+            </a>
+
+            <a href="billing.html">
+                Billing
+            </a>
+
+            <a href="reports.html">
+                Reports
+            </a>
+
+            <a href="backup.html">
+                Backup & Restore
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <header>
+
+            <div>
+
+                <h2>
+                    Patients
+                </h2>
+
+                <p>
+                    Manage your clinic patients.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="showPatientForm"
+                class="add-button"
+            >
+                + New Patient
+            </button>
+
+        </header>
+
+
+        <!-- FORM -->
+
+        <section
+            id="patientFormSection"
+            class="appointments"
+            style="display:none;"
+        >
+
+            <h3 id="formTitle">
+                Add New Patient
+            </h3>
+
+
+            <form id="patientForm">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Patient Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="patientName"
+                        placeholder="e.g. Milo"
+                        required
+                    >
+
+                </div>
+
+
+                <div style="
+                    display:grid;
+                    grid-template-columns:
+                        repeat(
+                            auto-fit,
+                            minmax(180px,1fr)
+                        );
+                    gap:15px;
+                ">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Species
+                        </label>
+
+                        <select
+                            id="species"
+                            required
+                        >
+
+                            <option value="">
+                                Select species
+                            </option>
+
+                            <option value="Cat">
+                                Cat
+                            </option>
+
+                            <option value="Dog">
+                                Dog
+                            </option>
+
+                            <option value="Rabbit">
+                                Rabbit
+                            </option>
+
+                            <option value="Bird">
+                                Bird
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Breed
+                        </label>
+
+                        <input
+                            type="text"
+                            id="breed"
+                            placeholder="e.g. Domestic Shorthair"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Sex
+                        </label>
+
+                        <select id="sex">
+
+                            <option value="">
+                                Select sex
+                            </option>
+
+                            <option value="Male">
+                                Male
+                            </option>
+
+                            <option value="Female">
+                                Female
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Date of Birth
+                        </label>
+
+                        <input
+                            type="date"
+                            id="dateOfBirth"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Weight (kg)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="weight"
+                            min="0"
+                            step="0.01"
+                            placeholder="4.5"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <hr>
+
+
+                <h3>
+                    Owner Information
+                </h3>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Owner Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="owner"
+                        placeholder="Owner name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Phone
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="08xxxxxxxxxx"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Address
+                    </label>
+
+                    <textarea
+                        id="address"
+                        placeholder="Owner address"
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        id="cancelPatient"
+                        class="cancel-button"
+                    >
+                        Cancel
+                    </button>
+
+                    <button type="submit">
+                        Save Patient
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- PATIENT LIST -->
+
+        <section class="appointments">
+
+            <div style="
+                display:flex;
+                justify-content:
+                    space-between;
+                align-items:center;
+                gap:15px;
+                flex-wrap:wrap;
+                margin-bottom:20px;
+            ">
+
+                <h3 style="margin:0;">
+                    Patient List
+                </h3>
+
+
+                <input
+                    type="text"
+                    id="searchPatient"
+                    placeholder="Search patient or owner..."
+                    style="max-width:260px;"
+                >
+
+            </div>
+
+
+            <div id="patientList">
+
+                <p>
+                    Loading patients...
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+let patients =
+    JSON.parse(
+        localStorage.getItem("patients")
+    ) || [];
+
+
+let editingId = null;
+
+
+const form =
+    document.getElementById(
+        "patientForm"
+    );
+
+
+const formSection =
+    document.getElementById(
+        "patientFormSection"
+    );
+
+
+const patientList =
+    document.getElementById(
+        "patientList"
+    );
+
+
+const searchPatient =
+    document.getElementById(
+        "searchPatient"
+    );
+
+
+/* OPEN FORM */
+
+document.getElementById(
+    "showPatientForm"
+).addEventListener(
+    "click",
+    function() {
+
+        editingId = null;
+
+        form.reset();
+
+        document.getElementById(
+            "formTitle"
+        ).textContent =
+            "Add New Patient";
+
+        formSection.style.display =
+            "block";
+
+        formSection.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+);
+
+
+/* CANCEL */
+
+document.getElementById(
+    "cancelPatient"
+).addEventListener(
+    "click",
+    function() {
+
+        form.reset();
+
+        editingId = null;
+
+        formSection.style.display =
+            "none";
+
+    }
+);
+
+
+/* SAVE */
+
+form.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+        const patient = {
+
+            id:
+                editingId ||
+                Date.now(),
+
+            name:
+                document.getElementById(
+                    "patientName"
+                ).value.trim(),
+
+            species:
+                document.getElementById(
+                    "species"
+                ).value,
+
+            breed:
+                document.getElementById(
+                    "breed"
+                ).value.trim(),
+
+            sex:
+                document.getElementById(
+                    "sex"
+                ).value,
+
+            dateOfBirth:
+                document.getElementById(
+                    "dateOfBirth"
+                ).value,
+
+            weight:
+                document.getElementById(
+                    "weight"
+                ).value,
+
+            owner:
+                document.getElementById(
+                    "owner"
+                ).value.trim(),
+
+            phone:
+                document.getElementById(
+                    "phone"
+                ).value.trim(),
+
+            address:
+                document.getElementById(
+                    "address"
+                ).value.trim(),
+
+            updatedAt:
+                new Date().toISOString()
+
+        };
+
+
+        if (editingId) {
+
+            const index =
+                patients.findIndex(
+                    item =>
+                        String(item.id) ===
+                        String(editingId)
+                );
+
+
+            if (index !== -1) {
+
+                patients[index] =
+                    patient;
+
+            }
+
+        }
+        else {
+
+            patient.createdAt =
+                new Date().toISOString();
+
+            patients.push(
+                patient
+            );
+
+        }
+
+
+        localStorage.setItem(
+            "patients",
+            JSON.stringify(
+                patients
+            )
+        );
+
+
+        alert(
+            editingId
+            ? "Patient updated successfully."
+            : "Patient added successfully."
+        );
+
+
+        form.reset();
+
+        editingId = null;
+
+        formSection.style.display =
+            "none";
+
+
+        displayPatients();
+
+    }
+);
+
+
+/* DISPLAY */
+
+function displayPatients() {
+
+    const keyword =
+        searchPatient.value
+            .trim()
+            .toLowerCase();
+
+
+    const filtered =
+        patients.filter(
+            patient => {
+
+                const name =
+                    patient.name || "";
+
+                const owner =
+                    patient.owner || "";
+
+                const phone =
+                    patient.phone || "";
+
+
+                return (
+                    name
+                        .toLowerCase()
+                        .includes(keyword)
+                    ||
+                    owner
+                        .toLowerCase()
+                        .includes(keyword)
+                    ||
+                    phone
+                        .toLowerCase()
+                        .includes(keyword)
+                );
+
+            }
+        );
+
+
+    if (!filtered.length) {
+
+        patientList.innerHTML = `
+
+            <div class="data-card">
+
+                <p>
+                    No patients found.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    patientList.innerHTML = "";
+
+
+    filtered
+        .slice()
+        .reverse()
+        .forEach(
+            patient => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "data-card";
+
+
+                card.style.marginBottom =
+                    "15px";
+
+
+                card.innerHTML = `
+
+                    <div style="
+                        display:flex;
+                        justify-content:
+                            space-between;
+                        align-items:
+                            flex-start;
+                        gap:20px;
+                        flex-wrap:wrap;
+                    ">
+
+
+                        <div style="
+                            flex:1;
+                            min-width:220px;
+                        ">
+
+                            <h3 style="
+                                margin-top:0;
+                                margin-bottom:8px;
+                            ">
+
+                                🐾
+                                ${
+                                    escapeHtml(
+                                        patient.name ||
+                                        "Unnamed"
+                                    )
+                                }
+
+                            </h3>
+
+
+                            <p>
+
+                                <strong>
+                                    Species:
+                                </strong>
+
+                                ${
+                                    escapeHtml(
+                                        patient.species ||
+                                        "-"
+                                    )
+                                }
+
+                                ${
+                                    patient.breed
+                                    ? " • " +
+                                      escapeHtml(
+                                          patient.breed
+                                      )
+                                    : ""
+                                }
+
+                            </p>
+
+
+                            <p>
+
+                                <strong>
+                                    Sex:
+                                </strong>
+
+                                ${
+                                    escapeHtml(
+                                        patient.sex ||
+                                        "-"
+                                    )
+                                }
+
+                                ${
+                                    patient.weight
+                                    ? " • " +
+                                      escapeHtml(
+                                          patient.weight
+                                      ) +
+                                      " kg"
+                                    : ""
+                                }
+
+                            </p>
+
+
+                            <p>
+
+                                <strong>
+                                    Owner:
+                                </strong>
+
+                                ${
+                                    escapeHtml(
+                                        patient.owner ||
+                                        "-"
+                                    )
+                                }
+
+                            </p>
+
+
+                            <p>
+
+                                <strong>
+                                    Phone:
+                                </strong>
+
+                                ${
+                                    escapeHtml(
+                                        patient.phone ||
+                                        "-"
+                                    )
+                                }
+
+                            </p>
+
+                        </div>
+
+
+                        <div style="
+                            display:flex;
+                            gap:8px;
+                            flex-wrap:wrap;
+                        ">
+
+
+                            <a
+                                href="patient-detail.html?id=${encodeURIComponent(patient.id)}"
+                                class="add-button"
+                            >
+                                View
+                            </a>
+
+
+                            <button
+                                type="button"
+                                class="edit-patient"
+                                data-id="${patient.id}"
+                            >
+                                Edit
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="delete-patient cancel-button"
+                                data-id="${patient.id}"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                patientList.appendChild(
+                    card
+                );
+
+            }
+        );
+
+}
+
+
+/* BUTTON EVENTS */
+
+patientList.addEventListener(
+    "click",
+    function(event) {
+
+        const editButton =
+            event.target.closest(
+                ".edit-patient"
+            );
+
+
+        if (editButton) {
+
+            const patient =
+                patients.find(
+                    item =>
+                        String(item.id) ===
+                        String(
+                            editButton.dataset.id
+                        )
+                );
+
+
+            if (!patient) {
+                return;
+            }
+
+
+            editingId =
+                patient.id;
+
+
+            document.getElementById(
+                "formTitle"
+            ).textContent =
+                "Edit Patient";
+
+
+            document.getElementById(
+                "patientName"
+            ).value =
+                patient.name || "";
+
+
+            document.getElementById(
+                "species"
+            ).value =
+                patient.species || "";
+
+
+            document.getElementById(
+                "breed"
+            ).value =
+                patient.breed || "";
+
+
+            document.getElementById(
+                "sex"
+            ).value =
+                patient.sex || "";
+
+
+            document.getElementById(
+                "dateOfBirth"
+            ).value =
+                patient.dateOfBirth || "";
+
+
+            document.getElementById(
+                "weight"
+            ).value =
+                patient.weight || "";
+
+
+            document.getElementById(
+                "owner"
+            ).value =
+                patient.owner || "";
+
+
+            document.getElementById(
+                "phone"
+            ).value =
+                patient.phone || "";
+
+
+            document.getElementById(
+                "address"
+            ).value =
+                patient.address || "";
+
+
+            formSection.style.display =
+                "block";
+
+
+            formSection.scrollIntoView({
+                behavior:"smooth"
+            });
+
+
+            return;
+
+        }
+
+
+        const deleteButton =
+            event.target.closest(
+                ".delete-patient"
+            );
+
+
+        if (deleteButton) {
+
+            const patient =
+                patients.find(
+                    item =>
+                        String(item.id) ===
+                        String(
+                            deleteButton.dataset.id
+                        )
+                );
+
+
+            if (!patient) {
+                return;
+            }
+
+
+            if (
+                !confirm(
+                    `Delete patient "${patient.name}"?`
+                )
+            ) {
+                return;
+            }
+
+
+            patients =
+                patients.filter(
+                    item =>
+                        String(item.id) !==
+                        String(
+                            deleteButton.dataset.id
+                        )
+                );
+
+
+            localStorage.setItem(
+                "patients",
+                JSON.stringify(
+                    patients
+                )
+            );
+
+
+            displayPatients();
+
+        }
+
+    }
+);
+
+
+/* SEARCH */
+
+searchPatient.addEventListener(
+    "input",
+    displayPatients
+);
+
+
+/* ESCAPE */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+displayPatients();
+
+</script>
+
+</body>
+
+</html>

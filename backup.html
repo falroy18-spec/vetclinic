@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Backup & Restore - VetClinic</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+<h1>🐾 VetClinic</h1>
+
+<nav>
+
+<a href="index.html">Dashboard</a>
+<a href="patients.html">Patients</a>
+<a href="appointments.html">Appointments</a>
+<a href="medical-records.html">Medical Records</a>
+<a href="medicines.html">Medicines</a>
+<a href="billing.html">Billing</a>
+<a href="reports.html">Reports</a>
+<a href="backup.html" class="active">Backup & Restore</a>
+
+</nav>
+
+</aside>
+
+
+<main class="main-content">
+
+<header>
+
+<div>
+
+<h2>Backup & Restore</h2>
+
+<p>
+Protect and restore your clinic data.
+</p>
+
+</div>
+
+</header>
+
+
+<section class="appointments">
+
+<h3>Backup Data</h3>
+
+<p>
+Download all VetClinic data as a JSON file.
+</p>
+
+<button
+type="button"
+id="downloadBackup"
+class="add-button"
+>
+⬇ Download Backup
+</button>
+
+</section>
+
+
+<section class="appointments">
+
+<h3>Restore Data</h3>
+
+<p>
+Select a previously downloaded VetClinic backup file.
+</p>
+
+<input
+type="file"
+id="restoreFile"
+accept=".json"
+>
+
+
+<div style="margin-top:15px;">
+
+<button
+type="button"
+id="restoreButton"
+>
+Restore Backup
+</button>
+
+</div>
+
+</section>
+
+
+<section class="appointments">
+
+<h3>Danger Zone</h3>
+
+<p>
+This will permanently remove all VetClinic data from this browser.
+</p>
+
+<button
+type="button"
+id="deleteAll"
+class="cancel-button"
+>
+Delete All Local Data
+</button>
+
+</section>
+
+</main>
+
+</div>
+
+
+<script>
+
+const dataKeys = [
+
+"patients",
+"medicalRecords",
+"appointments",
+"medicines",
+"invoices"
+
+];
+
+
+/* DOWNLOAD */
+
+document.getElementById(
+"downloadBackup"
+).addEventListener(
+"click",
+function() {
+
+const backup = {
+
+version: "1.0",
+
+createdAt:
+new Date().toISOString(),
+
+patients:
+JSON.parse(
+localStorage.getItem(
+"patients"
+) || "[]"
+),
+
+medicalRecords:
+JSON.parse(
+localStorage.getItem(
+"medicalRecords"
+) || "[]"
+),
+
+appointments:
+JSON.parse(
+localStorage.getItem(
+"appointments"
+) || "[]"
+),
+
+medicines:
+JSON.parse(
+localStorage.getItem(
+"medicines"
+) || "[]"
+),
+
+invoices:
+JSON.parse(
+localStorage.getItem(
+"invoices"
+) || "[]"
+)
+
+};
+
+
+const blob =
+new Blob(
+[
+JSON.stringify(
+backup,
+null,
+2
+)
+],
+{
+type:
+"application/json"
+}
+);
+
+
+const url =
+URL.createObjectURL(
+blob
+);
+
+
+const link =
+document.createElement(
+"a"
+);
+
+
+link.href = url;
+
+
+link.download =
+"vetclinic-backup-" +
+new Date()
+.toISOString()
+.slice(0,10) +
+".json";
+
+
+document.body.appendChild(
+link
+);
+
+
+link.click();
+
+
+link.remove();
+
+
+URL.revokeObjectURL(
+url
+);
+
+
+alert(
+"Backup downloaded successfully."
+);
+
+}
+);
+
+
+/* RESTORE */
+
+document.getElementById(
+"restoreButton"
+).addEventListener(
+"click",
+function() {
+
+const file =
+document.getElementById(
+"restoreFile"
+).files[0];
+
+
+if (!file) {
+
+alert(
+"Please select a backup JSON file first."
+);
+
+return;
+
+}
+
+
+if (
+!confirm(
+"Restore this backup? Current data will be replaced."
+)
+) {
+
+return;
+
+}
+
+
+const reader =
+new FileReader();
+
+
+reader.onload =
+function(event) {
+
+try {
+
+const backup =
+JSON.parse(
+event.target.result
+);
+
+
+const keys = [
+
+"patients",
+"medicalRecords",
+"appointments",
+"medicines",
+"invoices"
+
+];
+
+
+keys.forEach(
+key => {
+
+if (
+Array.isArray(
+backup[key]
+)
+) {
+
+localStorage.setItem(
+key,
+JSON.stringify(
+backup[key]
+)
+);
+
+}
+
+});
+
+
+alert(
+"Backup restored successfully."
+);
+
+
+location.href =
+"index.html";
+
+}
+catch(error) {
+
+alert(
+"Invalid backup file."
+);
+
+}
+
+};
+
+
+reader.readAsText(
+file
+);
+
+}
+);
+
+
+/* DELETE ALL */
+
+document.getElementById(
+"deleteAll"
+).addEventListener(
+"click",
+function() {
+
+const confirmation =
+prompt(
+'Type DELETE to permanently remove all data.'
+);
+
+
+if (
+confirmation !== "DELETE"
+) {
+
+return;
+
+}
+
+
+dataKeys.forEach(
+key => {
+
+localStorage.removeItem(
+key
+);
+
+});
+
+
+alert(
+"All local VetClinic data has been deleted."
+);
+
+
+location.href =
+"index.html";
+
+}
+);
+
+</script>
+
+</body>
+
+</html>

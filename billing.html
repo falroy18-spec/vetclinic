@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Billing - VetClinic</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+<h1>🐾 VetClinic</h1>
+
+<nav>
+
+<a href="index.html">Dashboard</a>
+<a href="patients.html">Patients</a>
+<a href="appointments.html">Appointments</a>
+<a href="medical-records.html">Medical Records</a>
+<a href="medicines.html">Medicines</a>
+<a href="billing.html" class="active">Billing</a>
+<a href="reports.html">Reports</a>
+<a href="backup.html">Backup & Restore</a>
+
+</nav>
+
+</aside>
+
+
+<main class="main-content">
+
+<header>
+
+<div>
+
+<h2>Billing</h2>
+
+<p>
+Manage invoices and payments.
+</p>
+
+</div>
+
+<button
+id="newInvoice"
+class="add-button"
+>
++ New Invoice
+</button>
+
+</header>
+
+
+<section
+id="invoiceFormSection"
+class="appointments"
+style="display:none;"
+>
+
+<h3>
+New Invoice
+</h3>
+
+
+<form id="invoiceForm">
+
+<div class="form-group">
+
+<label>
+Patient
+</label>
+
+<select
+id="patientId"
+required
+>
+
+<option value="">
+Select patient
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Description
+</label>
+
+<input
+id="description"
+placeholder="Consultation / surgery / medicine"
+required
+>
+
+</div>
+
+
+<div style="
+display:grid;
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(180px,1fr)
+);
+gap:15px;
+">
+
+
+<div class="form-group">
+
+<label>
+Amount
+</label>
+
+<input
+id="amount"
+type="number"
+min="0"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Discount
+</label>
+
+<input
+id="discount"
+type="number"
+min="0"
+value="0"
+>
+
+</div>
+
+</div>
+
+
+<div class="form-actions">
+
+<button
+type="button"
+id="cancelInvoice"
+class="cancel-button"
+>
+Cancel
+</button>
+
+<button type="submit">
+Save Invoice
+</button>
+
+</div>
+
+</form>
+
+</section>
+
+
+<section class="appointments">
+
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+flex-wrap:wrap;
+margin-bottom:20px;
+">
+
+<h3>
+Invoice List
+</h3>
+
+<select
+id="invoiceFilter"
+style="max-width:180px;"
+>
+
+<option value="All">
+All
+</option>
+
+<option value="Unpaid">
+Unpaid
+</option>
+
+<option value="Paid">
+Paid
+</option>
+
+</select>
+
+</div>
+
+
+<div id="invoiceList"></div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<script>
+
+let invoices =
+JSON.parse(
+localStorage.getItem("invoices")
+) || [];
+
+
+const patients =
+JSON.parse(
+localStorage.getItem("patients")
+) || [];
+
+
+const patientSelect =
+document.getElementById(
+"patientId"
+);
+
+
+patients.forEach(
+patient => {
+
+const option =
+document.createElement(
+"option"
+);
+
+option.value =
+patient.id;
+
+option.textContent =
+`${patient.name || "Unnamed"} • ${
+patient.species || "-"
+}`;
+
+patientSelect.appendChild(
+option
+);
+
+}
+);
+
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+
+if (
+params.get("patientId")
+) {
+
+patientSelect.value =
+params.get("patientId");
+
+}
+
+
+function rupiah(value) {
+
+return new Intl.NumberFormat(
+"id-ID",
+{
+style:"currency",
+currency:"IDR",
+maximumFractionDigits:0
+}
+).format(
+Number(value) || 0
+);
+
+}
+
+
+function escapeHtml(value) {
+
+return String(value ?? "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+document.getElementById(
+"newInvoice"
+).addEventListener(
+"click",
+function() {
+
+document.getElementById(
+"invoiceFormSection"
+).style.display =
+"block";
+
+}
+);
+
+
+document.getElementById(
+"cancelInvoice"
+).addEventListener(
+"click",
+function() {
+
+document.getElementById(
+"invoiceForm"
+).reset();
+
+document.getElementById(
+"invoiceFormSection"
+).style.display =
+"none";
+
+}
+);
+
+
+document.getElementById(
+"invoiceForm"
+).addEventListener(
+"submit",
+function(event) {
+
+event.preventDefault();
+
+
+const patient =
+patients.find(
+item =>
+String(item.id) ===
+String(
+patientSelect.value
+)
+);
+
+
+if (!patient) {
+
+alert(
+"Please select a patient."
+);
+
+return;
+
+}
+
+
+const amount =
+Number(
+document.getElementById(
+"amount"
+).value
+) || 0;
+
+
+const discount =
+Number(
+document.getElementById(
+"discount"
+).value
+) || 0;
+
+
+const invoice = {
+
+id:
+Date.now(),
+
+invoiceNumber:
+"INV-" +
+Date.now(),
+
+patientId:
+patient.id,
+
+patientName:
+patient.name,
+
+description:
+document.getElementById(
+"description"
+).value.trim(),
+
+amount:
+amount,
+
+discount:
+discount,
+
+total:
+Math.max(
+amount - discount,
+0
+),
+
+status:
+"Unpaid",
+
+createdAt:
+new Date().toISOString()
+
+};
+
+
+invoices.push(
+invoice
+);
+
+
+localStorage.setItem(
+"invoices",
+JSON.stringify(invoices)
+);
+
+
+alert(
+"Invoice created."
+);
+
+
+document.getElementById(
+"invoiceForm"
+).reset();
+
+
+document.getElementById(
+"invoiceFormSection"
+).style.display =
+"none";
+
+
+displayInvoices();
+
+}
+);
+
+
+function displayInvoices() {
+
+const filter =
+document.getElementById(
+"invoiceFilter"
+).value;
+
+
+const list =
+document.getElementById(
+"invoiceList"
+);
+
+
+const filtered =
+invoices.filter(
+invoice =>
+filter === "All" ||
+invoice.status === filter
+);
+
+
+if (!filtered.length) {
+
+list.innerHTML = `
+<div class="data-card">
+<p>No invoices found.</p>
+</div>
+`;
+
+return;
+
+}
+
+
+list.innerHTML = "";
+
+
+filtered
+.slice()
+.reverse()
+.forEach(invoice => {
+
+const card =
+document.createElement(
+"div"
+);
+
+
+card.className =
+"data-card";
+
+
+card.style.marginBottom =
+"15px";
+
+
+card.innerHTML = `
+
+<div class="record-row">
+
+<div>
+
+<h3 style="margin-top:0;">
+
+💳
+${escapeHtml(
+invoice.invoiceNumber
+)}
+
+</h3>
+
+
+<p>
+
+<strong>
+Patient:
+</strong>
+
+${escapeHtml(
+invoice.patientName ||
+"Unknown"
+)}
+
+</p>
+
+
+<p>
+
+<strong>
+Description:
+</strong>
+
+${escapeHtml(
+invoice.description ||
+"-"
+)}
+
+</p>
+
+
+<p>
+
+<strong>
+Total:
+</strong>
+
+${rupiah(
+invoice.total
+)}
+
+</p>
+
+
+<span class="status-badge">
+
+${escapeHtml(
+invoice.status ||
+"Unpaid"
+)}
+
+</span>
+
+</div>
+
+
+<div style="
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+">
+
+${
+invoice.status !== "Paid"
+? `
+<button
+class="pay-invoice"
+data-id="${invoice.id}"
+>
+✓ Mark as Paid
+</button>
+`
+: ""
+}
+
+
+<button
+class="delete-invoice cancel-button"
+data-id="${invoice.id}"
+>
+Delete
+</button>
+
+</div>
+
+</div>
+
+`;
+
+
+list.appendChild(card);
+
+});
+
+}
+
+
+document.getElementById(
+"invoiceList"
+).addEventListener(
+"click",
+function(event) {
+
+const pay =
+event.target.closest(
+".pay-invoice"
+);
+
+
+if (pay) {
+
+const invoice =
+invoices.find(
+item =>
+String(item.id) ===
+String(pay.dataset.id)
+);
+
+
+if (!invoice) return;
+
+
+invoice.status =
+"Paid";
+
+
+invoice.paidAt =
+new Date().toISOString();
+
+
+localStorage.setItem(
+"invoices",
+JSON.stringify(invoices)
+);
+
+
+displayInvoices();
+
+return;
+
+}
+
+
+const del =
+event.target.closest(
+".delete-invoice"
+);
+
+
+if (del) {
+
+if (
+!confirm(
+"Delete this invoice?"
+)
+) return;
+
+
+invoices =
+invoices.filter(
+item =>
+String(item.id) !==
+String(del.dataset.id)
+);
+
+
+localStorage.setItem(
+"invoices",
+JSON.stringify(invoices)
+);
+
+
+displayInvoices();
+
+}
+
+}
+);
+
+
+document.getElementById(
+"invoiceFilter"
+).addEventListener(
+"change",
+displayInvoices
+);
+
+
+displayInvoices();
+
+</script>
+
+</body>
+</html>

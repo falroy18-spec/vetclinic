@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Appointments - VetClinic</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <h1>🐾 VetClinic</h1>
+
+        <nav>
+
+            <a href="index.html">
+                Dashboard
+            </a>
+
+            <a href="patients.html">
+                Patients
+            </a>
+
+            <a href="appointments.html" class="active">
+                Appointments
+            </a>
+
+            <a href="medical-records.html">
+                Medical Records
+            </a>
+
+            <a href="medicines.html">
+                Medicines
+            </a>
+
+            <a href="billing.html">
+                Billing
+            </a>
+
+            <a href="reports.html">
+                Reports
+            </a>
+
+            <a href="backup.html">
+                Backup & Restore
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <header>
+
+            <div>
+
+                <h2>
+                    Appointments
+                </h2>
+
+                <p>
+                    Manage patient appointments.
+                </p>
+
+            </div>
+
+            <button
+                id="addAppointmentButton"
+                class="add-button"
+            >
+                + New Appointment
+            </button>
+
+        </header>
+
+
+        <!-- FORM -->
+
+        <section
+            id="appointmentFormSection"
+            class="appointments"
+            style="display:none;"
+        >
+
+            <h3 id="formTitle">
+                New Appointment
+            </h3>
+
+
+            <form id="appointmentForm">
+
+                <div class="form-group">
+
+                    <label>
+                        Patient
+                    </label>
+
+                    <select
+                        id="patientId"
+                        required
+                    >
+
+                        <option value="">
+                            Select patient
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div style="
+                    display:grid;
+                    grid-template-columns:
+                        repeat(
+                            auto-fit,
+                            minmax(200px,1fr)
+                        );
+                    gap:15px;
+                ">
+
+                    <div class="form-group">
+
+                        <label>
+                            Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="appointmentDate"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Time
+                        </label>
+
+                        <input
+                            type="time"
+                            id="appointmentTime"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Reason
+                    </label>
+
+                    <input
+                        type="text"
+                        id="reason"
+                        placeholder="Consultation / vaccination / surgery"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Status
+                    </label>
+
+                    <select id="status">
+
+                        <option value="Scheduled">
+                            Scheduled
+                        </option>
+
+                        <option value="Completed">
+                            Completed
+                        </option>
+
+                        <option value="Cancelled">
+                            Cancelled
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Notes
+                    </label>
+
+                    <textarea
+                        id="notes"
+                        placeholder="Additional notes..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        id="cancelAppointment"
+                        class="cancel-button"
+                    >
+                        Cancel
+                    </button>
+
+                    <button type="submit">
+                        Save Appointment
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- LIST -->
+
+        <section class="appointments">
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                gap:15px;
+                flex-wrap:wrap;
+                margin-bottom:20px;
+            ">
+
+                <h3 style="margin:0;">
+                    Appointment List
+                </h3>
+
+
+                <div style="
+                    display:flex;
+                    gap:10px;
+                    flex-wrap:wrap;
+                ">
+
+                    <input
+                        type="text"
+                        id="searchAppointment"
+                        placeholder="Search patient..."
+                        style="max-width:220px;"
+                    >
+
+
+                    <select
+                        id="statusFilter"
+                        style="max-width:170px;"
+                    >
+
+                        <option value="All">
+                            All Status
+                        </option>
+
+                        <option value="Scheduled">
+                            Scheduled
+                        </option>
+
+                        <option value="Completed">
+                            Completed
+                        </option>
+
+                        <option value="Cancelled">
+                            Cancelled
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div id="appointmentList">
+
+                <p>
+                    Loading appointments...
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+let appointments =
+    JSON.parse(
+        localStorage.getItem("appointments")
+    ) || [];
+
+
+const patients =
+    JSON.parse(
+        localStorage.getItem("patients")
+    ) || [];
+
+
+let editingId = null;
+
+
+const patientSelect =
+    document.getElementById(
+        "patientId"
+    );
+
+
+const form =
+    document.getElementById(
+        "appointmentForm"
+    );
+
+
+const formSection =
+    document.getElementById(
+        "appointmentFormSection"
+    );
+
+
+const appointmentList =
+    document.getElementById(
+        "appointmentList"
+    );
+
+
+const searchAppointment =
+    document.getElementById(
+        "searchAppointment"
+    );
+
+
+const statusFilter =
+    document.getElementById(
+        "statusFilter"
+    );
+
+
+/* PATIENT OPTIONS */
+
+patients.forEach(patient => {
+
+    const option =
+        document.createElement(
+            "option"
+        );
+
+    option.value =
+        patient.id;
+
+    option.textContent =
+        `${patient.name || "Unnamed"} • ${
+            patient.species || "-"
+        }`;
+
+    patientSelect.appendChild(
+        option
+    );
+
+});
+
+
+/* URL PATIENT */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const selectedPatientId =
+    params.get("patientId");
+
+
+if (selectedPatientId) {
+
+    patientSelect.value =
+        selectedPatientId;
+
+}
+
+
+/* OPEN FORM */
+
+document.getElementById(
+    "addAppointmentButton"
+).addEventListener(
+    "click",
+    function() {
+
+        editingId = null;
+
+        form.reset();
+
+        document.getElementById(
+            "formTitle"
+        ).textContent =
+            "New Appointment";
+
+
+        if (selectedPatientId) {
+
+            patientSelect.value =
+                selectedPatientId;
+
+        }
+
+
+        formSection.style.display =
+            "block";
+
+
+        formSection.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+);
+
+
+/* CANCEL */
+
+document.getElementById(
+    "cancelAppointment"
+).addEventListener(
+    "click",
+    function() {
+
+        form.reset();
+
+        editingId = null;
+
+        formSection.style.display =
+            "none";
+
+    }
+);
+
+
+/* SAVE */
+
+form.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+        const patient =
+            patients.find(
+                item =>
+                    String(item.id) ===
+                    String(
+                        patientSelect.value
+                    )
+            );
+
+
+        if (!patient) {
+
+            alert(
+                "Please select a patient."
+            );
+
+            return;
+
+        }
+
+
+        const appointment = {
+
+            id:
+                editingId ||
+                Date.now(),
+
+            patientId:
+                patient.id,
+
+            patientName:
+                patient.name,
+
+            date:
+                document.getElementById(
+                    "appointmentDate"
+                ).value,
+
+            time:
+                document.getElementById(
+                    "appointmentTime"
+                ).value,
+
+            reason:
+                document.getElementById(
+                    "reason"
+                ).value.trim(),
+
+            status:
+                document.getElementById(
+                    "status"
+                ).value,
+
+            notes:
+                document.getElementById(
+                    "notes"
+                ).value.trim(),
+
+            updatedAt:
+                new Date().toISOString()
+
+        };
+
+
+        if (editingId) {
+
+            const index =
+                appointments.findIndex(
+                    item =>
+                        String(item.id) ===
+                        String(editingId)
+                );
+
+
+            if (index !== -1) {
+
+                appointments[index] =
+                    appointment;
+
+            }
+
+        }
+        else {
+
+            appointments.push(
+                appointment
+            );
+
+        }
+
+
+        localStorage.setItem(
+            "appointments",
+            JSON.stringify(
+                appointments
+            )
+        );
+
+
+        alert(
+            editingId
+            ? "Appointment updated."
+            : "Appointment created."
+        );
+
+
+        form.reset();
+
+        editingId = null;
+
+        formSection.style.display =
+            "none";
+
+
+        displayAppointments();
+
+    }
+);
+
+
+/* DISPLAY */
+
+function displayAppointments() {
+
+    const keyword =
+        searchAppointment.value
+            .trim()
+            .toLowerCase();
+
+
+    const selectedStatus =
+        statusFilter.value;
+
+
+    const filtered =
+        appointments.filter(
+            appointment => {
+
+                const patientName =
+                    appointment.patientName ||
+                    "";
+
+
+                const matchesSearch =
+                    patientName
+                        .toLowerCase()
+                        .includes(keyword);
+
+
+                const matchesStatus =
+                    selectedStatus === "All" ||
+                    appointment.status ===
+                        selectedStatus;
+
+
+                return (
+                    matchesSearch &&
+                    matchesStatus
+                );
+
+            }
+        );
+
+
+    if (!filtered.length) {
+
+        appointmentList.innerHTML = `
+
+            <div class="data-card">
+
+                <p>
+                    No appointments found.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    appointmentList.innerHTML =
+        "";
+
+
+    filtered
+        .slice()
+        .sort(
+            (a,b) =>
+                `${a.date}${a.time || ""}`
+                    .localeCompare(
+                        `${b.date}${b.time || ""}`
+                    )
+        )
+        .forEach(
+            appointment => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "data-card";
+
+
+                card.style.marginBottom =
+                    "15px";
+
+
+                card.innerHTML = `
+
+                    <div style="
+                        display:flex;
+                        justify-content:
+                            space-between;
+                        align-items:
+                            flex-start;
+                        gap:20px;
+                        flex-wrap:wrap;
+                    ">
+
+
+                        <div>
+
+                            <h3 style="
+                                margin-top:0;
+                            ">
+
+                                🐾
+                                ${escapeHtml(
+                                    appointment.patientName ||
+                                    "Unknown Patient"
+                                )}
+
+                            </h3>
+
+
+                            <p>
+
+                                <strong>
+                                    Date:
+                                </strong>
+
+                                ${
+                                    escapeHtml(
+                                        appointment.date ||
+                                        "-"
+                                    )
+                                }
+
+                                ${
+                                    appointment.time
+                                    ? " • " +
+                                      escapeHtml(
+                                          appointment.time
+                                      )
+                                    : ""
+                                }
+
+                            </p>
+
+
+                            <p>
+
+                                <strong>
+                                    Reason:
+                                </strong>
+
+                                ${
+                                    escapeHtml(
+                                        appointment.reason ||
+                                        "-"
+                                    )
+                                }
+
+                            </p>
+
+
+                            ${
+                                appointment.notes
+                                ? `
+
+                                    <p>
+
+                                        <strong>
+                                            Notes:
+                                        </strong>
+
+                                        ${
+                                            escapeHtml(
+                                                appointment.notes
+                                            )
+                                        }
+
+                                    </p>
+
+                                `
+                                : ""
+                            }
+
+
+                            <span class="status-badge">
+
+                                ${
+                                    escapeHtml(
+                                        appointment.status ||
+                                        "Scheduled"
+                                    )
+                                }
+
+                            </span>
+
+                        </div>
+
+
+                        <div style="
+                            display:flex;
+                            gap:8px;
+                            flex-wrap:wrap;
+                        ">
+
+
+                            <button
+                                type="button"
+                                class="edit-appointment"
+                                data-id="${appointment.id}"
+                            >
+                                Edit
+                            </button>
+
+
+                            ${
+                                appointment.status !==
+                                "Completed"
+                                ? `
+
+                                    <button
+                                        type="button"
+                                        class="complete-appointment"
+                                        data-id="${appointment.id}"
+                                    >
+                                        ✓ Complete
+                                    </button>
+
+                                `
+                                : ""
+                            }
+
+
+                            ${
+                                appointment.status !==
+                                "Cancelled"
+                                ? `
+
+                                    <button
+                                        type="button"
+                                        class="cancel-appointment"
+                                        data-id="${appointment.id}"
+                                    >
+                                        Cancel
+                                    </button>
+
+                                `
+                                : ""
+                            }
+
+
+                            <button
+                                type="button"
+                                class="delete-appointment cancel-button"
+                                data-id="${appointment.id}"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                appointmentList.appendChild(
+                    card
+                );
+
+            }
+        );
+
+}
+
+
+/* BUTTON ACTIONS */
+
+appointmentList.addEventListener(
+    "click",
+    function(event) {
+
+
+        /* EDIT */
+
+        const editButton =
+            event.target.closest(
+                ".edit-appointment"
+            );
+
+
+        if (editButton) {
+
+            const appointment =
+                appointments.find(
+                    item =>
+                        String(item.id) ===
+                        String(
+                            editButton.dataset.id
+                        )
+                );
+
+
+            if (!appointment) {
+                return;
+            }
+
+
+            editingId =
+                appointment.id;
+
+
+            document.getElementById(
+                "formTitle"
+            ).textContent =
+                "Edit Appointment";
+
+
+            patientSelect.value =
+                appointment.patientId || "";
+
+
+            document.getElementById(
+                "appointmentDate"
+            ).value =
+                appointment.date || "";
+
+
+            document.getElementById(
+                "appointmentTime"
+            ).value =
+                appointment.time || "";
+
+
+            document.getElementById(
+                "reason"
+            ).value =
+                appointment.reason || "";
+
+
+            document.getElementById(
+                "status"
+            ).value =
+                appointment.status ||
+                "Scheduled";
+
+
+            document.getElementById(
+                "notes"
+            ).value =
+                appointment.notes || "";
+
+
+            formSection.style.display =
+                "block";
+
+
+            formSection.scrollIntoView({
+                behavior:"smooth"
+            });
+
+
+            return;
+
+        }
+
+
+        /* COMPLETE */
+
+        const completeButton =
+            event.target.closest(
+                ".complete-appointment"
+            );
+
+
+        if (completeButton) {
+
+            const appointment =
+                appointments.find(
+                    item =>
+                        String(item.id) ===
+                        String(
+                            completeButton.dataset.id
+                        )
+                );
+
+
+            if (!appointment) {
+                return;
+            }
+
+
+            appointment.status =
+                "Completed";
+
+
+            localStorage.setItem(
+                "appointments",
+                JSON.stringify(
+                    appointments
+                )
+            );
+
+
+            displayAppointments();
+
+            return;
+
+        }
+
+
+        /* CANCEL */
+
+        const cancelButton =
+            event.target.closest(
+                ".cancel-appointment"
+            );
+
+
+        if (cancelButton) {
+
+            const appointment =
+                appointments.find(
+                    item =>
+                        String(item.id) ===
+                        String(
+                            cancelButton.dataset.id
+                        )
+                );
+
+
+            if (!appointment) {
+                return;
+            }
+
+
+            appointment.status =
+                "Cancelled";
+
+
+            localStorage.setItem(
+                "appointments",
+                JSON.stringify(
+                    appointments
+                )
+            );
+
+
+            displayAppointments();
+
+            return;
+
+        }
+
+
+        /* DELETE */
+
+        const deleteButton =
+            event.target.closest(
+                ".delete-appointment"
+            );
+
+
+        if (deleteButton) {
+
+            if (
+                !confirm(
+                    "Delete this appointment?"
+                )
+            ) {
+                return;
+            }
+
+
+            appointments =
+                appointments.filter(
+                    item =>
+                        String(item.id) !==
+                        String(
+                            deleteButton.dataset.id
+                        )
+                );
+
+
+            localStorage.setItem(
+                "appointments",
+                JSON.stringify(
+                    appointments
+                )
+            );
+
+
+            displayAppointments();
+
+        }
+
+    }
+);
+
+
+/* SEARCH */
+
+searchAppointment.addEventListener(
+    "input",
+    displayAppointments
+);
+
+
+/* FILTER */
+
+statusFilter.addEventListener(
+    "change",
+    displayAppointments
+);
+
+
+/* ESCAPE */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+displayAppointments();
+
+</script>
+
+</body>
+
+</html>

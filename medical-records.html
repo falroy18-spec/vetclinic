@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Medical Records - VetClinic</title>
+
+<link rel="stylesheet"
+href="style.css">
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+<aside class="sidebar">
+
+<h1>🐾 VetClinic</h1>
+
+<nav>
+
+<a href="index.html">Dashboard</a>
+
+<a href="patients.html">Patients</a>
+
+<a href="appointments.html">Appointments</a>
+
+<a href="medical-records.html"
+class="active">
+Medical Records
+</a>
+
+<a href="medicines.html">Medicines</a>
+
+<a href="billing.html">Billing</a>
+
+<a href="reports.html">Reports</a>
+
+<a href="backup.html">
+Backup & Restore
+</a>
+
+</nav>
+
+</aside>
+
+
+<main class="main-content">
+
+
+<header>
+
+<div>
+
+<h2>
+Medical Records
+</h2>
+
+<p>
+Clinical history and patient records.
+</p>
+
+</div>
+
+
+<a
+href="add-record.html"
+class="add-button"
+>
++ New Medical Record
+</a>
+
+</header>
+
+
+<section class="appointments">
+
+
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+flex-wrap:wrap;
+margin-bottom:20px;
+">
+
+<h3 style="margin:0;">
+Medical Record List
+</h3>
+
+
+<input
+type="text"
+id="searchRecord"
+placeholder="Search patient or diagnosis..."
+style="max-width:280px;"
+>
+
+</div>
+
+
+<div id="recordList"></div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<script>
+
+let records =
+JSON.parse(
+localStorage.getItem(
+"medicalRecords"
+)
+) || [];
+
+
+const patients =
+JSON.parse(
+localStorage.getItem(
+"patients"
+)
+) || [];
+
+
+function patientName(id) {
+
+const patient =
+patients.find(
+item =>
+String(item.id) ===
+String(id)
+);
+
+return patient
+? patient.name
+: "Unknown Patient";
+
+}
+
+
+function escapeHtml(value) {
+
+return String(value ?? "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+function displayRecords() {
+
+const keyword =
+document.getElementById(
+"searchRecord"
+).value
+.trim()
+.toLowerCase();
+
+
+const list =
+document.getElementById(
+"recordList"
+);
+
+
+const filtered =
+records.filter(
+record => {
+
+const name =
+patientName(
+record.patientId
+).toLowerCase();
+
+
+const diagnosis =
+(
+record.assessment || ""
+).toLowerCase();
+
+
+return (
+name.includes(keyword) ||
+diagnosis.includes(keyword)
+);
+
+});
+
+
+if (!filtered.length) {
+
+list.innerHTML = `
+
+<div class="data-card">
+
+<p>
+No medical records found.
+</p>
+
+<a
+href="add-record.html"
+class="add-button"
+>
++ Create Medical Record
+</a>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+list.innerHTML = "";
+
+
+filtered
+.slice()
+.reverse()
+.forEach(
+record => {
+
+const card =
+document.createElement(
+"div"
+);
+
+
+card.className =
+"data-card";
+
+
+card.style.marginBottom =
+"15px";
+
+
+card.innerHTML = `
+
+<div class="record-row">
+
+<div>
+
+<h3 style="
+margin-top:0;
+">
+
+🐾
+${escapeHtml(
+patientName(
+record.patientId
+)
+)}
+
+</h3>
+
+
+<p>
+
+<strong>
+Visit Date:
+</strong>
+
+${escapeHtml(
+record.visitDate || "-"
+)}
+
+</p>
+
+
+<p>
+
+<strong>
+Diagnosis:
+</strong>
+
+${escapeHtml(
+record.assessment || "-"
+)}
+
+</p>
+
+
+<p>
+
+<strong>
+Treatment:
+</strong>
+
+${escapeHtml(
+record.plan || "-"
+)}
+
+</p>
+
+</div>
+
+</div>
+
+
+<hr>
+
+
+<div>
+
+<p>
+
+<strong>
+Subjective
+</strong>
+
+</p>
+
+<p>
+${escapeHtml(
+record.subjective || "-"
+)}
+</p>
+
+
+<p>
+
+<strong>
+Objective
+</strong>
+
+</p>
+
+<p>
+${escapeHtml(
+record.objective || "-"
+)}
+</p>
+
+
+<p>
+
+<strong>
+Assessment
+</strong>
+
+</p>
+
+<p>
+${escapeHtml(
+record.assessment || "-"
+)}
+</p>
+
+
+<p>
+
+<strong>
+Plan
+</strong>
+
+</p>
+
+<p>
+${escapeHtml(
+record.plan || "-"
+)}
+</p>
+
+
+${
+record.medication
+? `
+<p>
+
+<strong>
+Medication
+</strong>
+
+</p>
+
+<p>
+${escapeHtml(
+record.medication
+)}
+</p>
+`
+: ""
+}
+
+
+${
+record.procedure
+? `
+<p>
+
+<strong>
+Procedure
+</strong>
+
+</p>
+
+<p>
+${escapeHtml(
+record.procedure
+)}
+</p>
+`
+: ""
+}
+
+
+${
+record.followUp
+? `
+<p>
+
+<strong>
+Follow-up
+</strong>
+
+</p>
+
+<p>
+${escapeHtml(
+record.followUp
+)}
+</p>
+`
+: ""
+}
+
+</div>
+
+
+<div style="
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+margin-top:18px;
+">
+
+
+<a
+href="patient-detail.html?id=${encodeURIComponent(record.patientId)}"
+class="add-button"
+>
+View Patient
+</a>
+
+
+<button
+class="edit-record"
+data-id="${record.id}"
+>
+Edit
+</button>
+
+
+<button
+class="delete-record cancel-button"
+data-id="${record.id}"
+>
+Delete
+</button>
+
+</div>
+
+`;
+
+
+list.appendChild(
+card
+);
+
+});
+
+}
+
+
+document.getElementById(
+"searchRecord"
+).addEventListener(
+"input",
+displayRecords
+);
+
+
+document.getElementById(
+"recordList"
+).addEventListener(
+"click",
+function(event) {
+
+const edit =
+event.target.closest(
+".edit-record"
+);
+
+
+if (edit) {
+
+window.location.href =
+"add-record.html?editId=" +
+encodeURIComponent(
+edit.dataset.id
+);
+
+return;
+
+}
+
+
+const del =
+event.target.closest(
+".delete-record"
+);
+
+
+if (del) {
+
+if (
+!confirm(
+"Delete this medical record?"
+)
+) return;
+
+
+records =
+records.filter(
+item =>
+String(item.id) !==
+String(del.dataset.id)
+);
+
+
+localStorage.setItem(
+"medicalRecords",
+JSON.stringify(
+records
+)
+);
+
+
+displayRecords();
+
+}
+
+}
+);
+
+
+displayRecords();
+
+</script>
+
+</body>
+
+</html>

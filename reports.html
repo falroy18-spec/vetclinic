@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reports - VetClinic</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+<h1>🐾 VetClinic</h1>
+
+<nav>
+
+<a href="index.html">Dashboard</a>
+<a href="patients.html">Patients</a>
+<a href="appointments.html">Appointments</a>
+<a href="medical-records.html">Medical Records</a>
+<a href="medicines.html">Medicines</a>
+<a href="billing.html">Billing</a>
+<a href="reports.html" class="active">Reports</a>
+<a href="backup.html">Backup & Restore</a>
+
+</nav>
+
+</aside>
+
+
+<main class="main-content">
+
+<header>
+
+<div>
+
+<h2>
+Reports
+</h2>
+
+<p>
+Clinic overview and statistics.
+</p>
+
+</div>
+
+</header>
+
+
+<section class="appointments">
+
+<h3>
+Clinic Overview
+</h3>
+
+
+<div class="stats-grid">
+
+<div class="stat-card">
+
+<span>🐾</span>
+
+<div>
+
+<small>
+Patients
+</small>
+
+<h2 id="patients">
+0
+</h2>
+
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<span>📋</span>
+
+<div>
+
+<small>
+Medical Records
+</small>
+
+<h2 id="records">
+0
+</h2>
+
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<span>📅</span>
+
+<div>
+
+<small>
+Appointments
+</small>
+
+<h2 id="appointments">
+0
+</h2>
+
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<span>💊</span>
+
+<div>
+
+<small>
+Medicines
+</small>
+
+<h2 id="medicines">
+0
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="appointments">
+
+<h3>
+Financial Summary
+</h3>
+
+
+<div class="stats-grid">
+
+<div class="stat-card">
+
+<span>💰</span>
+
+<div>
+
+<small>
+Total Revenue
+</small>
+
+<h2 id="revenue">
+Rp0
+</h2>
+
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<span>⏳</span>
+
+<div>
+
+<small>
+Unpaid
+</small>
+
+<h2 id="unpaid">
+Rp0
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<script>
+
+const patients =
+JSON.parse(
+localStorage.getItem("patients")
+) || [];
+
+
+const records =
+JSON.parse(
+localStorage.getItem("medicalRecords")
+) || [];
+
+
+const appointments =
+JSON.parse(
+localStorage.getItem("appointments")
+) || [];
+
+
+const medicines =
+JSON.parse(
+localStorage.getItem("medicines")
+) || [];
+
+
+const invoices =
+JSON.parse(
+localStorage.getItem("invoices")
+) || [];
+
+
+document.getElementById(
+"patients"
+).textContent =
+patients.length;
+
+
+document.getElementById(
+"records"
+).textContent =
+records.length;
+
+
+document.getElementById(
+"appointments"
+).textContent =
+appointments.length;
+
+
+document.getElementById(
+"medicines"
+).textContent =
+medicines.length;
+
+
+function rupiah(value) {
+
+return new Intl.NumberFormat(
+"id-ID",
+{
+style:"currency",
+currency:"IDR",
+maximumFractionDigits:0
+}
+).format(
+Number(value) || 0
+);
+
+}
+
+
+const paid =
+invoices
+.filter(
+invoice =>
+invoice.status === "Paid"
+)
+.reduce(
+(sum,invoice) =>
+sum +
+Number(invoice.total || 0),
+0
+);
+
+
+const unpaid =
+invoices
+.filter(
+invoice =>
+invoice.status !== "Paid"
+)
+.reduce(
+(sum,invoice) =>
+sum +
+Number(invoice.total || 0),
+0
+);
+
+
+document.getElementById(
+"revenue"
+).textContent =
+rupiah(paid);
+
+
+document.getElementById(
+"unpaid"
+).textContent =
+rupiah(unpaid);
+
+</script>
+
+</body>
+</html>
