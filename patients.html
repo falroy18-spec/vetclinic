@@ -335,15 +335,11 @@ supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
-const {
-    data: {
-        session
+supabaseClient.auth.getSession().then(({ data: { session } }) => {
+    if (!session) {
+        window.location.href = "login.html";
     }
-} = await supabaseClient.auth.getSession();
-
-if (!session) {
-    window.location.href = "login.html";
-}
+});
 
 const saveButton =
 document.getElementById("saveButton");
