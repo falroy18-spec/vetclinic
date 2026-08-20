@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient - VetClinic</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+<h1>🐾 VetClinic</h1>
+
+<nav>
+
+<a href="index.html">Dashboard</a>
+<a href="patients.html" class="active">Patients</a>
+<a href="appointments.html">Appointments</a>
+<a href="medical-records.html">Medical Records</a>
+<a href="medicines.html">Medicines</a>
+<a href="billing.html">Billing</a>
+<a href="reports.html">Reports</a>
+
+</nav>
+
+</aside>
+
+<main class="main-content">
+
+<header>
+
+<div>
+
+<h2 id="patientPageTitle">
+Add New Patient
+</h2>
+
+<p id="patientPageDescription">
+Register a new patient into the clinic.
+</p>
+
+</div>
+
+</header>
+
+<section class="appointments">
+
+<h3>Patient Information</h3>
+
+<form id="patientForm">
+
+<div class="form-group">
+<label>Patient Name</label>
+<input type="text" id="patientName" required>
+</div>
+
+<div class="form-group">
+<label>Species</label>
+
+<select id="species" required>
+
+<option value="">Select species</option>
+<option>Cat</option>
+<option>Dog</option>
+<option>Rabbit</option>
+<option>Bird</option>
+<option>Other</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+<label>Breed</label>
+<input type="text" id="breed">
+</div>
+
+<div class="form-group">
+<label>Sex</label>
+
+<select id="sex" required>
+
+<option value="">Select sex</option>
+<option>Male</option>
+<option>Female</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+<label>Date of Birth</label>
+<input type="date" id="dateOfBirth">
+</div>
+
+<div class="form-group">
+<label>Weight (kg)</label>
+<input type="number" id="weight" step="0.01">
+</div>
+
+<hr>
+
+<h3>Owner Information</h3>
+
+<div class="form-group">
+<label>Owner Name</label>
+<input type="text" id="ownerName" required>
+</div>
+
+<div class="form-group">
+<label>Phone Number</label>
+<input type="tel" id="phone">
+</div>
+
+<div class="form-group">
+<label>Address</label>
+<textarea id="address"></textarea>
+</div>
+
+<div class="form-actions">
+
+<a href="patients.html" class="cancel-button">
+Cancel
+</a>
+
+<button type="submit" id="savePatientButton">
+Save Patient
+</button>
+
+</div>
+
+</form>
+
+</section>
+
+</main>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

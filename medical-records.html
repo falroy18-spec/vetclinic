@@ -2,567 +2,1053 @@
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Medical Records - VetClinic</title>
 
-<link rel="stylesheet"
-href="style.css">
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6fb;
+    color: #252d3d;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.header p {
+    color: #6b7280;
+}
+
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 11px 16px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.primary {
+    background: #5146e5;
+    color: white;
+}
+
+.danger {
+    background: #dc2626;
+    color: white;
+}
+
+.secondary {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.message {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.error {
+    color: #dc2626;
+}
+
+.success {
+    color: #16a34a;
+}
+
+.record {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.record-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.record h3 {
+    margin-top: 0;
+    margin-bottom: 6px;
+}
+
+.record-date {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.record-section {
+    margin-top: 15px;
+}
+
+.record-section strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.record-section p {
+    margin: 0;
+    white-space: pre-wrap;
+    line-height: 1.5;
+}
+
+.empty {
+    text-align: center;
+    padding: 30px;
+    color: #6b7280;
+}
+
+@media(max-width:700px) {
+
+    .container {
+        padding: 15px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+        grid-column: auto;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .record-header {
+        flex-direction: column;
+    }
+
+}
+
+</style>
 
 </head>
 
-
 <body>
 
-<div class="app">
+<div class="container">
 
-
-<aside class="sidebar">
-
-<h1>🐾 VetClinic</h1>
-
-<nav>
-
-<a href="index.html">Dashboard</a>
-
-<a href="patients.html">Patients</a>
-
-<a href="appointments.html">Appointments</a>
-
-<a href="medical-records.html"
-class="active">
-Medical Records
-</a>
-
-<a href="medicines.html">Medicines</a>
-
-<a href="billing.html">Billing</a>
-
-<a href="reports.html">Reports</a>
-
-<a href="backup.html">
-Backup & Restore
-</a>
-
-</nav>
-
-</aside>
-
-
-<main class="main-content">
-
-
-<header>
+<div class="header">
 
 <div>
 
-<h2>
-Medical Records
-</h2>
+<h1>📋 Medical Records</h1>
 
 <p>
-Clinical history and patient records.
+Patient medical history and clinical records
 </p>
 
 </div>
 
+<button
+class="secondary"
+type="button"
+onclick="window.location.href='index.html'">
 
-<a
-href="add-record.html"
-class="add-button"
+Dashboard
+
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h2>New Medical Record</h2>
+
+
+<div class="form-grid">
+
+
+<div class="full">
+
+<label>
+Patient
+</label>
+
+<select id="patient">
+
+<option value="">
+Select patient
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>
+Visit Date
+</label>
+
+<input
+type="date"
+id="visit_date"
 >
-+ New Medical Record
-</a>
 
-</header>
+</div>
 
 
-<section class="appointments">
+<div>
 
-
-<div style="
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:15px;
-flex-wrap:wrap;
-margin-bottom:20px;
-">
-
-<h3 style="margin:0;">
-Medical Record List
-</h3>
-
+<label>
+Chief Complaint
+</label>
 
 <input
 type="text"
-id="searchRecord"
-placeholder="Search patient or diagnosis..."
-style="max-width:280px;"
+id="chief_complaint"
+placeholder="Reason for visit"
 >
 
 </div>
 
 
-<div id="recordList"></div>
+<div class="full">
 
-</section>
+<label>
+Subjective
+</label>
 
-</main>
+<textarea
+id="subjective"
+placeholder="History from owner..."
+></textarea>
 
 </div>
+
+
+<div class="full">
+
+<label>
+Objective
+</label>
+
+<textarea
+id="objective"
+placeholder="Physical examination findings..."
+></textarea>
+
+</div>
+
+
+<div class="full">
+
+<label>
+Assessment
+</label>
+
+<textarea
+id="assessment"
+placeholder="Clinical assessment..."
+></textarea>
+
+</div>
+
+
+<div class="full">
+
+<label>
+Plan
+</label>
+
+<textarea
+id="plan"
+placeholder="Treatment and follow-up plan..."
+></textarea>
+
+</div>
+
+
+<div>
+
+<label>
+Diagnosis
+</label>
+
+<input
+type="text"
+id="diagnosis"
+placeholder="Diagnosis"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Medication
+</label>
+
+<input
+type="text"
+id="medication"
+placeholder="Medication"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Treatment
+</label>
+
+<textarea
+id="treatment"
+placeholder="Treatment given..."
+></textarea>
+
+</div>
+
+
+<div>
+
+<label>
+Procedure
+</label>
+
+<textarea
+id="procedure"
+placeholder="Procedure performed..."
+></textarea>
+
+</div>
+
+
+<div>
+
+<label>
+Follow-up Date
+</label>
+
+<input
+type="date"
+id="follow_up_date"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Notes
+</label>
+
+<textarea
+id="notes"
+placeholder="Additional notes..."
+></textarea>
+
+</div>
+
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="primary"
+id="saveButton"
+type="button">
+
+Save Medical Record
+
+</button>
+
+</div>
+
+
+<div
+id="message"
+class="message">
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>Medical History</h2>
+
+<div id="recordList">
+
+<div class="empty">
+Loading records...
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
 
-let records =
-JSON.parse(
-localStorage.getItem(
-"medicalRecords"
-)
-) || [];
+const SUPABASE_URL =
+"https://zltbjbbofvvndxirlipf.supabase.co";
 
 
-const patients =
-JSON.parse(
-localStorage.getItem(
-"patients"
-)
-) || [];
+const SUPABASE_KEY =
+"sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
 
 
-function patientName(id) {
-
-const patient =
-patients.find(
-item =>
-String(item.id) ===
-String(id)
+const supabaseClient =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
 );
+const {
+    data: {
+        session
+    }
+} = await supabaseClient.auth.getSession();
 
-return patient
-? patient.name
-: "Unknown Patient";
+if (!session) {
+    window.location.href = "login.html";
+}
+
+const patientSelect =
+document.getElementById("patient");
+
+const recordList =
+document.getElementById("recordList");
+
+const saveButton =
+document.getElementById("saveButton");
+
+const message =
+document.getElementById("message");
+
+
+document.getElementById(
+    "visit_date"
+).value =
+    new Date()
+    .toISOString()
+    .split("T")[0];
+
+
+async function loadPatients() {
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .from("patients")
+        .select("id, name, species")
+        .order("name");
+
+
+    if (error) {
+
+        message.textContent =
+            "Gagal mengambil patient: " +
+            error.message;
+
+        message.className =
+            "message error";
+
+        return;
+    }
+
+
+    patientSelect.innerHTML = `
+        <option value="">
+            Select patient
+        </option>
+    `;
+
+
+    data.forEach(patient => {
+
+        const option =
+            document.createElement("option");
+
+        option.value =
+            patient.id;
+
+        option.textContent =
+            patient.name +
+            " (" +
+            patient.species +
+            ")";
+
+        patientSelect.appendChild(option);
+
+    });
+
+}
+
+
+async function loadRecords() {
+
+    recordList.innerHTML = `
+        <div class="empty">
+            Loading records...
+        </div>
+    `;
+
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .from("medical_records")
+        .select(`
+            *,
+            patients (
+                name,
+                species,
+                breed
+            )
+        `)
+        .order("visit_date", {
+            ascending: false
+        });
+
+
+    if (error) {
+
+        recordList.innerHTML = `
+            <div class="empty error">
+                ${error.message}
+            </div>
+        `;
+
+        return;
+    }
+
+
+    if (!data || data.length === 0) {
+
+        recordList.innerHTML = `
+            <div class="empty">
+                No medical records yet.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    recordList.innerHTML = "";
+
+
+    data.forEach(record => {
+
+        const patient =
+            record.patients;
+
+
+        const div =
+            document.createElement("div");
+
+        div.className =
+            "record";
+
+
+        div.innerHTML = `
+
+            <div class="record-header">
+
+                <div>
+
+                    <h3>
+                        ${patient?.name || "Unknown Patient"}
+                    </h3>
+
+                    <div class="record-date">
+
+                        ${patient?.species || ""}
+                        ${patient?.breed ? " • " + patient.breed : ""}
+
+                        <br>
+
+                        Visit:
+                        ${record.visit_date || "-"}
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="danger"
+                    type="button"
+                    onclick="deleteRecord('${record.id}')">
+
+                    Delete
+
+                </button>
+
+            </div>
+
+
+            ${makeSection(
+                "Chief Complaint",
+                record.chief_complaint
+            )}
+
+            ${makeSection(
+                "Subjective",
+                record.subjective
+            )}
+
+            ${makeSection(
+                "Objective",
+                record.objective
+            )}
+
+            ${makeSection(
+                "Assessment",
+                record.assessment
+            )}
+
+            ${makeSection(
+                "Plan",
+                record.plan
+            )}
+
+            ${makeSection(
+                "Diagnosis",
+                record.diagnosis
+            )}
+
+            ${makeSection(
+                "Medication",
+                record.medication
+            )}
+
+            ${makeSection(
+                "Treatment",
+                record.treatment
+            )}
+
+            ${makeSection(
+                "Procedure",
+                record.procedure
+            )}
+
+            ${makeSection(
+                "Notes",
+                record.notes
+            )}
+
+            ${record.follow_up_date
+                ? `
+                <div class="record-section">
+
+                    <strong>
+                        Follow-up
+                    </strong>
+
+                    <p>
+                        ${record.follow_up_date}
+                    </p>
+
+                </div>
+                `
+                : ""
+            }
+
+        `;
+
+
+        recordList.appendChild(div);
+
+    });
+
+}
+
+
+function makeSection(
+    title,
+    value
+) {
+
+    if (!value) {
+        return "";
+    }
+
+
+    return `
+
+        <div class="record-section">
+
+            <strong>
+                ${title}
+            </strong>
+
+            <p>
+                ${escapeHtml(value)}
+            </p>
+
+        </div>
+
+    `;
 
 }
 
 
 function escapeHtml(value) {
 
-return String(value ?? "")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }
 
 
-function displayRecords() {
+saveButton.addEventListener(
+    "click",
+    async function() {
 
-const keyword =
-document.getElementById(
-"searchRecord"
-).value
-.trim()
-.toLowerCase();
+        const patient_id =
+            patientSelect.value;
 
 
-const list =
-document.getElementById(
-"recordList"
+        if (!patient_id) {
+
+            message.textContent =
+                "Pilih patient terlebih dahulu.";
+
+            message.className =
+                "message error";
+
+            return;
+        }
+
+
+        saveButton.disabled =
+            true;
+
+
+        message.textContent =
+            "Saving medical record...";
+
+        message.className =
+            "message";
+
+
+        const record = {
+
+            patient_id:
+
+                patient_id,
+
+            visit_date:
+
+                document.getElementById(
+                    "visit_date"
+                ).value
+                || null,
+
+            chief_complaint:
+
+                document.getElementById(
+                    "chief_complaint"
+                ).value.trim()
+                || null,
+
+            subjective:
+
+                document.getElementById(
+                    "subjective"
+                ).value.trim()
+                || null,
+
+            objective:
+
+                document.getElementById(
+                    "objective"
+                ).value.trim()
+                || null,
+
+            assessment:
+
+                document.getElementById(
+                    "assessment"
+                ).value.trim()
+                || null,
+
+            plan:
+
+                document.getElementById(
+                    "plan"
+                ).value.trim()
+                || null,
+
+            diagnosis:
+
+                document.getElementById(
+                    "diagnosis"
+                ).value.trim()
+                || null,
+
+            medication:
+
+                document.getElementById(
+                    "medication"
+                ).value.trim()
+                || null,
+
+            treatment:
+
+                document.getElementById(
+                    "treatment"
+                ).value.trim()
+                || null,
+
+            procedure:
+
+                document.getElementById(
+                    "procedure"
+                ).value.trim()
+                || null,
+
+            follow_up_date:
+
+                document.getElementById(
+                    "follow_up_date"
+                ).value
+                || null,
+
+            notes:
+
+                document.getElementById(
+                    "notes"
+                ).value.trim()
+                || null
+
+        };
+
+
+        const {
+            error
+        } =
+        await supabaseClient
+            .from("medical_records")
+            .insert(record);
+
+
+        if (error) {
+
+            console.error(error);
+
+            message.textContent =
+                "Gagal menyimpan: " +
+                error.message;
+
+            message.className =
+                "message error";
+
+            saveButton.disabled =
+                false;
+
+            return;
+        }
+
+
+        message.textContent =
+            "Medical record berhasil disimpan!";
+
+        message.className =
+            "message success";
+
+
+        clearForm();
+
+
+        saveButton.disabled =
+            false;
+
+
+        loadRecords();
+
+    }
 );
 
 
-const filtered =
-records.filter(
-record => {
+function clearForm() {
 
-const name =
-patientName(
-record.patientId
-).toLowerCase();
+    patientSelect.value = "";
 
+    document.getElementById(
+        "chief_complaint"
+    ).value = "";
 
-const diagnosis =
-(
-record.assessment || ""
-).toLowerCase();
+    document.getElementById(
+        "subjective"
+    ).value = "";
 
+    document.getElementById(
+        "objective"
+    ).value = "";
 
-return (
-name.includes(keyword) ||
-diagnosis.includes(keyword)
-);
+    document.getElementById(
+        "assessment"
+    ).value = "";
 
-});
+    document.getElementById(
+        "plan"
+    ).value = "";
 
+    document.getElementById(
+        "diagnosis"
+    ).value = "";
 
-if (!filtered.length) {
+    document.getElementById(
+        "medication"
+    ).value = "";
 
-list.innerHTML = `
+    document.getElementById(
+        "treatment"
+    ).value = "";
 
-<div class="data-card">
+    document.getElementById(
+        "procedure"
+    ).value = "";
 
-<p>
-No medical records found.
-</p>
+    document.getElementById(
+        "follow_up_date"
+    ).value = "";
 
-<a
-href="add-record.html"
-class="add-button"
->
-+ Create Medical Record
-</a>
-
-</div>
-
-`;
-
-return;
+    document.getElementById(
+        "notes"
+    ).value = "";
 
 }
 
 
-list.innerHTML = "";
+async function deleteRecord(id) {
 
+    if (!confirm(
+        "Delete this medical record?"
+    )) {
 
-filtered
-.slice()
-.reverse()
-.forEach(
-record => {
+        return;
 
-const card =
-document.createElement(
-"div"
-);
+    }
 
 
-card.className =
-"data-card";
+    const {
+        error
+    } =
+    await supabaseClient
+        .from("medical_records")
+        .delete()
+        .eq("id", id);
 
 
-card.style.marginBottom =
-"15px";
+    if (error) {
 
+        alert(
+            "Gagal menghapus: " +
+            error.message
+        );
 
-card.innerHTML = `
+        return;
+    }
 
-<div class="record-row">
 
-<div>
-
-<h3 style="
-margin-top:0;
-">
-
-🐾
-${escapeHtml(
-patientName(
-record.patientId
-)
-)}
-
-</h3>
-
-
-<p>
-
-<strong>
-Visit Date:
-</strong>
-
-${escapeHtml(
-record.visitDate || "-"
-)}
-
-</p>
-
-
-<p>
-
-<strong>
-Diagnosis:
-</strong>
-
-${escapeHtml(
-record.assessment || "-"
-)}
-
-</p>
-
-
-<p>
-
-<strong>
-Treatment:
-</strong>
-
-${escapeHtml(
-record.plan || "-"
-)}
-
-</p>
-
-</div>
-
-</div>
-
-
-<hr>
-
-
-<div>
-
-<p>
-
-<strong>
-Subjective
-</strong>
-
-</p>
-
-<p>
-${escapeHtml(
-record.subjective || "-"
-)}
-</p>
-
-
-<p>
-
-<strong>
-Objective
-</strong>
-
-</p>
-
-<p>
-${escapeHtml(
-record.objective || "-"
-)}
-</p>
-
-
-<p>
-
-<strong>
-Assessment
-</strong>
-
-</p>
-
-<p>
-${escapeHtml(
-record.assessment || "-"
-)}
-</p>
-
-
-<p>
-
-<strong>
-Plan
-</strong>
-
-</p>
-
-<p>
-${escapeHtml(
-record.plan || "-"
-)}
-</p>
-
-
-${
-record.medication
-? `
-<p>
-
-<strong>
-Medication
-</strong>
-
-</p>
-
-<p>
-${escapeHtml(
-record.medication
-)}
-</p>
-`
-: ""
-}
-
-
-${
-record.procedure
-? `
-<p>
-
-<strong>
-Procedure
-</strong>
-
-</p>
-
-<p>
-${escapeHtml(
-record.procedure
-)}
-</p>
-`
-: ""
-}
-
-
-${
-record.followUp
-? `
-<p>
-
-<strong>
-Follow-up
-</strong>
-
-</p>
-
-<p>
-${escapeHtml(
-record.followUp
-)}
-</p>
-`
-: ""
-}
-
-</div>
-
-
-<div style="
-display:flex;
-gap:8px;
-flex-wrap:wrap;
-margin-top:18px;
-">
-
-
-<a
-href="patient-detail.html?id=${encodeURIComponent(record.patientId)}"
-class="add-button"
->
-View Patient
-</a>
-
-
-<button
-class="edit-record"
-data-id="${record.id}"
->
-Edit
-</button>
-
-
-<button
-class="delete-record cancel-button"
-data-id="${record.id}"
->
-Delete
-</button>
-
-</div>
-
-`;
-
-
-list.appendChild(
-card
-);
-
-});
+    loadRecords();
 
 }
 
 
-document.getElementById(
-"searchRecord"
-).addEventListener(
-"input",
-displayRecords
-);
+loadPatients();
 
-
-document.getElementById(
-"recordList"
-).addEventListener(
-"click",
-function(event) {
-
-const edit =
-event.target.closest(
-".edit-record"
-);
-
-
-if (edit) {
-
-window.location.href =
-"add-record.html?editId=" +
-encodeURIComponent(
-edit.dataset.id
-);
-
-return;
-
-}
-
-
-const del =
-event.target.closest(
-".delete-record"
-);
-
-
-if (del) {
-
-if (
-!confirm(
-"Delete this medical record?"
-)
-) return;
-
-
-records =
-records.filter(
-item =>
-String(item.id) !==
-String(del.dataset.id)
-);
-
-
-localStorage.setItem(
-"medicalRecords",
-JSON.stringify(
-records
-)
-);
-
-
-displayRecords();
-
-}
-
-}
-);
-
-
-displayRecords();
+loadRecords();
 
 </script>
 

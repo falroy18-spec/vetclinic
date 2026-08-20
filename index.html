@@ -2,580 +2,563 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - VetClinic</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>VetClinic Dashboard</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6fb;
+    color: #252d3d;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.header p {
+    color: #6b7280;
+    margin-top: 8px;
+}
+
+.logout {
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.logout:hover {
+    background: #b91c1c;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.icon {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.card h2 {
+    margin: 0 0 8px;
+    font-size: 19px;
+}
+
+.card p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.stat {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.stat-label {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+.message {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #6b7280;
+}
+
+.error {
+    color: #dc2626;
+}
+
+@media(max-width:800px) {
+
+    .container {
+        padding: 15px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .header {
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+}
+
+@media(max-width:500px) {
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        flex-direction: column;
+    }
+
+}
+
+</style>
+
 </head>
 
 <body>
 
-<div class="app">
+<div class="container">
 
-    <aside class="sidebar">
 
-        <h1>🐾 VetClinic</h1>
+<div class="header">
 
-        <nav>
+<div>
 
-            <a href="index.html" class="active">
-                Dashboard
-            </a>
+<h1>🐾 VetClinic</h1>
 
-            <a href="patients.html">
-                Patients
-            </a>
-
-            <a href="appointments.html">
-                Appointments
-            </a>
-
-            <a href="medical-records.html">
-                Medical Records
-            </a>
-
-            <a href="medicines.html">
-                Medicines
-            </a>
-
-            <a href="billing.html">
-                Billing
-            </a>
-
-            <a href="reports.html">
-                Reports
-            </a>
-
-            <a href="backup.html">
-                Backup & Restore
-            </a>
-
-        </nav>
-
-    </aside>
-
-
-    <main class="main-content">
-
-        <header>
-
-            <div>
-
-                <h2>
-                    Dashboard
-                </h2>
-
-                <p>
-                    Welcome to VetClinic.
-                </p>
-
-            </div>
-
-        </header>
-
-
-        <section class="appointments">
-
-            <div class="stats-grid">
-
-                <div class="stat-card">
-
-                    <span>🐾</span>
-
-                    <div>
-
-                        <small>
-                            Total Patients
-                        </small>
-
-                        <h2 id="patientCount">
-                            0
-                        </h2>
-
-                    </div>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <span>📋</span>
-
-                    <div>
-
-                        <small>
-                            Medical Records
-                        </small>
-
-                        <h2 id="recordCount">
-                            0
-                        </h2>
-
-                    </div>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <span>📅</span>
-
-                    <div>
-
-                        <small>
-                            Appointments
-                        </small>
-
-                        <h2 id="appointmentCount">
-                            0
-                        </h2>
-
-                    </div>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <span>💰</span>
-
-                    <div>
-
-                        <small>
-                            Unpaid Invoices
-                        </small>
-
-                        <h2 id="unpaidCount">
-                            0
-                        </h2>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <section class="appointments">
-
-            <h3>
-                Quick Actions
-            </h3>
-
-
-            <div class="quick-actions">
-
-                <a
-                    href="patients.html"
-                    class="action-card"
-                >
-
-                    <span>🐾</span>
-
-                    <strong>
-                        Patients
-                    </strong>
-
-                    <small>
-                        Manage patients
-                    </small>
-
-                </a>
-
-
-                <a
-                    href="add-record.html"
-                    class="action-card"
-                >
-
-                    <span>📋</span>
-
-                    <strong>
-                        Medical Record
-                    </strong>
-
-                    <small>
-                        Create clinical record
-                    </small>
-
-                </a>
-
-
-                <a
-                    href="appointments.html"
-                    class="action-card"
-                >
-
-                    <span>📅</span>
-
-                    <strong>
-                        Appointment
-                    </strong>
-
-                    <small>
-                        Schedule visit
-                    </small>
-
-                </a>
-
-
-                <a
-                    href="billing.html"
-                    class="action-card"
-                >
-
-                    <span>💳</span>
-
-                    <strong>
-                        Billing
-                    </strong>
-
-                    <small>
-                        Manage invoices
-                    </small>
-
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <section class="appointments">
-
-            <h3>
-                Upcoming Appointments
-            </h3>
-
-            <div id="upcomingAppointments">
-
-                <p>
-                    No upcoming appointments.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <section class="appointments">
-
-            <h3>
-                Recent Medical Records
-            </h3>
-
-            <div id="recentRecords">
-
-                <p>
-                    No medical records yet.
-                </p>
-
-            </div>
-
-        </section>
-
-    </main>
+<p>Clinic Management System</p>
 
 </div>
 
 
+<button
+id="logoutButton"
+class="logout"
+type="button">
+
+Logout
+
+</button>
+
+</div>
+
+
+<div
+id="message"
+class="message">
+
+Loading dashboard...
+
+</div>
+
+
+<div class="stats">
+
+<div class="stat">
+
+<div class="stat-label">
+Patients
+</div>
+
+<div
+class="stat-value"
+id="patientCount">
+
+-
+
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+Medical Records
+</div>
+
+<div
+class="stat-value"
+id="recordCount">
+
+-
+
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+Appointments
+</div>
+
+<div
+class="stat-value"
+id="appointmentCount">
+
+-
+
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+Medicines
+</div>
+
+<div
+class="stat-value"
+id="medicineCount">
+
+-
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="grid">
+
+
+<div
+class="card"
+onclick="window.location.href='patients.html'">
+
+<div class="icon">
+🐶
+</div>
+
+<h2>Patients</h2>
+
+<p>
+Manage animal patients and their information.
+</p>
+
+</div>
+
+
+<div
+class="card"
+onclick="window.location.href='medical-records.html'">
+
+<div class="icon">
+📋
+</div>
+
+<h2>Medical Records</h2>
+
+<p>
+View and manage clinical records.
+</p>
+
+</div>
+
+
+<div
+class="card"
+onclick="window.location.href='appointments.html'">
+
+<div class="icon">
+📅
+</div>
+
+<h2>Appointments</h2>
+
+<p>
+Manage upcoming appointments.
+</p>
+
+</div>
+
+
+<div
+class="card"
+onclick="window.location.href='medicines.html'">
+
+<div class="icon">
+💊
+</div>
+
+<h2>Medicines</h2>
+
+<p>
+Manage medicine inventory and stock.
+</p>
+
+</div>
+
+
+<div
+class="card"
+onclick="window.location.href='billing.html'">
+
+<div class="icon">
+💰
+</div>
+
+<h2>Billing</h2>
+
+<p>
+Manage invoices and payments.
+</p>
+
+</div>
+
+
+<div
+class="card"
+onclick="window.location.href='reports.html'">
+
+<div class="icon">
+📊
+</div>
+
+<h2>Reports</h2>
+
+<p>
+View clinic statistics and reports.
+</p>
+
+</div>
+
+
+<div
+class="card"
+onclick="window.location.href='backup.html'">
+
+<div class="icon">
+💾
+</div>
+
+<h2>Backup & Restore</h2>
+
+<p>
+Backup and restore clinic data.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 
-const patients =
-    JSON.parse(
-        localStorage.getItem("patients")
-    ) || [];
+const SUPABASE_URL =
+"https://zltbjbbofvvndxirlipf.supabase.co";
 
 
-const records =
-    JSON.parse(
-        localStorage.getItem("medicalRecords")
-    ) || [];
+const SUPABASE_KEY =
+"sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
 
 
-const appointments =
-    JSON.parse(
-        localStorage.getItem("appointments")
-    ) || [];
+const supabaseClient =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
 
-const invoices =
-    JSON.parse(
-        localStorage.getItem("invoices")
-    ) || [];
+async function checkLogin() {
+
+    const {
+        data: {
+            session
+        }
+    } =
+    await supabaseClient.auth
+        .getSession();
 
 
-document.getElementById(
-    "patientCount"
-).textContent =
-    patients.length;
+    if (!session) {
 
+        window.location.href =
+            "login.html";
 
-document.getElementById(
-    "recordCount"
-).textContent =
-    records.length;
+        return false;
+    }
 
-
-document.getElementById(
-    "appointmentCount"
-).textContent =
-    appointments.length;
-
-
-document.getElementById(
-    "unpaidCount"
-).textContent =
-    invoices.filter(
-        invoice =>
-            invoice.status !== "Paid"
-    ).length;
-
-
-
-function escapeHtml(value) {
-
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
+    return true;
 }
 
 
+async function loadCount(
+    table,
+    elementId
+) {
 
-/* UPCOMING */
+    const {
+        count,
+        error
+    } =
+    await supabaseClient
+        .from(table)
+        .select(
+            "*",
+            {
+                count: "exact",
+                head: true
+            }
+        );
 
-const upcoming =
+
+    if (error) {
+
+        console.error(
+            table,
+            error
+        );
+
+        document.getElementById(
+            elementId
+        ).textContent = "-";
+
+        return;
+    }
+
+
     document.getElementById(
-        "upcomingAppointments"
-    );
+        elementId
+    ).textContent =
+        count ?? 0;
+}
 
 
-const today =
-    new Date()
-        .toISOString()
-        .split("T")[0];
+document
+.getElementById("logoutButton")
+.addEventListener(
+    "click",
+    async function() {
+
+        const {
+            error
+        } =
+        await supabaseClient.auth
+            .signOut();
 
 
-const upcomingList =
-    appointments
-        .filter(
-            appointment =>
-                appointment.date >= today &&
-                appointment.status !==
-                    "Cancelled"
-        )
-        .sort(
-            (a,b) =>
-                `${a.date}${a.time || ""}`
-                    .localeCompare(
-                        `${b.date}${b.time || ""}`
-                    )
-        )
-        .slice(0,5);
+        if (error) {
 
-
-if (upcomingList.length) {
-
-    upcoming.innerHTML = "";
-
-
-    upcomingList.forEach(
-        appointment => {
-
-            const card =
-                document.createElement(
-                    "div"
-                );
-
-
-            card.className =
-                "data-card";
-
-
-            card.innerHTML = `
-
-                <div class="record-row">
-
-                    <div>
-
-                        <strong>
-                            🐾
-                            ${
-                                escapeHtml(
-                                    appointment.patientName ||
-                                    "Unknown Patient"
-                                )
-                            }
-                        </strong>
-
-                        <p>
-                            ${
-                                escapeHtml(
-                                    appointment.date ||
-                                    "-"
-                                )
-                            }
-
-                            ${
-                                appointment.time
-                                ? " • " +
-                                  escapeHtml(
-                                      appointment.time
-                                  )
-                                : ""
-                            }
-                        </p>
-
-                        <small>
-                            ${
-                                escapeHtml(
-                                    appointment.reason ||
-                                    "-"
-                                )
-                            }
-                        </small>
-
-                    </div>
-
-                    <span class="status-badge">
-                        ${
-                            escapeHtml(
-                                appointment.status ||
-                                "Scheduled"
-                            )
-                        }
-                    </span>
-
-                </div>
-
-            `;
-
-
-            upcoming.appendChild(
-                card
+            alert(
+                "Logout gagal: " +
+                error.message
             );
 
+            return;
         }
-    );
-
-}
 
 
+        window.location.href =
+            "login.html";
 
-/* RECENT RECORDS */
+    }
+);
 
-const recent =
+
+async function initDashboard() {
+
+    const loggedIn =
+        await checkLogin();
+
+
+    if (!loggedIn) {
+        return;
+    }
+
+
     document.getElementById(
-        "recentRecords"
+        "message"
+    ).textContent =
+        "Welcome to VetClinic";
+
+
+    loadCount(
+        "patients",
+        "patientCount"
     );
 
+    loadCount(
+        "medical_records",
+        "recordCount"
+    );
 
-const recentList =
-    records
-        .slice()
-        .reverse()
-        .slice(0,5);
+    loadCount(
+        "appointments",
+        "appointmentCount"
+    );
 
-
-if (recentList.length) {
-
-    recent.innerHTML = "";
-
-
-    recentList.forEach(
-        record => {
-
-            const patient =
-                patients.find(
-                    item =>
-                        String(item.id) ===
-                        String(
-                            record.patientId
-                        )
-                );
-
-
-            const card =
-                document.createElement(
-                    "div"
-                );
-
-
-            card.className =
-                "data-card";
-
-
-            card.style.marginBottom =
-                "12px";
-
-
-            card.innerHTML = `
-
-                <div class="record-row">
-
-                    <div>
-
-                        <strong>
-                            🐾
-                            ${
-                                escapeHtml(
-                                    patient
-                                    ? patient.name
-                                    : "Unknown Patient"
-                                )
-                            }
-                        </strong>
-
-                        <p>
-                            Visit:
-                            ${
-                                escapeHtml(
-                                    record.visitDate ||
-                                    "-"
-                                )
-                            }
-                        </p>
-
-                        <small>
-                            Diagnosis:
-                            ${
-                                escapeHtml(
-                                    record.assessment ||
-                                    "-"
-                                )
-                            }
-                        </small>
-
-                    </div>
-
-                    <a
-                        href="patient-detail.html?id=${encodeURIComponent(
-                            record.patientId
-                        )}"
-                        class="text-link"
-                    >
-                        View →
-                    </a>
-
-                </div>
-
-            `;
-
-
-            recent.appendChild(
-                card
-            );
-
-        }
+    loadCount(
+        "medicines",
+        "medicineCount"
     );
 
 }
+
+
+initDashboard();
 
 </script>
 

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - VetClinic</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            margin: 0;
+            font-size: 28px;
+            color: #252d3d;
+        }
+
+        .logo p {
+            color: #6b7280;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            background: #5146e5;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+        }
+
+        #message {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        .success {
+            color: #16a34a;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <div class="logo">
+            <h1>🐾 VetClinic</h1>
+            <p>Clinic Management System</p>
+        </div>
+
+        <label for="email">Email</label>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+        >
+
+        <label for="password">Password</label>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+        >
+
+        <button id="loginButton" type="button">
+            Login
+        </button>
+
+        <div id="message"></div>
+
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL =
+"https://zltbjbbofvvndxirlipf.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
+
+
+const supabaseClient =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+const emailInput =
+document.getElementById("email");
+
+const passwordInput =
+document.getElementById("password");
+
+const loginButton =
+document.getElementById("loginButton");
+
+const message =
+document.getElementById("message");
+
+
+loginButton.addEventListener(
+    "click",
+    async function() {
+
+        const email =
+            emailInput.value.trim();
+
+        const password =
+            passwordInput.value;
+
+
+        if (!email || !password) {
+
+            message.textContent =
+                "Email dan password wajib diisi.";
+
+            message.className =
+                "error";
+
+            return;
+        }
+
+
+        message.textContent =
+            "Connecting to Supabase...";
+
+        message.className = "";
+
+        loginButton.disabled = true;
+
+
+        try {
+
+            const result =
+                await supabaseClient.auth
+                .signInWithPassword({
+
+                    email: email,
+
+                    password: password
+
+                });
+
+
+            console.log(
+                "Supabase result:",
+                result
+            );
+
+
+            if (result.error) {
+
+                message.textContent =
+                    "Login gagal: " +
+                    result.error.message;
+
+                message.className =
+                    "error";
+
+                loginButton.disabled =
+                    false;
+
+                return;
+            }
+
+
+            message.textContent =
+                "Login berhasil!";
+
+            message.className =
+                "success";
+
+
+            setTimeout(function() {
+
+                window.location.href =
+                    "index.html";
+
+            }, 800);
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            message.textContent =
+                "Error: " +
+                error.message;
+
+            message.className =
+                "error";
+
+            loginButton.disabled =
+                false;
+        }
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>

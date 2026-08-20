@@ -2,1010 +2,619 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Patients - VetClinic</title>
+<title>Patients - VetClinic</title>
 
-    <link rel="stylesheet" href="style.css">
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6fb;
+    color: #252d3d;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.header p {
+    color: #6b7280;
+}
+
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 11px 16px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: #5146e5;
+    color: white;
+}
+
+.btn-danger {
+    background: #dc2626;
+    color: white;
+}
+
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    margin-bottom: 25px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.form-actions {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 14px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+th {
+    background: #f9fafb;
+}
+
+.empty {
+    text-align: center;
+    padding: 30px;
+    color: #6b7280;
+}
+
+.message {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.error {
+    color: #dc2626;
+}
+
+.success {
+    color: #16a34a;
+}
+
+@media(max-width:700px) {
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    table {
+        font-size: 13px;
+    }
+
+}
+
+</style>
+
 </head>
 
 <body>
 
-<div class="app">
+<div class="container">
 
-    <aside class="sidebar">
+    <div class="header">
 
-        <h1>🐾 VetClinic</h1>
+        <div>
+            <h1>🐾 Patients</h1>
+            <p>VetClinic Patient Management</p>
+        </div>
 
-        <nav>
+        <button
+            class="btn-primary"
+            onclick="window.location.href='index.html'">
+            Dashboard
+        </button>
 
-            <a href="index.html">
-                Dashboard
-            </a>
-
-            <a href="patients.html" class="active">
-                Patients
-            </a>
-
-            <a href="appointments.html">
-                Appointments
-            </a>
-
-            <a href="medical-records.html">
-                Medical Records
-            </a>
-
-            <a href="medicines.html">
-                Medicines
-            </a>
-
-            <a href="billing.html">
-                Billing
-            </a>
-
-            <a href="reports.html">
-                Reports
-            </a>
-
-            <a href="backup.html">
-                Backup & Restore
-            </a>
-
-        </nav>
-
-    </aside>
+    </div>
 
 
-    <main class="main-content">
+    <div class="card">
 
-        <header>
+        <h2>Add New Patient</h2>
+
+        <div class="form-grid">
+
+            <div>
+                <label>Patient Name</label>
+
+                <input
+                    id="name"
+                    type="text"
+                    placeholder="e.g. Milo">
+            </div>
+
+
+            <div>
+                <label>Species</label>
+
+                <select id="species">
+
+                    <option value="">
+                        Select species
+                    </option>
+
+                    <option value="Cat">
+                        Cat
+                    </option>
+
+                    <option value="Dog">
+                        Dog
+                    </option>
+
+                    <option value="Rabbit">
+                        Rabbit
+                    </option>
+
+                    <option value="Bird">
+                        Bird
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
 
             <div>
 
-                <h2>
-                    Patients
-                </h2>
-
-                <p>
-                    Manage your clinic patients.
-                </p>
-
-            </div>
-
-
-            <button
-                type="button"
-                id="showPatientForm"
-                class="add-button"
-            >
-                + New Patient
-            </button>
-
-        </header>
-
-
-        <!-- FORM -->
-
-        <section
-            id="patientFormSection"
-            class="appointments"
-            style="display:none;"
-        >
-
-            <h3 id="formTitle">
-                Add New Patient
-            </h3>
-
-
-            <form id="patientForm">
-
-
-                <div class="form-group">
-
-                    <label>
-                        Patient Name
-                    </label>
-
-                    <input
-                        type="text"
-                        id="patientName"
-                        placeholder="e.g. Milo"
-                        required
-                    >
-
-                </div>
-
-
-                <div style="
-                    display:grid;
-                    grid-template-columns:
-                        repeat(
-                            auto-fit,
-                            minmax(180px,1fr)
-                        );
-                    gap:15px;
-                ">
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Species
-                        </label>
-
-                        <select
-                            id="species"
-                            required
-                        >
-
-                            <option value="">
-                                Select species
-                            </option>
-
-                            <option value="Cat">
-                                Cat
-                            </option>
-
-                            <option value="Dog">
-                                Dog
-                            </option>
-
-                            <option value="Rabbit">
-                                Rabbit
-                            </option>
-
-                            <option value="Bird">
-                                Bird
-                            </option>
-
-                            <option value="Other">
-                                Other
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Breed
-                        </label>
-
-                        <input
-                            type="text"
-                            id="breed"
-                            placeholder="e.g. Domestic Shorthair"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Sex
-                        </label>
-
-                        <select id="sex">
-
-                            <option value="">
-                                Select sex
-                            </option>
-
-                            <option value="Male">
-                                Male
-                            </option>
-
-                            <option value="Female">
-                                Female
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Date of Birth
-                        </label>
-
-                        <input
-                            type="date"
-                            id="dateOfBirth"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Weight (kg)
-                        </label>
-
-                        <input
-                            type="number"
-                            id="weight"
-                            min="0"
-                            step="0.01"
-                            placeholder="4.5"
-                        >
-
-                    </div>
-
-                </div>
-
-
-                <hr>
-
-
-                <h3>
-                    Owner Information
-                </h3>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Owner Name
-                    </label>
-
-                    <input
-                        type="text"
-                        id="owner"
-                        placeholder="Owner name"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Phone
-                    </label>
-
-                    <input
-                        type="tel"
-                        id="phone"
-                        placeholder="08xxxxxxxxxx"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Address
-                    </label>
-
-                    <textarea
-                        id="address"
-                        placeholder="Owner address"
-                    ></textarea>
-
-                </div>
-
-
-                <div class="form-actions">
-
-                    <button
-                        type="button"
-                        id="cancelPatient"
-                        class="cancel-button"
-                    >
-                        Cancel
-                    </button>
-
-                    <button type="submit">
-                        Save Patient
-                    </button>
-
-                </div>
-
-            </form>
-
-        </section>
-
-
-        <!-- PATIENT LIST -->
-
-        <section class="appointments">
-
-            <div style="
-                display:flex;
-                justify-content:
-                    space-between;
-                align-items:center;
-                gap:15px;
-                flex-wrap:wrap;
-                margin-bottom:20px;
-            ">
-
-                <h3 style="margin:0;">
-                    Patient List
-                </h3>
-
+                <label>Breed</label>
 
                 <input
+                    id="breed"
                     type="text"
-                    id="searchPatient"
-                    placeholder="Search patient or owner..."
-                    style="max-width:260px;"
-                >
+                    placeholder="e.g. Domestic Shorthair">
 
             </div>
 
 
-            <div id="patientList">
+            <div>
 
-                <p>
-                    Loading patients...
-                </p>
+                <label>Sex</label>
+
+                <select id="sex">
+
+                    <option value="">
+                        Select sex
+                    </option>
+
+                    <option value="Male">
+                        Male
+                    </option>
+
+                    <option value="Female">
+                        Female
+                    </option>
+
+                </select>
 
             </div>
 
-        </section>
 
-    </main>
+            <div>
+
+                <label>Date of Birth</label>
+
+                <input
+                    id="date_of_birth"
+                    type="date">
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <button
+                class="btn-primary"
+                id="saveButton">
+
+                Save Patient
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="message"
+            class="message">
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Patient List</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Name</th>
+                    <th>Species</th>
+                    <th>Breed</th>
+                    <th>Sex</th>
+                    <th>Date of Birth</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="patientList">
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
 <script>
 
-let patients =
-    JSON.parse(
-        localStorage.getItem("patients")
-    ) || [];
+const SUPABASE_URL =
+"https://zltbjbbofvvndxirlipf.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
 
 
-let editingId = null;
+const supabaseClient =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+const {
+    data: {
+        session
+    }
+} = await supabaseClient.auth.getSession();
 
+if (!session) {
+    window.location.href = "login.html";
+}
 
-const form =
-    document.getElementById(
-        "patientForm"
-    );
+const saveButton =
+document.getElementById("saveButton");
 
-
-const formSection =
-    document.getElementById(
-        "patientFormSection"
-    );
-
+const message =
+document.getElementById("message");
 
 const patientList =
-    document.getElementById(
-        "patientList"
-    );
+document.getElementById("patientList");
 
 
-const searchPatient =
-    document.getElementById(
-        "searchPatient"
-    );
+async function loadPatients() {
+
+    patientList.innerHTML = `
+        <tr>
+            <td colspan="6" class="empty">
+                Loading patients...
+            </td>
+        </tr>
+    `;
 
 
-/* OPEN FORM */
-
-document.getElementById(
-    "showPatientForm"
-).addEventListener(
-    "click",
-    function() {
-
-        editingId = null;
-
-        form.reset();
-
-        document.getElementById(
-            "formTitle"
-        ).textContent =
-            "Add New Patient";
-
-        formSection.style.display =
-            "block";
-
-        formSection.scrollIntoView({
-            behavior: "smooth"
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("patients")
+        .select("*")
+        .order("created_at", {
+            ascending: false
         });
 
-    }
-);
 
+    if (error) {
 
-/* CANCEL */
-
-document.getElementById(
-    "cancelPatient"
-).addEventListener(
-    "click",
-    function() {
-
-        form.reset();
-
-        editingId = null;
-
-        formSection.style.display =
-            "none";
-
-    }
-);
-
-
-/* SAVE */
-
-form.addEventListener(
-    "submit",
-    function(event) {
-
-        event.preventDefault();
-
-
-        const patient = {
-
-            id:
-                editingId ||
-                Date.now(),
-
-            name:
-                document.getElementById(
-                    "patientName"
-                ).value.trim(),
-
-            species:
-                document.getElementById(
-                    "species"
-                ).value,
-
-            breed:
-                document.getElementById(
-                    "breed"
-                ).value.trim(),
-
-            sex:
-                document.getElementById(
-                    "sex"
-                ).value,
-
-            dateOfBirth:
-                document.getElementById(
-                    "dateOfBirth"
-                ).value,
-
-            weight:
-                document.getElementById(
-                    "weight"
-                ).value,
-
-            owner:
-                document.getElementById(
-                    "owner"
-                ).value.trim(),
-
-            phone:
-                document.getElementById(
-                    "phone"
-                ).value.trim(),
-
-            address:
-                document.getElementById(
-                    "address"
-                ).value.trim(),
-
-            updatedAt:
-                new Date().toISOString()
-
-        };
-
-
-        if (editingId) {
-
-            const index =
-                patients.findIndex(
-                    item =>
-                        String(item.id) ===
-                        String(editingId)
-                );
-
-
-            if (index !== -1) {
-
-                patients[index] =
-                    patient;
-
-            }
-
-        }
-        else {
-
-            patient.createdAt =
-                new Date().toISOString();
-
-            patients.push(
-                patient
-            );
-
-        }
-
-
-        localStorage.setItem(
-            "patients",
-            JSON.stringify(
-                patients
-            )
-        );
-
-
-        alert(
-            editingId
-            ? "Patient updated successfully."
-            : "Patient added successfully."
-        );
-
-
-        form.reset();
-
-        editingId = null;
-
-        formSection.style.display =
-            "none";
-
-
-        displayPatients();
-
-    }
-);
-
-
-/* DISPLAY */
-
-function displayPatients() {
-
-    const keyword =
-        searchPatient.value
-            .trim()
-            .toLowerCase();
-
-
-    const filtered =
-        patients.filter(
-            patient => {
-
-                const name =
-                    patient.name || "";
-
-                const owner =
-                    patient.owner || "";
-
-                const phone =
-                    patient.phone || "";
-
-
-                return (
-                    name
-                        .toLowerCase()
-                        .includes(keyword)
-                    ||
-                    owner
-                        .toLowerCase()
-                        .includes(keyword)
-                    ||
-                    phone
-                        .toLowerCase()
-                        .includes(keyword)
-                );
-
-            }
-        );
-
-
-    if (!filtered.length) {
+        console.error(error);
 
         patientList.innerHTML = `
-
-            <div class="data-card">
-
-                <p>
-                    No patients found.
-                </p>
-
-            </div>
-
+            <tr>
+                <td colspan="6" class="empty error">
+                    ${error.message}
+                </td>
+            </tr>
         `;
 
         return;
+    }
 
+
+    if (!data || data.length === 0) {
+
+        patientList.innerHTML = `
+            <tr>
+                <td colspan="6" class="empty">
+                    No patients yet.
+                </td>
+            </tr>
+        `;
+
+        return;
     }
 
 
     patientList.innerHTML = "";
 
 
-    filtered
-        .slice()
-        .reverse()
-        .forEach(
-            patient => {
+    data.forEach(patient => {
 
-                const card =
-                    document.createElement(
-                        "div"
-                    );
+        const row =
+            document.createElement("tr");
 
 
-                card.className =
-                    "data-card";
+        row.innerHTML = `
+
+            <td>
+                ${patient.name || "-"}
+            </td>
+
+            <td>
+                ${patient.species || "-"}
+            </td>
+
+            <td>
+                ${patient.breed || "-"}
+            </td>
+
+            <td>
+                ${patient.sex || "-"}
+            </td>
+
+            <td>
+                ${patient.date_of_birth || "-"}
+            </td>
+
+            <td>
+
+                <button
+                    class="btn-danger"
+                    onclick="deletePatient('${patient.id}')">
+
+                    Delete
+
+                </button>
+
+            </td>
+
+        `;
 
 
-                card.style.marginBottom =
-                    "15px";
+        patientList.appendChild(row);
 
-
-                card.innerHTML = `
-
-                    <div style="
-                        display:flex;
-                        justify-content:
-                            space-between;
-                        align-items:
-                            flex-start;
-                        gap:20px;
-                        flex-wrap:wrap;
-                    ">
-
-
-                        <div style="
-                            flex:1;
-                            min-width:220px;
-                        ">
-
-                            <h3 style="
-                                margin-top:0;
-                                margin-bottom:8px;
-                            ">
-
-                                🐾
-                                ${
-                                    escapeHtml(
-                                        patient.name ||
-                                        "Unnamed"
-                                    )
-                                }
-
-                            </h3>
-
-
-                            <p>
-
-                                <strong>
-                                    Species:
-                                </strong>
-
-                                ${
-                                    escapeHtml(
-                                        patient.species ||
-                                        "-"
-                                    )
-                                }
-
-                                ${
-                                    patient.breed
-                                    ? " • " +
-                                      escapeHtml(
-                                          patient.breed
-                                      )
-                                    : ""
-                                }
-
-                            </p>
-
-
-                            <p>
-
-                                <strong>
-                                    Sex:
-                                </strong>
-
-                                ${
-                                    escapeHtml(
-                                        patient.sex ||
-                                        "-"
-                                    )
-                                }
-
-                                ${
-                                    patient.weight
-                                    ? " • " +
-                                      escapeHtml(
-                                          patient.weight
-                                      ) +
-                                      " kg"
-                                    : ""
-                                }
-
-                            </p>
-
-
-                            <p>
-
-                                <strong>
-                                    Owner:
-                                </strong>
-
-                                ${
-                                    escapeHtml(
-                                        patient.owner ||
-                                        "-"
-                                    )
-                                }
-
-                            </p>
-
-
-                            <p>
-
-                                <strong>
-                                    Phone:
-                                </strong>
-
-                                ${
-                                    escapeHtml(
-                                        patient.phone ||
-                                        "-"
-                                    )
-                                }
-
-                            </p>
-
-                        </div>
-
-
-                        <div style="
-                            display:flex;
-                            gap:8px;
-                            flex-wrap:wrap;
-                        ">
-
-
-                            <a
-                                href="patient-detail.html?id=${encodeURIComponent(patient.id)}"
-                                class="add-button"
-                            >
-                                View
-                            </a>
-
-
-                            <button
-                                type="button"
-                                class="edit-patient"
-                                data-id="${patient.id}"
-                            >
-                                Edit
-                            </button>
-
-
-                            <button
-                                type="button"
-                                class="delete-patient cancel-button"
-                                data-id="${patient.id}"
-                            >
-                                Delete
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                `;
-
-
-                patientList.appendChild(
-                    card
-                );
-
-            }
-        );
+    });
 
 }
 
 
-/* BUTTON EVENTS */
-
-patientList.addEventListener(
+saveButton.addEventListener(
     "click",
-    function(event) {
+    async function() {
 
-        const editButton =
-            event.target.closest(
-                ".edit-patient"
-            );
-
-
-        if (editButton) {
-
-            const patient =
-                patients.find(
-                    item =>
-                        String(item.id) ===
-                        String(
-                            editButton.dataset.id
-                        )
-                );
+        const name =
+            document.getElementById("name")
+            .value.trim();
 
 
-            if (!patient) {
-                return;
-            }
+        const species =
+            document.getElementById("species")
+            .value;
 
 
-            editingId =
-                patient.id;
+        const breed =
+            document.getElementById("breed")
+            .value.trim();
 
 
-            document.getElementById(
-                "formTitle"
-            ).textContent =
-                "Edit Patient";
+        const sex =
+            document.getElementById("sex")
+            .value;
 
 
-            document.getElementById(
-                "patientName"
-            ).value =
-                patient.name || "";
+        const date_of_birth =
+            document.getElementById("date_of_birth")
+            .value;
 
 
-            document.getElementById(
-                "species"
-            ).value =
-                patient.species || "";
+        if (!name || !species) {
 
+            message.textContent =
+                "Patient name dan species wajib diisi.";
 
-            document.getElementById(
-                "breed"
-            ).value =
-                patient.breed || "";
-
-
-            document.getElementById(
-                "sex"
-            ).value =
-                patient.sex || "";
-
-
-            document.getElementById(
-                "dateOfBirth"
-            ).value =
-                patient.dateOfBirth || "";
-
-
-            document.getElementById(
-                "weight"
-            ).value =
-                patient.weight || "";
-
-
-            document.getElementById(
-                "owner"
-            ).value =
-                patient.owner || "";
-
-
-            document.getElementById(
-                "phone"
-            ).value =
-                patient.phone || "";
-
-
-            document.getElementById(
-                "address"
-            ).value =
-                patient.address || "";
-
-
-            formSection.style.display =
-                "block";
-
-
-            formSection.scrollIntoView({
-                behavior:"smooth"
-            });
-
+            message.className =
+                "message error";
 
             return;
-
         }
 
 
-        const deleteButton =
-            event.target.closest(
-                ".delete-patient"
-            );
+        saveButton.disabled = true;
+
+        message.textContent =
+            "Saving patient...";
+
+        message.className =
+            "message";
 
 
-        if (deleteButton) {
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("patients")
+            .insert({
 
-            const patient =
-                patients.find(
-                    item =>
-                        String(item.id) ===
-                        String(
-                            deleteButton.dataset.id
-                        )
-                );
+                name: name,
 
+                species: species,
 
-            if (!patient) {
-                return;
-            }
+                breed: breed || null,
 
+                sex: sex || null,
 
-            if (
-                !confirm(
-                    `Delete patient "${patient.name}"?`
-                )
-            ) {
-                return;
-            }
+                date_of_birth:
+                    date_of_birth || null
+
+            })
+            .select();
 
 
-            patients =
-                patients.filter(
-                    item =>
-                        String(item.id) !==
-                        String(
-                            deleteButton.dataset.id
-                        )
-                );
+        if (error) {
 
+            console.error(error);
 
-            localStorage.setItem(
-                "patients",
-                JSON.stringify(
-                    patients
-                )
-            );
+            message.textContent =
+                "Gagal menyimpan: " +
+                error.message;
 
+            message.className =
+                "message error";
 
-            displayPatients();
+            saveButton.disabled = false;
 
+            return;
         }
+
+
+        message.textContent =
+            "Patient berhasil disimpan!";
+
+        message.className =
+            "message success";
+
+
+        document.getElementById("name")
+            .value = "";
+
+        document.getElementById("species")
+            .value = "";
+
+        document.getElementById("breed")
+            .value = "";
+
+        document.getElementById("sex")
+            .value = "";
+
+        document.getElementById("date_of_birth")
+            .value = "";
+
+
+        saveButton.disabled = false;
+
+
+        loadPatients();
 
     }
 );
 
 
-/* SEARCH */
+async function deletePatient(id) {
 
-searchPatient.addEventListener(
-    "input",
-    displayPatients
-);
+    if (!confirm(
+        "Hapus patient ini?"
+    )) {
+        return;
+    }
 
 
-/* ESCAPE */
+    const {
+        error
+    } = await supabaseClient
+        .from("patients")
+        .delete()
+        .eq("id", id);
 
-function escapeHtml(value) {
 
-    return String(value ?? "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+    if (error) {
+
+        alert(
+            "Gagal menghapus: " +
+            error.message
+        );
+
+        return;
+    }
+
+
+    loadPatients();
 
 }
 
 
-displayPatients();
+loadPatients();
 
 </script>
 

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Invoice - VetClinic</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+<h1>🐾 VetClinic</h1>
+
+<nav>
+
+<a href="index.html">Dashboard</a>
+<a href="patients.html">Patients</a>
+<a href="appointments.html">Appointments</a>
+<a href="medical-records.html">Medical Records</a>
+<a href="medicines.html">Medicines</a>
+<a href="billing.html" class="active">Billing</a>
+<a href="reports.html">Reports</a>
+
+</nav>
+
+</aside>
+
+<main class="main-content">
+
+<header>
+
+<h2>New Invoice</h2>
+
+</header>
+
+<section class="appointments">
+
+<form id="billingForm">
+
+<div class="form-group">
+
+<label>Patient</label>
+
+<select
+id="billingPatient"
+required
+>
+
+<option value="">
+Select patient
+</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>Date</label>
+
+<input
+type="date"
+id="billingDate"
+required
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Service</label>
+
+<input
+type="text"
+id="billingService"
+placeholder="Consultation, vaccination, surgery..."
+required
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Amount (Rp)</label>
+
+<input
+type="number"
+id="billingAmount"
+min="0"
+required
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Status</label>
+
+<select id="billingStatus">
+
+<option>Unpaid</option>
+<option>Paid</option>
+<option>Cancelled</option>
+
+</select>
+
+</div>
+
+<div class="form-actions">
+
+<a href="billing.html" class="cancel-button">
+Cancel
+</a>
+
+<button type="submit">
+Save Invoice
+</button>
+
+</div>
+
+</form>
+
+</section>
+
+</main>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

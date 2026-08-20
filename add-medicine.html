@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Medicine - VetClinic</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+<h1>🐾 VetClinic</h1>
+
+<nav>
+
+<a href="index.html">Dashboard</a>
+<a href="patients.html">Patients</a>
+<a href="appointments.html">Appointments</a>
+<a href="medical-records.html">Medical Records</a>
+<a href="medicines.html" class="active">Medicines</a>
+<a href="billing.html">Billing</a>
+<a href="reports.html">Reports</a>
+
+</nav>
+
+</aside>
+
+<main class="main-content">
+
+<header>
+
+<h2>Add Medicine</h2>
+
+</header>
+
+<section class="appointments">
+
+<form id="medicineForm">
+
+<div class="form-group">
+
+<label>Medicine Name</label>
+
+<input
+type="text"
+id="medicineName"
+required
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Category</label>
+
+<input
+type="text"
+id="medicineCategory"
+placeholder="Antibiotic, analgesic, etc."
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Stock</label>
+
+<input
+type="number"
+id="medicineStock"
+min="0"
+required
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Unit</label>
+
+<select id="medicineUnit">
+
+<option>tablet</option>
+<option>capsule</option>
+<option>bottle</option>
+<option>vial</option>
+<option>ampoule</option>
+<option>box</option>
+<option>tube</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>Expiry Date</label>
+
+<input
+type="date"
+id="medicineExpiry"
+>
+
+</div>
+
+<div class="form-actions">
+
+<a href="medicines.html" class="cancel-button">
+Cancel
+</a>
+
+<button type="submit">
+Save Medicine
+</button>
+
+</div>
+
+</form>
+
+</section>
+
+</main>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

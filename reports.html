@@ -1,311 +1,537 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reports - VetClinic</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6fb;
+    color: #252d3d;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.header p {
+    color: #6b7280;
+}
+
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.stat {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.stat-label {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+th {
+    background: #f9fafb;
+}
+
+.empty {
+    text-align: center;
+    padding: 30px;
+    color: #6b7280;
+}
+
+.error {
+    color: #dc2626;
+}
+
+.secondary {
+    border: none;
+    border-radius: 8px;
+    padding: 11px 16px;
+    cursor: pointer;
+    font-weight: 600;
+    background: #e5e7eb;
+    color: #374151;
+}
+
+@media(max-width:800px) {
+    .container {
+        padding: 15px;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width:500px) {
+    .stats {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
 </head>
 
 <body>
 
-<div class="app">
+<div class="container">
 
-<aside class="sidebar">
-
-<h1>🐾 VetClinic</h1>
-
-<nav>
-
-<a href="index.html">Dashboard</a>
-<a href="patients.html">Patients</a>
-<a href="appointments.html">Appointments</a>
-<a href="medical-records.html">Medical Records</a>
-<a href="medicines.html">Medicines</a>
-<a href="billing.html">Billing</a>
-<a href="reports.html" class="active">Reports</a>
-<a href="backup.html">Backup & Restore</a>
-
-</nav>
-
-</aside>
-
-
-<main class="main-content">
-
-<header>
+<div class="header">
 
 <div>
-
-<h2>
-Reports
-</h2>
-
-<p>
-Clinic overview and statistics.
-</p>
-
+<h1>📊 Reports</h1>
+<p>VetClinic Management Reports</p>
 </div>
 
-</header>
-
-
-<section class="appointments">
-
-<h3>
-Clinic Overview
-</h3>
-
-
-<div class="stats-grid">
-
-<div class="stat-card">
-
-<span>🐾</span>
-
-<div>
-
-<small>
-Patients
-</small>
-
-<h2 id="patients">
-0
-</h2>
-
-</div>
+<button
+class="secondary"
+type="button"
+onclick="window.location.href='index.html'">
+Dashboard
+</button>
 
 </div>
 
 
-<div class="stat-card">
+<div class="card">
 
-<span>📋</span>
+<h2>Overview</h2>
 
-<div>
+<div class="stats">
 
-<small>
-Medical Records
-</small>
-
-<h2 id="records">
-0
-</h2>
-
+<div class="stat">
+<div class="stat-label">Total Patients</div>
+<div class="stat-value" id="totalPatients">-</div>
 </div>
 
+<div class="stat">
+<div class="stat-label">Medical Records</div>
+<div class="stat-value" id="totalRecords">-</div>
 </div>
 
-
-<div class="stat-card">
-
-<span>📅</span>
-
-<div>
-
-<small>
-Appointments
-</small>
-
-<h2 id="appointments">
-0
-</h2>
-
+<div class="stat">
+<div class="stat-label">Appointments</div>
+<div class="stat-value" id="totalAppointments">-</div>
 </div>
 
-</div>
-
-
-<div class="stat-card">
-
-<span>💊</span>
-
-<div>
-
-<small>
-Medicines
-</small>
-
-<h2 id="medicines">
-0
-</h2>
-
+<div class="stat">
+<div class="stat-label">Paid Revenue</div>
+<div class="stat-value" id="totalRevenue">-</div>
 </div>
 
 </div>
 
 </div>
 
-</section>
+
+<div class="card">
+
+<h2>Species Distribution</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Species</th>
+<th>Patients</th>
+</tr>
+</thead>
+
+<tbody id="speciesList">
+
+<tr>
+<td colspan="2" class="empty">
+Loading...
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
 
 
-<section class="appointments">
+<div class="card">
 
-<h3>
-Financial Summary
-</h3>
+<h2>Recent Patients</h2>
 
+<table>
 
-<div class="stats-grid">
+<thead>
+<tr>
+<th>Name</th>
+<th>Species</th>
+<th>Breed</th>
+<th>Created</th>
+</tr>
+</thead>
 
-<div class="stat-card">
+<tbody id="recentPatients">
 
-<span>💰</span>
+<tr>
+<td colspan="4" class="empty">
+Loading...
+</td>
+</tr>
 
-<div>
+</tbody>
 
-<small>
-Total Revenue
-</small>
-
-<h2 id="revenue">
-Rp0
-</h2>
+</table>
 
 </div>
 
 </div>
 
 
-<div class="stat-card">
-
-<span>⏳</span>
-
-<div>
-
-<small>
-Unpaid
-</small>
-
-<h2 id="unpaid">
-Rp0
-</h2>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-</main>
-
-</div>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-const patients =
-JSON.parse(
-localStorage.getItem("patients")
-) || [];
+/*
+IMPORTANT:
+Copy the SUPABASE_URL, SUPABASE_KEY
+and createClient section from your
+working appointments.html.
+*/
 
+const SUPABASE_URL =
+"https://zltbjbbofvvndxirlipf.supabase.co";
 
-const records =
-JSON.parse(
-localStorage.getItem("medicalRecords")
-) || [];
+const SUPABASE_KEY =
+"sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
 
-
-const appointments =
-JSON.parse(
-localStorage.getItem("appointments")
-) || [];
-
-
-const medicines =
-JSON.parse(
-localStorage.getItem("medicines")
-) || [];
-
-
-const invoices =
-JSON.parse(
-localStorage.getItem("invoices")
-) || [];
-
-
-document.getElementById(
-"patients"
-).textContent =
-patients.length;
-
-
-document.getElementById(
-"records"
-).textContent =
-records.length;
-
-
-document.getElementById(
-"appointments"
-).textContent =
-appointments.length;
-
-
-document.getElementById(
-"medicines"
-).textContent =
-medicines.length;
-
-
-function rupiah(value) {
-
-return new Intl.NumberFormat(
-"id-ID",
-{
-style:"currency",
-currency:"IDR",
-maximumFractionDigits:0
-}
-).format(
-Number(value) || 0
+const supabaseClient =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
 );
+const {
+    data: {
+        session
+    }
+} = await supabaseClient.auth.getSession();
+
+if (!session) {
+    window.location.href = "login.html";
+}
+
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }
 
 
-const paid =
-invoices
-.filter(
-invoice =>
-invoice.status === "Paid"
-)
-.reduce(
-(sum,invoice) =>
-sum +
-Number(invoice.total || 0),
-0
-);
+function formatMoney(value) {
+
+    return new Intl.NumberFormat(
+        "id-ID",
+        {
+            style: "currency",
+            currency: "IDR",
+            maximumFractionDigits: 0
+        }
+    ).format(
+        Number(value || 0)
+    );
+
+}
 
 
-const unpaid =
-invoices
-.filter(
-invoice =>
-invoice.status !== "Paid"
-)
-.reduce(
-(sum,invoice) =>
-sum +
-Number(invoice.total || 0),
-0
-);
+async function loadReports() {
+
+    const patients =
+        await supabaseClient
+        .from("patients")
+        .select(
+            "id,name,species,breed,created_at"
+        )
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        );
 
 
-document.getElementById(
-"revenue"
-).textContent =
-rupiah(paid);
+    const records =
+        await supabaseClient
+        .from("medical_records")
+        .select("id");
 
 
-document.getElementById(
-"unpaid"
-).textContent =
-rupiah(unpaid);
+    const appointments =
+        await supabaseClient
+        .from("appointments")
+        .select("id");
+
+
+    const invoices =
+        await supabaseClient
+        .from("invoices")
+        .select("total,status");
+
+
+    if (
+        patients.error ||
+        records.error ||
+        appointments.error ||
+        invoices.error
+    ) {
+
+        console.error(
+            patients.error ||
+            records.error ||
+            appointments.error ||
+            invoices.error
+        );
+
+        document.getElementById(
+            "totalPatients"
+        ).textContent = "Error";
+
+        return;
+    }
+
+
+    document.getElementById(
+        "totalPatients"
+    ).textContent =
+        patients.data.length;
+
+
+    document.getElementById(
+        "totalRecords"
+    ).textContent =
+        records.data.length;
+
+
+    document.getElementById(
+        "totalAppointments"
+    ).textContent =
+        appointments.data.length;
+
+
+    const revenue =
+        invoices.data
+        .filter(
+            invoice =>
+                invoice.status === "Paid"
+        )
+        .reduce(
+            (
+                sum,
+                invoice
+            ) =>
+                sum +
+                Number(
+                    invoice.total || 0
+                ),
+            0
+        );
+
+
+    document.getElementById(
+        "totalRevenue"
+    ).textContent =
+        formatMoney(revenue);
+
+
+    const species = {};
+
+
+    patients.data.forEach(
+        patient => {
+
+            const speciesName =
+                patient.species ||
+                "Unknown";
+
+            species[speciesName] =
+                (species[speciesName] || 0) + 1;
+
+        }
+    );
+
+
+    const speciesList =
+        document.getElementById(
+            "speciesList"
+        );
+
+    speciesList.innerHTML = "";
+
+
+    Object.entries(species)
+    .sort(
+        (a, b) =>
+            b[1] - a[1]
+    )
+    .forEach(
+        ([speciesName, count]) => {
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+            row.innerHTML = `
+                <td>
+                    ${escapeHtml(speciesName)}
+                </td>
+
+                <td>
+                    ${count}
+                </td>
+            `;
+
+            speciesList.appendChild(row);
+
+        }
+    );
+
+
+    if (
+        speciesList.children.length === 0
+    ) {
+
+        speciesList.innerHTML = `
+            <tr>
+                <td
+                    colspan="2"
+                    class="empty">
+                    No data.
+                </td>
+            </tr>
+        `;
+
+    }
+
+
+    const recentPatients =
+        document.getElementById(
+            "recentPatients"
+        );
+
+    recentPatients.innerHTML = "";
+
+
+    patients.data
+    .slice(0, 10)
+    .forEach(
+        patient => {
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+            row.innerHTML = `
+
+                <td>
+                    ${escapeHtml(
+                        patient.name
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        patient.species
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        patient.breed || "-"
+                    )}
+                </td>
+
+                <td>
+                    ${
+                        patient.created_at
+                        ? new Date(
+                            patient.created_at
+                        ).toLocaleDateString(
+                            "id-ID"
+                        )
+                        : "-"
+                    }
+                </td>
+
+            `;
+
+            recentPatients.appendChild(row);
+
+        }
+    );
+
+}
+
+
+loadReports();
 
 </script>
 
 </body>
+
 </html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Patient - VetClinic</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+    <div class="app">
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <h1>🐾 VetClinic</h1>
+
+            <nav>
+
+                <a href="index.html">
+                    Dashboard
+                </a>
+
+                <a href="patients.html" class="active">
+                    Patients
+                </a>
+
+                <a href="#">
+                    Appointments
+                </a>
+
+                <a href="#">
+                    Medical Records
+                </a>
+
+                <a href="#">
+                    Medicines
+                </a>
+
+                <a href="#">
+                    Billing
+                </a>
+
+                <a href="#">
+                    Reports
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+
+        <!-- MAIN CONTENT -->
+
+        <main class="main-content">
+
+
+            <header>
+
+                <div>
+
+                    <h2>Edit Patient</h2>
+
+                    <p>
+                        Update patient information.
+                    </p>
+
+                </div>
+
+            </header>
+
+
+
+            <section class="appointments">
+
+                <h3>
+                    Patient Information
+                </h3>
+
+
+                <form id="editPatientForm">
+
+
+                    <!-- PATIENT NAME -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Patient Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="editPatientName"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- SPECIES -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Species
+                        </label>
+
+                        <select
+                            id="editSpecies"
+                            required
+                        >
+
+                            <option value="">
+                                Select species
+                            </option>
+
+                            <option value="Cat">
+                                Cat
+                            </option>
+
+                            <option value="Dog">
+                                Dog
+                            </option>
+
+                            <option value="Rabbit">
+                                Rabbit
+                            </option>
+
+                            <option value="Bird">
+                                Bird
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- BREED -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Breed
+                        </label>
+
+                        <input
+                            type="text"
+                            id="editBreed"
+                        >
+
+                    </div>
+
+
+
+                    <!-- SEX -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Sex
+                        </label>
+
+                        <select
+                            id="editSex"
+                            required
+                        >
+
+                            <option value="">
+                                Select sex
+                            </option>
+
+                            <option value="Male">
+                                Male
+                            </option>
+
+                            <option value="Female">
+                                Female
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- DATE OF BIRTH -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Date of Birth
+                        </label>
+
+                        <input
+                            type="date"
+                            id="editDateOfBirth"
+                        >
+
+                    </div>
+
+
+
+                    <!-- WEIGHT -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Weight (kg)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="editWeight"
+                            step="0.01"
+                        >
+
+                    </div>
+
+
+
+                    <hr>
+
+
+
+                    <h3>
+                        Owner Information
+                    </h3>
+
+
+
+                    <!-- OWNER -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Owner Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="editOwnerName"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- PHONE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="editPhone"
+                        >
+
+                    </div>
+
+
+
+                    <!-- ADDRESS -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Address
+                        </label>
+
+                        <textarea
+                            id="editAddress"
+                        ></textarea>
+
+                    </div>
+
+
+
+                    <!-- BUTTON -->
+
+                    <div class="form-actions">
+
+                        <a
+                            href="patients.html"
+                            class="cancel-button"
+                        >
+                            Cancel
+                        </a>
+
+
+                        <button type="submit">
+                            Update Patient
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>
