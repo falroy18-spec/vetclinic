@@ -49,6 +49,11 @@ button {
     font-weight: 600;
 }
 
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .btn-primary {
     background: #5146e5;
     color: white;
@@ -174,7 +179,7 @@ th {
         <div class="form-grid">
 
             <div>
-                <label>Patient Name</label>
+                <label for="name">Patient Name</label>
 
                 <input
                     id="name"
@@ -184,7 +189,7 @@ th {
 
 
             <div>
-                <label>Species</label>
+                <label for="species">Species</label>
 
                 <select id="species">
 
@@ -219,7 +224,7 @@ th {
 
             <div>
 
-                <label>Breed</label>
+                <label for="breed">Breed</label>
 
                 <input
                     id="breed"
@@ -231,7 +236,7 @@ th {
 
             <div>
 
-                <label>Sex</label>
+                <label for="sex">Sex</label>
 
                 <select id="sex">
 
@@ -254,7 +259,9 @@ th {
 
             <div>
 
-                <label>Date of Birth</label>
+                <label for="date_of_birth">
+                    Date of Birth
+                </label>
 
                 <input
                     id="date_of_birth"
@@ -295,20 +302,17 @@ th {
             <thead>
 
                 <tr>
-
                     <th>Name</th>
                     <th>Species</th>
                     <th>Breed</th>
                     <th>Sex</th>
                     <th>Date of Birth</th>
                     <th>Action</th>
-
                 </tr>
 
             </thead>
 
             <tbody id="patientList">
-
             </tbody>
 
         </table>
@@ -319,7 +323,6 @@ th {
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 
 <script>
 
@@ -335,11 +338,7 @@ supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
-supabaseClient.auth.getSession().then(({ data: { session } }) => {
-    if (!session) {
-        window.location.href = "login.html";
-    }
-});
+
 
 const saveButton =
 document.getElementById("saveButton");
@@ -349,6 +348,27 @@ document.getElementById("message");
 
 const patientList =
 document.getElementById("patientList");
+
+
+async function checkLogin() {
+
+    const {
+        data: {
+            session
+        }
+    } = await supabaseClient.auth.getSession();
+
+
+    if (!session) {
+
+        window.location.href =
+            "login.html";
+
+        return false;
+    }
+
+    return true;
+}
 
 
 async function loadPatients() {
@@ -507,7 +527,6 @@ saveButton.addEventListener(
 
 
         const {
-            data,
             error
         } = await supabaseClient
             .from("patients")
@@ -524,8 +543,7 @@ saveButton.addEventListener(
                 date_of_birth:
                     date_of_birth || null
 
-            })
-            .select();
+            });
 
 
         if (error) {
@@ -571,7 +589,7 @@ saveButton.addEventListener(
         saveButton.disabled = false;
 
 
-        loadPatients();
+        await loadPatients();
 
     }
 );
@@ -605,12 +623,28 @@ async function deletePatient(id) {
     }
 
 
-    loadPatients();
+    await loadPatients();
 
 }
 
 
-loadPatients();
+async function init() {
+
+    const loggedIn =
+        await checkLogin();
+
+
+    if (!loggedIn) {
+        return;
+    }
+
+
+    await loadPatients();
+
+}
+
+
+init();
 
 </script>
 
