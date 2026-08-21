@@ -2,157 +2,174 @@
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Patients - VetClinic</title>
+    <title>Patients - VetClinic</title>
 
-<style>
+    <style>
 
-* {
-    box-sizing: border-box;
-}
+        * {
+            box-sizing: border-box;
+        }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f6fb;
-    color: #252d3d;
-}
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            color: #252d3d;
+        }
 
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 30px;
-}
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px;
+        }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-}
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
 
-.header h1 {
-    margin: 0;
-}
+        .header h1 {
+            margin: 0;
+        }
 
-.header p {
-    color: #6b7280;
-}
+        .header p {
+            color: #6b7280;
+        }
 
-button {
-    border: none;
-    border-radius: 8px;
-    padding: 11px 16px;
-    cursor: pointer;
-    font-weight: 600;
-}
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 11px 16px;
+            cursor: pointer;
+            font-weight: 600;
+        }
 
-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
 
-.btn-primary {
-    background: #5146e5;
-    color: white;
-}
+        .btn-primary {
+            background: #5146e5;
+            color: white;
+        }
 
-.btn-danger {
-    background: #dc2626;
-    color: white;
-}
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
 
-.card {
-    background: white;
-    border-radius: 14px;
-    padding: 25px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
-    margin-bottom: 25px;
-}
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
 
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
-}
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            margin-bottom: 25px;
+        }
 
-label {
-    display: block;
-    margin-bottom: 7px;
-    font-weight: 600;
-}
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
 
-input,
-select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 14px;
-}
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
 
-.other-species {
-    display: none;
-}
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+        }
 
-.form-actions {
-    margin-top: 20px;
-}
+        .other-species {
+            display: none;
+        }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
+        .form-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
 
-th,
-td {
-    padding: 14px;
-    border-bottom: 1px solid #e5e7eb;
-    text-align: left;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-th {
-    background: #f9fafb;
-}
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
 
-.empty {
-    text-align: center;
-    padding: 30px;
-    color: #6b7280;
-}
+        th {
+            background: #f9fafb;
+        }
 
-.message {
-    margin-top: 15px;
-    font-size: 14px;
-}
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
 
-.error {
-    color: #dc2626;
-}
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #6b7280;
+        }
 
-.success {
-    color: #16a34a;
-}
+        .message {
+            margin-top: 15px;
+            font-size: 14px;
+        }
 
-@media(max-width:700px) {
+        .error {
+            color: #dc2626;
+        }
 
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
+        .success {
+            color: #16a34a;
+        }
 
-    .container {
-        padding: 15px;
-    }
+        @media(max-width:700px) {
 
-    table {
-        font-size: 13px;
-    }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
 
-}
+            .container {
+                padding: 15px;
+            }
 
-</style>
+            table {
+                font-size: 13px;
+            }
+
+            .card {
+                overflow-x: auto;
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -161,6 +178,7 @@ th {
 
 <div class="container">
 
+    <!-- HEADER -->
 
     <div class="header">
 
@@ -174,7 +192,6 @@ th {
 
         </div>
 
-
         <button
             class="btn-primary"
             type="button"
@@ -187,16 +204,16 @@ th {
     </div>
 
 
-
-    <!-- ADD PATIENT -->
+    <!-- ADD / EDIT PATIENT -->
 
     <div class="card">
 
-        <h2>Add New Patient</h2>
+        <h2 id="formTitle">
+            Add New Patient
+        </h2>
 
 
         <div class="form-grid">
-
 
             <!-- NAME -->
 
@@ -212,7 +229,6 @@ th {
                     placeholder="e.g. Milo">
 
             </div>
-
 
 
             <!-- SPECIES -->
@@ -254,7 +270,6 @@ th {
             </div>
 
 
-
             <!-- OTHER SPECIES -->
 
             <div
@@ -273,7 +288,6 @@ th {
             </div>
 
 
-
             <!-- BREED -->
 
             <div>
@@ -288,7 +302,6 @@ th {
                     placeholder="e.g. Domestic Shorthair">
 
             </div>
-
 
 
             <!-- SEX -->
@@ -318,7 +331,6 @@ th {
             </div>
 
 
-
             <!-- DATE OF BIRTH -->
 
             <div>
@@ -333,9 +345,7 @@ th {
 
             </div>
 
-
         </div>
-
 
 
         <div class="form-actions">
@@ -349,24 +359,35 @@ th {
 
             </button>
 
+
+            <button
+                class="btn-secondary"
+                id="cancelButton"
+                type="button"
+                style="display:none;">
+
+                Cancel Edit
+
+            </button>
+
         </div>
 
 
         <div
             id="message"
             class="message">
-
         </div>
 
     </div>
-
 
 
     <!-- PATIENT LIST -->
 
     <div class="card">
 
-        <h2>Patient List</h2>
+        <h2>
+            Patient List
+        </h2>
 
 
         <table>
@@ -376,10 +397,15 @@ th {
                 <tr>
 
                     <th>Name</th>
+
                     <th>Species</th>
+
                     <th>Breed</th>
+
                     <th>Sex</th>
+
                     <th>Date of Birth</th>
+
                     <th>Action</th>
 
                 </tr>
@@ -395,16 +421,13 @@ th {
 
     </div>
 
-
 </div>
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
-
 
 const SUPABASE_URL =
 "https://zltbjbbofvvndxirlipf.supabase.co";
@@ -421,53 +444,51 @@ supabase.createClient(
 );
 
 
-
 const saveButton =
-document.getElementById(
-    "saveButton"
-);
+document.getElementById("saveButton");
+
+
+const cancelButton =
+document.getElementById("cancelButton");
 
 
 const message =
-document.getElementById(
-    "message"
-);
+document.getElementById("message");
 
 
 const patientList =
-document.getElementById(
-    "patientList"
-);
+document.getElementById("patientList");
 
 
 const speciesSelect =
-document.getElementById(
-    "species"
-);
+document.getElementById("species");
 
 
 const otherSpeciesContainer =
-document.getElementById(
-    "otherSpeciesContainer"
-);
+document.getElementById("otherSpeciesContainer");
 
 
 const otherSpeciesInput =
-document.getElementById(
-    "otherSpecies"
-);
+document.getElementById("otherSpecies");
 
 
+const formTitle =
+document.getElementById("formTitle");
 
-/* SHOW / HIDE OTHER SPECIES */
+
+let editingPatientId = null;
+
+
+/* =========================
+   SHOW / HIDE OTHER SPECIES
+========================= */
 
 speciesSelect.addEventListener(
     "change",
     function() {
 
         if (
-            speciesSelect.value ===
-            "Other"
+            speciesSelect.value === "Other"
         ) {
 
             otherSpeciesContainer.style.display =
@@ -489,8 +510,9 @@ speciesSelect.addEventListener(
 );
 
 
-
-/* LOGIN CHECK */
+/* =========================
+   LOGIN CHECK
+========================= */
 
 async function checkLogin() {
 
@@ -517,11 +539,11 @@ async function checkLogin() {
 }
 
 
-
-/* LOAD PATIENTS */
+/* =========================
+   LOAD PATIENTS
+========================= */
 
 async function loadPatients() {
-
 
     patientList.innerHTML = `
 
@@ -612,11 +634,8 @@ async function loadPatients() {
     data.forEach(
         patient => {
 
-
             const row =
-                document.createElement(
-                    "tr"
-                );
+                document.createElement("tr");
 
 
             row.innerHTML = `
@@ -625,46 +644,53 @@ async function loadPatients() {
                     ${patient.name || "-"}
                 </td>
 
-
                 <td>
                     ${patient.species || "-"}
                 </td>
-
 
                 <td>
                     ${patient.breed || "-"}
                 </td>
 
-
                 <td>
                     ${patient.sex || "-"}
                 </td>
-
 
                 <td>
                     ${patient.date_of_birth || "-"}
                 </td>
 
-
                 <td>
 
-                    <button
-                        class="btn-danger"
-                        type="button"
-                        onclick="deletePatient('${patient.id}')">
+                    <div class="action-buttons">
 
-                        Delete
+                        <button
+                            class="btn-primary"
+                            type="button"
+                            onclick="editPatient('${patient.id}')">
 
-                    </button>
+                            Edit
+
+                        </button>
+
+
+                        <button
+                            class="btn-danger"
+                            type="button"
+                            onclick="deletePatient('${patient.id}')">
+
+                            Delete
+
+                        </button>
+
+                    </div>
 
                 </td>
 
             `;
 
 
-            patientList.appendChild(
-                row
-            );
+            patientList.appendChild(row);
 
         }
     );
@@ -672,13 +698,183 @@ async function loadPatients() {
 }
 
 
+/* =========================
+   RESET FORM
+========================= */
 
-/* SAVE PATIENT */
+function resetForm() {
+
+    editingPatientId = null;
+
+    formTitle.textContent =
+        "Add New Patient";
+
+    saveButton.textContent =
+        "Save Patient";
+
+    cancelButton.style.display =
+        "none";
+
+
+    document.getElementById(
+        "name"
+    ).value = "";
+
+
+    speciesSelect.value =
+        "";
+
+
+    otherSpeciesInput.value =
+        "";
+
+
+    otherSpeciesContainer.style.display =
+        "none";
+
+
+    document.getElementById(
+        "breed"
+    ).value = "";
+
+
+    document.getElementById(
+        "sex"
+    ).value = "";
+
+
+    document.getElementById(
+        "date_of_birth"
+    ).value = "";
+
+
+    message.textContent =
+        "";
+
+    message.className =
+        "message";
+
+}
+
+
+/* =========================
+   EDIT PATIENT
+========================= */
+
+async function editPatient(id) {
+
+    const {
+        data: patient,
+        error
+    } =
+    await supabaseClient
+        .from("patients")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+
+    if (error) {
+
+        alert(
+            "Gagal mengambil data patient: " +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    editingPatientId =
+        patient.id;
+
+
+    formTitle.textContent =
+        "Edit Patient";
+
+
+    saveButton.textContent =
+        "Update Patient";
+
+
+    cancelButton.style.display =
+        "inline-block";
+
+
+    document.getElementById(
+        "name"
+    ).value =
+        patient.name || "";
+
+
+    const standardSpecies = [
+        "Cat",
+        "Dog",
+        "Rabbit",
+        "Bird"
+    ];
+
+
+    if (
+        standardSpecies.includes(
+            patient.species
+        )
+    ) {
+
+        speciesSelect.value =
+            patient.species;
+
+        otherSpeciesContainer.style.display =
+            "none";
+
+    } else {
+
+        speciesSelect.value =
+            "Other";
+
+        otherSpeciesContainer.style.display =
+            "block";
+
+        otherSpeciesInput.value =
+            patient.species || "";
+
+    }
+
+
+    document.getElementById(
+        "breed"
+    ).value =
+        patient.breed || "";
+
+
+    document.getElementById(
+        "sex"
+    ).value =
+        patient.sex || "";
+
+
+    document.getElementById(
+        "date_of_birth"
+    ).value =
+        patient.date_of_birth || "";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================
+   SAVE / UPDATE PATIENT
+========================= */
 
 saveButton.addEventListener(
     "click",
     async function() {
-
 
         const name =
             document.getElementById(
@@ -714,7 +910,6 @@ saveButton.addEventListener(
             ).value;
 
 
-
         /* VALIDATION */
 
         if (
@@ -733,12 +928,8 @@ saveButton.addEventListener(
         }
 
 
-
-        /* OTHER SPECIES VALIDATION */
-
         if (
-            selectedSpecies ===
-            "Other" &&
+            selectedSpecies === "Other" &&
             !otherSpecies
         ) {
 
@@ -755,20 +946,10 @@ saveButton.addEventListener(
         }
 
 
-
-        /*
-        Jika Other:
-        simpan nama species custom.
-        Contoh:
-        Other → Hamster
-        */
-
         const finalSpecies =
-            selectedSpecies ===
-            "Other"
+            selectedSpecies === "Other"
                 ? otherSpecies
                 : selectedSpecies;
-
 
 
         saveButton.disabled =
@@ -776,12 +957,99 @@ saveButton.addEventListener(
 
 
         message.textContent =
-            "Saving patient...";
+            editingPatientId
+                ? "Updating patient..."
+                : "Saving patient...";
+
 
         message.className =
             "message";
 
 
+        /* =========================
+           UPDATE
+        ========================= */
+
+        if (editingPatientId) {
+
+            const {
+                error
+            } =
+            await supabaseClient
+                .from("patients")
+                .update({
+
+                    name:
+                        name,
+
+                    species:
+                        finalSpecies,
+
+                    breed:
+                        breed || null,
+
+                    sex:
+                        sex || null,
+
+                    date_of_birth:
+                        date_of_birth || null
+
+                })
+                .eq(
+                    "id",
+                    editingPatientId
+                );
+
+
+            if (error) {
+
+                console.error(error);
+
+                message.textContent =
+                    "Gagal mengubah: " +
+                    error.message;
+
+                message.className =
+                    "message error";
+
+                saveButton.disabled =
+                    false;
+
+                return;
+
+            }
+
+
+            message.textContent =
+                "Patient berhasil diperbarui!";
+
+            message.className =
+                "message success";
+
+
+            saveButton.disabled =
+                false;
+
+
+            await loadPatients();
+
+
+            setTimeout(
+                function() {
+                    resetForm();
+                },
+                700
+            );
+
+
+            return;
+
+        }
+
+
+        /* =========================
+           INSERT NEW PATIENT
+        ========================= */
 
         const {
             error
@@ -808,7 +1076,6 @@ saveButton.addEventListener(
             });
 
 
-
         if (error) {
 
             console.error(error);
@@ -828,47 +1095,11 @@ saveButton.addEventListener(
         }
 
 
-
         message.textContent =
             "Patient berhasil disimpan!";
 
         message.className =
             "message success";
-
-
-
-        /* RESET FORM */
-
-        document.getElementById(
-            "name"
-        ).value = "";
-
-
-        speciesSelect.value =
-            "";
-
-
-        otherSpeciesInput.value =
-            "";
-
-
-        otherSpeciesContainer.style.display =
-            "none";
-
-
-        document.getElementById(
-            "breed"
-        ).value = "";
-
-
-        document.getElementById(
-            "sex"
-        ).value = "";
-
-
-        document.getElementById(
-            "date_of_birth"
-        ).value = "";
 
 
         saveButton.disabled =
@@ -877,17 +1108,37 @@ saveButton.addEventListener(
 
         await loadPatients();
 
+
+        setTimeout(
+            function() {
+                resetForm();
+            },
+            700
+        );
+
     }
 );
 
 
+/* =========================
+   CANCEL EDIT
+========================= */
 
-/* DELETE PATIENT */
+cancelButton.addEventListener(
+    "click",
+    function() {
 
-async function deletePatient(
-    id
-) {
+        resetForm();
 
+    }
+);
+
+
+/* =========================
+   DELETE PATIENT
+========================= */
+
+async function deletePatient(id) {
 
     if (
         !confirm(
@@ -929,11 +1180,11 @@ async function deletePatient(
 }
 
 
-
-/* INITIALIZE */
+/* =========================
+   INITIALIZE
+========================= */
 
 async function init() {
-
 
     const loggedIn =
         await checkLogin();
@@ -952,7 +1203,6 @@ async function init() {
 
 
 init();
-
 
 </script>
 
