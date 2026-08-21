@@ -385,15 +385,14 @@ supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
-const {
-    data: {
-        session
-    }
-} = await supabaseClient.auth.getSession();
+supabaseClient.auth.getSession().then(({ data: { session } }) => {
 
-if (!session) {
-    window.location.href = "login.html";
-}
+    if (!session) {
+        window.location.href = "login.html";
+        return;
+    }
+
+});
 
 const patientSelect =
 document.getElementById("patient");
