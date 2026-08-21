@@ -69,11 +69,6 @@ button {
     color: white;
 }
 
-.danger {
-    background: #dc2626;
-    color: white;
-}
-
 .secondary {
     background: #e5e7eb;
     color: #374151;
@@ -101,14 +96,6 @@ input[type="file"] {
     color: #b45309;
 }
 
-pre {
-    background: #f9fafb;
-    padding: 15px;
-    border-radius: 8px;
-    overflow: auto;
-    max-height: 300px;
-}
-
 </style>
 
 </head>
@@ -117,90 +104,90 @@ pre {
 
 <div class="container">
 
-<div class="header">
+    <div class="header">
 
-<div>
+        <div>
 
-<h1>💾 Backup & Restore</h1>
+            <h1>💾 Backup & Restore</h1>
 
-<p>
-VetClinic database backup
-</p>
+            <p>
+                VetClinic database backup
+            </p>
 
-</div>
+        </div>
 
-<button
-class="secondary"
-type="button"
-onclick="window.location.href='index.html'">
+        <button
+            class="secondary"
+            type="button"
+            onclick="window.location.href='index.html'">
 
-Dashboard
+            Dashboard
 
-</button>
+        </button>
 
-</div>
-
-
-<div class="card">
-
-<h2>Backup Database</h2>
-
-<p>
-Download your VetClinic data as a JSON file.
-</p>
-
-<button
-class="primary"
-id="backupButton"
-type="button">
-
-Download Backup
-
-</button>
-
-</div>
+    </div>
 
 
-<div class="card">
+    <div class="card">
 
-<h2>Restore Database</h2>
+        <h2>Backup Database</h2>
 
-<p>
-Select a VetClinic backup JSON file.
-</p>
+        <p>
+            Download your VetClinic data as a JSON file.
+        </p>
 
-<input
-type="file"
-id="restoreFile"
-accept=".json">
+        <button
+            class="primary"
+            id="backupButton"
+            type="button">
 
-<br>
+            Download Backup
 
-<button
-class="success"
-id="restoreButton"
-type="button">
+        </button>
 
-Restore Backup
-
-</button>
-
-<p class="warning">
-Restore will add the backup data to the current database.
-</p>
-
-</div>
+    </div>
 
 
-<div class="card">
+    <div class="card">
 
-<h2>Status</h2>
+        <h2>Restore Database</h2>
 
-<div id="message">
-Ready.
-</div>
+        <p>
+            Select a VetClinic backup JSON file.
+        </p>
 
-</div>
+        <input
+            type="file"
+            id="restoreFile"
+            accept=".json">
+
+        <br>
+
+        <button
+            class="success"
+            id="restoreButton"
+            type="button">
+
+            Restore Backup
+
+        </button>
+
+        <p class="warning">
+            Existing records with the same ID will be updated.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Status</h2>
+
+        <div id="message">
+            Ready.
+        </div>
+
+    </div>
 
 </div>
 
@@ -212,38 +199,49 @@ Ready.
 const SUPABASE_URL =
 "https://zltbjbbofvvndxirlipf.supabase.co";
 
+
 const SUPABASE_KEY =
 "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
+
 
 const supabaseClient =
 supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
-supabaseClient.auth.getSession().then(({ data: { session } }) => {
+
+
+/* LOGIN CHECK */
+
+supabaseClient.auth.getSession()
+.then(({ data: { session } }) => {
 
     if (!session) {
-        window.location.href = "login.html";
-        return;
+
+        window.location.href =
+            "login.html";
+
     }
 
 });
 
 
+/* DATABASE TABLES */
+
 const tables = [
+
     "patients",
     "medical_records",
     "appointments",
     "medicines",
     "invoices",
     "invoice_items"
+
 ];
 
 
 const message =
-document.getElementById(
-    "message"
-);
+document.getElementById("message");
 
 
 function showMessage(
@@ -260,6 +258,10 @@ function showMessage(
 }
 
 
+/* =========================
+   BACKUP
+========================= */
+
 document.getElementById(
     "backupButton"
 ).addEventListener(
@@ -270,108 +272,134 @@ document.getElementById(
             "Creating backup..."
         );
 
+        try {
 
-        const backup = {
+            const backup = {
 
-            backup_version:
-                "1.0",
+                backup_version:
+                    "1.0",
 
-            created_at:
-                new Date().toISOString(),
+                created_at:
+                    new Date().toISOString(),
 
-            data: {}
+                data: {}
 
-        };
-
-
-        for (
-            const table
-            of tables
-        ) {
-
-            const {
-                data,
-                error
-            } =
-            await supabaseClient
-            .from(table)
-            .select("*");
+            };
 
 
-            if (error) {
+            for (
+                const table of tables
+            ) {
 
                 showMessage(
-                    "Backup gagal pada " +
+                    "Backing up " +
                     table +
-                    ": " +
-                    error.message,
-                    "error"
+                    "..."
                 );
 
-                return;
+
+                const {
+                    data,
+                    error
+                } =
+                await supabaseClient
+                    .from(table)
+                    .select("*");
+
+
+                if (error) {
+
+                    throw new Error(
+                        table +
+                        ": " +
+                        error.message
+                    );
+
+                }
+
+
+                backup.data[table] =
+                    data || [];
+
             }
 
 
-            backup.data[table] =
-                data || [];
+            const json =
+                JSON.stringify(
+                    backup,
+                    null,
+                    2
+                );
+
+
+            const blob =
+                new Blob(
+                    [json],
+                    {
+                        type:
+                            "application/json"
+                    }
+                );
+
+
+            const url =
+                URL.createObjectURL(
+                    blob
+                );
+
+
+            const link =
+                document.createElement(
+                    "a"
+                );
+
+
+            link.href = url;
+
+
+            link.download =
+                "vetclinic-backup-" +
+                new Date()
+                    .toISOString()
+                    .slice(0, 10) +
+                ".json";
+
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            document.body.removeChild(link);
+
+
+            URL.revokeObjectURL(url);
+
+
+            showMessage(
+                "Backup berhasil dibuat.",
+                "ok"
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            showMessage(
+                "Backup gagal: " +
+                error.message,
+                "error"
+            );
 
         }
-
-
-        const json =
-            JSON.stringify(
-                backup,
-                null,
-                2
-            );
-
-
-        const blob =
-            new Blob(
-                [json],
-                {
-                    type:
-                        "application/json"
-                }
-            );
-
-
-        const url =
-            URL.createObjectURL(
-                blob
-            );
-
-
-        const a =
-            document.createElement(
-                "a"
-            );
-
-        a.href = url;
-
-        a.download =
-            "vetclinic-backup-" +
-            new Date()
-            .toISOString()
-            .slice(0,10) +
-            ".json";
-
-        a.click();
-
-
-        URL.revokeObjectURL(
-            url
-        );
-
-
-        showMessage(
-            "Backup berhasil dibuat.",
-            "ok"
-        );
 
     }
 );
 
+
+/* =========================
+   RESTORE
+========================= */
 
 document.getElementById(
     "restoreButton"
@@ -393,17 +421,22 @@ document.getElementById(
             );
 
             return;
+
         }
 
 
         const confirmed =
             confirm(
-                "Restore backup sekarang? Data backup akan ditambahkan ke database."
+                "Restore backup sekarang?\n\n" +
+                "Data dengan ID yang sama " +
+                "akan diperbarui."
             );
 
 
         if (!confirmed) {
+
             return;
+
         }
 
 
@@ -417,11 +450,13 @@ document.getElementById(
             const text =
                 await file.text();
 
+
             const backup =
                 JSON.parse(text);
 
 
             if (
+                !backup ||
                 !backup.data
             ) {
 
@@ -433,8 +468,7 @@ document.getElementById(
 
 
             for (
-                const table
-                of tables
+                const table of tables
             ) {
 
                 const rows =
@@ -458,12 +492,23 @@ document.getElementById(
                 );
 
 
+                /*
+                UPSERT:
+                ID belum ada  -> INSERT
+                ID sudah ada  -> UPDATE
+                */
+
                 const {
                     error
                 } =
                 await supabaseClient
-                .from(table)
-                .insert(rows);
+                    .from(table)
+                    .upsert(
+                        rows,
+                        {
+                            onConflict: "id"
+                        }
+                    );
 
 
                 if (error) {
