@@ -2,11 +2,14 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Medicines - VetClinic</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -39,45 +42,10 @@ body {
     color: #6b7280;
 }
 
-.card {
-    background: white;
-    border-radius: 14px;
-    padding: 25px;
-    margin-bottom: 25px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
-}
-
-label {
-    display: block;
-    margin-bottom: 7px;
-    font-weight: 600;
-}
-
-input,
-textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: inherit;
-}
-
-textarea {
-    min-height: 80px;
-    resize: vertical;
-}
-
 button {
     border: none;
     border-radius: 8px;
-    padding: 11px 16px;
+    padding: 10px 14px;
     cursor: pointer;
     font-weight: 600;
 }
@@ -97,11 +65,45 @@ button {
     color: #374151;
 }
 
-button:disabled {
-    opacity: 0.6;
+.success {
+    background: #16a34a;
+    color: white;
 }
 
-.actions {
+.warning {
+    background: #f59e0b;
+    color: white;
+}
+
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    margin-bottom: 25px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.form-actions {
     margin-top: 20px;
 }
 
@@ -114,7 +116,7 @@ button:disabled {
     color: #dc2626;
 }
 
-.success {
+.ok {
     color: #16a34a;
 }
 
@@ -140,198 +142,367 @@ th {
     color: #6b7280;
 }
 
+.stock-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.stock-number {
+    min-width: 45px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.stock-input {
+    width: 75px;
+    padding: 8px;
+    text-align: center;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.status-low {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+.status-ok {
+    color: #16a34a;
+    font-weight: 600;
+}
+
 @media(max-width:700px) {
-    .container {
-        padding: 15px;
-    }
 
     .form-grid {
         grid-template-columns: 1fr;
     }
 
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
+    .container {
+        padding: 15px;
     }
 
     table {
         font-size: 13px;
     }
+
 }
+
 </style>
 
 </head>
+
 
 <body>
 
 <div class="container">
 
+
 <div class="header">
 
-<div>
-<h1>💊 Medicines</h1>
-<p>VetClinic Medicine Inventory</p>
+    <div>
+
+        <h1>💊 Medicines</h1>
+
+        <p>
+            VetClinic Medicine Inventory
+        </p>
+
+    </div>
+
+
+    <button
+        class="secondary"
+        type="button"
+        onclick="window.location.href='index.html'">
+
+        Dashboard
+
+    </button>
+
 </div>
 
-<button
-class="secondary"
-type="button"
-onclick="window.location.href='index.html'">
-Dashboard
-</button>
 
-</div>
 
+<!-- ADD MEDICINE -->
 
 <div class="card">
 
-<h2>Add Medicine</h2>
+    <h2>Add Medicine</h2>
 
-<div class="form-grid">
 
-<div>
-<label>Medicine Name</label>
-<input
-type="text"
-id="name"
-placeholder="e.g. Amoxicillin">
+    <div class="form-grid">
+
+
+        <div>
+
+            <label>
+                Medicine Name
+            </label>
+
+            <input
+                id="name"
+                type="text"
+                placeholder="e.g. Amoxicillin">
+
+        </div>
+
+
+
+        <div>
+
+            <label>
+                Strength
+            </label>
+
+            <input
+                id="strength"
+                type="text"
+                placeholder="e.g. 100 mg">
+
+        </div>
+
+
+
+        <div>
+
+            <label>
+                Unit
+            </label>
+
+            <input
+                id="unit"
+                type="text"
+                placeholder="e.g. tablet / bottle">
+
+        </div>
+
+
+
+        <div>
+
+            <label>
+                Stock
+            </label>
+
+            <input
+                id="stock"
+                type="number"
+                min="0"
+                value="0">
+
+        </div>
+
+
+
+        <div>
+
+            <label>
+                Minimum Stock
+            </label>
+
+            <input
+                id="minimum_stock"
+                type="number"
+                min="0"
+                value="0">
+
+        </div>
+
+
+
+        <div>
+
+            <label>
+                Notes
+            </label>
+
+            <input
+                id="notes"
+                type="text"
+                placeholder="Additional notes">
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="form-actions">
+
+        <button
+            class="primary"
+            id="saveButton"
+            type="button">
+
+            Save Medicine
+
+        </button>
+
+    </div>
+
+
+    <div
+        id="message"
+        class="message">
+
+    </div>
+
 </div>
 
-<div>
-<label>Strength</label>
-<input
-type="text"
-id="strength"
-placeholder="e.g. 100 mg">
-</div>
 
-<div>
-<label>Unit</label>
-<input
-type="text"
-id="unit"
-placeholder="e.g. tablet / bottle">
-</div>
 
-<div>
-<label>Stock</label>
-<input
-type="number"
-id="stock"
-min="0"
-value="0">
-</div>
-
-<div>
-<label>Minimum Stock</label>
-<input
-type="number"
-id="minimum_stock"
-min="0"
-value="0">
-</div>
-
-<div>
-<label>Notes</label>
-<input
-type="text"
-id="notes"
-placeholder="Additional notes">
-</div>
-
-</div>
-
-<div class="actions">
-
-<button
-class="primary"
-id="saveButton"
-type="button">
-Save Medicine
-</button>
-
-</div>
-
-<div
-id="message"
-class="message">
-</div>
-
-</div>
-
+<!-- MEDICINE INVENTORY -->
 
 <div class="card">
 
-<h2>Medicine Inventory</h2>
+    <h2>Medicine Inventory</h2>
 
-<table>
 
-<thead>
-<tr>
-<th>Medicine</th>
-<th>Strength</th>
-<th>Unit</th>
-<th>Stock</th>
-<th>Minimum</th>
-<th>Status</th>
-<th>Action</th>
-</tr>
-</thead>
+    <table>
 
-<tbody id="medicineList">
+        <thead>
 
-<tr>
-<td
-colspan="7"
-class="empty">
-Loading medicines...
-</td>
-</tr>
+            <tr>
 
-</tbody>
+                <th>Medicine</th>
 
-</table>
+                <th>Strength</th>
+
+                <th>Unit</th>
+
+                <th>Stock</th>
+
+                <th>Minimum</th>
+
+                <th>Status</th>
+
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody id="medicineList">
+
+        </tbody>
+
+    </table>
 
 </div>
 
+
 </div>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <script>
+
 
 const SUPABASE_URL =
 "https://zltbjbbofvvndxirlipf.supabase.co";
 
+
 const SUPABASE_KEY =
 "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
+
 
 const supabaseClient =
 supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
-supabaseClient.auth.getSession().then(({ data: { session } }) => {
 
-    if (!session) {
-        window.location.href = "login.html";
-        return;
+
+
+/* LOGIN CHECK */
+
+supabaseClient.auth.getSession().then(
+    ({ data: { session } }) => {
+
+        if (!session) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+        loadMedicines();
+
     }
+);
 
-});
+
+
 const saveButton =
-document.getElementById("saveButton");
+document.getElementById(
+    "saveButton"
+);
 
-const medicineList =
-document.getElementById("medicineList");
 
 const message =
-document.getElementById("message");
+document.getElementById(
+    "message"
+);
 
+
+const medicineList =
+document.getElementById(
+    "medicineList"
+);
+
+
+
+/* MESSAGE */
+
+function showMessage(
+    text,
+    type = ""
+) {
+
+    message.textContent =
+        text;
+
+    message.className =
+        "message " +
+        type;
+
+}
+
+
+
+/* LOAD MEDICINES */
 
 async function loadMedicines() {
+
+
+    medicineList.innerHTML = `
+
+        <tr>
+
+            <td
+                colspan="7"
+                class="empty">
+
+                Loading medicines...
+
+            </td>
+
+        </tr>
+
+    `;
+
 
     const {
         data,
@@ -340,140 +511,255 @@ async function loadMedicines() {
     await supabaseClient
         .from("medicines")
         .select("*")
-        .order("name");
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        );
+
 
     if (error) {
 
+        console.error(error);
+
         medicineList.innerHTML = `
+
             <tr>
-                <td colspan="7"
+
+                <td
+                    colspan="7"
                     class="empty error">
+
                     ${error.message}
+
                 </td>
+
             </tr>
+
         `;
 
         return;
+
     }
 
-    if (!data || data.length === 0) {
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
 
         medicineList.innerHTML = `
+
             <tr>
-                <td colspan="7"
+
+                <td
+                    colspan="7"
                     class="empty">
+
                     No medicines yet.
+
                 </td>
+
             </tr>
+
         `;
 
         return;
+
     }
+
 
     medicineList.innerHTML = "";
 
-    data.forEach(medicine => {
 
-        const stock =
-            Number(medicine.stock || 0);
+    data.forEach(
+        medicine => {
 
-        const minimum =
-            Number(medicine.minimum_stock || 0);
 
-        const status =
-            stock <= minimum
-                ? "LOW STOCK"
-                : "Available";
+            const stock =
+                Number(
+                    medicine.stock || 0
+                );
 
-        const row =
-            document.createElement("tr");
 
-        row.innerHTML = `
+            const minimum =
+                Number(
+                    medicine.minimum_stock || 0
+                );
 
-            <td>
-                ${escapeHtml(medicine.name)}
-            </td>
 
-            <td>
-                ${escapeHtml(
-                    medicine.strength || "-"
-                )}
-            </td>
+            const isLow =
+                stock <= minimum;
 
-            <td>
-                ${escapeHtml(
-                    medicine.unit || "-"
-                )}
-            </td>
 
-            <td>
-                ${stock}
-            </td>
+            const row =
+                document.createElement(
+                    "tr"
+                );
 
-            <td>
-                ${minimum}
-            </td>
 
-            <td>
-                ${status}
-            </td>
+            row.innerHTML = `
 
-            <td>
+                <td>
+                    ${medicine.name || "-"}
+                </td>
 
-                <button
-                    class="danger"
-                    type="button"
-                    onclick="deleteMedicine(
-                        '${medicine.id}'
-                    )">
 
-                    Delete
+                <td>
+                    ${medicine.strength || "-"}
+                </td>
 
-                </button>
 
-            </td>
+                <td>
+                    ${medicine.unit || "-"}
+                </td>
 
-        `;
 
-        medicineList.appendChild(row);
+                <td>
 
-    });
+                    <div class="stock-controls">
+
+                        <button
+                            class="secondary"
+                            onclick="changeStock('${medicine.id}', -1)">
+
+                            −
+
+                        </button>
+
+
+                        <span
+                            class="stock-number">
+
+                            ${stock}
+
+                        </span>
+
+
+                        <button
+                            class="success"
+                            onclick="changeStock('${medicine.id}', 1)">
+
+                            +
+
+                        </button>
+
+                    </div>
+
+                </td>
+
+
+                <td>
+                    ${minimum}
+                </td>
+
+
+                <td>
+
+                    ${
+                        isLow
+
+                        ?
+
+                        `<span class="status-low">
+                            Low Stock
+                        </span>`
+
+                        :
+
+                        `<span class="status-ok">
+                            Available
+                        </span>`
+                    }
+
+                </td>
+
+
+                <td>
+
+                    <div class="action-buttons">
+
+
+                        <button
+                            class="warning"
+                            onclick="editStock(
+                                '${medicine.id}',
+                                ${stock}
+                            )">
+
+                            Edit Stock
+
+                        </button>
+
+
+                        <button
+                            class="danger"
+                            onclick="deleteMedicine(
+                                '${medicine.id}'
+                            )">
+
+                            Delete
+
+                        </button>
+
+
+                    </div>
+
+                </td>
+
+            `;
+
+
+            medicineList.appendChild(row);
+
+        }
+    );
 
 }
 
 
+
+/* ADD MEDICINE */
+
 saveButton.addEventListener(
     "click",
     async function() {
+
 
         const name =
             document.getElementById(
                 "name"
             ).value.trim();
 
+
         const strength =
             document.getElementById(
                 "strength"
             ).value.trim();
+
 
         const unit =
             document.getElementById(
                 "unit"
             ).value.trim();
 
+
         const stock =
             Number(
                 document.getElementById(
                     "stock"
-                ).value
-            ) || 0;
+                ).value || 0
+            );
+
 
         const minimum_stock =
             Number(
                 document.getElementById(
                     "minimum_stock"
-                ).value
-            ) || 0;
+                ).value || 0
+            );
+
 
         const notes =
             document.getElementById(
@@ -481,25 +767,28 @@ saveButton.addEventListener(
             ).value.trim();
 
 
+
         if (!name) {
 
-            message.textContent =
-                "Medicine name wajib diisi.";
-
-            message.className =
-                "message error";
+            showMessage(
+                "Medicine name wajib diisi.",
+                "error"
+            );
 
             return;
+
         }
 
 
-        saveButton.disabled = true;
 
-        message.textContent =
-            "Saving medicine...";
+        saveButton.disabled =
+            true;
 
-        message.className =
-            "message";
+
+        showMessage(
+            "Saving medicine..."
+        );
+
 
 
         const {
@@ -530,56 +819,65 @@ saveButton.addEventListener(
             });
 
 
+
         if (error) {
 
             console.error(error);
 
-            message.textContent =
+            showMessage(
                 "Gagal menyimpan: " +
-                error.message;
+                error.message,
+                "error"
+            );
 
-            message.className =
-                "message error";
-
-            saveButton.disabled = false;
+            saveButton.disabled =
+                false;
 
             return;
+
         }
 
 
-        message.textContent =
-            "Medicine berhasil disimpan!";
 
-        message.className =
-            "message success";
+        showMessage(
+            "Medicine berhasil disimpan.",
+            "ok"
+        );
 
 
         document.getElementById(
             "name"
         ).value = "";
 
+
         document.getElementById(
             "strength"
         ).value = "";
+
 
         document.getElementById(
             "unit"
         ).value = "";
 
+
         document.getElementById(
             "stock"
         ).value = "0";
 
+
         document.getElementById(
             "minimum_stock"
         ).value = "0";
+
 
         document.getElementById(
             "notes"
         ).value = "";
 
 
-        saveButton.disabled = false;
+        saveButton.disabled =
+            false;
+
 
         loadMedicines();
 
@@ -587,13 +885,186 @@ saveButton.addEventListener(
 );
 
 
-async function deleteMedicine(id) {
 
-    if (!confirm(
-        "Delete this medicine?"
-    )) {
+/* + / - STOCK */
+
+async function changeStock(
+    id,
+    amount
+) {
+
+
+    const {
+        data: medicine,
+        error: findError
+    } =
+    await supabaseClient
+        .from("medicines")
+        .select("stock")
+        .eq("id", id)
+        .single();
+
+
+    if (findError) {
+
+        alert(
+            "Gagal mengambil stock: " +
+            findError.message
+        );
+
         return;
+
     }
+
+
+    const currentStock =
+        Number(
+            medicine.stock || 0
+        );
+
+
+    const newStock =
+        Math.max(
+            0,
+            currentStock + amount
+        );
+
+
+    const {
+        error
+    } =
+    await supabaseClient
+        .from("medicines")
+        .update({
+
+            stock:
+                newStock
+
+        })
+        .eq(
+            "id",
+            id
+        );
+
+
+    if (error) {
+
+        alert(
+            "Gagal update stock: " +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    loadMedicines();
+
+}
+
+
+
+/* EDIT STOCK MANUAL */
+
+async function editStock(
+    id,
+    currentStock
+) {
+
+
+    const newValue =
+        prompt(
+            "Masukkan jumlah stock baru:",
+            currentStock
+        );
+
+
+    if (
+        newValue === null
+    ) {
+
+        return;
+
+    }
+
+
+    const newStock =
+        Number(
+            newValue
+        );
+
+
+    if (
+        !Number.isInteger(
+            newStock
+        ) ||
+        newStock < 0
+    ) {
+
+        alert(
+            "Stock harus berupa angka 0 atau lebih."
+        );
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+    await supabaseClient
+        .from("medicines")
+        .update({
+
+            stock:
+                newStock
+
+        })
+        .eq(
+            "id",
+            id
+        );
+
+
+    if (error) {
+
+        alert(
+            "Gagal update stock: " +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    loadMedicines();
+
+}
+
+
+
+/* DELETE MEDICINE */
+
+async function deleteMedicine(
+    id
+) {
+
+
+    const confirmed =
+        confirm(
+            "Hapus medicine ini?"
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
 
     const {
         error
@@ -601,7 +1072,11 @@ async function deleteMedicine(id) {
     await supabaseClient
         .from("medicines")
         .delete()
-        .eq("id", id);
+        .eq(
+            "id",
+            id
+        );
+
 
     if (error) {
 
@@ -611,26 +1086,14 @@ async function deleteMedicine(id) {
         );
 
         return;
+
     }
+
 
     loadMedicines();
 
 }
 
-
-function escapeHtml(value) {
-
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-}
-
-
-loadMedicines();
 
 </script>
 
