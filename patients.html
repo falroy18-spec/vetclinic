@@ -93,6 +93,10 @@ select {
     font-size: 14px;
 }
 
+.other-species {
+    display: none;
+}
+
 .form-actions {
     margin-top: 20px;
 }
@@ -152,44 +156,72 @@ th {
 
 </head>
 
+
 <body>
 
 <div class="container">
 
+
     <div class="header">
 
         <div>
+
             <h1>🐾 Patients</h1>
-            <p>VetClinic Patient Management</p>
+
+            <p>
+                VetClinic Patient Management
+            </p>
+
         </div>
+
 
         <button
             class="btn-primary"
+            type="button"
             onclick="window.location.href='index.html'">
+
             Dashboard
+
         </button>
 
     </div>
 
 
+
+    <!-- ADD PATIENT -->
+
     <div class="card">
 
         <h2>Add New Patient</h2>
 
+
         <div class="form-grid">
 
+
+            <!-- NAME -->
+
             <div>
-                <label for="name">Patient Name</label>
+
+                <label for="name">
+                    Patient Name
+                </label>
 
                 <input
                     id="name"
                     type="text"
                     placeholder="e.g. Milo">
+
             </div>
 
 
+
+            <!-- SPECIES -->
+
             <div>
-                <label for="species">Species</label>
+
+                <label for="species">
+                    Species
+                </label>
 
                 <select id="species">
 
@@ -222,9 +254,33 @@ th {
             </div>
 
 
+
+            <!-- OTHER SPECIES -->
+
+            <div
+                id="otherSpeciesContainer"
+                class="other-species">
+
+                <label for="otherSpecies">
+                    Other Species
+                </label>
+
+                <input
+                    id="otherSpecies"
+                    type="text"
+                    placeholder="e.g. Hamster, Turtle, Guinea Pig">
+
+            </div>
+
+
+
+            <!-- BREED -->
+
             <div>
 
-                <label for="breed">Breed</label>
+                <label for="breed">
+                    Breed
+                </label>
 
                 <input
                     id="breed"
@@ -234,9 +290,14 @@ th {
             </div>
 
 
+
+            <!-- SEX -->
+
             <div>
 
-                <label for="sex">Sex</label>
+                <label for="sex">
+                    Sex
+                </label>
 
                 <select id="sex">
 
@@ -257,6 +318,9 @@ th {
             </div>
 
 
+
+            <!-- DATE OF BIRTH -->
+
             <div>
 
                 <label for="date_of_birth">
@@ -269,14 +333,17 @@ th {
 
             </div>
 
+
         </div>
+
 
 
         <div class="form-actions">
 
             <button
                 class="btn-primary"
-                id="saveButton">
+                id="saveButton"
+                type="button">
 
                 Save Patient
 
@@ -288,46 +355,60 @@ th {
         <div
             id="message"
             class="message">
+
         </div>
 
     </div>
 
 
+
+    <!-- PATIENT LIST -->
+
     <div class="card">
 
         <h2>Patient List</h2>
+
 
         <table>
 
             <thead>
 
                 <tr>
+
                     <th>Name</th>
                     <th>Species</th>
                     <th>Breed</th>
                     <th>Sex</th>
                     <th>Date of Birth</th>
                     <th>Action</th>
+
                 </tr>
 
             </thead>
 
+
             <tbody id="patientList">
+
             </tbody>
 
         </table>
 
     </div>
 
+
 </div>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <script>
+
 
 const SUPABASE_URL =
 "https://zltbjbbofvvndxirlipf.supabase.co";
+
 
 const SUPABASE_KEY =
 "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
@@ -340,15 +421,76 @@ supabase.createClient(
 );
 
 
+
 const saveButton =
-document.getElementById("saveButton");
+document.getElementById(
+    "saveButton"
+);
+
 
 const message =
-document.getElementById("message");
+document.getElementById(
+    "message"
+);
+
 
 const patientList =
-document.getElementById("patientList");
+document.getElementById(
+    "patientList"
+);
 
+
+const speciesSelect =
+document.getElementById(
+    "species"
+);
+
+
+const otherSpeciesContainer =
+document.getElementById(
+    "otherSpeciesContainer"
+);
+
+
+const otherSpeciesInput =
+document.getElementById(
+    "otherSpecies"
+);
+
+
+
+/* SHOW / HIDE OTHER SPECIES */
+
+speciesSelect.addEventListener(
+    "change",
+    function() {
+
+        if (
+            speciesSelect.value ===
+            "Other"
+        ) {
+
+            otherSpeciesContainer.style.display =
+                "block";
+
+            otherSpeciesInput.focus();
+
+        } else {
+
+            otherSpeciesContainer.style.display =
+                "none";
+
+            otherSpeciesInput.value =
+                "";
+
+        }
+
+    }
+);
+
+
+
+/* LOGIN CHECK */
 
 async function checkLogin() {
 
@@ -356,7 +498,8 @@ async function checkLogin() {
         data: {
             session
         }
-    } = await supabaseClient.auth.getSession();
+    } =
+    await supabaseClient.auth.getSession();
 
 
     if (!session) {
@@ -365,32 +508,51 @@ async function checkLogin() {
             "login.html";
 
         return false;
+
     }
 
+
     return true;
+
 }
 
 
+
+/* LOAD PATIENTS */
+
 async function loadPatients() {
 
+
     patientList.innerHTML = `
+
         <tr>
-            <td colspan="6" class="empty">
+
+            <td
+                colspan="6"
+                class="empty">
+
                 Loading patients...
+
             </td>
+
         </tr>
+
     `;
 
 
     const {
         data,
         error
-    } = await supabaseClient
+    } =
+    await supabaseClient
         .from("patients")
         .select("*")
-        .order("created_at", {
-            ascending: false
-        });
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        );
 
 
     if (error) {
@@ -398,114 +560,167 @@ async function loadPatients() {
         console.error(error);
 
         patientList.innerHTML = `
+
             <tr>
-                <td colspan="6" class="empty error">
+
+                <td
+                    colspan="6"
+                    class="empty error">
+
                     ${error.message}
+
                 </td>
+
             </tr>
+
         `;
 
         return;
+
     }
 
 
-    if (!data || data.length === 0) {
+    if (
+        !data ||
+        data.length === 0
+    ) {
 
         patientList.innerHTML = `
+
             <tr>
-                <td colspan="6" class="empty">
+
+                <td
+                    colspan="6"
+                    class="empty">
+
                     No patients yet.
+
                 </td>
+
             </tr>
+
         `;
 
         return;
+
     }
 
 
     patientList.innerHTML = "";
 
 
-    data.forEach(patient => {
-
-        const row =
-            document.createElement("tr");
+    data.forEach(
+        patient => {
 
 
-        row.innerHTML = `
-
-            <td>
-                ${patient.name || "-"}
-            </td>
-
-            <td>
-                ${patient.species || "-"}
-            </td>
-
-            <td>
-                ${patient.breed || "-"}
-            </td>
-
-            <td>
-                ${patient.sex || "-"}
-            </td>
-
-            <td>
-                ${patient.date_of_birth || "-"}
-            </td>
-
-            <td>
-
-                <button
-                    class="btn-danger"
-                    onclick="deletePatient('${patient.id}')">
-
-                    Delete
-
-                </button>
-
-            </td>
-
-        `;
+            const row =
+                document.createElement(
+                    "tr"
+                );
 
 
-        patientList.appendChild(row);
+            row.innerHTML = `
 
-    });
+                <td>
+                    ${patient.name || "-"}
+                </td>
+
+
+                <td>
+                    ${patient.species || "-"}
+                </td>
+
+
+                <td>
+                    ${patient.breed || "-"}
+                </td>
+
+
+                <td>
+                    ${patient.sex || "-"}
+                </td>
+
+
+                <td>
+                    ${patient.date_of_birth || "-"}
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="btn-danger"
+                        type="button"
+                        onclick="deletePatient('${patient.id}')">
+
+                        Delete
+
+                    </button>
+
+                </td>
+
+            `;
+
+
+            patientList.appendChild(
+                row
+            );
+
+        }
+    );
 
 }
 
+
+
+/* SAVE PATIENT */
 
 saveButton.addEventListener(
     "click",
     async function() {
 
+
         const name =
-            document.getElementById("name")
-            .value.trim();
+            document.getElementById(
+                "name"
+            ).value.trim();
 
 
-        const species =
-            document.getElementById("species")
-            .value;
+        const selectedSpecies =
+            speciesSelect.value;
+
+
+        const otherSpecies =
+            otherSpeciesInput
+                .value
+                .trim();
 
 
         const breed =
-            document.getElementById("breed")
-            .value.trim();
+            document.getElementById(
+                "breed"
+            ).value.trim();
 
 
         const sex =
-            document.getElementById("sex")
-            .value;
+            document.getElementById(
+                "sex"
+            ).value;
 
 
         const date_of_birth =
-            document.getElementById("date_of_birth")
-            .value;
+            document.getElementById(
+                "date_of_birth"
+            ).value;
 
 
-        if (!name || !species) {
+
+        /* VALIDATION */
+
+        if (
+            !name ||
+            !selectedSpecies
+        ) {
 
             message.textContent =
                 "Patient name dan species wajib diisi.";
@@ -514,10 +729,51 @@ saveButton.addEventListener(
                 "message error";
 
             return;
+
         }
 
 
-        saveButton.disabled = true;
+
+        /* OTHER SPECIES VALIDATION */
+
+        if (
+            selectedSpecies ===
+            "Other" &&
+            !otherSpecies
+        ) {
+
+            message.textContent =
+                "Please enter the other species.";
+
+            message.className =
+                "message error";
+
+            otherSpeciesInput.focus();
+
+            return;
+
+        }
+
+
+
+        /*
+        Jika Other:
+        simpan nama species custom.
+        Contoh:
+        Other → Hamster
+        */
+
+        const finalSpecies =
+            selectedSpecies ===
+            "Other"
+                ? otherSpecies
+                : selectedSpecies;
+
+
+
+        saveButton.disabled =
+            true;
+
 
         message.textContent =
             "Saving patient...";
@@ -526,24 +782,31 @@ saveButton.addEventListener(
             "message";
 
 
+
         const {
             error
-        } = await supabaseClient
+        } =
+        await supabaseClient
             .from("patients")
             .insert({
 
-                name: name,
+                name:
+                    name,
 
-                species: species,
+                species:
+                    finalSpecies,
 
-                breed: breed || null,
+                breed:
+                    breed || null,
 
-                sex: sex || null,
+                sex:
+                    sex || null,
 
                 date_of_birth:
                     date_of_birth || null
 
             });
+
 
 
         if (error) {
@@ -557,10 +820,13 @@ saveButton.addEventListener(
             message.className =
                 "message error";
 
-            saveButton.disabled = false;
+            saveButton.disabled =
+                false;
 
             return;
+
         }
+
 
 
         message.textContent =
@@ -570,23 +836,43 @@ saveButton.addEventListener(
             "message success";
 
 
-        document.getElementById("name")
-            .value = "";
 
-        document.getElementById("species")
-            .value = "";
+        /* RESET FORM */
 
-        document.getElementById("breed")
-            .value = "";
-
-        document.getElementById("sex")
-            .value = "";
-
-        document.getElementById("date_of_birth")
-            .value = "";
+        document.getElementById(
+            "name"
+        ).value = "";
 
 
-        saveButton.disabled = false;
+        speciesSelect.value =
+            "";
+
+
+        otherSpeciesInput.value =
+            "";
+
+
+        otherSpeciesContainer.style.display =
+            "none";
+
+
+        document.getElementById(
+            "breed"
+        ).value = "";
+
+
+        document.getElementById(
+            "sex"
+        ).value = "";
+
+
+        document.getElementById(
+            "date_of_birth"
+        ).value = "";
+
+
+        saveButton.disabled =
+            false;
 
 
         await loadPatients();
@@ -595,21 +881,35 @@ saveButton.addEventListener(
 );
 
 
-async function deletePatient(id) {
 
-    if (!confirm(
-        "Hapus patient ini?"
-    )) {
+/* DELETE PATIENT */
+
+async function deletePatient(
+    id
+) {
+
+
+    if (
+        !confirm(
+            "Hapus patient ini?"
+        )
+    ) {
+
         return;
+
     }
 
 
     const {
         error
-    } = await supabaseClient
+    } =
+    await supabaseClient
         .from("patients")
         .delete()
-        .eq("id", id);
+        .eq(
+            "id",
+            id
+        );
 
 
     if (error) {
@@ -620,6 +920,7 @@ async function deletePatient(id) {
         );
 
         return;
+
     }
 
 
@@ -628,14 +929,20 @@ async function deletePatient(id) {
 }
 
 
+
+/* INITIALIZE */
+
 async function init() {
+
 
     const loggedIn =
         await checkLogin();
 
 
     if (!loggedIn) {
+
         return;
+
     }
 
 
@@ -645,6 +952,7 @@ async function init() {
 
 
 init();
+
 
 </script>
 
