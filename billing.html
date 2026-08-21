@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -82,18 +83,8 @@ button {
     font-weight: 600;
 }
 
-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
 .primary {
     background: #5146e5;
-    color: white;
-}
-
-.danger {
-    background: #dc2626;
     color: white;
 }
 
@@ -102,28 +93,98 @@ button:disabled {
     color: #374151;
 }
 
+.success {
+    background: #16a34a;
+    color: white;
+}
+
+.danger {
+    background: #dc2626;
+    color: white;
+}
+
 .print-btn {
     background: #2563eb;
     color: white;
 }
 
-.actions {
+.items-header {
     display: flex;
-    gap: 10px;
-    margin-top: 20px;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.items-header h3 {
+    margin: 0;
+}
+
+.item-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.item-table th,
+.item-table td {
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.item-table th {
+    background: #f9fafb;
+    text-align: left;
+}
+
+.item-table input {
+    margin: 0;
+}
+
+.amount {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.remove {
+    background: #dc2626;
+    color: white;
+    padding: 8px 12px;
+}
+
+.summary {
+    max-width: 400px;
+    margin-left: auto;
+    margin-top: 25px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.summary-row input {
+    width: 180px;
+}
+
+.total-row {
+    border-top: 2px solid #252d3d;
+    margin-top: 10px;
+    padding-top: 15px;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .message {
     margin-top: 15px;
-    font-size: 14px;
 }
 
 .error {
     color: #dc2626;
 }
 
-.success {
+.ok {
     color: #16a34a;
 }
 
@@ -134,42 +195,64 @@ button:disabled {
     margin-bottom: 15px;
 }
 
-.invoice-header {
+.invoice-top {
     display: flex;
     justify-content: space-between;
-    gap: 15px;
+    align-items: flex-start;
 }
 
 .invoice h3 {
-    margin: 0 0 8px;
+    margin-top: 0;
 }
 
 .meta {
     color: #6b7280;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.7;
 }
 
-.total {
-    font-size: 20px;
-    font-weight: 700;
-    margin-top: 12px;
+.invoice-items {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
-.status {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 20px;
-    background: #eef2ff;
-    font-size: 12px;
-    font-weight: 600;
-    margin-top: 8px;
+.invoice-items th,
+.invoice-items td {
+    padding: 9px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+.invoice-items th:nth-child(2),
+.invoice-items td:nth-child(2) {
+    text-align: center;
+}
+
+.invoice-items th:nth-child(3),
+.invoice-items td:nth-child(3),
+.invoice-items th:nth-child(4),
+.invoice-items td:nth-child(4) {
+    text-align: right;
+}
+
+.invoice-total {
+    text-align: right;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .empty {
     text-align: center;
-    padding: 30px;
     color: #6b7280;
+    padding: 25px;
 }
 
 @media(max-width:700px) {
@@ -187,41 +270,11 @@ button:disabled {
     }
 
     .header,
-    .invoice-header {
+    .invoice-top,
+    .items-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 15px;
-    }
-
-}
-
-@media print {
-
-    body {
-        background: white;
-    }
-
-    body * {
-        visibility: hidden;
-    }
-
-    .print-area,
-    .print-area * {
-        visibility: visible;
-    }
-
-    .print-area {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        border: none;
-        box-shadow: none;
-        margin: 0;
-    }
-
-    .no-print {
-        display: none !important;
+        gap: 12px;
     }
 
 }
@@ -230,9 +283,14 @@ button:disabled {
 
 </head>
 
+
 <body>
 
+
 <div class="container">
+
+
+<!-- HEADER -->
 
 <div class="header">
 
@@ -246,6 +304,7 @@ VetClinic Billing Management
 
 </div>
 
+
 <button
 class="secondary"
 type="button"
@@ -258,15 +317,22 @@ Dashboard
 </div>
 
 
+
+<!-- NEW INVOICE -->
+
 <div class="card">
 
 <h2>New Invoice</h2>
 
+
 <div class="form-grid">
+
 
 <div class="full">
 
-<label>Patient</label>
+<label>
+Patient
+</label>
 
 <select id="patient">
 
@@ -279,9 +345,12 @@ Select patient
 </div>
 
 
+
 <div>
 
-<label>Invoice Date</label>
+<label>
+Invoice Date
+</label>
 
 <input
 type="date"
@@ -290,9 +359,12 @@ id="invoice_date">
 </div>
 
 
+
 <div>
 
-<label>Status</label>
+<label>
+Status
+</label>
 
 <select id="status">
 
@@ -313,9 +385,12 @@ Partial
 </div>
 
 
+
 <div>
 
-<label>Invoice Number</label>
+<label>
+Invoice Number
+</label>
 
 <input
 type="text"
@@ -325,53 +400,131 @@ placeholder="Optional">
 </div>
 
 
-<div>
+</div>
 
-<label>Subtotal</label>
 
-<input
-type="number"
-id="subtotal"
-min="0"
-value="0">
+
+<!-- ITEMS -->
+
+<div class="items-header">
+
+<h3>
+Services / Items
+</h3>
+
+
+<button
+class="secondary"
+type="button"
+id="addItem">
+
++ Add Item
+
+</button>
 
 </div>
 
 
-<div>
 
-<label>Discount</label>
+<div style="overflow-x:auto;">
+
+<table class="item-table">
+
+<thead>
+
+<tr>
+
+<th>
+Description
+</th>
+
+<th style="width:100px;">
+Qty
+</th>
+
+<th style="width:180px;">
+Unit Price
+</th>
+
+<th style="width:180px;">
+Total
+</th>
+
+<th style="width:80px;">
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="itemsBody">
+
+</tbody>
+
+</table>
+
+</div>
+
+
+
+<!-- SUMMARY -->
+
+<div class="summary">
+
+
+<div class="summary-row">
+
+<span>
+Subtotal
+</span>
+
+<strong id="subtotal">
+Rp0
+</strong>
+
+</div>
+
+
+
+<div class="summary-row">
+
+<span>
+Discount
+</span>
 
 <input
 type="number"
 id="discount"
-min="0"
-value="0">
-
-</div>
-
-
-<div>
-
-<label>Total</label>
-
-<input
-type="number"
-id="total"
-min="0"
 value="0"
-readonly>
+min="0">
 
 </div>
 
+
+
+<div class="summary-row total-row">
+
+<span>
+Total
+</span>
+
+<strong id="grandTotal">
+Rp0
+</strong>
+
 </div>
 
 
-<div class="actions">
+</div>
+
+
+
+<div style="margin-top:20px;">
 
 <button
 class="primary"
-id="saveButton"
+id="saveInvoice"
 type="button">
 
 Save Invoice
@@ -384,14 +537,22 @@ Save Invoice
 <div
 id="message"
 class="message">
-</div>
 
 </div>
 
+
+</div>
+
+
+
+<!-- INVOICES -->
 
 <div class="card">
 
-<h2>Invoices</h2>
+<h2>
+Invoices
+</h2>
+
 
 <div id="invoiceList">
 
@@ -403,18 +564,24 @@ Loading invoices...
 
 </div>
 
+
 </div>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <script>
+
 
 const SUPABASE_URL =
 "https://zltbjbbofvvndxirlipf.supabase.co";
 
+
 const SUPABASE_KEY =
 "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
+
 
 const supabaseClient =
 supabase.createClient(
@@ -423,17 +590,1734 @@ supabase.createClient(
 );
 
 
+
 const patientSelect =
-document.getElementById("patient");
+document.getElementById(
+    "patient"
+);
 
-const invoiceList =
-document.getElementById("invoiceList");
 
-const saveButton =
-document.getElementById("saveButton");
+const itemsBody =
+document.getElementById(
+    "itemsBody"
+);
+
+
+const discountInput =
+document.getElementById(
+    "discount"
+);
+
 
 const message =
-document.getElementById("message");
+document.getElementById(
+    "message"
+);
+
+
+
+/* =========================
+   FORMAT MONEY
+========================= */
+
+function money(value) {
+
+return new Intl.NumberFormat(
+    "id-ID",
+    {
+        style: "currency",
+        currency: "IDR",
+        maximumFractionDigits: 0
+    }
+).format(
+    Number(value || 0)
+);
+
+}
+
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(value) {
+
+return String(
+    value ?? ""
+)
+.replace(
+    /&/g,
+    "&amp;"
+)
+.replace(
+    /</g,
+    "&lt;"
+)
+.replace(
+    />/g,
+    "&gt;"
+)
+.replace(
+    /"/g,
+    "&quot;"
+)
+.replace(
+    /'/g,
+    "&#039;"
+);
+
+}
+
+
+
+/* =========================
+   SESSION
+========================= */
+
+async function checkSession() {
+
+const {
+    data: {
+        session
+    }
+} =
+await supabaseClient
+.auth
+.getSession();
+
+
+if (!session) {
+
+window.location.href =
+"login.html";
+
+return false;
+
+}
+
+return true;
+
+}
+
+
+
+/* =========================
+   ADD ITEM
+========================= */
+
+function addItem(
+    description = "",
+    quantity = 1,
+    unitPrice = 0
+) {
+
+const row =
+document.createElement(
+    "tr"
+);
+
+
+row.innerHTML = `
+
+<td>
+
+<input
+type="text"
+class="description"
+placeholder="e.g. Jasa Dokter"
+value="${escapeHtml(description)}">
+
+</td>
+
+
+<td>
+
+<input
+type="number"
+class="quantity"
+min="1"
+value="${quantity}">
+
+</td>
+
+
+<td>
+
+<input
+type="number"
+class="unit-price"
+min="0"
+value="${unitPrice}">
+
+</td>
+
+
+<td class="amount">
+
+Rp0
+
+</td>
+
+
+<td>
+
+<button
+type="button"
+class="remove">
+
+Delete
+
+</button>
+
+</td>
+
+`;
+
+
+itemsBody.appendChild(
+    row
+);
+
+
+
+row.querySelectorAll(
+    "input"
+).forEach(
+    input => {
+
+        input.addEventListener(
+            "input",
+            calculateTotal
+        );
+
+    }
+);
+
+
+
+row.querySelector(
+    ".remove"
+).addEventListener(
+    "click",
+    function() {
+
+        row.remove();
+
+        calculateTotal();
+
+    }
+);
+
+
+calculateTotal();
+
+}
+
+
+
+/* =========================
+   CALCULATE
+========================= */
+
+function calculateTotal() {
+
+let subtotal = 0;
+
+
+const rows =
+itemsBody.querySelectorAll(
+    "tr"
+);
+
+
+rows.forEach(
+    row => {
+
+        const quantity =
+        Number(
+            row.querySelector(
+                ".quantity"
+            ).value
+        ) || 0;
+
+
+        const unitPrice =
+        Number(
+            row.querySelector(
+                ".unit-price"
+            ).value
+        ) || 0;
+
+
+        const total =
+        quantity * unitPrice;
+
+
+        row.querySelector(
+            ".amount"
+        ).textContent =
+        money(total);
+
+
+        subtotal +=
+        total;
+
+    }
+);
+
+
+const discount =
+Number(
+    discountInput.value
+) || 0;
+
+
+const grandTotal =
+Math.max(
+    0,
+    subtotal - discount
+);
+
+
+document.getElementById(
+    "subtotal"
+).textContent =
+money(subtotal);
+
+
+document.getElementById(
+    "grandTotal"
+).textContent =
+money(grandTotal);
+
+}
+
+
+
+discountInput.addEventListener(
+    "input",
+    calculateTotal
+);
+
+
+
+/* =========================
+   LOAD PATIENTS
+========================= */
+
+async function loadPatients() {
+
+const {
+    data,
+    error
+} =
+await supabaseClient
+.from(
+    "patients"
+)
+.select(
+    "id,name,species"
+)
+.order(
+    "name"
+);
+
+
+if (error) {
+
+console.error(error);
+
+message.textContent =
+"Gagal mengambil patient: " +
+error.message;
+
+message.className =
+"message error";
+
+return;
+
+}
+
+
+patientSelect.innerHTML = `
+
+<option value="">
+Select patient
+</option>
+
+`;
+
+
+(data || []).forEach(
+    patient => {
+
+        const option =
+        document.createElement(
+            "option"
+        );
+
+
+        option.value =
+        patient.id;
+
+
+        option.textContent =
+        patient.name +
+        " (" +
+        patient.species +
+        ")";
+
+
+        patientSelect.appendChild(
+            option
+        );
+
+    }
+);
+
+}
+
+
+
+/* =========================
+   GET ITEMS
+========================= */
+
+function getItems() {
+
+const rows =
+itemsBody.querySelectorAll(
+    "tr"
+);
+
+
+const items = [];
+
+
+rows.forEach(
+    row => {
+
+        const description =
+        row.querySelector(
+            ".description"
+        )
+        .value
+        .trim();
+
+
+        const quantity =
+        Number(
+            row.querySelector(
+                ".quantity"
+            ).value
+        ) || 0;
+
+
+        const unitPrice =
+        Number(
+            row.querySelector(
+                ".unit-price"
+            ).value
+        ) || 0;
+
+
+        if (
+            description
+        ) {
+
+            items.push({
+
+                description:
+                description,
+
+                quantity:
+                quantity,
+
+                unit_price:
+                unitPrice,
+
+                total:
+                quantity *
+                unitPrice
+
+            });
+
+        }
+
+    }
+);
+
+
+return items;
+
+}
+
+
+
+/* =========================
+   SAVE INVOICE
+========================= */
+
+async function saveInvoice() {
+
+const patient_id =
+patientSelect.value;
+
+
+const invoice_date =
+document.getElementById(
+    "invoice_date"
+).value;
+
+
+const status =
+document.getElementById(
+    "status"
+).value;
+
+
+const invoice_number =
+document.getElementById(
+    "invoice_number"
+).value.trim();
+
+
+const items =
+getItems();
+
+
+if (!patient_id) {
+
+message.textContent =
+"Pilih patient terlebih dahulu.";
+
+message.className =
+"message error";
+
+return;
+
+}
+
+
+if (
+items.length === 0
+) {
+
+message.textContent =
+"Tambahkan minimal satu jasa/item.";
+
+message.className =
+"message error";
+
+return;
+
+}
+
+
+const subtotal =
+items.reduce(
+    (
+        sum,
+        item
+    ) =>
+    sum +
+    item.total,
+    0
+);
+
+
+const discount =
+Number(
+    discountInput.value
+) || 0;
+
+
+const total =
+Math.max(
+    0,
+    subtotal - discount
+);
+
+
+
+document.getElementById(
+    "saveInvoice"
+).disabled =
+true;
+
+
+message.textContent =
+"Saving invoice...";
+
+message.className =
+"message";
+
+
+
+/* SAVE INVOICE */
+
+const {
+    data: invoice,
+    error
+} =
+await supabaseClient
+.from(
+    "invoices"
+)
+.insert({
+
+    patient_id:
+    patient_id,
+
+    invoice_number:
+    invoice_number ||
+    null,
+
+    invoice_date:
+    invoice_date,
+
+    subtotal:
+    subtotal,
+
+    discount:
+    discount,
+
+    total:
+    total,
+
+    status:
+    status
+
+})
+.select()
+.single();
+
+
+
+if (error) {
+
+console.error(error);
+
+message.textContent =
+"Gagal menyimpan invoice: " +
+error.message;
+
+message.className =
+"message error";
+
+document.getElementById(
+    "saveInvoice"
+).disabled =
+false;
+
+return;
+
+}
+
+
+
+/* SAVE ITEMS */
+
+const itemRows =
+items.map(
+    item => ({
+
+        invoice_id:
+        invoice.id,
+
+        description:
+        item.description,
+
+        quantity:
+        item.quantity,
+
+        unit_price:
+        item.unit_price,
+
+        total:
+        item.total
+
+    })
+);
+
+
+const {
+    error: itemError
+} =
+await supabaseClient
+.from(
+    "invoice_items"
+)
+.insert(
+    itemRows
+);
+
+
+
+if (itemError) {
+
+console.error(
+    itemError
+);
+
+
+/* DELETE INVOICE IF ITEMS FAIL */
+
+await supabaseClient
+.from(
+    "invoices"
+)
+.delete()
+.eq(
+    "id",
+    invoice.id
+);
+
+
+message.textContent =
+"Gagal menyimpan item: " +
+itemError.message;
+
+message.className =
+"message error";
+
+
+document.getElementById(
+    "saveInvoice"
+).disabled =
+false;
+
+return;
+
+}
+
+
+
+message.textContent =
+"Invoice berhasil disimpan.";
+
+message.className =
+"message ok";
+
+
+/* RESET */
+
+patientSelect.value =
+"";
+
+
+document.getElementById(
+    "invoice_number"
+).value =
+"";
+
+
+discountInput.value =
+"0";
+
+
+itemsBody.innerHTML =
+"";
+
+
+addItem();
+
+
+calculateTotal();
+
+
+document.getElementById(
+    "saveInvoice"
+).disabled =
+false;
+
+
+loadInvoices();
+
+}
+
+
+
+/* =========================
+   LOAD INVOICES
+========================= */
+
+async function loadInvoices() {
+
+invoiceList.innerHTML = `
+
+<div class="empty">
+Loading invoices...
+</div>
+
+`;
+
+
+const {
+    data,
+    error
+} =
+await supabaseClient
+.from(
+    "invoices"
+)
+.select(`
+    *,
+    patients (
+        name,
+        species,
+        breed
+    )
+`)
+.order(
+    "invoice_date",
+    {
+        ascending: false
+    }
+);
+
+
+
+if (error) {
+
+invoiceList.innerHTML = `
+
+<div class="empty error">
+
+${escapeHtml(
+    error.message
+)}
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+
+if (
+!data ||
+data.length === 0
+) {
+
+invoiceList.innerHTML = `
+
+<div class="empty">
+
+No invoices yet.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+
+invoiceList.innerHTML =
+"";
+
+
+
+for (
+const invoice
+of data
+) {
+
+
+const {
+    data: items
+} =
+await supabaseClient
+.from(
+    "invoice_items"
+)
+.select(
+    "description,quantity,unit_price,total"
+)
+.eq(
+    "invoice_id",
+    invoice.id
+);
+
+
+
+const patient =
+invoice.patients;
+
+
+
+let itemHTML =
+"";
+
+
+(items || []).forEach(
+    item => {
+
+        itemHTML += `
+
+<tr>
+
+<td>
+${escapeHtml(
+    item.description
+)}
+</td>
+
+<td>
+${item.quantity}
+</td>
+
+<td>
+${money(
+    item.unit_price
+)}
+</td>
+
+<td>
+${money(
+    item.total
+)}
+</td>
+
+</tr>
+
+`;
+
+    }
+);
+
+
+
+const div =
+document.createElement(
+    "div"
+);
+
+
+div.className =
+"invoice";
+
+
+div.innerHTML = `
+
+<div class="invoice-top">
+
+
+<div>
+
+<h3>
+
+${escapeHtml(
+    patient?.name ||
+    "Unknown Patient"
+)}
+
+</h3>
+
+
+<div class="meta">
+
+Invoice:
+${escapeHtml(
+    invoice.invoice_number ||
+    "-"
+)}
+
+<br>
+
+Date:
+${invoice.invoice_date || "-"}
+
+<br>
+
+${escapeHtml(
+    patient?.species ||
+    ""
+)}
+
+${patient?.breed
+    ? " - " +
+      escapeHtml(
+          patient.breed
+      )
+    : ""
+}
+
+<br>
+
+Status:
+${escapeHtml(
+    invoice.status ||
+    "Unpaid"
+)}
+
+</div>
+
+</div>
+
+
+
+<div class="actions">
+
+<button
+class="print-btn"
+type="button"
+onclick="printInvoice('${invoice.id}')">
+
+🖨️ Print
+
+</button>
+
+
+<button
+class="danger"
+type="button"
+onclick="deleteInvoice('${invoice.id}')">
+
+Delete
+
+</button>
+
+</div>
+
+
+</div>
+
+
+
+${
+items && items.length
+?
+
+`
+
+<table class="invoice-items">
+
+<thead>
+
+<tr>
+
+<th>
+Description
+</th>
+
+<th>
+Qty
+</th>
+
+<th>
+Unit Price
+</th>
+
+<th>
+Total
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+${itemHTML}
+
+</tbody>
+
+</table>
+
+`
+
+:
+
+""
+
+}
+
+
+
+<div class="meta"
+style="margin-top:15px;">
+
+Subtotal:
+${money(
+    invoice.subtotal
+)}
+
+<br>
+
+Discount:
+${money(
+    invoice.discount
+)}
+
+</div>
+
+
+
+<div class="invoice-total">
+
+Total:
+${money(
+    invoice.total
+)}
+
+</div>
+
+`;
+
+
+invoiceList.appendChild(
+    div
+);
+
+}
+
+}
+
+
+
+/* =========================
+   DELETE
+========================= */
+
+async function deleteInvoice(
+id
+) {
+
+if (
+!confirm(
+"Delete this invoice?"
+)
+) {
+
+return;
+
+}
+
+
+const {
+    error
+} =
+await supabaseClient
+.from(
+    "invoices"
+)
+.delete()
+.eq(
+    "id",
+    id
+);
+
+
+if (error) {
+
+alert(
+"Gagal menghapus: " +
+error.message
+);
+
+return;
+
+}
+
+
+loadInvoices();
+
+}
+
+
+
+/* =========================
+   PRINT
+========================= */
+
+async function printInvoice(
+id
+) {
+
+
+const {
+    data: invoice,
+    error
+} =
+await supabaseClient
+.from(
+    "invoices"
+)
+.select(`
+    *,
+    patients (
+        name,
+        species,
+        breed
+    )
+`)
+.eq(
+    "id",
+    id
+)
+.single();
+
+
+if (error) {
+
+alert(
+"Gagal mengambil invoice: " +
+error.message
+);
+
+return;
+
+}
+
+
+
+const {
+    data: items
+} =
+await supabaseClient
+.from(
+    "invoice_items"
+)
+.select(
+    "description,quantity,unit_price,total"
+)
+.eq(
+    "invoice_id",
+    id
+);
+
+
+
+const patient =
+invoice.patients;
+
+
+
+let itemRows =
+"";
+
+
+(items || []).forEach(
+    item => {
+
+        itemRows += `
+
+<tr>
+
+<td>
+${escapeHtml(
+    item.description
+)}
+</td>
+
+<td>
+${item.quantity}
+</td>
+
+<td>
+${money(
+    item.unit_price
+)}
+</td>
+
+<td>
+${money(
+    item.total
+)}
+</td>
+
+</tr>
+
+`;
+
+    }
+);
+
+
+
+const printWindow =
+window.open(
+    "",
+    "_blank",
+    "width=800,height=900"
+);
+
+
+if (!printWindow) {
+
+alert(
+"Popup diblokir browser. Izinkan popup untuk website ini."
+);
+
+return;
+
+}
+
+
+
+printWindow.document.write(`
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+VetClinic Invoice
+</title>
+
+
+<style>
+
+body {
+
+font-family:
+Arial,
+sans-serif;
+
+margin: 0;
+
+padding: 40px;
+
+color: #252d3d;
+
+}
+
+
+.invoice {
+
+max-width:
+700px;
+
+margin:
+auto;
+
+}
+
+
+.header {
+
+border-bottom:
+1px solid #ddd;
+
+padding-bottom:
+20px;
+
+margin-bottom:
+20px;
+
+}
+
+
+.clinic {
+
+font-size:
+28px;
+
+font-weight:
+bold;
+
+}
+
+
+.patient {
+
+font-size:
+22px;
+
+font-weight:
+bold;
+
+margin-top:
+25px;
+
+}
+
+
+.meta {
+
+color:
+#666;
+
+line-height:
+1.8;
+
+font-size:
+14px;
+
+}
+
+
+table {
+
+width:
+100%;
+
+border-collapse:
+collapse;
+
+margin-top:
+25px;
+
+}
+
+
+th,
+td {
+
+padding:
+10px 5px;
+
+border-bottom:
+1px solid #ddd;
+
+}
+
+
+th {
+
+text-align:
+left;
+
+}
+
+
+th:nth-child(2),
+td:nth-child(2) {
+
+text-align:
+center;
+
+}
+
+
+th:nth-child(3),
+td:nth-child(3),
+th:nth-child(4),
+td:nth-child(4) {
+
+text-align:
+right;
+
+}
+
+
+.summary {
+
+width:
+300px;
+
+margin-left:
+auto;
+
+margin-top:
+20px;
+
+}
+
+
+.summary div {
+
+display:
+flex;
+
+justify-content:
+space-between;
+
+padding:
+6px 0;
+
+}
+
+
+.grand {
+
+border-top:
+2px solid #222;
+
+padding-top:
+12px !important;
+
+font-size:
+20px;
+
+font-weight:
+bold;
+
+}
+
+
+.footer {
+
+margin-top:
+50px;
+
+text-align:
+center;
+
+font-size:
+12px;
+
+color:
+#777;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="invoice">
+
+
+<div class="header">
+
+<div class="clinic">
+VetClinic
+</div>
+
+<div class="meta">
+Veterinary Clinic
+</div>
+
+</div>
+
+
+
+<div class="patient">
+
+${escapeHtml(
+    patient?.name ||
+    "Unknown Patient"
+)}
+
+</div>
+
+
+
+<div class="meta">
+
+Invoice:
+${escapeHtml(
+    invoice.invoice_number ||
+    "-"
+)}
+
+<br>
+
+Date:
+${invoice.invoice_date || "-"}
+
+<br>
+
+Species:
+${escapeHtml(
+    patient?.species ||
+    "-"
+)}
+
+<br>
+
+Breed:
+${escapeHtml(
+    patient?.breed ||
+    "-"
+)}
+
+<br>
+
+Status:
+${escapeHtml(
+    invoice.status ||
+    "Unpaid"
+)}
+
+</div>
+
+
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+Description
+</th>
+
+<th>
+Qty
+</th>
+
+<th>
+Unit Price
+</th>
+
+<th>
+Total
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+${itemRows}
+
+</tbody>
+
+</table>
+
+
+
+<div class="summary">
+
+
+<div>
+
+<span>
+Subtotal
+</span>
+
+<strong>
+${money(
+    invoice.subtotal
+)}
+</strong>
+
+</div>
+
+
+<div>
+
+<span>
+Discount
+</span>
+
+<strong>
+${money(
+    invoice.discount
+)}
+</strong>
+
+</div>
+
+
+<div class="grand">
+
+<span>
+Total
+</span>
+
+<strong>
+${money(
+    invoice.total
+)}
+</strong>
+
+</div>
+
+
+</div>
+
+
+
+<div class="footer">
+
+Thank you for trusting VetClinic.
+
+</div>
+
+
+</div>
+
+
+</body>
+
+</html>
+
+`);
+
+
+printWindow.document.close();
+
+printWindow.focus();
+
+
+setTimeout(
+function() {
+
+printWindow.print();
+
+printWindow.close();
+
+},
+500
+);
+
+}
+
+
+
+/* =========================
+   BUTTON
+========================= */
+
+document.getElementById(
+    "addItem"
+).addEventListener(
+    "click",
+    function() {
+
+        addItem();
+
+    }
+);
+
+
+document.getElementById(
+    "saveInvoice"
+).addEventListener(
+    "click",
+    saveInvoice
+);
+
+
+
+/* =========================
+   INIT
+========================= */
+
+async function init() {
+
+const loggedIn =
+await checkSession();
+
+
+if (!loggedIn) {
+
+return;
+
+}
 
 
 document.getElementById(
@@ -441,784 +2325,18 @@ document.getElementById(
 ).value =
 new Date()
 .toISOString()
-.split("T")[0];
-
-
-function updateTotal() {
-
-    const subtotal =
-        Number(
-            document.getElementById(
-                "subtotal"
-            ).value
-        ) || 0;
-
-    const discount =
-        Number(
-            document.getElementById(
-                "discount"
-            ).value
-        ) || 0;
-
-    document.getElementById(
-        "total"
-    ).value =
-        Math.max(
-            0,
-            subtotal - discount
-        );
-
-}
-
-
-document.getElementById(
-    "subtotal"
-).addEventListener(
-    "input",
-    updateTotal
+.slice(
+    0,
+    10
 );
 
 
-document.getElementById(
-    "discount"
-).addEventListener(
-    "input",
-    updateTotal
-);
+await loadPatients();
 
+await loadInvoices();
 
-async function checkSession() {
 
-    const {
-        data: {
-            session
-        }
-    } =
-    await supabaseClient.auth.getSession();
-
-    if (!session) {
-
-        window.location.href =
-            "login.html";
-
-        return false;
-    }
-
-    return true;
-}
-
-
-async function loadPatients() {
-
-    const {
-        data,
-        error
-    } =
-    await supabaseClient
-    .from("patients")
-    .select("id,name,species")
-    .order("name");
-
-
-    if (error) {
-
-        message.textContent =
-            "Gagal mengambil patient: " +
-            error.message;
-
-        message.className =
-            "message error";
-
-        return;
-    }
-
-
-    patientSelect.innerHTML = `
-        <option value="">
-            Select patient
-        </option>
-    `;
-
-
-    data.forEach(patient => {
-
-        const option =
-            document.createElement(
-                "option"
-            );
-
-        option.value =
-            patient.id;
-
-        option.textContent =
-            patient.name +
-            " (" +
-            patient.species +
-            ")";
-
-        patientSelect.appendChild(
-            option
-        );
-
-    });
-
-}
-
-
-async function loadInvoices() {
-
-    invoiceList.innerHTML = `
-        <div class="empty">
-            Loading invoices...
-        </div>
-    `;
-
-
-    const {
-        data,
-        error
-    } =
-    await supabaseClient
-    .from("invoices")
-    .select(`
-        *,
-        patients (
-            name,
-            species,
-            breed
-        )
-    `)
-    .order(
-        "invoice_date",
-        {
-            ascending: false
-        }
-    );
-
-
-    if (error) {
-
-        invoiceList.innerHTML = `
-            <div class="empty error">
-                ${escapeHtml(error.message)}
-            </div>
-        `;
-
-        return;
-    }
-
-
-    if (!data || data.length === 0) {
-
-        invoiceList.innerHTML = `
-            <div class="empty">
-                No invoices yet.
-            </div>
-        `;
-
-        return;
-    }
-
-
-    invoiceList.innerHTML = "";
-
-
-    data.forEach(invoice => {
-
-        const patient =
-            invoice.patients;
-
-
-        const div =
-            document.createElement(
-                "div"
-            );
-
-
-        div.className =
-            "invoice print-area";
-
-
-        div.dataset.invoiceId =
-            invoice.id;
-
-
-        div.innerHTML = `
-
-            <div class="invoice-header">
-
-                <div>
-
-                    <h3>
-                        ${escapeHtml(
-                            patient?.name ||
-                            "Unknown Patient"
-                        )}
-                    </h3>
-
-                    <div class="meta">
-
-                        Invoice:
-                        ${escapeHtml(
-                            invoice.invoice_number ||
-                            "-"
-                        )}
-
-                        <br>
-
-                        Date:
-                        ${invoice.invoice_date || "-"}
-
-                        <br>
-
-                        ${
-                            patient?.species
-                            ? escapeHtml(
-                                patient.species
-                            )
-                            : ""
-                        }
-
-                        ${
-                            patient?.breed
-                            ? " - " +
-                              escapeHtml(
-                                  patient.breed
-                              )
-                            : ""
-                        }
-
-                    </div>
-
-                    <span class="status">
-
-                        ${escapeHtml(
-                            invoice.status ||
-                            "Unpaid"
-                        )}
-
-                    </span>
-
-                </div>
-
-
-                <div class="actions no-print">
-
-                    <button
-                        class="print-btn"
-                        type="button"
-                        onclick="printInvoice('${invoice.id}')">
-
-                        🖨️ Print
-
-                    </button>
-
-
-                    <button
-                        class="danger"
-                        type="button"
-                        onclick="deleteInvoice('${invoice.id}')">
-
-                        Delete
-
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <div class="meta">
-
-                Subtotal:
-
-                ${formatMoney(
-                    invoice.subtotal
-                )}
-
-                <br>
-
-                Discount:
-
-                ${formatMoney(
-                    invoice.discount
-                )}
-
-            </div>
-
-
-            <div class="total">
-
-                Total:
-
-                ${formatMoney(
-                    invoice.total
-                )}
-
-            </div>
-
-        `;
-
-
-        invoiceList.appendChild(
-            div
-        );
-
-    });
-
-}
-
-
-function printInvoice(id) {
-
-    const invoiceElement =
-        document.querySelector(
-            `.invoice[data-invoice-id="${id}"]`
-        );
-
-
-    if (!invoiceElement) {
-
-        alert(
-            "Invoice tidak ditemukan."
-        );
-
-        return;
-    }
-
-
-    const printWindow =
-        window.open(
-            "",
-            "_blank",
-            "width=800,height=900"
-        );
-
-
-    if (!printWindow) {
-
-        alert(
-            "Popup diblokir browser. Izinkan popup untuk website ini."
-        );
-
-        return;
-    }
-
-
-    printWindow.document.write(`
-
-        <!DOCTYPE html>
-
-        <html>
-
-        <head>
-
-            <meta charset="UTF-8">
-
-            <title>
-                VetClinic Invoice
-            </title>
-
-            <style>
-
-                body {
-                    font-family:
-                        Arial,
-                        sans-serif;
-
-                    margin: 0;
-
-                    padding: 30px;
-
-                    color: #252d3d;
-
-                    background: white;
-                }
-
-                .invoice {
-                    max-width: 700px;
-
-                    margin: auto;
-
-                    border:
-                        1px solid #ddd;
-
-                    border-radius: 12px;
-
-                    padding: 25px;
-                }
-
-                .invoice-header {
-                    display: flex;
-
-                    justify-content:
-                        space-between;
-
-                    gap: 20px;
-                }
-
-                .invoice h3 {
-                    margin:
-                        0 0 10px;
-
-                    font-size:
-                        24px;
-                }
-
-                .meta {
-                    color: #555;
-
-                    font-size:
-                        14px;
-
-                    line-height:
-                        1.8;
-                }
-
-                .status {
-                    display:
-                        inline-block;
-
-                    padding:
-                        5px 10px;
-
-                    border-radius:
-                        20px;
-
-                    background:
-                        #eef2ff;
-
-                    font-size:
-                        12px;
-
-                    font-weight:
-                        600;
-
-                    margin-top:
-                        8px;
-                }
-
-                .total {
-                    font-size:
-                        22px;
-
-                    font-weight:
-                        700;
-
-                    margin-top:
-                        18px;
-
-                    padding-top:
-                        15px;
-
-                    border-top:
-                        1px solid #ddd;
-                }
-
-                .no-print {
-                    display:
-                        none !important;
-                }
-
-            </style>
-
-        </head>
-
-        <body>
-
-            ${invoiceElement.outerHTML}
-
-        </body>
-
-        </html>
-
-    `);
-
-
-    printWindow.document.close();
-
-    printWindow.focus();
-
-
-    setTimeout(
-        () => {
-
-            printWindow.print();
-
-            printWindow.close();
-
-        },
-        300
-    );
-
-}
-
-
-async function saveInvoice() {
-
-    const patient_id =
-        patientSelect.value;
-
-
-    const invoice_date =
-        document.getElementById(
-            "invoice_date"
-        ).value;
-
-
-    const status =
-        document.getElementById(
-            "status"
-        ).value;
-
-
-    const invoice_number =
-        document.getElementById(
-            "invoice_number"
-        ).value.trim();
-
-
-    const subtotal =
-        Number(
-            document.getElementById(
-                "subtotal"
-            ).value
-        ) || 0;
-
-
-    const discount =
-        Number(
-            document.getElementById(
-                "discount"
-            ).value
-        ) || 0;
-
-
-    const total =
-        Math.max(
-            0,
-            subtotal - discount
-        );
-
-
-    if (!patient_id) {
-
-        message.textContent =
-            "Pilih patient terlebih dahulu.";
-
-        message.className =
-            "message error";
-
-        return;
-    }
-
-
-    saveButton.disabled =
-        true;
-
-
-    message.textContent =
-        "Saving invoice...";
-
-    message.className =
-        "message";
-
-
-    const {
-        error
-    } =
-    await supabaseClient
-    .from("invoices")
-    .insert({
-
-        patient_id:
-            patient_id,
-
-        invoice_number:
-            invoice_number ||
-            null,
-
-        invoice_date:
-            invoice_date,
-
-        subtotal:
-            subtotal,
-
-        discount:
-            discount,
-
-        total:
-            total,
-
-        status:
-            status
-
-    });
-
-
-    if (error) {
-
-        console.error(error);
-
-        message.textContent =
-            "Gagal menyimpan: " +
-            error.message;
-
-        message.className =
-            "message error";
-
-        saveButton.disabled =
-            false;
-
-        return;
-    }
-
-
-    message.textContent =
-        "Invoice berhasil disimpan!";
-
-    message.className =
-        "message success";
-
-
-    document.getElementById(
-        "invoice_number"
-    ).value = "";
-
-
-    document.getElementById(
-        "subtotal"
-    ).value = "0";
-
-
-    document.getElementById(
-        "discount"
-    ).value = "0";
-
-
-    document.getElementById(
-        "total"
-    ).value = "0";
-
-
-    patientSelect.value =
-        "";
-
-
-    saveButton.disabled =
-        false;
-
-
-    loadInvoices();
-
-}
-
-
-saveButton.addEventListener(
-    "click",
-    saveInvoice
-);
-
-
-async function deleteInvoice(id) {
-
-    if (
-        !confirm(
-            "Delete this invoice?"
-        )
-    ) {
-
-        return;
-    }
-
-
-    const {
-        error
-    } =
-    await supabaseClient
-    .from("invoices")
-    .delete()
-    .eq("id", id);
-
-
-    if (error) {
-
-        alert(
-            "Gagal menghapus: " +
-            error.message
-        );
-
-        return;
-    }
-
-
-    loadInvoices();
-
-}
-
-
-function formatMoney(value) {
-
-    return new Intl.NumberFormat(
-        "id-ID",
-        {
-            style:
-                "currency",
-
-            currency:
-                "IDR",
-
-            maximumFractionDigits:
-                0
-        }
-    ).format(
-        Number(value || 0)
-    );
-
-}
-
-
-function escapeHtml(value) {
-
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
-
-}
-
-
-async function init() {
-
-    const loggedIn =
-        await checkSession();
-
-    if (!loggedIn) {
-        return;
-    }
-
-    loadPatients();
-
-    loadInvoices();
+addItem();
 
 }
 
@@ -1226,6 +2344,7 @@ async function init() {
 init();
 
 </script>
+
 
 </body>
 
