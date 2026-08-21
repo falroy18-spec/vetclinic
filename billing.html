@@ -195,8 +195,6 @@ button:disabled {
 
 }
 
-/* PRINT */
-
 @media print {
 
     body {
@@ -361,7 +359,8 @@ value="0">
 type="number"
 id="total"
 min="0"
-value="0">
+value="0"
+readonly>
 
 </div>
 
@@ -409,7 +408,6 @@ Loading invoices...
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <script>
 
 const SUPABASE_URL =
@@ -418,27 +416,10 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
 
-
 const supabaseClient =
 supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
-);
-
-
-supabaseClient.auth.getSession().then(
-    ({ data: { session } }) => {
-
-        if (!session) {
-
-            window.location.href =
-                "login.html";
-
-            return;
-
-        }
-
-    }
 );
 
 
@@ -506,6 +487,27 @@ document.getElementById(
 );
 
 
+async function checkSession() {
+
+    const {
+        data: {
+            session
+        }
+    } =
+    await supabaseClient.auth.getSession();
+
+    if (!session) {
+
+        window.location.href =
+            "login.html";
+
+        return false;
+    }
+
+    return true;
+}
+
+
 async function loadPatients() {
 
     const {
@@ -528,7 +530,6 @@ async function loadPatients() {
             "message error";
 
         return;
-
     }
 
 
@@ -599,12 +600,11 @@ async function loadInvoices() {
 
         invoiceList.innerHTML = `
             <div class="empty error">
-                ${error.message}
+                ${escapeHtml(error.message)}
             </div>
         `;
 
         return;
-
     }
 
 
@@ -617,7 +617,6 @@ async function loadInvoices() {
         `;
 
         return;
-
     }
 
 
@@ -708,9 +707,7 @@ async function loadInvoices() {
                     <button
                         class="print-btn"
                         type="button"
-                        onclick="printInvoice(
-                            '${invoice.id}'
-                        )">
+                        onclick="printInvoice('${invoice.id}')">
 
                         🖨️ Print
 
@@ -720,9 +717,7 @@ async function loadInvoices() {
                     <button
                         class="danger"
                         type="button"
-                        onclick="deleteInvoice(
-                            '${invoice.id}'
-                        )">
+                        onclick="deleteInvoice('${invoice.id}')">
 
                         Delete
 
@@ -789,7 +784,6 @@ function printInvoice(id) {
         );
 
         return;
-
     }
 
 
@@ -808,7 +802,6 @@ function printInvoice(id) {
         );
 
         return;
-
     }
 
 
@@ -829,7 +822,6 @@ function printInvoice(id) {
             <style>
 
                 body {
-
                     font-family:
                         Arial,
                         sans-serif;
@@ -841,12 +833,9 @@ function printInvoice(id) {
                     color: #252d3d;
 
                     background: white;
-
                 }
 
-
                 .invoice {
-
                     max-width: 700px;
 
                     margin: auto;
@@ -857,35 +846,26 @@ function printInvoice(id) {
                     border-radius: 12px;
 
                     padding: 25px;
-
                 }
 
-
                 .invoice-header {
-
                     display: flex;
 
                     justify-content:
                         space-between;
 
                     gap: 20px;
-
                 }
 
-
                 .invoice h3 {
-
                     margin:
                         0 0 10px;
 
                     font-size:
                         24px;
-
                 }
 
-
                 .meta {
-
                     color: #555;
 
                     font-size:
@@ -893,12 +873,9 @@ function printInvoice(id) {
 
                     line-height:
                         1.8;
-
                 }
 
-
                 .status {
-
                     display:
                         inline-block;
 
@@ -919,12 +896,9 @@ function printInvoice(id) {
 
                     margin-top:
                         8px;
-
                 }
 
-
                 .total {
-
                     font-size:
                         22px;
 
@@ -939,21 +913,16 @@ function printInvoice(id) {
 
                     border-top:
                         1px solid #ddd;
-
                 }
 
-
                 .no-print {
-
                     display:
                         none !important;
-
                 }
 
             </style>
 
         </head>
-
 
         <body>
 
@@ -1041,7 +1010,6 @@ async function saveInvoice() {
             "message error";
 
         return;
-
     }
 
 
@@ -1103,7 +1071,6 @@ async function saveInvoice() {
             false;
 
         return;
-
     }
 
 
@@ -1162,7 +1129,6 @@ async function deleteInvoice(id) {
     ) {
 
         return;
-
     }
 
 
@@ -1183,7 +1149,6 @@ async function deleteInvoice(id) {
         );
 
         return;
-
     }
 
 
@@ -1242,9 +1207,23 @@ function escapeHtml(value) {
 }
 
 
-loadPatients();
+async function init() {
 
-loadInvoices();
+    const loggedIn =
+        await checkSession();
+
+    if (!loggedIn) {
+        return;
+    }
+
+    loadPatients();
+
+    loadInvoices();
+
+}
+
+
+init();
 
 </script>
 
