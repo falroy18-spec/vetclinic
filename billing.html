@@ -2,11 +2,10 @@
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Billing - VetClinic</title>
+<title>Billing - Dwara Pet Care</title>
 
 <style>
 
@@ -83,6 +82,10 @@ button {
     font-weight: 600;
 }
 
+button:disabled {
+    opacity: 0.6;
+}
+
 .primary {
     background: #5146e5;
     color: white;
@@ -91,11 +94,6 @@ button {
 .secondary {
     background: #e5e7eb;
     color: #374151;
-}
-
-.success {
-    background: #16a34a;
-    color: white;
 }
 
 .danger {
@@ -116,10 +114,6 @@ button {
     margin-bottom: 15px;
 }
 
-.items-header h3 {
-    margin: 0;
-}
-
 .item-table {
     width: 100%;
     border-collapse: collapse;
@@ -134,10 +128,6 @@ button {
 .item-table th {
     background: #f9fafb;
     text-align: left;
-}
-
-.item-table input {
-    margin: 0;
 }
 
 .amount {
@@ -199,6 +189,7 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    gap: 15px;
 }
 
 .invoice h3 {
@@ -283,14 +274,9 @@ button {
 
 </head>
 
-
 <body>
 
-
 <div class="container">
-
-
-<!-- HEADER -->
 
 <div class="header">
 
@@ -299,11 +285,10 @@ button {
 <h1>💰 Billing</h1>
 
 <p>
-VetClinic Billing Management
+Dwara Pet Care Billing Management
 </p>
 
 </div>
-
 
 <button
 class="secondary"
@@ -317,16 +302,11 @@ Dashboard
 </div>
 
 
-
-<!-- NEW INVOICE -->
-
 <div class="card">
 
 <h2>New Invoice</h2>
 
-
 <div class="form-grid">
-
 
 <div class="full">
 
@@ -345,7 +325,6 @@ Select patient
 </div>
 
 
-
 <div>
 
 <label>
@@ -357,7 +336,6 @@ type="date"
 id="invoice_date">
 
 </div>
-
 
 
 <div>
@@ -385,7 +363,6 @@ Partial
 </div>
 
 
-
 <div>
 
 <label>
@@ -399,19 +376,14 @@ placeholder="Optional">
 
 </div>
 
-
 </div>
 
-
-
-<!-- ITEMS -->
 
 <div class="items-header">
 
 <h3>
 Services / Items
 </h3>
-
 
 <button
 class="secondary"
@@ -423,7 +395,6 @@ id="addItem">
 </button>
 
 </div>
-
 
 
 <div style="overflow-x:auto;">
@@ -438,28 +409,26 @@ id="addItem">
 Description
 </th>
 
-<th style="width:100px;">
+<th>
 Qty
 </th>
 
-<th style="width:180px;">
+<th>
 Unit Price
 </th>
 
-<th style="width:180px;">
+<th>
 Total
 </th>
 
-<th style="width:80px;">
+<th>
 </th>
 
 </tr>
 
 </thead>
 
-
 <tbody id="itemsBody">
-
 </tbody>
 
 </table>
@@ -467,11 +436,7 @@ Total
 </div>
 
 
-
-<!-- SUMMARY -->
-
 <div class="summary">
-
 
 <div class="summary-row">
 
@@ -484,7 +449,6 @@ Rp0
 </strong>
 
 </div>
-
 
 
 <div class="summary-row">
@@ -502,7 +466,6 @@ min="0">
 </div>
 
 
-
 <div class="summary-row total-row">
 
 <span>
@@ -515,9 +478,7 @@ Rp0
 
 </div>
 
-
 </div>
-
 
 
 <div style="margin-top:20px;">
@@ -540,19 +501,14 @@ class="message">
 
 </div>
 
-
 </div>
 
-
-
-<!-- INVOICES -->
 
 <div class="card">
 
 <h2>
 Invoices
 </h2>
-
 
 <div id="invoiceList">
 
@@ -564,24 +520,18 @@ Loading invoices...
 
 </div>
 
-
 </div>
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <script>
-
 
 const SUPABASE_URL =
 "https://zltbjbbofvvndxirlipf.supabase.co";
 
-
 const SUPABASE_KEY =
 "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
-
 
 const supabaseClient =
 supabase.createClient(
@@ -590,35 +540,33 @@ supabase.createClient(
 );
 
 
-
 const patientSelect =
 document.getElementById(
     "patient"
 );
-
 
 const itemsBody =
 document.getElementById(
     "itemsBody"
 );
 
-
 const discountInput =
 document.getElementById(
     "discount"
 );
-
 
 const message =
 document.getElementById(
     "message"
 );
 
+const invoiceList =
+document.getElementById(
+    "invoiceList"
+);
 
 
-/* =========================
-   FORMAT MONEY
-========================= */
+/* MONEY */
 
 function money(value) {
 
@@ -636,44 +584,23 @@ return new Intl.NumberFormat(
 }
 
 
-
-/* =========================
-   ESCAPE HTML
-========================= */
+/* ESCAPE */
 
 function escapeHtml(value) {
 
 return String(
     value ?? ""
 )
-.replace(
-    /&/g,
-    "&amp;"
-)
-.replace(
-    /</g,
-    "&lt;"
-)
-.replace(
-    />/g,
-    "&gt;"
-)
-.replace(
-    /"/g,
-    "&quot;"
-)
-.replace(
-    /'/g,
-    "&#039;"
-);
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
 
 }
 
 
-
-/* =========================
-   SESSION
-========================= */
+/* SESSION */
 
 async function checkSession() {
 
@@ -701,22 +628,18 @@ return true;
 }
 
 
-
-/* =========================
-   ADD ITEM
-========================= */
+/* ADD ITEM */
 
 function addItem(
-    description = "",
+    description = "Jasa Dokter",
     quantity = 1,
-    unitPrice = 0
+    unitPrice = 45000
 ) {
 
 const row =
 document.createElement(
     "tr"
 );
-
 
 row.innerHTML = `
 
@@ -725,11 +648,10 @@ row.innerHTML = `
 <input
 type="text"
 class="description"
-placeholder="e.g. Jasa Dokter"
+placeholder="Contoh: Jasa Dokter"
 value="${escapeHtml(description)}">
 
 </td>
-
 
 <td>
 
@@ -741,7 +663,6 @@ value="${quantity}">
 
 </td>
 
-
 <td>
 
 <input
@@ -752,13 +673,9 @@ value="${unitPrice}">
 
 </td>
 
-
 <td class="amount">
-
 Rp0
-
 </td>
-
 
 <td>
 
@@ -774,11 +691,9 @@ Delete
 
 `;
 
-
 itemsBody.appendChild(
     row
 );
-
 
 
 row.querySelectorAll(
@@ -793,7 +708,6 @@ row.querySelectorAll(
 
     }
 );
-
 
 
 row.querySelector(
@@ -815,10 +729,7 @@ calculateTotal();
 }
 
 
-
-/* =========================
-   CALCULATE
-========================= */
+/* CALCULATE */
 
 function calculateTotal() {
 
@@ -860,8 +771,7 @@ rows.forEach(
         money(total);
 
 
-        subtotal +=
-        total;
+        subtotal += total;
 
     }
 );
@@ -894,17 +804,13 @@ money(grandTotal);
 }
 
 
-
 discountInput.addEventListener(
     "input",
     calculateTotal
 );
 
 
-
-/* =========================
-   LOAD PATIENTS
-========================= */
+/* LOAD PATIENTS */
 
 async function loadPatients() {
 
@@ -925,8 +831,6 @@ await supabaseClient
 
 
 if (error) {
-
-console.error(error);
 
 message.textContent =
 "Gagal mengambil patient: " +
@@ -957,17 +861,14 @@ Select patient
             "option"
         );
 
-
         option.value =
         patient.id;
-
 
         option.textContent =
         patient.name +
         " (" +
         patient.species +
         ")";
-
 
         patientSelect.appendChild(
             option
@@ -979,10 +880,7 @@ Select patient
 }
 
 
-
-/* =========================
-   GET ITEMS
-========================= */
+/* GET ITEMS */
 
 function getItems() {
 
@@ -990,7 +888,6 @@ const rows =
 itemsBody.querySelectorAll(
     "tr"
 );
-
 
 const items = [];
 
@@ -1022,9 +919,7 @@ rows.forEach(
         ) || 0;
 
 
-        if (
-            description
-        ) {
+        if (description) {
 
             items.push({
 
@@ -1054,34 +949,27 @@ return items;
 }
 
 
-
-/* =========================
-   SAVE INVOICE
-========================= */
+/* SAVE INVOICE */
 
 async function saveInvoice() {
 
 const patient_id =
 patientSelect.value;
 
-
 const invoice_date =
 document.getElementById(
     "invoice_date"
 ).value;
-
 
 const status =
 document.getElementById(
     "status"
 ).value;
 
-
 const invoice_number =
 document.getElementById(
     "invoice_number"
 ).value.trim();
-
 
 const items =
 getItems();
@@ -1100,9 +988,20 @@ return;
 }
 
 
-if (
-items.length === 0
-) {
+if (!invoice_date) {
+
+message.textContent =
+"Pilih tanggal invoice.";
+
+message.className =
+"message error";
+
+return;
+
+}
+
+
+if (!items.length) {
 
 message.textContent =
 "Tambahkan minimal satu jasa/item.";
@@ -1117,12 +1016,8 @@ return;
 
 const subtotal =
 items.reduce(
-    (
-        sum,
-        item
-    ) =>
-    sum +
-    item.total,
+    (sum,item) =>
+    sum + item.total,
     0
 );
 
@@ -1140,10 +1035,12 @@ Math.max(
 );
 
 
-
+const saveButton =
 document.getElementById(
     "saveInvoice"
-).disabled =
+);
+
+saveButton.disabled =
 true;
 
 
@@ -1153,9 +1050,6 @@ message.textContent =
 message.className =
 "message";
 
-
-
-/* SAVE INVOICE */
 
 const {
     data: invoice,
@@ -1194,10 +1088,7 @@ await supabaseClient
 .single();
 
 
-
 if (error) {
-
-console.error(error);
 
 message.textContent =
 "Gagal menyimpan invoice: " +
@@ -1206,18 +1097,13 @@ error.message;
 message.className =
 "message error";
 
-document.getElementById(
-    "saveInvoice"
-).disabled =
+saveButton.disabled =
 false;
 
 return;
 
 }
 
-
-
-/* SAVE ITEMS */
 
 const itemRows =
 items.map(
@@ -1254,15 +1140,7 @@ await supabaseClient
 );
 
 
-
 if (itemError) {
-
-console.error(
-    itemError
-);
-
-
-/* DELETE INVOICE IF ITEMS FAIL */
 
 await supabaseClient
 .from(
@@ -1282,16 +1160,12 @@ itemError.message;
 message.className =
 "message error";
 
-
-document.getElementById(
-    "saveInvoice"
-).disabled =
+saveButton.disabled =
 false;
 
 return;
 
 }
-
 
 
 message.textContent =
@@ -1301,21 +1175,16 @@ message.className =
 "message ok";
 
 
-/* RESET */
-
 patientSelect.value =
 "";
-
 
 document.getElementById(
     "invoice_number"
 ).value =
 "";
 
-
 discountInput.value =
 "0";
-
 
 itemsBody.innerHTML =
 "";
@@ -1323,25 +1192,18 @@ itemsBody.innerHTML =
 
 addItem();
 
-
 calculateTotal();
 
-
-document.getElementById(
-    "saveInvoice"
-).disabled =
+saveButton.disabled =
 false;
 
 
-loadInvoices();
+await loadInvoices();
 
 }
 
 
-
-/* =========================
-   LOAD INVOICES
-========================= */
+/* LOAD INVOICES */
 
 async function loadInvoices() {
 
@@ -1378,7 +1240,6 @@ await supabaseClient
 );
 
 
-
 if (error) {
 
 invoiceList.innerHTML = `
@@ -1398,11 +1259,7 @@ return;
 }
 
 
-
-if (
-!data ||
-data.length === 0
-) {
+if (!data || !data.length) {
 
 invoiceList.innerHTML = `
 
@@ -1419,17 +1276,14 @@ return;
 }
 
 
-
 invoiceList.innerHTML =
 "";
 
 
-
 for (
-const invoice
-of data
+    const invoice
+    of data
 ) {
-
 
 const {
     data: items
@@ -1447,10 +1301,8 @@ await supabaseClient
 );
 
 
-
 const patient =
 invoice.patients;
-
 
 
 let itemHTML =
@@ -1494,12 +1346,10 @@ ${money(
 );
 
 
-
 const div =
 document.createElement(
     "div"
 );
-
 
 div.className =
 "invoice";
@@ -1508,7 +1358,6 @@ div.className =
 div.innerHTML = `
 
 <div class="invoice-top">
-
 
 <div>
 
@@ -1520,7 +1369,6 @@ ${escapeHtml(
 )}
 
 </h3>
-
 
 <div class="meta">
 
@@ -1542,7 +1390,8 @@ ${escapeHtml(
     ""
 )}
 
-${patient?.breed
+${
+    patient?.breed
     ? " - " +
       escapeHtml(
           patient.breed
@@ -1561,7 +1410,6 @@ ${escapeHtml(
 </div>
 
 </div>
-
 
 
 <div class="actions">
@@ -1587,16 +1435,16 @@ Delete
 
 </div>
 
-
 </div>
 
 
-
 ${
-items && items.length
-?
+    items && items.length
+    ?
 
 `
+
+<div style="overflow-x:auto;">
 
 <table class="invoice-items">
 
@@ -1624,7 +1472,6 @@ Total
 
 </thead>
 
-
 <tbody>
 
 ${itemHTML}
@@ -1633,17 +1480,18 @@ ${itemHTML}
 
 </table>
 
+</div>
+
 `
 
-:
+    :
 
-""
-
+    ""
 }
 
 
-
-<div class="meta"
+<div
+class="meta"
 style="margin-top:15px;">
 
 Subtotal:
@@ -1659,7 +1507,6 @@ ${money(
 )}
 
 </div>
-
 
 
 <div class="invoice-total">
@@ -1683,13 +1530,10 @@ invoiceList.appendChild(
 }
 
 
-
-/* =========================
-   DELETE
-========================= */
+/* DELETE */
 
 async function deleteInvoice(
-id
+    id
 ) {
 
 if (
@@ -1729,20 +1573,16 @@ return;
 }
 
 
-loadInvoices();
+await loadInvoices();
 
 }
 
 
-
-/* =========================
-   PRINT
-========================= */
+/* PRINT */
 
 async function printInvoice(
-id
+    id
 ) {
-
 
 const {
     data: invoice,
@@ -1779,9 +1619,9 @@ return;
 }
 
 
-
 const {
-    data: items
+    data: items,
+    error: itemsError
 } =
 await supabaseClient
 .from(
@@ -1796,10 +1636,20 @@ await supabaseClient
 );
 
 
+if (itemsError) {
+
+alert(
+"Gagal mengambil item invoice: " +
+itemsError.message
+);
+
+return;
+
+}
+
 
 const patient =
 invoice.patients;
-
 
 
 let itemRows =
@@ -1843,7 +1693,6 @@ ${money(
 );
 
 
-
 const printWindow =
 window.open(
     "",
@@ -1863,6 +1712,8 @@ return;
 }
 
 
+printWindow.document.open();
+
 
 printWindow.document.write(`
 
@@ -1875,9 +1726,8 @@ printWindow.document.write(`
 <meta charset="UTF-8">
 
 <title>
-VetClinic Invoice
+Dwara Pet Care Invoice
 </title>
-
 
 <style>
 
@@ -1895,7 +1745,6 @@ color: #252d3d;
 
 }
 
-
 .invoice {
 
 max-width:
@@ -1905,7 +1754,6 @@ margin:
 auto;
 
 }
-
 
 .header {
 
@@ -1920,7 +1768,6 @@ margin-bottom:
 
 }
 
-
 .clinic {
 
 font-size:
@@ -1930,7 +1777,6 @@ font-weight:
 bold;
 
 }
-
 
 .patient {
 
@@ -1945,7 +1791,6 @@ margin-top:
 
 }
 
-
 .meta {
 
 color:
@@ -1958,7 +1803,6 @@ font-size:
 14px;
 
 }
-
 
 table {
 
@@ -1973,7 +1817,6 @@ margin-top:
 
 }
 
-
 th,
 td {
 
@@ -1985,14 +1828,12 @@ border-bottom:
 
 }
 
-
 th {
 
 text-align:
 left;
 
 }
-
 
 th:nth-child(2),
 td:nth-child(2) {
@@ -2001,7 +1842,6 @@ text-align:
 center;
 
 }
-
 
 th:nth-child(3),
 td:nth-child(3),
@@ -2012,7 +1852,6 @@ text-align:
 right;
 
 }
-
 
 .summary {
 
@@ -2027,7 +1866,6 @@ margin-top:
 
 }
 
-
 .summary div {
 
 display:
@@ -2040,7 +1878,6 @@ padding:
 6px 0;
 
 }
-
 
 .grand {
 
@@ -2057,7 +1894,6 @@ font-weight:
 bold;
 
 }
-
 
 .footer {
 
@@ -2079,17 +1915,14 @@ color:
 
 </head>
 
-
 <body>
 
-
 <div class="invoice">
-
 
 <div class="header">
 
 <div class="clinic">
-VetClinic
+Dwara Pet Care
 </div>
 
 <div class="meta">
@@ -2097,7 +1930,6 @@ Veterinary Clinic
 </div>
 
 </div>
-
 
 
 <div class="patient">
@@ -2108,7 +1940,6 @@ ${escapeHtml(
 )}
 
 </div>
-
 
 
 <div class="meta">
@@ -2151,7 +1982,6 @@ ${escapeHtml(
 </div>
 
 
-
 <table>
 
 <thead>
@@ -2178,7 +2008,6 @@ Total
 
 </thead>
 
-
 <tbody>
 
 ${itemRows}
@@ -2188,9 +2017,7 @@ ${itemRows}
 </table>
 
 
-
 <div class="summary">
-
 
 <div>
 
@@ -2236,20 +2063,16 @@ ${money(
 
 </div>
 
-
 </div>
-
 
 
 <div class="footer">
 
-Thank you for trusting VetClinic.
+Thank you for trusting Dwara Pet Care.
 
 </div>
 
-
 </div>
-
 
 </body>
 
@@ -2260,27 +2083,23 @@ Thank you for trusting VetClinic.
 
 printWindow.document.close();
 
+
 printWindow.focus();
 
 
 setTimeout(
-function() {
+    function() {
 
-printWindow.print();
+        printWindow.print();
 
-printWindow.close();
-
-},
-500
+    },
+    500
 );
 
 }
 
 
-
-/* =========================
-   BUTTON
-========================= */
+/* BUTTONS */
 
 document.getElementById(
     "addItem"
@@ -2302,10 +2121,7 @@ document.getElementById(
 );
 
 
-
-/* =========================
-   INIT
-========================= */
+/* INIT */
 
 async function init() {
 
@@ -2336,7 +2152,11 @@ await loadPatients();
 await loadInvoices();
 
 
-addItem();
+addItem(
+    "Jasa Dokter",
+    1,
+    45000
+);
 
 }
 
@@ -2344,7 +2164,6 @@ addItem();
 init();
 
 </script>
-
 
 </body>
 
