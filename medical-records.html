@@ -8,16 +8,175 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0">
 
-<title>Medical Records Test</title>
+<title>Medical Records - VetClinic</title>
 
 <link rel="stylesheet" href="style.css">
+
+<style>
+
+.search-box {
+    display: grid;
+    grid-template-columns: 1fr 180px;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.search-box input,
+.search-box select {
+    padding: 11px 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.record-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.record-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.patient-name {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.patient-meta {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.record-date {
+    color: #6b7280;
+    font-size: 13px;
+    text-align: right;
+}
+
+.record-section {
+    margin-top: 18px;
+}
+
+.record-section h4 {
+    margin: 0 0 8px;
+    font-size: 14px;
+}
+
+.record-section p {
+    white-space: pre-wrap;
+    margin: 0;
+    color: #374151;
+    line-height: 1.6;
+}
+
+.vitals {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.vital {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.vital-label {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.vital-value {
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.record-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.edit-button,
+.delete-button,
+.add-button {
+    border: none;
+    border-radius: 7px;
+    padding: 9px 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.edit-button {
+    background: #4f46e5;
+    color: white;
+}
+
+.delete-button {
+    background: #ef4444;
+    color: white;
+}
+
+.add-button {
+    background: #4f46e5;
+    color: white;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #6b7280;
+}
+
+.history-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+@media(max-width: 700px) {
+
+    .search-box {
+        grid-template-columns: 1fr;
+    }
+
+    .vitals {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .record-header {
+        flex-direction: column;
+    }
+
+    .record-date {
+        text-align: left;
+    }
+
+}
+
+</style>
 
 </head>
 
 
 <body>
 
+
 <div class="app">
+
+
+<!-- SIDEBAR -->
 
 <aside class="sidebar">
 
@@ -59,36 +218,1268 @@ Reports
 </aside>
 
 
+<!-- MAIN -->
+
 <main class="main-content">
+
 
 <header>
 
+<div>
+
 <h2>
-Medical Records TEST
+Medical Records
 </h2>
 
 <p>
-If you can see this page, medical-records.html itself is not redirecting.
+Manage patient consultation history.
 </p>
+
+</div>
+
+<a
+    href="medical-record-detail.html"
+    class="add-button"
+>
++ New Record
+</a>
 
 </header>
 
 
+<!-- SEARCH -->
+
 <section class="appointments">
 
 <h3>
-TEST PAGE
+Search Medical Records
 </h3>
 
-<p id="status">
-Medical Records HTML berhasil dibuka.
-</p>
+
+<div class="search-box">
+
+<input
+    type="text"
+    id="searchInput"
+    placeholder="Search patient, owner, or diagnosis..."
+>
+
+
+<select id="patientFilter">
+
+<option value="">
+All Patients
+</option>
+
+</select>
+
+</div>
+
+
+<div
+    id="searchInfo"
+    style="
+        font-size:13px;
+        color:#6b7280;
+        margin-bottom:15px;
+    "
+>
+Loading records...
+</div>
+
 
 </section>
+
+
+<!-- HISTORY -->
+
+<section class="appointments">
+
+<div class="history-title">
+
+<h3>
+Medical History
+</h3>
+
+</div>
+
+
+<div id="recordsContainer">
+
+<div class="empty-state">
+Loading medical records...
+</div>
+
+</div>
+
+
+</section>
+
 
 </main>
 
 </div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="clinic-context.js"></script>
+
+
+<script>
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+
+let currentClinic = null;
+
+let allRecords = [];
+
+let patients = [];
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+
+const searchInput =
+    document.getElementById(
+        "searchInput"
+    );
+
+
+const patientFilter =
+    document.getElementById(
+        "patientFilter"
+    );
+
+
+const recordsContainer =
+    document.getElementById(
+        "recordsContainer"
+    );
+
+
+const searchInfo =
+    document.getElementById(
+        "searchInfo"
+    );
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+
+function escapeHTML(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =====================================================
+   LOAD PATIENTS
+===================================================== */
+
+
+async function loadPatients() {
+
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+
+        .from("patients")
+
+        .select(`
+            id,
+            name,
+            species,
+            breed,
+            sex,
+            owner,
+            owner_name
+        `)
+
+        .eq(
+            "clinic_id",
+            currentClinic.clinicId
+        )
+
+        .order(
+            "name",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Patients error:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    patients =
+        data || [];
+
+
+    patientFilter.innerHTML = `
+
+        <option value="">
+            All Patients
+        </option>
+
+    `;
+
+
+    patients.forEach(
+        patient => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                patient.id;
+
+
+            option.textContent =
+
+                patient.name +
+
+                " — Owner: " +
+
+                (
+                    patient.owner_name ||
+                    patient.owner ||
+                    "-"
+                );
+
+
+            patientFilter.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   LOAD RECORDS
+===================================================== */
+
+
+async function loadRecords() {
+
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+
+        .from("medical_records")
+
+        .select("*")
+
+        .eq(
+            "clinic_id",
+            currentClinic.clinicId
+        )
+
+        .order(
+            "visit_date",
+            {
+                ascending: false
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Medical records error:",
+            error
+        );
+
+
+        recordsContainer.innerHTML = `
+
+            <div class="empty-state">
+
+                Failed to load medical records.
+
+                <br><br>
+
+                ${escapeHTML(
+                    error.message
+                )}
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    allRecords =
+        data || [];
+
+
+    renderRecords();
+
+}
+
+
+/* =====================================================
+   GET PATIENT
+===================================================== */
+
+
+function getPatient(
+    patientId
+) {
+
+    return patients.find(
+        patient =>
+            patient.id ===
+            patientId
+    );
+
+}
+
+
+/* =====================================================
+   RENDER
+===================================================== */
+
+
+function renderRecords() {
+
+
+    const keyword =
+        searchInput.value
+            .trim()
+            .toLowerCase();
+
+
+    const selectedPatient =
+        patientFilter.value;
+
+
+    let records =
+        [...allRecords];
+
+
+    /* PATIENT FILTER */
+
+    if (
+        selectedPatient
+    ) {
+
+        records =
+            records.filter(
+                record =>
+                    record.patient_id ===
+                    selectedPatient
+            );
+
+    }
+
+
+    /* SEARCH */
+
+    if (keyword) {
+
+        records =
+            records.filter(
+                record => {
+
+
+                    const patient =
+                        getPatient(
+                            record.patient_id
+                        );
+
+
+                    const patientName =
+                        patient?.name ||
+                        "";
+
+
+                    const owner =
+                        patient?.owner_name ||
+                        patient?.owner ||
+                        "";
+
+
+                    const diagnosis =
+                        record.diagnosis ||
+                        "";
+
+
+                    const complaint =
+                        record.chief_complaint ||
+                        "";
+
+
+                    const subjective =
+                        record.subjective ||
+                        "";
+
+
+                    const assessment =
+                        record.assessment ||
+                        "";
+
+
+                    const combined =
+
+                        patientName +
+                        " " +
+                        owner +
+                        " " +
+                        diagnosis +
+                        " " +
+                        complaint +
+                        " " +
+                        subjective +
+                        " " +
+                        assessment;
+
+
+                    return combined
+                        .toLowerCase()
+                        .includes(
+                            keyword
+                        );
+
+                }
+            );
+
+    }
+
+
+    /* INFO */
+
+    searchInfo.textContent =
+
+        records.length +
+
+        (
+            records.length === 1
+            ? " medical record"
+            : " medical records"
+        );
+
+
+    /* EMPTY */
+
+    if (
+        records.length === 0
+    ) {
+
+        recordsContainer.innerHTML = `
+
+            <div class="empty-state">
+
+                No medical records found.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* RENDER */
+
+    recordsContainer.innerHTML =
+        records
+            .map(
+                record =>
+                    createRecordCard(
+                        record
+                    )
+            )
+            .join("");
+
+}
+
+
+/* =====================================================
+   RECORD CARD
+===================================================== */
+
+
+function createRecordCard(
+    record
+) {
+
+
+    const patient =
+        getPatient(
+            record.patient_id
+        );
+
+
+    const patientName =
+        patient?.name ||
+        "Unknown Patient";
+
+
+    const species =
+        patient?.species ||
+        "";
+
+
+    const breed =
+        patient?.breed ||
+        "";
+
+
+    const owner =
+        patient?.owner_name ||
+        patient?.owner ||
+        "-";
+
+
+    const visitDate =
+        formatDate(
+            record.visit_date
+        );
+
+
+    return `
+
+        <div
+            class="record-card"
+            data-patient-id="${escapeHTML(
+                record.patient_id
+            )}"
+        >
+
+            <div class="record-header">
+
+                <div>
+
+                    <div class="patient-name">
+
+                        ${escapeHTML(
+                            patientName
+                        )}
+
+                    </div>
+
+                    <div class="patient-meta">
+
+                        ${escapeHTML(
+                            species
+                        )}
+
+                        ${
+                            breed
+                            ? " • " +
+                              escapeHTML(
+                                  breed
+                              )
+                            : ""
+                        }
+
+                        <br>
+
+                        Owner:
+                        ${escapeHTML(
+                            owner
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <div class="record-date">
+
+                    Visit:
+                    ${escapeHTML(
+                        visitDate
+                    )}
+
+                </div>
+
+            </div>
+
+
+            ${
+                record.chief_complaint
+                ? `
+
+                    <div class="record-section">
+
+                        <h4>
+                            Chief Complaint
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(
+                                record.chief_complaint
+                            )}
+                        </p>
+
+                    </div>
+
+                `
+                : ""
+            }
+
+
+            ${
+                record.subjective
+                ? `
+
+                    <div class="record-section">
+
+                        <h4>
+                            S — Subjective
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(
+                                record.subjective
+                            )}
+                        </p>
+
+                    </div>
+
+                `
+                : ""
+            }
+
+
+            <div class="record-section">
+
+                <h4>
+                    O — Objective
+                </h4>
+
+
+                <div class="vitals">
+
+
+                    ${vital(
+                        "Temperature",
+                        record.temperature !== null &&
+                        record.temperature !== undefined &&
+                        record.temperature !== ""
+                        ? record.temperature + " °C"
+                        : "-"
+                    )}
+
+
+                    ${vital(
+                        "Heart Rate",
+                        record.heart_rate !== null &&
+                        record.heart_rate !== undefined &&
+                        record.heart_rate !== ""
+                        ? record.heart_rate + " bpm"
+                        : "-"
+                    )}
+
+
+                    ${vital(
+                        "Respiratory Rate",
+                        record.respiratory_rate !== null &&
+                        record.respiratory_rate !== undefined &&
+                        record.respiratory_rate !== ""
+                        ? record.respiratory_rate + " /min"
+                        : "-"
+                    )}
+
+
+                    ${vital(
+                        "Weight",
+                        record.weight !== null &&
+                        record.weight !== undefined &&
+                        record.weight !== ""
+                        ? record.weight + " kg"
+                        : "-"
+                    )}
+
+
+                    ${vital(
+                        "CRT",
+                        record.crt !== null &&
+                        record.crt !== undefined &&
+                        record.crt !== ""
+                        ? record.crt + " sec"
+                        : "-"
+                    )}
+
+
+                    ${vital(
+                        "Mucous Membrane",
+                        record.mucous_membrane ||
+                        "-"
+                    )}
+
+
+                    ${vital(
+                        "Hydration",
+                        record.hydration ||
+                        "-"
+                    )}
+
+
+                    ${vital(
+                        "BCS",
+                        record.bcs !== null &&
+                        record.bcs !== undefined &&
+                        record.bcs !== ""
+                        ? record.bcs + "/9"
+                        : "-"
+                    )}
+
+
+                </div>
+
+
+                ${
+                    record.objective
+                    ? `
+
+                        <p
+                            style="
+                                margin-top:12px;
+                            "
+                        >
+
+                            ${escapeHTML(
+                                cleanObjective(
+                                    record.objective
+                                )
+                            )}
+
+                        </p>
+
+                    `
+                    : ""
+                }
+
+            </div>
+
+
+            ${
+                record.assessment
+                ? `
+
+                    <div class="record-section">
+
+                        <h4>
+                            A — Assessment
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(
+                                record.assessment
+                            )}
+                        </p>
+
+                    </div>
+
+                `
+                : ""
+            }
+
+
+            ${
+                record.plan
+                ? `
+
+                    <div class="record-section">
+
+                        <h4>
+                            P — Plan
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(
+                                record.plan
+                            )}
+                        </p>
+
+                    </div>
+
+                `
+                : ""
+            }
+
+
+            ${
+                record.diagnosis
+                ? `
+
+                    <div class="record-section">
+
+                        <h4>
+                            Diagnosis
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(
+                                record.diagnosis
+                            )}
+                        </p>
+
+                    </div>
+
+                `
+                : ""
+            }
+
+
+            ${
+                record.medication
+                ? `
+
+                    <div class="record-section">
+
+                        <h4>
+                            Medication
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(
+                                record.medication
+                            )}
+                        </p>
+
+                    </div>
+
+                `
+                : ""
+            }
+
+
+            ${
+                record.treatment
+                ? `
+
+                    <div class="record-section">
+
+                        <h4>
+                            Treatment
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(
+                                record.treatment
+                            )}
+                        </p>
+
+                    </div>
+
+                `
+                : ""
+            }
+
+
+            ${
+                record.procedure
+                ? `
+
+                    <div class="record-section">
+
+                        <h4>
+                            Procedure
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(
+                                record.procedure
+                            )}
+                        </p>
+
+                    </div>
+
+                `
+                : ""
+            }
+
+
+            <div class="record-actions">
+
+                <a
+                    href="medical-record-detail.html?id=${encodeURIComponent(
+                        record.id
+                    )}"
+                    class="edit-button"
+                >
+                    Edit
+                </a>
+
+
+                <button
+                    class="delete-button"
+                    onclick="deleteRecord('${record.id}')"
+                >
+                    Delete
+                </button>
+
+            </div>
+
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   VITAL
+===================================================== */
+
+
+function vital(
+    label,
+    value
+) {
+
+    return `
+
+        <div class="vital">
+
+            <div class="vital-label">
+
+                ${escapeHTML(
+                    label
+                )}
+
+            </div>
+
+            <div class="vital-value">
+
+                ${escapeHTML(
+                    value
+                )}
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   CLEAN OBJECTIVE
+===================================================== */
+
+
+function cleanObjective(
+    objective
+) {
+
+
+    if (!objective) {
+
+        return "";
+
+    }
+
+
+    let text =
+        String(
+            objective
+        );
+
+
+    const lines =
+        text
+            .split("\n")
+            .filter(
+                line => {
+
+                    const lower =
+                        line
+                            .toLowerCase()
+                            .trim();
+
+
+                    return !(
+                        lower.startsWith(
+                            "temperature:"
+                        ) ||
+
+                        lower.startsWith(
+                            "heart rate/pulse:"
+                        ) ||
+
+                        lower.startsWith(
+                            "heart rate:"
+                        ) ||
+
+                        lower.startsWith(
+                            "respiratory rate:"
+                        ) ||
+
+                        lower.startsWith(
+                            "weight:"
+                        ) ||
+
+                        lower.startsWith(
+                            "crt:"
+                        ) ||
+
+                        lower.startsWith(
+                            "mucous membrane:"
+                        ) ||
+
+                        lower.startsWith(
+                            "hydration:"
+                        ) ||
+
+                        lower.startsWith(
+                            "bcs:"
+                        )
+
+                    );
+
+                }
+            );
+
+
+    return lines.join(
+        "\n"
+    ).trim();
+
+}
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+
+function formatDate(
+    value
+) {
+
+
+    if (!value) {
+
+        return "-";
+
+    }
+
+
+    const date =
+        new Date(
+            value
+        );
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return value;
+
+    }
+
+
+    return date.toLocaleDateString(
+        "en-GB",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+/* =====================================================
+   DELETE
+===================================================== */
+
+
+async function deleteRecord(
+    id
+) {
+
+
+    const confirmed =
+        confirm(
+            "Delete this medical record?"
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+    await supabaseClient
+
+        .from(
+            "medical_records"
+        )
+
+        .delete()
+
+        .eq(
+            "id",
+            id
+        )
+
+        .eq(
+            "clinic_id",
+            currentClinic.clinicId
+        );
+
+
+    if (error) {
+
+        alert(
+            "Failed to delete record: " +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    await loadRecords();
+
+}
+
+
+/* =====================================================
+   SEARCH EVENTS
+===================================================== */
+
+
+searchInput.addEventListener(
+    "input",
+    renderRecords
+);
+
+
+patientFilter.addEventListener(
+    "change",
+    renderRecords
+);
+
+
+/* =====================================================
+   INIT
+===================================================== */
+
+
+async function init() {
+
+
+    /*
+     * IMPORTANT:
+     * Jangan redirect ke login dari sini.
+     */
+
+    currentClinic =
+        await getCurrentClinic();
+
+
+    if (!currentClinic) {
+
+        recordsContainer.innerHTML = `
+
+            <div class="empty-state">
+
+                Unable to load clinic information.
+
+                <br><br>
+
+                Please make sure you are logged in.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    await loadPatients();
+
+    await loadRecords();
+
+}
+
+
+init();
+
+
+</script>
+
 
 </body>
 
