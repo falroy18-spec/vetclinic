@@ -1,17 +1,18 @@
 const SUPABASE_URL =
-"https://zltbjbbofvndxirlipf.supabase.co";
+    "https://zltbjbbofvndxirlipf.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
+    "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
+
 
 const supabaseClient =
-supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
-async function getCurrentClinic(){
+async function getCurrentClinic() {
 
     const {
         data: {
@@ -19,10 +20,10 @@ async function getCurrentClinic(){
         },
         error: sessionError
     } =
-    await supabaseClient.auth.getSession();
+        await supabaseClient.auth.getSession();
 
 
-    if(sessionError){
+    if (sessionError) {
 
         console.error(
             "Session error:",
@@ -33,7 +34,11 @@ async function getCurrentClinic(){
     }
 
 
-    if(!session){
+    if (!session) {
+
+        console.error(
+            "Tidak ada active Supabase session."
+        );
 
         window.location.href =
             "login.html";
@@ -46,24 +51,24 @@ async function getCurrentClinic(){
         data,
         error
     } =
-    await supabaseClient
-        .from("clinic_members")
-        .select(`
-            clinic_id,
-            role,
-            clinics (
-                id,
-                name
+        await supabaseClient
+            .from("clinic_members")
+            .select(`
+                clinic_id,
+                role,
+                clinics (
+                    id,
+                    name
+                )
+            `)
+            .eq(
+                "user_id",
+                session.user.id
             )
-        `)
-        .eq(
-            "user_id",
-            session.user.id
-        )
-        .single();
+            .maybeSingle();
 
 
-    if(error){
+    if (error) {
 
         console.error(
             "Clinic lookup error:",
@@ -74,7 +79,10 @@ async function getCurrentClinic(){
     }
 
 
-    if(!data || !data.clinics){
+    if (
+        !data ||
+        !data.clinics
+    ) {
 
         console.error(
             "User belum terhubung ke klinik."
@@ -99,4 +107,5 @@ async function getCurrentClinic(){
             data.role
 
     };
+
 }
