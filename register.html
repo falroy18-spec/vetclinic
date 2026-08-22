@@ -64,8 +64,25 @@
             padding: 13px;
             border: 1px solid #d1d5db;
             border-radius: 8px;
-            margin-bottom: 18px;
+            margin-bottom: 10px;
             font-size: 15px;
+        }
+
+        .show-password {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 18px;
+            font-size: 14px;
+            font-weight: normal;
+            color: #4b5563;
+            cursor: pointer;
+        }
+
+        .show-password input {
+            width: auto;
+            margin: 0;
+            cursor: pointer;
         }
 
         button {
@@ -82,24 +99,6 @@
 
         button:disabled {
             opacity: 0.6;
-        }
-
-        .show-password {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            margin-top: -8px;
-            margin-bottom: 18px;
-            font-size: 14px;
-            font-weight: normal;
-            color: #4b5563;
-            cursor: pointer;
-        }
-
-        .show-password input {
-            width: auto;
-            margin: 0;
-            cursor: pointer;
         }
 
         .back-login {
@@ -157,6 +156,7 @@
             type="text"
             id="clinicName"
             placeholder="Enter clinic name"
+            autocomplete="organization"
         >
 
 
@@ -184,6 +184,18 @@
         >
 
 
+        <label class="show-password">
+
+            <input
+                type="checkbox"
+                id="showPassword"
+            >
+
+            Show password
+
+        </label>
+
+
         <label for="confirmPassword">
             Confirm Password
         </label>
@@ -196,16 +208,14 @@
         >
 
 
-        <!-- SHOW PASSWORD -->
-
         <label class="show-password">
 
             <input
                 type="checkbox"
-                id="showPassword"
+                id="showConfirmPassword"
             >
 
-            Show password
+            Show confirm password
 
         </label>
 
@@ -266,6 +276,9 @@ document.getElementById("confirmPassword");
 const showPassword =
 document.getElementById("showPassword");
 
+const showConfirmPassword =
+document.getElementById("showConfirmPassword");
+
 const registerButton =
 document.getElementById("registerButton");
 
@@ -274,7 +287,7 @@ document.getElementById("message");
 
 
 /* =========================
-   SHOW / HIDE PASSWORD
+   SHOW PASSWORD
 ========================= */
 
 showPassword.addEventListener(
@@ -286,13 +299,31 @@ showPassword.addEventListener(
             passwordInput.type =
                 "text";
 
-            confirmPasswordInput.type =
-                "text";
-
         } else {
 
             passwordInput.type =
                 "password";
+
+        }
+
+    }
+);
+
+
+/* =========================
+   SHOW CONFIRM PASSWORD
+========================= */
+
+showConfirmPassword.addEventListener(
+    "change",
+    function() {
+
+        if (showConfirmPassword.checked) {
+
+            confirmPasswordInput.type =
+                "text";
+
+        } else {
 
             confirmPasswordInput.type =
                 "password";
@@ -388,7 +419,14 @@ registerButton.addEventListener(
 
                 email: email,
 
-                password: password
+                password: password,
+
+                options: {
+
+                    emailRedirectTo:
+                        "https://falroy18-spec.github.io/vetclinic/login.html"
+
+                }
 
             });
 
@@ -428,13 +466,14 @@ registerButton.addEventListener(
 
             /*
              * STEP 2
-             * Pastikan user sudah login.
+             * Jika email confirmation aktif,
+             * user belum mendapatkan session.
              */
 
             if (!data.session) {
 
                 message.textContent =
-                    "Akun berhasil dibuat. Silakan cek email untuk verifikasi terlebih dahulu, lalu login.";
+                    "Akun berhasil dibuat! Silakan cek email untuk konfirmasi akun.";
 
                 message.className =
                     "success";
@@ -501,7 +540,7 @@ registerButton.addEventListener(
             message.textContent =
                 "Registrasi berhasil! Klinik " +
                 clinicName +
-                " berhasil dibuat. Mengarahkan ke login...";
+                " berhasil dibuat.";
 
             message.className =
                 "success";
@@ -509,8 +548,6 @@ registerButton.addEventListener(
 
             /*
              * Logout setelah registrasi
-             * supaya user masuk melalui
-             * halaman login seperti biasa.
              */
 
             await supabaseClient.auth.signOut();
