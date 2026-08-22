@@ -81,6 +81,21 @@
             opacity: 0.6;
         }
 
+        .forgot-password {
+            display: block;
+            text-align: right;
+            margin-top: -8px;
+            margin-bottom: 18px;
+            color: #5146e5;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
         #message {
             margin-top: 18px;
             text-align: center;
@@ -127,6 +142,13 @@
             autocomplete="current-password"
         >
 
+        <a
+            href="#"
+            id="forgotPassword"
+            class="forgot-password">
+            Forgot Password?
+        </a>
+
         <button id="loginButton" type="button">
             Login
         </button>
@@ -165,9 +187,16 @@ document.getElementById("password");
 const loginButton =
 document.getElementById("loginButton");
 
+const forgotPassword =
+document.getElementById("forgotPassword");
+
 const message =
 document.getElementById("message");
 
+
+/* =========================
+   LOGIN
+========================= */
 
 loginButton.addEventListener(
     "click",
@@ -263,6 +292,100 @@ loginButton.addEventListener(
 
             loginButton.disabled =
                 false;
+        }
+
+    }
+);
+
+
+/* =========================
+   FORGOT PASSWORD
+========================= */
+
+forgotPassword.addEventListener(
+    "click",
+    async function(event) {
+
+        event.preventDefault();
+
+        const email =
+            emailInput.value.trim();
+
+
+        if (!email) {
+
+            message.textContent =
+                "Masukkan email terlebih dahulu.";
+
+            message.className =
+                "error";
+
+            emailInput.focus();
+
+            return;
+        }
+
+
+        message.textContent =
+            "Mengirim link reset password...";
+
+        message.className = "";
+
+        forgotPassword.style.pointerEvents =
+            "none";
+
+
+        try {
+
+            const { error } =
+                await supabaseClient.auth
+                .resetPasswordForEmail(
+                    email,
+                    {
+                        redirectTo:
+                        "https://falroy18-spec.github.io/vetclinic/reset-password.html"
+                    }
+                );
+
+
+            if (error) {
+
+                console.error(error);
+
+                message.textContent =
+                    "Gagal mengirim reset password: " +
+                    error.message;
+
+                message.className =
+                    "error";
+
+                forgotPassword.style.pointerEvents =
+                    "auto";
+
+                return;
+            }
+
+
+            message.textContent =
+                "Link reset password sudah dikirim ke email kamu. Silakan cek inbox atau spam.";
+
+            message.className =
+                "success";
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            message.textContent =
+                "Error: " +
+                error.message;
+
+            message.className =
+                "error";
+
+            forgotPassword.style.pointerEvents =
+                "auto";
         }
 
     }
