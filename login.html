@@ -178,7 +178,6 @@
 
 </div>
 
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
@@ -189,13 +188,11 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
 
-
 const supabaseClient =
 supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
-
 
 const emailInput =
 document.getElementById("email");
@@ -227,7 +224,6 @@ loginButton.addEventListener(
         const password =
             passwordInput.value;
 
-
         if (!email || !password) {
 
             message.textContent =
@@ -239,14 +235,12 @@ loginButton.addEventListener(
             return;
         }
 
-
         message.textContent =
             "Connecting to Supabase...";
 
         message.className = "";
 
         loginButton.disabled = true;
-
 
         try {
 
@@ -260,12 +254,10 @@ loginButton.addEventListener(
 
                 });
 
-
             console.log(
                 "Supabase result:",
                 result
             );
-
 
             if (result.error) {
 
@@ -282,13 +274,11 @@ loginButton.addEventListener(
                 return;
             }
 
-
             message.textContent =
                 "Login berhasil!";
 
             message.className =
                 "success";
-
 
             setTimeout(function() {
 
@@ -296,7 +286,6 @@ loginButton.addEventListener(
                     "index.html";
 
             }, 800);
-
 
         } catch (error) {
 
@@ -330,7 +319,6 @@ forgotPassword.addEventListener(
         const email =
             emailInput.value.trim();
 
-
         if (!email) {
 
             message.textContent =
@@ -344,7 +332,6 @@ forgotPassword.addEventListener(
             return;
         }
 
-
         message.textContent =
             "Mengirim link reset password...";
 
@@ -352,7 +339,6 @@ forgotPassword.addEventListener(
 
         forgotPassword.style.pointerEvents =
             "none";
-
 
         try {
 
@@ -365,7 +351,6 @@ forgotPassword.addEventListener(
                         "https://falroy18-spec.github.io/vetclinic/reset-password.html"
                     }
                 );
-
 
             if (error) {
 
@@ -384,13 +369,11 @@ forgotPassword.addEventListener(
                 return;
             }
 
-
             message.textContent =
                 "Link reset password sudah dikirim ke email kamu. Silakan cek inbox atau spam.";
 
             message.className =
                 "success";
-
 
         } catch (error) {
 
