@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Login - VetClinic</title>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
@@ -47,6 +49,7 @@
 
         .logo p {
             color: #6b7280;
+            margin-bottom: 0;
         }
 
         label {
@@ -89,7 +92,6 @@
             color: #5146e5;
             font-size: 14px;
             text-decoration: none;
-            cursor: pointer;
         }
 
         .forgot-password:hover {
@@ -99,7 +101,7 @@
         .register-link {
             display: block;
             text-align: center;
-            margin-top: 20px;
+            margin-top: 18px;
             color: #5146e5;
             font-size: 14px;
             text-decoration: none;
@@ -123,7 +125,9 @@
         .success {
             color: #16a34a;
         }
+
     </style>
+
 </head>
 
 <body>
@@ -133,11 +137,17 @@
     <div class="login-card">
 
         <div class="logo">
+
             <h1>🐾 VetClinic</h1>
+
             <p>Clinic Management System</p>
+
         </div>
 
-        <label for="email">Email</label>
+
+        <label for="email">
+            Email
+        </label>
 
         <input
             type="email"
@@ -146,7 +156,10 @@
             autocomplete="email"
         >
 
-        <label for="password">Password</label>
+
+        <label for="password">
+            Password
+        </label>
 
         <input
             type="password"
@@ -155,6 +168,7 @@
             autocomplete="current-password"
         >
 
+
         <a
             href="#"
             id="forgotPassword"
@@ -162,15 +176,20 @@
             Forgot Password?
         </a>
 
-        <button id="loginButton" type="button">
+
+        <button
+            id="loginButton"
+            type="button">
             Login
         </button>
+
 
         <a
             href="register.html"
             class="register-link">
-            Don't have an account? Register here
+            Don't have an account? Register
         </a>
+
 
         <div id="message"></div>
 
@@ -178,21 +197,26 @@
 
 </div>
 
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 <script>
 
 const SUPABASE_URL =
 "https://zltbjbbofvvndxirlipf.supabase.co";
 
+
 const SUPABASE_KEY =
 "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
+
 
 const supabaseClient =
 supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
+
 
 const emailInput =
 document.getElementById("email");
@@ -224,6 +248,7 @@ loginButton.addEventListener(
         const password =
             passwordInput.value;
 
+
         if (!email || !password) {
 
             message.textContent =
@@ -235,6 +260,7 @@ loginButton.addEventListener(
             return;
         }
 
+
         message.textContent =
             "Connecting to Supabase...";
 
@@ -242,28 +268,35 @@ loginButton.addEventListener(
 
         loginButton.disabled = true;
 
+
         try {
 
-            const result =
-                await supabaseClient.auth
-                .signInWithPassword({
+            const {
+                data,
+                error
+            } =
+            await supabaseClient.auth
+            .signInWithPassword({
 
-                    email: email,
+                email: email,
 
-                    password: password
+                password: password
 
-                });
+            });
+
 
             console.log(
                 "Supabase result:",
-                result
+                data,
+                error
             );
 
-            if (result.error) {
+
+            if (error) {
 
                 message.textContent =
                     "Login gagal: " +
-                    result.error.message;
+                    error.message;
 
                 message.className =
                     "error";
@@ -274,11 +307,13 @@ loginButton.addEventListener(
                 return;
             }
 
+
             message.textContent =
                 "Login berhasil!";
 
             message.className =
                 "success";
+
 
             setTimeout(function() {
 
@@ -286,6 +321,7 @@ loginButton.addEventListener(
                     "index.html";
 
             }, 800);
+
 
         } catch (error) {
 
@@ -300,6 +336,7 @@ loginButton.addEventListener(
 
             loginButton.disabled =
                 false;
+
         }
 
     }
@@ -316,8 +353,10 @@ forgotPassword.addEventListener(
 
         event.preventDefault();
 
+
         const email =
             emailInput.value.trim();
+
 
         if (!email) {
 
@@ -332,6 +371,7 @@ forgotPassword.addEventListener(
             return;
         }
 
+
         message.textContent =
             "Mengirim link reset password...";
 
@@ -340,17 +380,21 @@ forgotPassword.addEventListener(
         forgotPassword.style.pointerEvents =
             "none";
 
+
         try {
 
-            const { error } =
-                await supabaseClient.auth
-                .resetPasswordForEmail(
-                    email,
-                    {
-                        redirectTo:
-                        "https://falroy18-spec.github.io/vetclinic/reset-password.html"
-                    }
-                );
+            const {
+                error
+            } =
+            await supabaseClient.auth
+            .resetPasswordForEmail(
+                email,
+                {
+                    redirectTo:
+                    "https://falroy18-spec.github.io/vetclinic/reset-password.html"
+                }
+            );
+
 
             if (error) {
 
@@ -369,11 +413,13 @@ forgotPassword.addEventListener(
                 return;
             }
 
+
             message.textContent =
-                "Link reset password sudah dikirim ke email kamu. Silakan cek inbox atau spam.";
+                "Link reset password sudah dikirim ke email. Silakan cek inbox atau spam.";
 
             message.className =
                 "success";
+
 
         } catch (error) {
 
@@ -388,6 +434,7 @@ forgotPassword.addEventListener(
 
             forgotPassword.style.pointerEvents =
                 "auto";
+
         }
 
     }
