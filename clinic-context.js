@@ -8,48 +8,86 @@ const SUPABASE_KEY =
 const supabaseClient =
     supabase.createClient(
         SUPABASE_URL,
-        SUPABASE_KEY
+        SUPABASE_KEY,
+        {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true,
+                storage: window.localStorage
+            }
+        }
     );
 
 
 async function getCurrentClinic() {
 
-    const {
-        data: {
-            session
-        },
-        error: sessionError
-    } =
-        await supabaseClient.auth.getSession();
-
-
-    if (sessionError) {
-
-        console.error(
-            "Session error:",
-            sessionError
-        );
-
-        return null;
-    }
-
-
-    if (!session) {
-
-        console.error(
-            "Tidak ada active Supabase session."
-        );
-
-        window.location.href =
-            "login.html";
-
-        return null;
-    }
+    console.log(
+        "Checking Supabase session..."
+    );
 
 
     const {
         data,
         error
+    } =
+        await supabaseClient
+            .auth
+            .getSession();
+
+
+    console.log(
+        "Supabase session:",
+        data?.session
+    );
+
+
+    if (error) {
+
+        console.error(
+            "Session error:",
+            error
+        );
+
+        return null;
+    }
+
+
+    /*
+     * JANGAN REDIRECT KE LOGIN DI SINI.
+     *
+     * Kalau session tidak terbaca,
+     * kita biarkan halaman tetap terbuka
+     * supaya bisa melihat masalah sebenarnya.
+     */
+
+    if (!data?.session) {
+
+        console.error(
+            "NO ACTIVE SUPABASE SESSION"
+        );
+
+        return null;
+    }
+
+
+    const session =
+        data.session;
+
+
+    console.log(
+        "Logged in user:",
+        session.user.id
+    );
+
+
+    /*
+     * Ambil clinic user
+     */
+
+    const {
+        data: membership,
+        error: membershipError
     } =
         await supabaseClient
             .from("clinic_members")
@@ -68,11 +106,11 @@ async function getCurrentClinic() {
             .maybeSingle();
 
 
-    if (error) {
+    if (membershipError) {
 
         console.error(
             "Clinic lookup error:",
-            error
+            membershipError
         );
 
         return null;
@@ -80,16 +118,22 @@ async function getCurrentClinic() {
 
 
     if (
-        !data ||
-        !data.clinics
+        !membership ||
+        !membership.clinics
     ) {
 
         console.error(
-            "User belum terhubung ke klinik."
+            "USER BELUM TERHUBUNG KE CLINIC"
         );
 
         return null;
     }
+
+
+    console.log(
+        "Current clinic:",
+        membership.clinics.name
+    );
 
 
     return {
@@ -98,13 +142,13 @@ async function getCurrentClinic() {
             session.user.id,
 
         clinicId:
-            data.clinic_id,
+            membership.clinic_id,
 
         clinicName:
-            data.clinics.name,
+            membership.clinics.name,
 
         role:
-            data.role
+            membership.role
 
     };
 
