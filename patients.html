@@ -1,441 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Patients - VetClinic</title>
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6fb;
-            color: #252d3d;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 30px;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .header h1 {
-            margin: 0;
-        }
-
-        .header p {
-            color: #6b7280;
-        }
-
-        button {
-            border: none;
-            border-radius: 8px;
-            padding: 11px 16px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .btn-primary {
-            background: #5146e5;
-            color: white;
-        }
-
-        .btn-secondary {
-            background: #6b7280;
-            color: white;
-        }
-
-        .btn-danger {
-            background: #dc2626;
-            color: white;
-        }
-
-        .card {
-            background: white;
-            border-radius: 14px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
-            margin-bottom: 25px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 7px;
-            font-weight: 600;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        .other-species {
-            display: none;
-        }
-
-        .form-actions {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th,
-        td {
-            padding: 14px;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: left;
-        }
-
-        th {
-            background: #f9fafb;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .empty {
-            text-align: center;
-            padding: 30px;
-            color: #6b7280;
-        }
-
-        .message {
-            margin-top: 15px;
-            font-size: 14px;
-        }
-
-        .error {
-            color: #dc2626;
-        }
-
-        .success {
-            color: #16a34a;
-        }
-
-        @media(max-width:700px) {
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                padding: 15px;
-            }
-
-            table {
-                font-size: 13px;
-            }
-
-            .card {
-                overflow-x: auto;
-            }
-
-        }
-
-    </style>
-
-</head>
-
-
-<body>
-
-<div class="container">
-
-    <!-- HEADER -->
-
-    <div class="header">
-
-        <div>
-
-            <h1>🐾 Patients</h1>
-
-            <p>
-                VetClinic Patient Management
-            </p>
-
-        </div>
-
-        <button
-            class="btn-primary"
-            type="button"
-            onclick="window.location.href='index.html'">
-
-            Dashboard
-
-        </button>
-
-    </div>
-
-
-    <!-- ADD / EDIT PATIENT -->
-
-    <div class="card">
-
-        <h2 id="formTitle">
-            Add New Patient
-        </h2>
-
-
-        <div class="form-grid">
-
-            <!-- NAME -->
-
-            <div>
-
-                <label for="name">
-                    Patient Name
-                </label>
-
-                <input
-                    id="name"
-                    type="text"
-                    placeholder="e.g. Milo">
-
-            </div>
-
-
-            <!-- SPECIES -->
-
-            <div>
-
-                <label for="species">
-                    Species
-                </label>
-
-                <select id="species">
-
-                    <option value="">
-                        Select species
-                    </option>
-
-                    <option value="Cat">
-                        Cat
-                    </option>
-
-                    <option value="Dog">
-                        Dog
-                    </option>
-
-                    <option value="Rabbit">
-                        Rabbit
-                    </option>
-
-                    <option value="Bird">
-                        Bird
-                    </option>
-
-                    <option value="Other">
-                        Other
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- OTHER SPECIES -->
-
-            <div
-                id="otherSpeciesContainer"
-                class="other-species">
-
-                <label for="otherSpecies">
-                    Other Species
-                </label>
-
-                <input
-                    id="otherSpecies"
-                    type="text"
-                    placeholder="e.g. Hamster, Turtle, Guinea Pig">
-
-            </div>
-
-
-            <!-- BREED -->
-
-            <div>
-
-                <label for="breed">
-                    Breed
-                </label>
-
-                <input
-                    id="breed"
-                    type="text"
-                    placeholder="e.g. Domestic Shorthair">
-
-            </div>
-
-
-            <!-- SEX -->
-
-            <div>
-
-                <label for="sex">
-                    Sex
-                </label>
-
-                <select id="sex">
-
-                    <option value="">
-                        Select sex
-                    </option>
-
-                    <option value="Male">
-                        Male
-                    </option>
-
-                    <option value="Female">
-                        Female
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- DATE OF BIRTH -->
-
-            <div>
-
-                <label for="date_of_birth">
-                    Date of Birth
-                </label>
-
-                <input
-                    id="date_of_birth"
-                    type="date">
-
-            </div>
-
-        </div>
-
-
-        <div class="form-actions">
-
-            <button
-                class="btn-primary"
-                id="saveButton"
-                type="button">
-
-                Save Patient
-
-            </button>
-
-
-            <button
-                class="btn-secondary"
-                id="cancelButton"
-                type="button"
-                style="display:none;">
-
-                Cancel Edit
-
-            </button>
-
-        </div>
-
-
-        <div
-            id="message"
-            class="message">
-        </div>
-
-    </div>
-
-
-    <!-- PATIENT LIST -->
-
-    <div class="card">
-
-        <h2>
-            Patient List
-        </h2>
-
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>Name</th>
-
-                    <th>Species</th>
-
-                    <th>Breed</th>
-
-                    <th>Sex</th>
-
-                    <th>Date of Birth</th>
-
-                    <th>Action</th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody id="patientList">
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</div>
-
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 
 <script>
 
 const SUPABASE_URL =
 "https://zltbjbbofvvndxirlipf.supabase.co";
 
-
 const SUPABASE_KEY =
 "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
-
 
 const supabaseClient =
 supabase.createClient(
@@ -444,44 +15,110 @@ supabase.createClient(
 );
 
 
+// =========================
+// ELEMENTS
+// =========================
+
 const saveButton =
 document.getElementById("saveButton");
-
 
 const cancelButton =
 document.getElementById("cancelButton");
 
-
 const message =
 document.getElementById("message");
-
 
 const patientList =
 document.getElementById("patientList");
 
-
 const speciesSelect =
 document.getElementById("species");
-
 
 const otherSpeciesContainer =
 document.getElementById("otherSpeciesContainer");
 
-
 const otherSpeciesInput =
 document.getElementById("otherSpecies");
-
 
 const formTitle =
 document.getElementById("formTitle");
 
-
 let editingPatientId = null;
 
 
-/* =========================
-   SHOW / HIDE OTHER SPECIES
-========================= */
+// =========================
+// GET CURRENT CLINIC
+// =========================
+
+async function getCurrentClinic() {
+
+    const {
+        data: sessionData,
+        error: sessionError
+    } = await supabaseClient.auth.getSession();
+
+    if (sessionError) {
+        console.error(sessionError);
+        return null;
+    }
+
+    const session =
+        sessionData.session;
+
+    if (!session) {
+
+        window.location.href =
+            "login.html";
+
+        return null;
+    }
+
+
+    const {
+        data: membership,
+        error: membershipError
+    } =
+    await supabaseClient
+        .from("clinic_members")
+        .select("clinic_id")
+        .eq(
+            "user_id",
+            session.user.id
+        )
+        .maybeSingle();
+
+
+    if (membershipError) {
+
+        console.error(
+            "Membership error:",
+            membershipError
+        );
+
+        return null;
+    }
+
+
+    if (
+        !membership ||
+        !membership.clinic_id
+    ) {
+
+        alert(
+            "Akun ini belum terhubung ke klinik."
+        );
+
+        return null;
+    }
+
+
+    return membership.clinic_id;
+}
+
+
+// =========================
+// SHOW / HIDE OTHER SPECIES
+// =========================
 
 speciesSelect.addEventListener(
     "change",
@@ -501,8 +138,7 @@ speciesSelect.addEventListener(
             otherSpeciesContainer.style.display =
                 "none";
 
-            otherSpeciesInput.value =
-                "";
+            otherSpeciesInput.value = "";
 
         }
 
@@ -510,56 +146,37 @@ speciesSelect.addEventListener(
 );
 
 
-/* =========================
-   LOGIN CHECK
-========================= */
-
-async function checkLogin() {
-
-    const {
-        data: {
-            session
-        }
-    } =
-    await supabaseClient.auth.getSession();
-
-
-    if (!session) {
-
-        window.location.href =
-            "login.html";
-
-        return false;
-
-    }
-
-
-    return true;
-
-}
-
-
-/* =========================
-   LOAD PATIENTS
-========================= */
+// =========================
+// LOAD PATIENTS
+// =========================
 
 async function loadPatients() {
 
     patientList.innerHTML = `
-
         <tr>
-
-            <td
-                colspan="6"
-                class="empty">
-
+            <td colspan="6" class="empty">
                 Loading patients...
-
             </td>
-
         </tr>
-
     `;
+
+
+    const clinicId =
+        await getCurrentClinic();
+
+
+    if (!clinicId) {
+
+        patientList.innerHTML = `
+            <tr>
+                <td colspan="6" class="empty error">
+                    Clinic tidak ditemukan.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
 
 
     const {
@@ -569,6 +186,10 @@ async function loadPatients() {
     await supabaseClient
         .from("patients")
         .select("*")
+        .eq(
+            "clinic_id",
+            clinicId
+        )
         .order(
             "created_at",
             {
@@ -582,23 +203,14 @@ async function loadPatients() {
         console.error(error);
 
         patientList.innerHTML = `
-
             <tr>
-
-                <td
-                    colspan="6"
-                    class="empty error">
-
+                <td colspan="6" class="empty error">
                     ${error.message}
-
                 </td>
-
             </tr>
-
         `;
 
         return;
-
     }
 
 
@@ -608,23 +220,14 @@ async function loadPatients() {
     ) {
 
         patientList.innerHTML = `
-
             <tr>
-
-                <td
-                    colspan="6"
-                    class="empty">
-
+                <td colspan="6" class="empty">
                     No patients yet.
-
                 </td>
-
             </tr>
-
         `;
 
         return;
-
     }
 
 
@@ -698,9 +301,9 @@ async function loadPatients() {
 }
 
 
-/* =========================
-   RESET FORM
-========================= */
+// =========================
+// RESET FORM
+// =========================
 
 function resetForm() {
 
@@ -716,37 +319,26 @@ function resetForm() {
         "none";
 
 
-    document.getElementById(
-        "name"
-    ).value = "";
-
+    document.getElementById("name").value =
+        "";
 
     speciesSelect.value =
         "";
 
-
     otherSpeciesInput.value =
         "";
-
 
     otherSpeciesContainer.style.display =
         "none";
 
+    document.getElementById("breed").value =
+        "";
 
-    document.getElementById(
-        "breed"
-    ).value = "";
+    document.getElementById("sex").value =
+        "";
 
-
-    document.getElementById(
-        "sex"
-    ).value = "";
-
-
-    document.getElementById(
-        "date_of_birth"
-    ).value = "";
-
+    document.getElementById("date_of_birth").value =
+        "";
 
     message.textContent =
         "";
@@ -757,9 +349,9 @@ function resetForm() {
 }
 
 
-/* =========================
-   EDIT PATIENT
-========================= */
+// =========================
+// EDIT PATIENT
+// =========================
 
 async function editPatient(id) {
 
@@ -782,7 +374,6 @@ async function editPatient(id) {
         );
 
         return;
-
     }
 
 
@@ -793,18 +384,14 @@ async function editPatient(id) {
     formTitle.textContent =
         "Edit Patient";
 
-
     saveButton.textContent =
         "Update Patient";
-
 
     cancelButton.style.display =
         "inline-block";
 
 
-    document.getElementById(
-        "name"
-    ).value =
+    document.getElementById("name").value =
         patient.name || "";
 
 
@@ -842,21 +429,13 @@ async function editPatient(id) {
     }
 
 
-    document.getElementById(
-        "breed"
-    ).value =
+    document.getElementById("breed").value =
         patient.breed || "";
 
-
-    document.getElementById(
-        "sex"
-    ).value =
+    document.getElementById("sex").value =
         patient.sex || "";
 
-
-    document.getElementById(
-        "date_of_birth"
-    ).value =
+    document.getElementById("date_of_birth").value =
         patient.date_of_birth || "";
 
 
@@ -868,18 +447,19 @@ async function editPatient(id) {
 }
 
 
-/* =========================
-   SAVE / UPDATE PATIENT
-========================= */
+// =========================
+// SAVE / UPDATE PATIENT
+// =========================
 
 saveButton.addEventListener(
     "click",
     async function() {
 
         const name =
-            document.getElementById(
-                "name"
-            ).value.trim();
+            document
+                .getElementById("name")
+                .value
+                .trim();
 
 
         const selectedSpecies =
@@ -893,24 +473,27 @@ saveButton.addEventListener(
 
 
         const breed =
-            document.getElementById(
-                "breed"
-            ).value.trim();
+            document
+                .getElementById("breed")
+                .value
+                .trim();
 
 
         const sex =
-            document.getElementById(
-                "sex"
-            ).value;
+            document
+                .getElementById("sex")
+                .value;
 
 
         const date_of_birth =
-            document.getElementById(
-                "date_of_birth"
-            ).value;
+            document
+                .getElementById("date_of_birth")
+                .value;
 
 
-        /* VALIDATION */
+        // =========================
+        // VALIDATION
+        // =========================
 
         if (
             !name ||
@@ -924,7 +507,6 @@ saveButton.addEventListener(
                 "message error";
 
             return;
-
         }
 
 
@@ -939,10 +521,7 @@ saveButton.addEventListener(
             message.className =
                 "message error";
 
-            otherSpeciesInput.focus();
-
             return;
-
         }
 
 
@@ -966,9 +545,32 @@ saveButton.addEventListener(
             "message";
 
 
-        /* =========================
-           UPDATE
-        ========================= */
+        // =========================
+        // GET CLINIC
+        // =========================
+
+        const clinicId =
+            await getCurrentClinic();
+
+
+        if (!clinicId) {
+
+            message.textContent =
+                "Clinic tidak ditemukan.";
+
+            message.className =
+                "message error";
+
+            saveButton.disabled =
+                false;
+
+            return;
+        }
+
+
+        // =========================
+        // UPDATE
+        // =========================
 
         if (editingPatientId) {
 
@@ -998,6 +600,10 @@ saveButton.addEventListener(
                 .eq(
                     "id",
                     editingPatientId
+                )
+                .eq(
+                    "clinic_id",
+                    clinicId
                 );
 
 
@@ -1016,7 +622,6 @@ saveButton.addEventListener(
                     false;
 
                 return;
-
             }
 
 
@@ -1043,13 +648,12 @@ saveButton.addEventListener(
 
 
             return;
-
         }
 
 
-        /* =========================
-           INSERT NEW PATIENT
-        ========================= */
+        // =========================
+        // INSERT NEW PATIENT
+        // =========================
 
         const {
             error
@@ -1057,6 +661,9 @@ saveButton.addEventListener(
         await supabaseClient
             .from("patients")
             .insert({
+
+                clinic_id:
+                    clinicId,
 
                 name:
                     name,
@@ -1091,7 +698,6 @@ saveButton.addEventListener(
                 false;
 
             return;
-
         }
 
 
@@ -1120,9 +726,9 @@ saveButton.addEventListener(
 );
 
 
-/* =========================
-   CANCEL EDIT
-========================= */
+// =========================
+// CANCEL EDIT
+// =========================
 
 cancelButton.addEventListener(
     "click",
@@ -1134,9 +740,9 @@ cancelButton.addEventListener(
 );
 
 
-/* =========================
-   DELETE PATIENT
-========================= */
+// =========================
+// DELETE PATIENT
+// =========================
 
 async function deletePatient(id) {
 
@@ -1147,7 +753,16 @@ async function deletePatient(id) {
     ) {
 
         return;
+    }
 
+
+    const clinicId =
+        await getCurrentClinic();
+
+
+    if (!clinicId) {
+
+        return;
     }
 
 
@@ -1160,6 +775,10 @@ async function deletePatient(id) {
         .eq(
             "id",
             id
+        )
+        .eq(
+            "clinic_id",
+            clinicId
         );
 
 
@@ -1171,7 +790,6 @@ async function deletePatient(id) {
         );
 
         return;
-
     }
 
 
@@ -1180,20 +798,19 @@ async function deletePatient(id) {
 }
 
 
-/* =========================
-   INITIALIZE
-========================= */
+// =========================
+// INITIALIZE
+// =========================
 
 async function init() {
 
-    const loggedIn =
-        await checkLogin();
+    const clinicId =
+        await getCurrentClinic();
 
 
-    if (!loggedIn) {
+    if (!clinicId) {
 
         return;
-
     }
 
 
@@ -1205,7 +822,3 @@ async function init() {
 init();
 
 </script>
-
-</body>
-
-</html>
