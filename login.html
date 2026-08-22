@@ -64,7 +64,7 @@
             padding: 13px;
             border: 1px solid #d1d5db;
             border-radius: 8px;
-            margin-bottom: 18px;
+            margin-bottom: 10px;
             font-size: 15px;
         }
 
@@ -84,10 +84,27 @@
             opacity: 0.6;
         }
 
+        .show-password {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: normal;
+            color: #4b5563;
+            cursor: pointer;
+        }
+
+        .show-password input {
+            width: auto;
+            margin: 0;
+            cursor: pointer;
+        }
+
         .forgot-password {
             display: block;
             text-align: right;
-            margin-top: -8px;
+            margin-top: 0;
             margin-bottom: 18px;
             color: #5146e5;
             font-size: 14px;
@@ -169,6 +186,20 @@
         >
 
 
+        <!-- SHOW PASSWORD -->
+
+        <label class="show-password">
+
+            <input
+                type="checkbox"
+                id="showPassword"
+            >
+
+            Show password
+
+        </label>
+
+
         <a
             href="#"
             id="forgotPassword"
@@ -224,6 +255,9 @@ document.getElementById("email");
 const passwordInput =
 document.getElementById("password");
 
+const showPassword =
+document.getElementById("showPassword");
+
 const loginButton =
 document.getElementById("loginButton");
 
@@ -232,6 +266,30 @@ document.getElementById("forgotPassword");
 
 const message =
 document.getElementById("message");
+
+
+/* =========================
+   SHOW / HIDE PASSWORD
+========================= */
+
+showPassword.addEventListener(
+    "change",
+    function() {
+
+        if (showPassword.checked) {
+
+            passwordInput.type =
+                "text";
+
+        } else {
+
+            passwordInput.type =
+                "password";
+
+        }
+
+    }
+);
 
 
 /* =========================
