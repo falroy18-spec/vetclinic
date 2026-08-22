@@ -5,163 +5,304 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>Patients - VetClinic</title>
 
-<link rel="stylesheet" href="style.css">
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6fb;
+    color: #252d3d;
+}
+
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px;
+}
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+
+.header h1 {
+    margin: 0;
+}
+
+
+.header p {
+    color: #6b7280;
+}
+
+
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 11px 16px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+.btn-primary {
+    background: #5146e5;
+    color: white;
+}
+
+
+.btn-secondary {
+    background: #6b7280;
+    color: white;
+}
+
+
+.btn-danger {
+    background: #dc2626;
+    color: white;
+}
+
+
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    margin-bottom: 25px;
+}
+
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+
+.form-full {
+    grid-column: 1 / -1;
+}
+
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+}
+
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+
+textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+
+.other-species {
+    display: none;
+}
+
+
+.form-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+th,
+td {
+    padding: 14px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    vertical-align: top;
+}
+
+
+th {
+    background: #f9fafb;
+}
+
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+
+.empty {
+    text-align: center;
+    padding: 30px;
+    color: #6b7280;
+}
+
+
+.message {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+
+.error {
+    color: #dc2626;
+}
+
+
+.success {
+    color: #16a34a;
+}
+
+
+.owner-address {
+    max-width: 250px;
+    white-space: normal;
+}
+
+
+@media(max-width:700px) {
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-full {
+        grid-column: auto;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    table {
+        font-size: 13px;
+        min-width: 900px;
+    }
+
+    .card {
+        overflow-x: auto;
+    }
+
+}
+
+</style>
 
 </head>
 
 
 <body>
 
-<div class="app">
+
+<div class="container">
 
 
-<aside class="sidebar">
+<!-- HEADER -->
 
-<h1>🐾 VetClinic</h1>
-
-<nav>
-
-<a href="index.html">Dashboard</a>
-
-<a href="patients.html" class="active">Patients</a>
-
-<a href="appointments.html">Appointments</a>
-
-<a href="medical-records.html">Medical Records</a>
-
-<a href="medicines.html">Medicines</a>
-
-<a href="billing.html">Billing</a>
-
-<a href="reports.html">Reports</a>
-
-</nav>
-
-</aside>
-
-
-<main class="main-content">
-
-<header>
+<div class="header">
 
 <div>
 
-<h2>Patients</h2>
+<h1>🐾 Patients</h1>
 
-<p>Manage your clinic patients.</p>
+<p>
+VetClinic Patient Management
+</p>
 
 </div>
 
-</header>
-
-
-<section class="appointments">
-
-<div style="
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px;
-">
-
-<h3>Patient List</h3>
 
 <button
-type="button"
-id="newPatientButton"
 class="btn-primary"
+type="button"
+onclick="window.location.href='index.html'"
 >
-+ Add Patient
+
+Dashboard
+
 </button>
 
 </div>
 
 
-<div
-id="message"
-class="message"
-></div>
+
+<!-- ADD / EDIT PATIENT -->
+
+<div class="card">
 
 
-<table>
-
-<thead>
-
-<tr>
-
-<th>Name</th>
-
-<th>Species</th>
-
-<th>Breed</th>
-
-<th>Sex</th>
-
-<th>Date of Birth</th>
-
-<th>Action</th>
-
-</tr>
-
-</thead>
-
-
-<tbody id="patientList">
-
-<tr>
-
-<td
-colspan="6"
-class="empty"
->
-Loading patients...
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-
-<hr>
-
-
-<div id="patientFormContainer" style="display:none;">
-
-<h3 id="formTitle">
+<h2 id="formTitle">
 Add New Patient
-</h3>
+</h2>
 
 
-<form id="patientForm">
+<div class="form-grid">
 
 
-<div class="form-group">
+<!-- PATIENT NAME -->
 
-<label>Patient Name</label>
+<div>
+
+<label for="name">
+Patient Name
+</label>
 
 <input
-type="text"
 id="name"
-required
+type="text"
+placeholder="e.g. Milo"
 >
 
 </div>
 
 
-<div class="form-group">
 
-<label>Species</label>
+<!-- SPECIES -->
 
-<select
-id="species"
-required
->
+<div>
+
+<label for="species">
+Species
+</label>
+
+<select id="species">
 
 <option value="">
 Select species
@@ -192,37 +333,53 @@ Other
 </div>
 
 
+
+<!-- OTHER SPECIES -->
+
 <div
 id="otherSpeciesContainer"
-style="display:none;"
-class="form-group"
+class="other-species"
 >
 
-<label>Other Species</label>
+<label for="otherSpecies">
+Other Species
+</label>
 
 <input
-type="text"
 id="otherSpecies"
+type="text"
+placeholder="e.g. Hamster, Turtle"
 >
 
 </div>
 
 
-<div class="form-group">
 
-<label>Breed</label>
+<!-- BREED -->
+
+<div>
+
+<label for="breed">
+Breed
+</label>
 
 <input
-type="text"
 id="breed"
+type="text"
+placeholder="e.g. Domestic Shorthair"
 >
 
 </div>
 
 
-<div class="form-group">
 
-<label>Sex</label>
+<!-- SEX -->
+
+<div>
+
+<label for="sex">
+Sex
+</label>
 
 <select id="sex">
 
@@ -243,54 +400,223 @@ Female
 </div>
 
 
-<div class="form-group">
 
-<label>Date of Birth</label>
+<!-- DATE OF BIRTH -->
+
+<div>
+
+<label for="date_of_birth">
+Date of Birth
+</label>
 
 <input
-type="date"
 id="date_of_birth"
+type="date"
 >
 
 </div>
+
+
+
+<!-- WEIGHT -->
+
+<div>
+
+<label for="weight">
+Weight (kg)
+</label>
+
+<input
+id="weight"
+type="number"
+step="0.01"
+placeholder="e.g. 4.5"
+>
+
+</div>
+
+
+
+<!-- OWNER NAME -->
+
+<div>
+
+<label for="owner">
+Owner Name
+</label>
+
+<input
+id="owner"
+type="text"
+placeholder="e.g. Faisa"
+>
+
+</div>
+
+
+
+<!-- OWNER PHONE -->
+
+<div>
+
+<label for="owner_phone">
+Phone Number
+</label>
+
+<input
+id="owner_phone"
+type="tel"
+placeholder="e.g. 08123456789"
+>
+
+</div>
+
+
+
+<!-- OWNER ADDRESS -->
+
+<div class="form-full">
+
+<label for="owner_address">
+Owner Address
+</label>
+
+<textarea
+id="owner_address"
+placeholder="Enter owner's address"
+></textarea>
+
+</div>
+
+
+</div>
+
 
 
 <div class="form-actions">
 
-<button
-type="button"
-id="cancelButton"
->
-Cancel
-</button>
 
 <button
-type="submit"
-id="saveButton"
 class="btn-primary"
+id="saveButton"
+type="button"
 >
+
 Save Patient
+
 </button>
 
+
+<button
+class="btn-secondary"
+id="cancelButton"
+type="button"
+style="display:none;"
+>
+
+Cancel Edit
+
+</button>
+
+
 </div>
 
 
-</form>
-
-</div>
-
-</section>
-
-</main>
-
+<div
+id="message"
+class="message"
+>
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</div>
+
+
+
+<!-- PATIENT LIST -->
+
+<div class="card">
+
+
+<h2>
+Patient List
+</h2>
+
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+Name
+</th>
+
+<th>
+Species
+</th>
+
+<th>
+Breed
+</th>
+
+<th>
+Sex
+</th>
+
+<th>
+Date of Birth
+</th>
+
+<th>
+Owner
+</th>
+
+<th>
+Phone
+</th>
+
+<th>
+Address
+</th>
+
+<th>
+Action
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="patientList">
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
 
 
 <script>
 
+
+// ========================================
+// SUPABASE
+// ========================================
 
 const SUPABASE_URL =
 "https://zltbjbbofvvndxirlipf.supabase.co";
@@ -307,6 +633,7 @@ supabase.createClient(
 );
 
 
+
 // ========================================
 // ELEMENTS
 // ========================================
@@ -316,50 +643,42 @@ document.getElementById(
     "saveButton"
 );
 
+
 const cancelButton =
 document.getElementById(
     "cancelButton"
 );
 
-const newPatientButton =
-document.getElementById(
-    "newPatientButton"
-);
-
-const patientFormContainer =
-document.getElementById(
-    "patientFormContainer"
-);
-
-const patientForm =
-document.getElementById(
-    "patientForm"
-);
 
 const message =
 document.getElementById(
     "message"
 );
 
+
 const patientList =
 document.getElementById(
     "patientList"
 );
+
 
 const speciesSelect =
 document.getElementById(
     "species"
 );
 
+
 const otherSpeciesContainer =
 document.getElementById(
     "otherSpeciesContainer"
 );
 
+
 const otherSpeciesInput =
 document.getElementById(
     "otherSpecies"
 );
+
 
 const formTitle =
 document.getElementById(
@@ -370,11 +689,13 @@ document.getElementById(
 let editingPatientId = null;
 
 
+
 // ========================================
 // GET CURRENT CLINIC
 // ========================================
 
 async function getCurrentClinic() {
+
 
     const {
         data: sessionData,
@@ -411,12 +732,6 @@ async function getCurrentClinic() {
     }
 
 
-    console.log(
-        "LOGIN USER:",
-        session.user.id
-    );
-
-
     const {
         data: membership,
         error: membershipError
@@ -434,11 +749,12 @@ async function getCurrentClinic() {
     if (membershipError) {
 
         console.error(
-            "MEMBERSHIP ERROR:",
+            "Clinic membership error:",
             membershipError
         );
 
         message.textContent =
+        "Gagal mendapatkan klinik: " +
         membershipError.message;
 
         message.className =
@@ -449,19 +765,13 @@ async function getCurrentClinic() {
     }
 
 
-    console.log(
-        "MEMBERSHIP:",
-        membership
-    );
-
-
     if (
         !membership ||
         !membership.clinic_id
     ) {
 
         message.textContent =
-        "Akun belum terhubung ke klinik.";
+        "Akun ini belum terhubung ke klinik.";
 
         message.className =
         "message error";
@@ -471,15 +781,46 @@ async function getCurrentClinic() {
     }
 
 
-    console.log(
-        "CURRENT CLINIC:",
-        membership.clinic_id
-    );
-
-
     return membership.clinic_id;
 
 }
+
+
+
+// ========================================
+// SPECIES
+// ========================================
+
+speciesSelect.addEventListener(
+    "change",
+    function() {
+
+
+        if (
+            speciesSelect.value ===
+            "Other"
+        ) {
+
+            otherSpeciesContainer.style.display =
+            "block";
+
+            otherSpeciesInput.focus();
+
+        }
+
+        else {
+
+            otherSpeciesContainer.style.display =
+            "none";
+
+            otherSpeciesInput.value =
+            "";
+
+        }
+
+    }
+);
+
 
 
 // ========================================
@@ -488,15 +829,22 @@ async function getCurrentClinic() {
 
 async function loadPatients() {
 
+
     patientList.innerHTML = `
+
         <tr>
+
             <td
-                colspan="6"
+                colspan="9"
                 class="empty"
             >
+
                 Loading patients...
+
             </td>
+
         </tr>
+
     `;
 
 
@@ -525,7 +873,7 @@ async function loadPatients() {
         .order(
             "created_at",
             {
-                ascending:false
+                ascending: false
             }
         );
 
@@ -533,19 +881,26 @@ async function loadPatients() {
     if (error) {
 
         console.error(
-            "LOAD PATIENT ERROR:",
+            "Load patients error:",
             error
         );
 
+
         patientList.innerHTML = `
+
             <tr>
+
                 <td
-                    colspan="6"
+                    colspan="9"
                     class="empty error"
                 >
+
                     ${error.message}
+
                 </td>
+
             </tr>
+
         `;
 
         return;
@@ -559,14 +914,20 @@ async function loadPatients() {
     ) {
 
         patientList.innerHTML = `
+
             <tr>
+
                 <td
-                    colspan="6"
+                    colspan="9"
                     class="empty"
                 >
+
                     No patients yet.
+
                 </td>
+
             </tr>
+
         `;
 
         return;
@@ -574,11 +935,13 @@ async function loadPatients() {
     }
 
 
-    patientList.innerHTML = "";
+    patientList.innerHTML =
+    "";
 
 
     data.forEach(
         function(patient) {
+
 
             const row =
             document.createElement(
@@ -609,20 +972,39 @@ async function loadPatients() {
                 </td>
 
                 <td>
+                    ${patient.owner || "-"}
+                </td>
 
-                    <button
-                        type="button"
-                        onclick="editPatient('${patient.id}')"
-                    >
-                        Edit
-                    </button>
+                <td>
+                    ${patient.owner_phone || "-"}
+                </td>
 
-                    <button
-                        type="button"
-                        onclick="deletePatient('${patient.id}')"
-                    >
-                        Delete
-                    </button>
+                <td class="owner-address">
+                    ${patient.owner_address || "-"}
+                </td>
+
+                <td>
+
+                    <div class="action-buttons">
+
+                        <button
+                            class="btn-primary"
+                            type="button"
+                            onclick="editPatient('${patient.id}')"
+                        >
+                            Edit
+                        </button>
+
+
+                        <button
+                            class="btn-danger"
+                            type="button"
+                            onclick="deletePatient('${patient.id}')"
+                        >
+                            Delete
+                        </button>
+
+                    </div>
 
                 </td>
 
@@ -639,442 +1021,116 @@ async function loadPatients() {
 }
 
 
-// ========================================
-// OPEN ADD PATIENT
-// ========================================
-
-newPatientButton.addEventListener(
-    "click",
-    function() {
-
-        patientFormContainer.style.display =
-        "block";
-
-        formTitle.textContent =
-        "Add New Patient";
-
-        editingPatientId =
-        null;
-
-        patientForm.reset();
-
-        message.textContent =
-        "";
-
-        window.scrollTo({
-            top:0,
-            behavior:"smooth"
-        });
-
-    }
-);
-
 
 // ========================================
-// SPECIES
+// RESET FORM
 // ========================================
 
-speciesSelect.addEventListener(
-    "change",
-    function() {
+function resetForm() {
 
-        if (
-            speciesSelect.value ===
-            "Other"
-        ) {
 
-            otherSpeciesContainer.style.display =
-            "block";
+    editingPatientId =
+    null;
 
-        } else {
 
-            otherSpeciesContainer.style.display =
-            "none";
+    formTitle.textContent =
+    "Add New Patient";
 
-            otherSpeciesInput.value =
-            "";
 
-        }
+    saveButton.textContent =
+    "Save Patient";
 
-    }
-);
 
+    cancelButton.style.display =
+    "none";
 
-// ========================================
-// SAVE PATIENT
-// ========================================
 
-patientForm.addEventListener(
-    "submit",
-    async function(event) {
+    document.getElementById(
+        "name"
+    ).value =
+    "";
 
-        event.preventDefault();
 
+    speciesSelect.value =
+    "";
 
-        saveButton.disabled =
-        true;
 
-        saveButton.textContent =
-        "Saving...";
+    otherSpeciesInput.value =
+    "";
 
 
-        message.textContent =
-        "";
+    otherSpeciesContainer.style.display =
+    "none";
 
 
-        const name =
-        document
-            .getElementById("name")
-            .value
-            .trim();
+    document.getElementById(
+        "breed"
+    ).value =
+    "";
 
 
-        const selectedSpecies =
-        speciesSelect.value;
+    document.getElementById(
+        "sex"
+    ).value =
+    "";
 
 
-        const otherSpecies =
-        otherSpeciesInput
-            .value
-            .trim();
+    document.getElementById(
+        "date_of_birth"
+    ).value =
+    "";
 
 
-        const breed =
-        document
-            .getElementById("breed")
-            .value
-            .trim();
+    document.getElementById(
+        "weight"
+    ).value =
+    "";
 
 
-        const sex =
-        document
-            .getElementById("sex")
-            .value;
+    document.getElementById(
+        "owner"
+    ).value =
+    "";
 
 
-        const date_of_birth =
-        document
-            .getElementById("date_of_birth")
-            .value;
+    document.getElementById(
+        "owner_phone"
+    ).value =
+    "";
 
 
-        if (
-            !name ||
-            !selectedSpecies
-        ) {
+    document.getElementById(
+        "owner_address"
+    ).value =
+    "";
 
-            message.textContent =
-            "Patient name dan species wajib diisi.";
 
-            message.className =
-            "message error";
+    message.textContent =
+    "";
 
-            saveButton.disabled =
-            false;
 
-            saveButton.textContent =
-            "Save Patient";
+    message.className =
+    "message";
 
-            return;
+}
 
-        }
-
-
-        const finalSpecies =
-        selectedSpecies === "Other"
-            ? otherSpecies
-            : selectedSpecies;
-
-
-        if (
-            selectedSpecies === "Other" &&
-            !finalSpecies
-        ) {
-
-            message.textContent =
-            "Masukkan species.";
-
-            message.className =
-            "message error";
-
-            saveButton.disabled =
-            false;
-
-            saveButton.textContent =
-            "Save Patient";
-
-            return;
-
-        }
-
-
-        // ========================================
-        // GET CLINIC
-        // ========================================
-
-        const clinicId =
-        await getCurrentClinic();
-
-
-        if (!clinicId) {
-
-            saveButton.disabled =
-            false;
-
-            saveButton.textContent =
-            "Save Patient";
-
-            return;
-
-        }
-
-
-        console.log(
-            "INSERTING WITH CLINIC ID:",
-            clinicId
-        );
-
-
-        // ========================================
-        // INSERT
-        // ========================================
-
-        if (!editingPatientId) {
-
-            const {
-                data,
-                error
-            } =
-            await supabaseClient
-                .from("patients")
-                .insert({
-
-                    clinic_id:
-                    clinicId,
-
-                    name:
-                    name,
-
-                    species:
-                    finalSpecies,
-
-                    breed:
-                    breed || null,
-
-                    sex:
-                    sex || null,
-
-                    date_of_birth:
-                    date_of_birth || null
-
-                })
-                .select("*")
-                .single();
-
-
-            if (error) {
-
-                console.error(
-                    "INSERT ERROR:",
-                    error
-                );
-
-                message.textContent =
-                "Gagal menyimpan: " +
-                error.message;
-
-                message.className =
-                "message error";
-
-                saveButton.disabled =
-                false;
-
-                saveButton.textContent =
-                "Save Patient";
-
-                return;
-
-            }
-
-
-            console.log(
-                "INSERT RESULT:",
-                data
-            );
-
-
-            // VERY IMPORTANT
-
-            if (
-                !data ||
-                data.clinic_id !== clinicId
-            ) {
-
-                console.error(
-                    "CLINIC ID MISMATCH",
-                    {
-                        sent: clinicId,
-                        returned:
-                        data
-                            ? data.clinic_id
-                            : null
-                    }
-                );
-
-
-                message.textContent =
-                "Patient tersimpan tetapi clinic_id tidak sesuai.";
-
-                message.className =
-                "message error";
-
-                saveButton.disabled =
-                false;
-
-                saveButton.textContent =
-                "Save Patient";
-
-                return;
-
-            }
-
-        }
-
-
-        // ========================================
-        // UPDATE
-        // ========================================
-
-        else {
-
-            const {
-                error
-            } =
-            await supabaseClient
-                .from("patients")
-                .update({
-
-                    name:
-                    name,
-
-                    species:
-                    finalSpecies,
-
-                    breed:
-                    breed || null,
-
-                    sex:
-                    sex || null,
-
-                    date_of_birth:
-                    date_of_birth || null
-
-                })
-                .eq(
-                    "id",
-                    editingPatientId
-                )
-                .eq(
-                    "clinic_id",
-                    clinicId
-                );
-
-
-            if (error) {
-
-                console.error(
-                    "UPDATE ERROR:",
-                    error
-                );
-
-                message.textContent =
-                error.message;
-
-                message.className =
-                "message error";
-
-                saveButton.disabled =
-                false;
-
-                saveButton.textContent =
-                "Update Patient";
-
-                return;
-
-            }
-
-        }
-
-
-        // ========================================
-        // SUCCESS
-        // ========================================
-
-        message.textContent =
-        "Patient berhasil disimpan!";
-
-        message.className =
-        "message success";
-
-
-        patientForm.reset();
-
-        editingPatientId =
-        null;
-
-
-        await loadPatients();
-
-
-        saveButton.disabled =
-        false;
-
-        saveButton.textContent =
-        "Save Patient";
-
-
-        patientFormContainer.style.display =
-        "none";
-
-    }
-);
 
 
 // ========================================
-// CANCEL
-// ========================================
-
-cancelButton.addEventListener(
-    "click",
-    function() {
-
-        patientForm.reset();
-
-        editingPatientId =
-        null;
-
-        patientFormContainer.style.display =
-        "none";
-
-        message.textContent =
-        "";
-
-    }
-);
-
-
-// ========================================
-// EDIT
+// EDIT PATIENT
 // ========================================
 
 async function editPatient(id) {
+
 
     const clinicId =
     await getCurrentClinic();
 
 
     if (!clinicId) {
+
         return;
+
     }
 
 
@@ -1099,7 +1155,8 @@ async function editPatient(id) {
     if (error) {
 
         alert(
-            "Patient tidak ditemukan."
+            "Gagal mengambil data patient: " +
+            error.message
         );
 
         return;
@@ -1115,8 +1172,12 @@ async function editPatient(id) {
     "Edit Patient";
 
 
-    patientFormContainer.style.display =
-    "block";
+    saveButton.textContent =
+    "Update Patient";
+
+
+    cancelButton.style.display =
+    "inline-block";
 
 
     document.getElementById(
@@ -1125,8 +1186,43 @@ async function editPatient(id) {
     patient.name || "";
 
 
-    speciesSelect.value =
-    patient.species || "";
+    const standardSpecies = [
+        "Cat",
+        "Dog",
+        "Rabbit",
+        "Bird"
+    ];
+
+
+    if (
+        standardSpecies.includes(
+            patient.species
+        )
+    ) {
+
+        speciesSelect.value =
+        patient.species;
+
+
+        otherSpeciesContainer.style.display =
+        "none";
+
+    }
+
+    else {
+
+        speciesSelect.value =
+        "Other";
+
+
+        otherSpeciesContainer.style.display =
+        "block";
+
+
+        otherSpeciesInput.value =
+        patient.species || "";
+
+    }
 
 
     document.getElementById(
@@ -1147,23 +1243,444 @@ async function editPatient(id) {
     patient.date_of_birth || "";
 
 
-    saveButton.textContent =
-    "Update Patient";
+    document.getElementById(
+        "weight"
+    ).value =
+    patient.weight || "";
+
+
+    document.getElementById(
+        "owner"
+    ).value =
+    patient.owner || "";
+
+
+    document.getElementById(
+        "owner_phone"
+    ).value =
+    patient.owner_phone || "";
+
+
+    document.getElementById(
+        "owner_address"
+    ).value =
+    patient.owner_address || "";
 
 
     window.scrollTo({
-        top:0,
-        behavior:"smooth"
+        top: 0,
+        behavior: "smooth"
     });
 
 }
 
 
+
 // ========================================
-// DELETE
+// SAVE / UPDATE PATIENT
+// ========================================
+
+saveButton.addEventListener(
+    "click",
+    async function() {
+
+
+        const name =
+        document.getElementById(
+            "name"
+        ).value.trim();
+
+
+        const selectedSpecies =
+        speciesSelect.value;
+
+
+        const otherSpecies =
+        otherSpeciesInput
+            .value
+            .trim();
+
+
+        const breed =
+        document.getElementById(
+            "breed"
+        ).value.trim();
+
+
+        const sex =
+        document.getElementById(
+            "sex"
+        ).value;
+
+
+        const date_of_birth =
+        document.getElementById(
+            "date_of_birth"
+        ).value;
+
+
+        const weight =
+        document.getElementById(
+            "weight"
+        ).value;
+
+
+        const owner =
+        document.getElementById(
+            "owner"
+        ).value.trim();
+
+
+        const owner_phone =
+        document.getElementById(
+            "owner_phone"
+        ).value.trim();
+
+
+        const owner_address =
+        document.getElementById(
+            "owner_address"
+        ).value.trim();
+
+
+
+        // VALIDATION
+
+        if (
+            !name ||
+            !selectedSpecies ||
+            !owner
+        ) {
+
+            message.textContent =
+            "Patient name, species, dan owner wajib diisi.";
+
+            message.className =
+            "message error";
+
+            return;
+
+        }
+
+
+        if (
+            selectedSpecies === "Other" &&
+            !otherSpecies
+        ) {
+
+            message.textContent =
+            "Please enter the other species.";
+
+            message.className =
+            "message error";
+
+            otherSpeciesInput.focus();
+
+            return;
+
+        }
+
+
+        const finalSpecies =
+        selectedSpecies === "Other"
+            ? otherSpecies
+            : selectedSpecies;
+
+
+
+        saveButton.disabled =
+        true;
+
+
+        message.textContent =
+        editingPatientId
+            ? "Updating patient..."
+            : "Saving patient...";
+
+
+        message.className =
+        "message";
+
+
+
+        // ========================================
+        // GET CLINIC
+        // ========================================
+
+        const clinicId =
+        await getCurrentClinic();
+
+
+        if (!clinicId) {
+
+            saveButton.disabled =
+            false;
+
+            return;
+
+        }
+
+
+
+        // ========================================
+        // UPDATE
+        // ========================================
+
+        if (editingPatientId) {
+
+
+            const {
+                error
+            } =
+            await supabaseClient
+                .from("patients")
+                .update({
+
+                    name:
+                    name,
+
+                    species:
+                    finalSpecies,
+
+                    breed:
+                    breed || null,
+
+                    sex:
+                    sex || null,
+
+                    date_of_birth:
+                    date_of_birth || null,
+
+                    weight:
+                    weight
+                        ? Number(weight)
+                        : null,
+
+                    owner:
+                    owner,
+
+                    owner_phone:
+                    owner_phone || null,
+
+                    owner_address:
+                    owner_address || null
+
+                })
+                .eq(
+                    "id",
+                    editingPatientId
+                )
+                .eq(
+                    "clinic_id",
+                    clinicId
+                );
+
+
+            if (error) {
+
+                console.error(
+                    "Update patient error:",
+                    error
+                );
+
+
+                message.textContent =
+                "Gagal mengubah: " +
+                error.message;
+
+
+                message.className =
+                "message error";
+
+
+                saveButton.disabled =
+                false;
+
+
+                return;
+
+            }
+
+
+            message.textContent =
+            "Patient berhasil diperbarui!";
+
+
+            message.className =
+            "message success";
+
+
+            await loadPatients();
+
+
+            saveButton.disabled =
+            false;
+
+
+            setTimeout(
+                function() {
+
+                    resetForm();
+
+                },
+                700
+            );
+
+
+            return;
+
+        }
+
+
+
+        // ========================================
+        // INSERT NEW PATIENT
+        // ========================================
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .from("patients")
+            .insert({
+
+                // IMPORTANT
+                // INI YANG MEMBUAT
+                // PATIENT MASUK KE KLINIK
+                // USER YANG LOGIN
+
+                clinic_id:
+                clinicId,
+
+                name:
+                name,
+
+                species:
+                finalSpecies,
+
+                breed:
+                breed || null,
+
+                sex:
+                sex || null,
+
+                date_of_birth:
+                date_of_birth || null,
+
+                weight:
+                weight
+                    ? Number(weight)
+                    : null,
+
+                owner:
+                owner,
+
+                owner_phone:
+                owner_phone || null,
+
+                owner_address:
+                owner_address || null
+
+            })
+            .select("*")
+            .single();
+
+
+
+        if (error) {
+
+            console.error(
+                "Insert patient error:",
+                error
+            );
+
+
+            message.textContent =
+            "Gagal menyimpan: " +
+            error.message;
+
+
+            message.className =
+            "message error";
+
+
+            saveButton.disabled =
+            false;
+
+
+            return;
+
+        }
+
+
+
+        // ========================================
+        // VERIFY CLINIC ID
+        // ========================================
+
+        console.log(
+            "NEW PATIENT:",
+            data
+        );
+
+
+        console.log(
+            "CLINIC ID:",
+            data.clinic_id
+        );
+
+
+        message.textContent =
+        "Patient berhasil disimpan!";
+
+
+        message.className =
+        "message success";
+
+
+        await loadPatients();
+
+
+        saveButton.disabled =
+        false;
+
+
+        setTimeout(
+            function() {
+
+                resetForm();
+
+            },
+            700
+        );
+
+    }
+);
+
+
+
+// ========================================
+// CANCEL EDIT
+// ========================================
+
+cancelButton.addEventListener(
+    "click",
+    function() {
+
+        resetForm();
+
+    }
+);
+
+
+
+// ========================================
+// DELETE PATIENT
 // ========================================
 
 async function deletePatient(id) {
+
 
     if (
         !confirm(
@@ -1181,7 +1698,9 @@ async function deletePatient(id) {
 
 
     if (!clinicId) {
+
         return;
+
     }
 
 
@@ -1218,13 +1737,35 @@ async function deletePatient(id) {
 }
 
 
+
 // ========================================
 // INITIALIZE
 // ========================================
 
-loadPatients();
+async function init() {
+
+
+    const clinicId =
+    await getCurrentClinic();
+
+
+    if (!clinicId) {
+
+        return;
+
+    }
+
+
+    await loadPatients();
+
+}
+
+
+init();
+
 
 </script>
+
 
 </body>
 
