@@ -180,16 +180,14 @@
 
         <button
             id="registerButton"
-            type="button"
-        >
+            type="button">
             Register
         </button>
 
 
         <a
             href="login.html"
-            class="back-login"
-        >
+            class="back-login">
             Already have an account? Login
         </a>
 
@@ -308,12 +306,16 @@ registerButton.addEventListener(
 
         try {
 
+            /*
+             * STEP 1
+             * Membuat akun Supabase
+             */
+
             const {
                 data,
                 error
             } =
-            await supabaseClient.auth
-            .signUp({
+            await supabaseClient.auth.signUp({
 
                 email: email,
 
@@ -356,7 +358,29 @@ registerButton.addEventListener(
 
 
             /*
-             * Membuat data klinik
+             * STEP 2
+             * Pastikan user sudah login.
+             */
+
+            if (!data.session) {
+
+                message.textContent =
+                    "Akun berhasil dibuat. Silakan cek email untuk verifikasi terlebih dahulu, lalu login.";
+
+                message.className =
+                    "success";
+
+                registerButton.disabled =
+                    false;
+
+                return;
+            }
+
+
+            /*
+             * STEP 3
+             * Membuat klinik dan owner
+             * melalui database function.
              */
 
             const {
@@ -364,22 +388,24 @@ registerButton.addEventListener(
                 error: clinicError
             } =
             await supabaseClient
-            .from("clinics")
-            .insert({
-
-                name: clinicName
-
-            })
-            .select()
-            .single();
+            .rpc(
+                "create_clinic_for_current_user",
+                {
+                    p_clinic_name:
+                        clinicName
+                }
+            );
 
 
             if (clinicError) {
 
-                console.error(clinicError);
+                console.error(
+                    "Create clinic error:",
+                    clinicError
+                );
 
                 message.textContent =
-                    "Akun berhasil dibuat, tetapi data klinik gagal dibuat: " +
+                    "Akun berhasil dibuat, tetapi klinik gagal dibuat: " +
                     clinicError.message;
 
                 message.className =
@@ -392,53 +418,33 @@ registerButton.addEventListener(
             }
 
 
+            console.log(
+                "Clinic created:",
+                clinic
+            );
+
+
             /*
-             * Menghubungkan user
-             * dengan kliniknya
+             * STEP 4
+             * Registrasi berhasil.
              */
 
-            const {
-                error: memberError
-            } =
-            await supabaseClient
-            .from("clinic_members")
-            .insert({
-
-                user_id:
-                    data.user.id,
-
-                clinic_id:
-                    clinic.id,
-
-                role:
-                    "owner"
-
-            });
-
-
-            if (memberError) {
-
-                console.error(memberError);
-
-                message.textContent =
-                    "Akun dan klinik berhasil dibuat, tetapi hubungan akun dengan klinik gagal dibuat: " +
-                    memberError.message;
-
-                message.className =
-                    "error";
-
-                registerButton.disabled =
-                    false;
-
-                return;
-            }
-
-
             message.textContent =
-                "Registrasi berhasil! Mengarahkan ke login...";
+                "Registrasi berhasil! Klinik " +
+                clinicName +
+                " berhasil dibuat. Mengarahkan ke login...";
 
             message.className =
                 "success";
+
+
+            /*
+             * Logout setelah registrasi
+             * supaya user masuk melalui
+             * halaman login seperti biasa.
+             */
+
+            await supabaseClient.auth.signOut();
 
 
             setTimeout(function() {
@@ -447,7 +453,6 @@ registerButton.addEventListener(
                     "login.html";
 
             }, 1500);
-
 
         } catch (error) {
 
