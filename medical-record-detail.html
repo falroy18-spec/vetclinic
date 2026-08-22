@@ -3,248 +3,303 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-<title>Medical Record - VetClinic</title>
+    <title>Medical Records - VetClinic</title>
 
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
-<style>
+    <style>
 
-.record-card {
-    background: white;
-    padding: 22px;
-    border-radius: 12px;
-    margin-bottom: 18px;
-    border: 1px solid #e5e7eb;
-}
+        .record-card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #e5e7eb;
+        }
 
-.patient-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-}
+        .patient-group {
+            margin-bottom: 30px;
+        }
 
-.patient-name {
-    font-size: 20px;
-    font-weight: bold;
-}
+        .patient-group-header {
+            background: #f1f5f9;
+            padding: 16px 18px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
 
-.patient-info {
-    color: #6b7280;
-    margin-top: 5px;
-}
+        .patient-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
 
-.record-date {
-    color: #6b7280;
-    font-size: 13px;
-}
+        .patient-name {
+            font-size: 20px;
+            font-weight: bold;
+        }
 
-.soap-section {
-    margin-top: 18px;
-}
+        .patient-info {
+            color: #6b7280;
+            margin-top: 6px;
+            line-height: 1.6;
+        }
 
-.soap-title {
-    font-weight: bold;
-    margin-bottom: 8px;
-}
+        .record-date {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
 
-.soap-content {
-    background: #f8fafc;
-    padding: 14px;
-    border-radius: 8px;
-    white-space: pre-wrap;
-}
+        .soap-section {
+            margin-top: 18px;
+        }
 
-.vital-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-}
+        .soap-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
 
-.vital-item {
-    background: #f8fafc;
-    padding: 12px;
-    border-radius: 8px;
-}
+        .soap-content {
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+        }
 
-.vital-label {
-    font-size: 12px;
-    color: #6b7280;
-    margin-bottom: 5px;
-}
+        .vital-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
 
-.vital-value {
-    font-weight: bold;
-}
+        .vital-item {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 8px;
+        }
 
-.search-wrapper {
-    margin-bottom: 20px;
-}
+        .vital-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
 
-.search-wrapper input {
-    width: 100%;
-    padding: 13px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-}
+        .vital-value {
+            font-weight: bold;
+        }
 
-.patient-group {
-    margin-bottom: 30px;
-}
+        .search-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
 
-.patient-group-header {
-    background: #f1f5f9;
-    padding: 14px 18px;
-    border-radius: 10px;
-    margin-bottom: 12px;
-}
+        .search-wrapper input {
+            flex: 1;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+        }
 
-.empty-state {
-    text-align: center;
-    padding: 40px;
-    color: #6b7280;
-}
+        .show-all-button {
+            padding: 13px 18px;
+            border: none;
+            border-radius: 8px;
+            background: #e5e7eb;
+            cursor: pointer;
+            font-weight: 600;
+        }
 
-@media(max-width:800px) {
+        .show-all-button:hover {
+            background: #d1d5db;
+        }
 
-    .vital-grid {
-        grid-template-columns: 1fr 1fr;
-    }
+        .selected-patient {
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
 
-    .patient-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+        .selected-patient strong {
+            color: #3730a3;
+        }
 
-}
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
 
-@media(max-width:500px) {
+        .record-count {
+            color: #6b7280;
+            font-size: 14px;
+        }
 
-    .vital-grid {
-        grid-template-columns: 1fr;
-    }
+        @media(max-width:800px) {
 
-}
+            .vital-grid {
+                grid-template-columns: 1fr 1fr;
+            }
 
-</style>
+            .patient-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-wrapper {
+                flex-direction: column;
+            }
+
+        }
+
+        @media(max-width:500px) {
+
+            .vital-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
 
 </head>
 
 
 <body>
 
-
 <div class="app">
 
 
-<!-- SIDEBAR -->
+    <!-- SIDEBAR -->
 
-<aside class="sidebar">
+    <aside class="sidebar">
 
-    <h1>🐾 VetClinic</h1>
+        <h1>🐾 VetClinic</h1>
 
-    <nav>
+        <nav>
 
-        <a href="index.html">
-            Dashboard
-        </a>
+            <a href="index.html">
+                Dashboard
+            </a>
 
-        <a href="patients.html">
-            Patients
-        </a>
+            <a href="patients.html">
+                Patients
+            </a>
 
-        <a href="appointments.html">
-            Appointments
-        </a>
+            <a href="appointments.html">
+                Appointments
+            </a>
 
-        <a href="medical-records.html"
-           class="active">
-            Medical Records
-        </a>
+            <a href="medical-records.html"
+               class="active">
+                Medical Records
+            </a>
 
-        <a href="medicines.html">
-            Medicines
-        </a>
+            <a href="medicines.html">
+                Medicines
+            </a>
 
-        <a href="billing.html">
-            Billing
-        </a>
+            <a href="billing.html">
+                Billing
+            </a>
 
-        <a href="reports.html">
-            Reports
-        </a>
+            <a href="reports.html">
+                Reports
+            </a>
 
-    </nav>
+        </nav>
 
-</aside>
-
-
-
-<!-- MAIN -->
-
-<main class="main-content">
+    </aside>
 
 
-<header>
+    <!-- MAIN -->
 
-    <div>
-
-        <h2>
-            Medical Records
-        </h2>
-
-        <p>
-            Medical history grouped by patient.
-        </p>
-
-    </div>
-
-</header>
+    <main class="main-content">
 
 
+        <header>
 
-<!-- SEARCH -->
+            <div>
 
-<section class="appointments">
+                <h2>
+                    Medical Records
+                </h2>
 
-    <h3>
-        Search Patient
-    </h3>
+                <p>
+                    Medical history grouped by patient.
+                </p>
 
+            </div>
 
-    <div class="search-wrapper">
-
-        <input
-            type="text"
-            id="recordSearch"
-            placeholder="Search patient or owner..."
-        >
-
-    </div>
+        </header>
 
 
-    <div id="medicalRecords">
+        <!-- SEARCH PATIENT -->
 
-        <div class="empty-state">
+        <section class="appointments">
 
-            Loading medical records...
-
-        </div>
-
-    </div>
-
-</section>
+            <h3>
+                Search Patient
+            </h3>
 
 
-</main>
+            <div class="search-wrapper">
+
+                <input
+                    type="text"
+                    id="recordSearch"
+                    placeholder="Search patient name or owner..."
+                    autocomplete="off"
+                >
+
+                <button
+                    type="button"
+                    class="show-all-button"
+                    id="showAllButton"
+                >
+                    Show All
+                </button>
+
+            </div>
+
+
+            <!-- SELECTED PATIENT -->
+
+            <div
+                id="selectedPatient"
+                class="selected-patient"
+            ></div>
+
+
+            <!-- MEDICAL RECORDS -->
+
+            <div id="medicalRecords">
+
+                <div class="empty-state">
+
+                    Loading medical records...
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
 
 </div>
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -273,11 +328,9 @@ const supabaseClient =
     );
 
 
-
 let currentClinic = null;
 
 let allRecords = [];
-
 
 
 /* ==================================================
@@ -286,7 +339,6 @@ let allRecords = [];
 
 
 async function getCurrentClinic() {
-
 
     const {
         data: {
@@ -342,9 +394,7 @@ async function getCurrentClinic() {
 
     if (error) {
 
-        console.error(
-            error
-        );
+        console.error(error);
 
         alert(
             "Gagal mendapatkan klinik: " +
@@ -383,15 +433,12 @@ async function getCurrentClinic() {
 }
 
 
-
 /* ==================================================
    ESCAPE HTML
 ================================================== */
 
 
-function escapeHTML(
-    value
-) {
+function escapeHTML(value) {
 
     return String(
         value || ""
@@ -420,14 +467,12 @@ function escapeHTML(
 }
 
 
-
 /* ==================================================
    LOAD MEDICAL RECORDS
 ================================================== */
 
 
 async function loadMedicalRecords() {
-
 
     if (!currentClinic) {
         return;
@@ -506,20 +551,22 @@ async function loadMedicalRecords() {
 }
 
 
-
 /* ==================================================
-   RENDER
+   RENDER MEDICAL RECORDS
 ================================================== */
 
 
-function renderMedicalRecords(
-    records
-) {
-
+function renderMedicalRecords(records) {
 
     const container =
         document.getElementById(
             "medicalRecords"
+        );
+
+
+    const selectedBox =
+        document.getElementById(
+            "selectedPatient"
         );
 
 
@@ -535,22 +582,23 @@ function renderMedicalRecords(
 
         `;
 
+        selectedBox.style.display =
+            "none";
+
         return;
 
     }
 
 
     /*
-     * GROUP BY PATIENT
-     */
-
+       GROUP BY PATIENT
+    */
 
     const grouped = {};
 
 
     records.forEach(
         record => {
-
 
             const patient =
                 record.patients;
@@ -595,15 +643,42 @@ function renderMedicalRecords(
     );
 
 
-    container.innerHTML =
-        "";
+    container.innerHTML = "";
 
 
-    Object.values(
-        grouped
-    ).forEach(
+    /*
+       SORT PATIENTS BY
+       MOST RECENT RECORD
+    */
+
+    const groups =
+        Object.values(
+            grouped
+        ).sort(
+            (a, b) => {
+
+                const dateA =
+                    a.records[0]?.created_at
+                    ? new Date(
+                        a.records[0].created_at
+                    ).getTime()
+                    : 0;
+
+                const dateB =
+                    b.records[0]?.created_at
+                    ? new Date(
+                        b.records[0].created_at
+                    ).getTime()
+                    : 0;
+
+                return dateB - dateA;
+
+            }
+        );
+
+
+    groups.forEach(
         group => {
-
 
             const patient =
                 group.patient;
@@ -640,8 +715,7 @@ function renderMedicalRecords(
                             <div class="patient-info">
 
                                 ${escapeHTML(
-                                    patient.species ||
-                                    "-"
+                                    patient.species || "-"
                                 )}
 
                                 ${
@@ -653,14 +727,31 @@ function renderMedicalRecords(
                                     : ""
                                 }
 
+                                ${
+                                    patient.sex
+                                    ? " · " +
+                                      escapeHTML(
+                                          patient.sex
+                                      )
+                                    : ""
+                                }
+
                                 <br>
 
                                 Owner:
                                 ${
                                     escapeHTML(
-                                        patient.owner ||
-                                        "-"
+                                        patient.owner || "-"
                                     )
+                                }
+
+                                ${
+                                    patient.owner_phone
+                                    ? " · " +
+                                      escapeHTML(
+                                          patient.owner_phone
+                                      )
+                                    : ""
                                 }
 
                             </div>
@@ -668,9 +759,11 @@ function renderMedicalRecords(
                         </div>
 
 
-                        <div>
+                        <div class="record-count">
 
-                            ${group.records.length}
+                            ${
+                                group.records.length
+                            }
                             record(s)
 
                         </div>
@@ -683,9 +776,8 @@ function renderMedicalRecords(
 
 
             /*
-             * RECORDS OF THIS PATIENT
-             */
-
+               RECORDS OF THIS PATIENT
+            */
 
             group.records.forEach(
                 record => {
@@ -715,10 +807,12 @@ function renderMedicalRecords(
 
                         <div class="record-date">
 
-                            ${recordDate}
+                            Visit:
+                            ${escapeHTML(
+                                recordDate
+                            )}
 
                         </div>
-
 
 
                         <!-- SUBJECTIVE -->
@@ -744,7 +838,6 @@ function renderMedicalRecords(
                             </div>
 
                         </div>
-
 
 
                         <!-- OBJECTIVE -->
@@ -926,7 +1019,6 @@ function renderMedicalRecords(
                         </div>
 
 
-
                         <!-- ASSESSMENT -->
 
                         <div class="soap-section">
@@ -950,7 +1042,6 @@ function renderMedicalRecords(
                             </div>
 
                         </div>
-
 
 
                         <!-- PLAN -->
@@ -998,9 +1089,8 @@ function renderMedicalRecords(
 }
 
 
-
 /* ==================================================
-   SEARCH
+   SEARCH PATIENT / OWNER
 ================================================== */
 
 
@@ -1012,14 +1102,26 @@ document
         "input",
         function() {
 
-
             const keyword =
                 this.value
                     .trim()
                     .toLowerCase();
 
 
+            const selectedBox =
+                document.getElementById(
+                    "selectedPatient"
+                );
+
+
+            /*
+               SHOW ALL
+            */
+
             if (!keyword) {
+
+                selectedBox.style.display =
+                    "none";
 
                 renderMedicalRecords(
                     allRecords
@@ -1030,18 +1132,28 @@ document
             }
 
 
+            /*
+               FILTER
+               PATIENT NAME
+               OR OWNER
+            */
+
             const filtered =
                 allRecords.filter(
                     record => {
-
 
                         const patient =
                             record.patients;
 
 
+                        if (!patient) {
+                            return false;
+                        }
+
+
                         const patientName =
                             (
-                                patient?.name ||
+                                patient.name ||
                                 ""
                             )
                             .toLowerCase();
@@ -1049,26 +1161,120 @@ document
 
                         const owner =
                             (
-                                patient?.owner ||
+                                patient.owner ||
                                 ""
                             )
                             .toLowerCase();
 
 
                         return (
-
                             patientName.includes(
                                 keyword
                             ) ||
-
                             owner.includes(
                                 keyword
                             )
-
                         );
 
                     }
                 );
+
+
+            /*
+               FIND UNIQUE PATIENTS
+            */
+
+            const patients = [];
+
+
+            filtered.forEach(
+                record => {
+
+                    if (
+                        record.patients &&
+                        !patients.some(
+                            p =>
+                                p.id ===
+                                record.patients.id
+                        )
+                    ) {
+
+                        patients.push(
+                            record.patients
+                        );
+
+                    }
+
+                }
+            );
+
+
+            /*
+               SELECTED PATIENT INFO
+            */
+
+            if (
+                patients.length === 1
+            ) {
+
+                const patient =
+                    patients[0];
+
+
+                selectedBox.innerHTML = `
+
+                    <strong>
+                        Showing medical history for:
+                    </strong>
+
+                    ${escapeHTML(
+                        patient.name
+                    )}
+
+                    <br>
+
+                    <span>
+                        ${escapeHTML(
+                            patient.species || "-"
+                        )}
+
+                        ${
+                            patient.breed
+                            ? " · " +
+                              escapeHTML(
+                                  patient.breed
+                              )
+                            : ""
+                        }
+
+                        · Owner:
+                        ${escapeHTML(
+                            patient.owner || "-"
+                        )}
+                    </span>
+
+                `;
+
+                selectedBox.style.display =
+                    "block";
+
+            } else {
+
+                selectedBox.innerHTML = `
+
+                    <strong>
+                        Search result:
+                    </strong>
+
+                    ${patients.length}
+                    patient(s) found.
+
+                `;
+
+                selectedBox.style.display =
+                    "block";
+
+            }
 
 
             renderMedicalRecords(
@@ -1079,6 +1285,37 @@ document
     );
 
 
+/* ==================================================
+   SHOW ALL BUTTON
+================================================== */
+
+
+document
+    .getElementById(
+        "showAllButton"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            document.getElementById(
+                "recordSearch"
+            ).value = "";
+
+
+            document.getElementById(
+                "selectedPatient"
+            ).style.display =
+                "none";
+
+
+            renderMedicalRecords(
+                allRecords
+            );
+
+        }
+    );
+
 
 /* ==================================================
    INIT
@@ -1086,7 +1323,6 @@ document
 
 
 async function init() {
-
 
     currentClinic =
         await getCurrentClinic();
