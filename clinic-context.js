@@ -1,5 +1,5 @@
 const SUPABASE_URL =
-    "https://zltbjbbofvndxirlipf.supabase.co";
+    "https://zltbjbbofvvndxirlipf.supabase.co";
 
 const SUPABASE_KEY =
     "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
@@ -53,14 +53,6 @@ async function getCurrentClinic() {
     }
 
 
-    /*
-     * JANGAN REDIRECT KE LOGIN DI SINI.
-     *
-     * Kalau session tidak terbaca,
-     * kita biarkan halaman tetap terbuka
-     * supaya bisa melihat masalah sebenarnya.
-     */
-
     if (!data?.session) {
 
         console.error(
@@ -80,10 +72,6 @@ async function getCurrentClinic() {
         session.user.id
     );
 
-
-    /*
-     * Ambil clinic user
-     */
 
     const {
         data: membership,
