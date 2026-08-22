@@ -84,6 +84,24 @@
             opacity: 0.6;
         }
 
+        .show-password {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: -8px;
+            margin-bottom: 18px;
+            font-size: 14px;
+            font-weight: normal;
+            color: #4b5563;
+            cursor: pointer;
+        }
+
+        .show-password input {
+            width: auto;
+            margin: 0;
+            cursor: pointer;
+        }
+
         .back-login {
             display: block;
             text-align: center;
@@ -178,6 +196,20 @@
         >
 
 
+        <!-- SHOW PASSWORD -->
+
+        <label class="show-password">
+
+            <input
+                type="checkbox"
+                id="showPassword"
+            >
+
+            Show password
+
+        </label>
+
+
         <button
             id="registerButton"
             type="button">
@@ -231,12 +263,49 @@ document.getElementById("password");
 const confirmPasswordInput =
 document.getElementById("confirmPassword");
 
+const showPassword =
+document.getElementById("showPassword");
+
 const registerButton =
 document.getElementById("registerButton");
 
 const message =
 document.getElementById("message");
 
+
+/* =========================
+   SHOW / HIDE PASSWORD
+========================= */
+
+showPassword.addEventListener(
+    "change",
+    function() {
+
+        if (showPassword.checked) {
+
+            passwordInput.type =
+                "text";
+
+            confirmPasswordInput.type =
+                "text";
+
+        } else {
+
+            passwordInput.type =
+                "password";
+
+            confirmPasswordInput.type =
+                "password";
+
+        }
+
+    }
+);
+
+
+/* =========================
+   REGISTER
+========================= */
 
 registerButton.addEventListener(
     "click",
