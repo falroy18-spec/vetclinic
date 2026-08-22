@@ -13,6 +13,144 @@ content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet"
 href="style.css">
 
+<style>
+
+/* ================================
+   PATIENT SEARCH
+================================ */
+
+.patient-search-wrapper {
+    position: relative;
+}
+
+.patient-search {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    background: white;
+}
+
+.patient-search:focus {
+    outline: none;
+    border-color: #5146e5;
+    box-shadow: 0 0 0 2px rgba(81,70,229,0.1);
+}
+
+.patient-dropdown {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.10);
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.patient-dropdown.show {
+    display: block;
+}
+
+.patient-option {
+    padding: 11px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.patient-option:last-child {
+    border-bottom: none;
+}
+
+.patient-option:hover {
+    background: #f4f3ff;
+}
+
+.patient-name {
+    font-weight: 600;
+    color: #252d3d;
+}
+
+.patient-info {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 3px;
+}
+
+.no-patient {
+    padding: 14px;
+    color: #6b7280;
+    text-align: center;
+}
+
+
+/* ================================
+   SELECTED PATIENT
+================================ */
+
+.selected-patient {
+    margin-top: 8px;
+    padding: 10px 12px;
+    background: #f4f3ff;
+    border: 1px solid #ddd9ff;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #3730a3;
+    display: none;
+}
+
+
+/* ================================
+   OBJECTIVE GRID
+================================ */
+
+.vitals-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.vital-item label {
+    margin-bottom: 6px;
+}
+
+.vital-item input,
+.vital-item select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
+}
+
+.vital-item input:focus,
+.vital-item select:focus {
+    outline: none;
+    border-color: #5146e5;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 650px) {
+
+    .vitals-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
 </head>
 
 
@@ -85,8 +223,7 @@ Create a clinical record for a patient.
 
 <a
 href="medical-records.html"
-class="add-button"
->
+class="add-button">
 ← Back
 </a>
 
@@ -99,25 +236,54 @@ class="add-button"
 <form id="recordForm">
 
 
+<!-- ================================
+     PATIENT
+================================ -->
+
 <div class="form-group">
 
 <label>
 Patient *
 </label>
 
-<select
-id="patientId"
-required
+
+<div class="patient-search-wrapper">
+
+<input
+type="text"
+id="patientSearch"
+class="patient-search"
+placeholder="Search patient by name, species or breed..."
+autocomplete="off"
 >
 
-<option value="">
-Loading patients...
-</option>
 
-</select>
+<div
+id="patientDropdown"
+class="patient-dropdown">
+</div>
 
 </div>
 
+
+<div
+id="selectedPatient"
+class="selected-patient">
+</div>
+
+
+<input
+type="hidden"
+id="patientId"
+>
+
+
+</div>
+
+
+<!-- ================================
+     VISIT DATE
+================================ -->
 
 <div class="form-group">
 
@@ -142,6 +308,10 @@ SOAP Clinical Record
 </h3>
 
 
+<!-- ================================
+     SUBJECTIVE
+================================ -->
+
 <div class="form-group">
 
 <label>
@@ -150,11 +320,15 @@ Subjective
 
 <textarea
 id="subjective"
-placeholder="Owner complaints, history, appetite, drinking, vomiting, diarrhea, etc."
+placeholder="Owner complaints, history, appetite, drinking, vomiting, diarrhea, duration of signs, previous treatment, etc."
 ></textarea>
 
 </div>
 
+
+<!-- ================================
+     OBJECTIVE
+================================ -->
 
 <div class="form-group">
 
@@ -162,13 +336,152 @@ placeholder="Owner complaints, history, appetite, drinking, vomiting, diarrhea, 
 Objective
 </label>
 
+
+<div class="vitals-grid">
+
+
+<div class="vital-item">
+
+<label>
+Temperature (°C)
+</label>
+
+<input
+type="number"
+step="0.1"
+id="temperature"
+placeholder="e.g. 38.5"
+>
+
+</div>
+
+
+<div class="vital-item">
+
+<label>
+Heart Rate (bpm)
+</label>
+
+<input
+type="number"
+id="heartRate"
+placeholder="e.g. 120"
+>
+
+</div>
+
+
+<div class="vital-item">
+
+<label>
+Respiratory Rate (rpm)
+</label>
+
+<input
+type="number"
+id="respiratoryRate"
+placeholder="e.g. 30"
+>
+
+</div>
+
+
+<div class="vital-item">
+
+<label>
+CRT
+</label>
+
+<select id="crt">
+
+<option value="">
+Select
+</option>
+
+<option value="< 2 sec">
+< 2 sec
+</option>
+
+<option value="2 sec">
+2 sec
+</option>
+
+<option value="> 2 sec">
+> 2 sec
+</option>
+
+</select>
+
+</div>
+
+
+<div class="vital-item">
+
+<label>
+Mucous Membrane
+</label>
+
+<select id="mucousMembrane">
+
+<option value="">
+Select
+</option>
+
+<option value="Pink">
+Pink
+</option>
+
+<option value="Pale">
+Pale
+</option>
+
+<option value="Icteric">
+Icteric
+</option>
+
+<option value="Cyanotic">
+Cyanotic
+</option>
+
+<option value="Congested">
+Congested
+</option>
+
+</select>
+
+</div>
+
+
+<div class="vital-item">
+
+<label>
+Body Weight (kg)
+</label>
+
+<input
+type="number"
+step="0.01"
+id="bodyWeight"
+placeholder="e.g. 4.50"
+>
+
+</div>
+
+
+</div>
+
+
 <textarea
-id="objective"
-placeholder="Physical examination, temperature, HR, RR, CRT, mucous membrane, body weight, etc."
+id="objectiveNotes"
+placeholder="Other physical examination findings: hydration, lymph nodes, skin, eyes, ears, oral cavity, thorax, abdomen, musculoskeletal, etc."
 ></textarea>
 
 </div>
 
+
+<!-- ================================
+     ASSESSMENT
+================================ -->
 
 <div class="form-group">
 
@@ -183,6 +496,10 @@ placeholder="Clinical assessment and diagnosis"
 
 </div>
 
+
+<!-- ================================
+     PLAN
+================================ -->
 
 <div class="form-group">
 
@@ -206,6 +523,10 @@ Additional Information
 </h3>
 
 
+<!-- ================================
+     MEDICATION
+================================ -->
+
 <div class="form-group">
 
 <label>
@@ -220,6 +541,10 @@ placeholder="Drug name, dose, route and frequency"
 </div>
 
 
+<!-- ================================
+     PROCEDURE
+================================ -->
+
 <div class="form-group">
 
 <label>
@@ -233,6 +558,10 @@ placeholder="Procedure performed, if any"
 
 </div>
 
+
+<!-- ================================
+     FOLLOW UP
+================================ -->
 
 <div class="form-group">
 
@@ -253,16 +582,14 @@ placeholder="Next visit or monitoring instructions"
 <button
 type="button"
 id="cancelButton"
-class="cancel-button"
->
+class="cancel-button">
 Cancel
 </button>
 
 
 <button
 type="submit"
-id="saveButton"
->
+id="saveButton">
 Save Medical Record
 </button>
 
@@ -285,9 +612,8 @@ Save Medical Record
 
 <script>
 
-
 /* =====================================================
-   SUPABASE CONFIG
+   SUPABASE
 ===================================================== */
 
 const SUPABASE_URL =
@@ -317,9 +643,24 @@ supabase.createClient(
    ELEMENTS
 ===================================================== */
 
-const patientSelect =
+const patientSearch =
+document.getElementById(
+    "patientSearch"
+);
+
+const patientDropdown =
+document.getElementById(
+    "patientDropdown"
+);
+
+const patientId =
 document.getElementById(
     "patientId"
+);
+
+const selectedPatient =
+document.getElementById(
+    "selectedPatient"
 );
 
 const visitDate =
@@ -332,9 +673,39 @@ document.getElementById(
     "subjective"
 );
 
-const objective =
+const temperature =
 document.getElementById(
-    "objective"
+    "temperature"
+);
+
+const heartRate =
+document.getElementById(
+    "heartRate"
+);
+
+const respiratoryRate =
+document.getElementById(
+    "respiratoryRate"
+);
+
+const crt =
+document.getElementById(
+    "crt"
+);
+
+const mucousMembrane =
+document.getElementById(
+    "mucousMembrane"
+);
+
+const bodyWeight =
+document.getElementById(
+    "bodyWeight"
+);
+
+const objectiveNotes =
+document.getElementById(
+    "objectiveNotes"
 );
 
 const assessment =
@@ -374,7 +745,7 @@ document.getElementById(
 
 
 /* =====================================================
-   URL PARAMETERS
+   PARAMETERS
 ===================================================== */
 
 const params =
@@ -391,11 +762,12 @@ params.get("patientId");
 
 let currentUser = null;
 let currentClinic = null;
+let patients = [];
 let editingRecord = null;
 
 
 /* =====================================================
-   GET CURRENT USER + CLINIC
+   GET CLINIC
 ===================================================== */
 
 async function getCurrentClinic() {
@@ -437,10 +809,6 @@ async function getCurrentClinic() {
             "NO ACTIVE SUPABASE SESSION"
         );
 
-        alert(
-            "Your session has expired. Please login again."
-        );
-
         window.location.href =
             "login.html";
 
@@ -450,12 +818,6 @@ async function getCurrentClinic() {
 
     currentUser =
         data.session.user;
-
-
-    console.log(
-        "Logged in user:",
-        currentUser.id
-    );
 
 
     const {
@@ -486,10 +848,6 @@ async function getCurrentClinic() {
             membershipError
         );
 
-        alert(
-            "Unable to load clinic information."
-        );
-
         return null;
     }
 
@@ -500,11 +858,7 @@ async function getCurrentClinic() {
     ) {
 
         console.error(
-            "User belum terhubung ke clinic."
-        );
-
-        alert(
-            "Your account is not connected to a clinic."
+            "User not connected to clinic."
         );
 
         return null;
@@ -537,30 +891,13 @@ async function getCurrentClinic() {
 
 
 /* =====================================================
-   LOAD PATIENTS FROM SUPABASE
+   LOAD PATIENTS
 ===================================================== */
 
 async function loadPatients() {
 
     console.log(
         "Loading patients..."
-    );
-
-
-    patientSelect.innerHTML = "";
-
-    const loadingOption =
-        document.createElement(
-            "option"
-        );
-
-    loadingOption.value = "";
-
-    loadingOption.textContent =
-        "Loading patients...";
-
-    patientSelect.appendChild(
-        loadingOption
     );
 
 
@@ -590,64 +927,107 @@ async function loadPatients() {
             error
         );
 
-        patientSelect.innerHTML = "";
-
-        const errorOption =
-            document.createElement(
-                "option"
-            );
-
-        errorOption.value = "";
-
-        errorOption.textContent =
-            "Unable to load patients";
-
-        patientSelect.appendChild(
-            errorOption
-        );
-
         return false;
     }
 
 
+    patients =
+        data || [];
+
+
     console.log(
         "Patients loaded:",
-        data
+        patients
     );
 
 
-    patientSelect.innerHTML = "";
+    return true;
+
+}
 
 
-    const defaultOption =
-        document.createElement(
-            "option"
+/* =====================================================
+   PATIENT SEARCH
+===================================================== */
+
+function renderPatients(
+    searchText = ""
+) {
+
+    const query =
+        searchText
+            .trim()
+            .toLowerCase();
+
+
+    const filtered =
+        patients.filter(
+            patient => {
+
+                const name =
+                    String(
+                        patient.name || ""
+                    ).toLowerCase();
+
+                const species =
+                    String(
+                        patient.species || ""
+                    ).toLowerCase();
+
+                const breed =
+                    String(
+                        patient.breed || ""
+                    ).toLowerCase();
+
+                return (
+                    name.includes(query) ||
+                    species.includes(query) ||
+                    breed.includes(query)
+                );
+
+            }
         );
 
-    defaultOption.value = "";
 
-    defaultOption.textContent =
-        data.length
-        ? "Select patient"
-        : "No patients found";
+    patientDropdown.innerHTML = "";
 
 
-    patientSelect.appendChild(
-        defaultOption
-    );
+    if (!filtered.length) {
+
+        const empty =
+            document.createElement(
+                "div"
+            );
+
+        empty.className =
+            "no-patient";
+
+        empty.textContent =
+            "No patient found.";
+
+        patientDropdown.appendChild(
+            empty
+        );
+
+        patientDropdown.classList.add(
+            "show"
+        );
+
+        return;
+
+    }
 
 
-    data.forEach(
+    filtered.forEach(
         patient => {
 
             const option =
-            document.createElement(
-                "option"
-            );
+                document.createElement(
+                    "div"
+                );
 
-
-            option.value =
-                patient.id;
+            option.className =
+                "patient-option";
 
 
             const name =
@@ -665,13 +1045,33 @@ async function loadPatients() {
                 "";
 
 
-            option.textContent =
-                breed
-                ? `${name} • ${species} • ${breed}`
-                : `${name} • ${species}`;
+            option.innerHTML = `
+
+                <div class="patient-name">
+                    ${escapeHtml(name)}
+                </div>
+
+                <div class="patient-info">
+                    ${escapeHtml(species)}
+                    ${breed ? " • " + escapeHtml(breed) : ""}
+                </div>
+
+            `;
 
 
-            patientSelect.appendChild(
+            option.addEventListener(
+                "click",
+                function() {
+
+                    selectPatient(
+                        patient
+                    );
+
+                }
+            );
+
+
+            patientDropdown.appendChild(
                 option
             );
 
@@ -679,29 +1079,231 @@ async function loadPatients() {
     );
 
 
-    /*
-     * Kalau halaman dibuka dari patient detail
-     * dengan ?patientId=...
-     */
-
-    if (
-        selectedPatientId &&
-        !editId
-    ) {
-
-        patientSelect.value =
-            selectedPatientId;
-
-    }
-
-
-    return true;
+    patientDropdown.classList.add(
+        "show"
+    );
 
 }
 
 
 /* =====================================================
-   LOAD EXISTING RECORD FOR EDIT
+   SELECT PATIENT
+===================================================== */
+
+function selectPatient(
+    patient
+) {
+
+    patientId.value =
+        patient.id;
+
+
+    patientSearch.value =
+        patient.name ||
+        "";
+
+
+    selectedPatient.innerHTML = `
+
+        <strong>
+            Selected patient:
+        </strong>
+
+        ${escapeHtml(
+            patient.name || "Unnamed"
+        )}
+
+        •
+
+        ${escapeHtml(
+            patient.species || "-"
+        )}
+
+        ${
+            patient.breed
+            ? " • " + escapeHtml(patient.breed)
+            : ""
+        }
+
+    `;
+
+
+    selectedPatient.style.display =
+        "block";
+
+
+    patientDropdown.classList.remove(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   SEARCH EVENTS
+===================================================== */
+
+patientSearch.addEventListener(
+    "focus",
+    function() {
+
+        renderPatients(
+            patientSearch.value
+        );
+
+    }
+);
+
+
+patientSearch.addEventListener(
+    "input",
+    function() {
+
+        patientId.value = "";
+
+        selectedPatient.style.display =
+            "none";
+
+        renderPatients(
+            patientSearch.value
+        );
+
+    }
+);
+
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            !event.target.closest(
+                ".patient-search-wrapper"
+            )
+        ) {
+
+            patientDropdown.classList.remove(
+                "show"
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   HTML ESCAPE
+===================================================== */
+
+function escapeHtml(
+    value
+) {
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =====================================================
+   BUILD OBJECTIVE
+===================================================== */
+
+function buildObjective() {
+
+    const lines = [];
+
+
+    if (temperature.value) {
+
+        lines.push(
+            `Temperature: ${temperature.value} °C`
+        );
+
+    }
+
+
+    if (heartRate.value) {
+
+        lines.push(
+            `Heart Rate: ${heartRate.value} bpm`
+        );
+
+    }
+
+
+    if (respiratoryRate.value) {
+
+        lines.push(
+            `Respiratory Rate: ${respiratoryRate.value} rpm`
+        );
+
+    }
+
+
+    if (crt.value) {
+
+        lines.push(
+            `CRT: ${crt.value}`
+        );
+
+    }
+
+
+    if (mucousMembrane.value) {
+
+        lines.push(
+            `Mucous Membrane: ${mucousMembrane.value}`
+        );
+
+    }
+
+
+    if (bodyWeight.value) {
+
+        lines.push(
+            `Body Weight: ${bodyWeight.value} kg`
+        );
+
+    }
+
+
+    if (objectiveNotes.value.trim()) {
+
+        lines.push(
+            objectiveNotes.value.trim()
+        );
+
+    }
+
+
+    return lines.join("\n");
+
+}
+
+
+/* =====================================================
+   LOAD EXISTING RECORD
 ===================================================== */
 
 async function loadExistingRecord() {
@@ -711,12 +1313,6 @@ async function loadExistingRecord() {
         return;
 
     }
-
-
-    console.log(
-        "Loading medical record:",
-        editId
-    );
 
 
     const {
@@ -740,7 +1336,7 @@ async function loadExistingRecord() {
     if (error) {
 
         console.error(
-            "Medical record loading error:",
+            "Record loading error:",
             error
         );
 
@@ -774,8 +1370,21 @@ async function loadExistingRecord() {
         "Edit Medical Record";
 
 
-    patientSelect.value =
-        data.patient_id || "";
+    const patient =
+        patients.find(
+            p =>
+                String(p.id) ===
+                String(data.patient_id)
+        );
+
+
+    if (patient) {
+
+        selectPatient(
+            patient
+        );
+
+    }
 
 
     visitDate.value =
@@ -786,7 +1395,13 @@ async function loadExistingRecord() {
         data.subjective || "";
 
 
-    objective.value =
+    /*
+     * Existing objective is kept as text.
+     * New records will use the structured
+     * vital fields above.
+     */
+
+    objectiveNotes.value =
         data.objective || "";
 
 
@@ -809,12 +1424,6 @@ async function loadExistingRecord() {
     followUp.value =
         data.follow_up || "";
 
-
-    console.log(
-        "Medical record loaded:",
-        data
-    );
-
 }
 
 
@@ -824,9 +1433,7 @@ async function loadExistingRecord() {
 
 function setDefaultDate() {
 
-    if (
-        !visitDate.value
-    ) {
+    if (!visitDate.value) {
 
         visitDate.value =
             new Date()
@@ -839,7 +1446,7 @@ function setDefaultDate() {
 
 
 /* =====================================================
-   SAVE MEDICAL RECORD
+   SAVE
 ===================================================== */
 
 recordForm.addEventListener(
@@ -849,24 +1456,13 @@ recordForm.addEventListener(
         event.preventDefault();
 
 
-        if (!currentClinic) {
-
-            alert(
-                "Clinic information is not available."
-            );
-
-            return;
-
-        }
-
-
-        if (!patientSelect.value) {
+        if (!patientId.value) {
 
             alert(
                 "Please select a patient."
             );
 
-            patientSelect.focus();
+            patientSearch.focus();
 
             return;
 
@@ -886,7 +1482,7 @@ recordForm.addEventListener(
                 currentClinic.clinicId,
 
             patient_id:
-                patientSelect.value,
+                patientId.value,
 
             visit_date:
                 visitDate.value,
@@ -895,7 +1491,7 @@ recordForm.addEventListener(
                 subjective.value.trim(),
 
             objective:
-                objective.value.trim(),
+                buildObjective(),
 
             assessment:
                 assessment.value.trim(),
@@ -926,7 +1522,6 @@ recordForm.addEventListener(
             if (editingRecord) {
 
                 const {
-                    data,
                     error
                 } =
                 await supabaseClient
@@ -941,9 +1536,7 @@ recordForm.addEventListener(
                     .eq(
                         "clinic_id",
                         currentClinic.clinicId
-                    )
-                    .select()
-                    .single();
+                    );
 
 
                 if (error) {
@@ -951,12 +1544,6 @@ recordForm.addEventListener(
                     throw error;
 
                 }
-
-
-                console.log(
-                    "Medical record updated:",
-                    data
-                );
 
 
                 alert(
@@ -968,16 +1555,13 @@ recordForm.addEventListener(
             else {
 
                 const {
-                    data,
                     error
                 } =
                 await supabaseClient
                     .from("medical_records")
                     .insert(
                         recordData
-                    )
-                    .select()
-                    .single();
+                    );
 
 
                 if (error) {
@@ -985,12 +1569,6 @@ recordForm.addEventListener(
                     throw error;
 
                 }
-
-
-                console.log(
-                    "Medical record created:",
-                    data
-                );
 
 
                 alert(
@@ -1008,7 +1586,7 @@ recordForm.addEventListener(
         catch (error) {
 
             console.error(
-                "SAVE MEDICAL RECORD ERROR:",
+                "SAVE ERROR:",
                 error
             );
 
@@ -1049,7 +1627,7 @@ document.getElementById(
 
 
 /* =====================================================
-   INITIALIZE
+   INIT
 ===================================================== */
 
 async function init() {
@@ -1082,6 +1660,34 @@ async function init() {
 
 
     setDefaultDate();
+
+
+    /*
+     * Kalau datang dari patient detail
+     */
+
+    if (
+        selectedPatientId &&
+        !editId
+    ) {
+
+        const patient =
+            patients.find(
+                p =>
+                    String(p.id) ===
+                    String(selectedPatientId)
+            );
+
+
+        if (patient) {
+
+            selectPatient(
+                patient
+            );
+
+        }
+
+    }
 
 
     await loadExistingRecord();
