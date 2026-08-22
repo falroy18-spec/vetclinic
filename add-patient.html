@@ -2,147 +2,889 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Patient - VetClinic</title>
-<link rel="stylesheet" href="style.css">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Add Patient - VetClinic</title>
+
+<link
+    rel="stylesheet"
+    href="style.css"
+>
+
+<style>
+
+.message {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.success {
+    color: #16a34a;
+}
+
+.error {
+    color: #dc2626;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+</style>
+
 </head>
+
 
 <body>
 
+
 <div class="app">
 
-<aside class="sidebar">
 
-<h1>🐾 VetClinic</h1>
+    <aside class="sidebar">
 
-<nav>
+        <h1>🐾 VetClinic</h1>
 
-<a href="index.html">Dashboard</a>
-<a href="patients.html" class="active">Patients</a>
-<a href="appointments.html">Appointments</a>
-<a href="medical-records.html">Medical Records</a>
-<a href="medicines.html">Medicines</a>
-<a href="billing.html">Billing</a>
-<a href="reports.html">Reports</a>
+        <nav>
 
-</nav>
+            <a href="index.html">
+                Dashboard
+            </a>
 
-</aside>
+            <a href="patients.html" class="active">
+                Patients
+            </a>
 
-<main class="main-content">
+            <a href="appointments.html">
+                Appointments
+            </a>
 
-<header>
+            <a href="medical-records.html">
+                Medical Records
+            </a>
 
-<div>
+            <a href="medicines.html">
+                Medicines
+            </a>
 
-<h2 id="patientPageTitle">
-Add New Patient
-</h2>
+            <a href="billing.html">
+                Billing
+            </a>
 
-<p id="patientPageDescription">
-Register a new patient into the clinic.
-</p>
+            <a href="reports.html">
+                Reports
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <main class="main-content">
+
+
+        <header>
+
+            <div>
+
+                <h2>
+                    Add New Patient
+                </h2>
+
+                <p>
+                    Register a new patient into the clinic.
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <section class="appointments">
+
+
+            <h3>
+                Patient Information
+            </h3>
+
+
+            <form id="patientForm">
+
+
+                <div class="form-group">
+
+                    <label for="patientName">
+                        Patient Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="patientName"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="species">
+                        Species
+                    </label>
+
+                    <select
+                        id="species"
+                        required
+                    >
+
+                        <option value="">
+                            Select species
+                        </option>
+
+                        <option value="Cat">
+                            Cat
+                        </option>
+
+                        <option value="Dog">
+                            Dog
+                        </option>
+
+                        <option value="Rabbit">
+                            Rabbit
+                        </option>
+
+                        <option value="Bird">
+                            Bird
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div
+                    class="form-group"
+                    id="otherSpeciesGroup"
+                    style="display:none;"
+                >
+
+                    <label for="otherSpecies">
+                        Other Species
+                    </label>
+
+                    <input
+                        type="text"
+                        id="otherSpecies"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="breed">
+                        Breed
+                    </label>
+
+                    <input
+                        type="text"
+                        id="breed"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="sex">
+                        Sex
+                    </label>
+
+                    <select
+                        id="sex"
+                        required
+                    >
+
+                        <option value="">
+                            Select sex
+                        </option>
+
+                        <option value="Male">
+                            Male
+                        </option>
+
+                        <option value="Female">
+                            Female
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="dateOfBirth">
+                        Date of Birth
+                    </label>
+
+                    <input
+                        type="date"
+                        id="dateOfBirth"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="weight">
+                        Weight (kg)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="weight"
+                        step="0.01"
+                        min="0"
+                    >
+
+                </div>
+
+
+                <hr>
+
+
+                <h3>
+                    Owner Information
+                </h3>
+
+
+                <div class="form-group">
+
+                    <label for="ownerName">
+                        Owner Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="ownerName"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="address">
+                        Address
+                    </label>
+
+                    <textarea
+                        id="address"
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <a
+                        href="patients.html"
+                        class="cancel-button"
+                    >
+                        Cancel
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        id="savePatientButton"
+                    >
+                        Save Patient
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="message"
+                    class="message"
+                ></div>
+
+
+            </form>
+
+
+        </section>
+
+
+    </main>
+
 
 </div>
 
-</header>
 
-<section class="appointments">
+<!-- SUPABASE -->
 
-<h3>Patient Information</h3>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<form id="patientForm">
 
-<div class="form-group">
-<label>Patient Name</label>
-<input type="text" id="patientName" required>
-</div>
+<script>
 
-<div class="form-group">
-<label>Species</label>
 
-<select id="species" required>
+// ========================================
+// SUPABASE
+// ========================================
 
-<option value="">Select species</option>
-<option>Cat</option>
-<option>Dog</option>
-<option>Rabbit</option>
-<option>Bird</option>
-<option>Other</option>
+const SUPABASE_URL =
+    "https://zltbjbbofvvndxirlipf.supabase.co";
 
-</select>
 
-</div>
+// PENTING:
+// Masukkan ANON KEY yang sama dengan
+// login.html / patients.html kamu.
 
-<div class="form-group">
-<label>Breed</label>
-<input type="text" id="breed">
-</div>
+const SUPABASE_KEY =
+    "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
 
-<div class="form-group">
-<label>Sex</label>
 
-<select id="sex" required>
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
-<option value="">Select sex</option>
-<option>Male</option>
-<option>Female</option>
 
-</select>
+// ========================================
+// ELEMENTS
+// ========================================
 
-</div>
+const form =
+    document.getElementById(
+        "patientForm"
+    );
 
-<div class="form-group">
-<label>Date of Birth</label>
-<input type="date" id="dateOfBirth">
-</div>
+const saveButton =
+    document.getElementById(
+        "savePatientButton"
+    );
 
-<div class="form-group">
-<label>Weight (kg)</label>
-<input type="number" id="weight" step="0.01">
-</div>
+const message =
+    document.getElementById(
+        "message"
+    );
 
-<hr>
+const species =
+    document.getElementById(
+        "species"
+    );
 
-<h3>Owner Information</h3>
 
-<div class="form-group">
-<label>Owner Name</label>
-<input type="text" id="ownerName" required>
-</div>
+// ========================================
+// OTHER SPECIES
+// ========================================
 
-<div class="form-group">
-<label>Phone Number</label>
-<input type="tel" id="phone">
-</div>
+species.addEventListener(
+    "change",
+    function() {
 
-<div class="form-group">
-<label>Address</label>
-<textarea id="address"></textarea>
-</div>
+        const group =
+            document.getElementById(
+                "otherSpeciesGroup"
+            );
 
-<div class="form-actions">
 
-<a href="patients.html" class="cancel-button">
-Cancel
-</a>
+        if (
+            species.value === "Other"
+        ) {
 
-<button type="submit" id="savePatientButton">
-Save Patient
-</button>
+            group.style.display =
+                "block";
 
-</div>
+        } else {
 
-</form>
+            group.style.display =
+                "none";
 
-</section>
+            document.getElementById(
+                "otherSpecies"
+            ).value = "";
 
-</main>
+        }
 
-</div>
+    }
+);
 
-<script src="script.js"></script>
+
+// ========================================
+// GET CURRENT CLINIC
+// ========================================
+
+async function getCurrentClinic() {
+
+
+    // GET SESSION
+
+    const {
+        data: sessionData,
+        error: sessionError
+    } =
+        await supabaseClient
+            .auth
+            .getSession();
+
+
+    if (sessionError) {
+
+        console.error(
+            "Session error:",
+            sessionError
+        );
+
+        throw new Error(
+            "Gagal membaca session."
+        );
+
+    }
+
+
+    const session =
+        sessionData.session;
+
+
+    if (!session) {
+
+        window.location.href =
+            "login.html";
+
+        return null;
+
+    }
+
+
+    // GET CLINIC MEMBERSHIP
+
+    const {
+        data: membership,
+        error: membershipError
+    } =
+        await supabaseClient
+            .from("clinic_members")
+            .select(
+                "clinic_id"
+            )
+            .eq(
+                "user_id",
+                session.user.id
+            )
+            .maybeSingle();
+
+
+    if (membershipError) {
+
+        console.error(
+            "Membership error:",
+            membershipError
+        );
+
+        throw new Error(
+            "Gagal mendapatkan klinik: " +
+            membershipError.message
+        );
+
+    }
+
+
+    if (
+        !membership ||
+        !membership.clinic_id
+    ) {
+
+        throw new Error(
+            "Akun ini belum terhubung ke klinik."
+        );
+
+    }
+
+
+    console.log(
+        "Logged user:",
+        session.user.id
+    );
+
+    console.log(
+        "Clinic ID:",
+        membership.clinic_id
+    );
+
+
+    return membership.clinic_id;
+
+}
+
+
+// ========================================
+// SAVE PATIENT
+// ========================================
+
+form.addEventListener(
+    "submit",
+    async function(event) {
+
+
+        event.preventDefault();
+
+
+        saveButton.disabled =
+            true;
+
+
+        saveButton.textContent =
+            "Saving...";
+
+
+        message.textContent =
+            "";
+
+
+        try {
+
+
+            // ========================================
+            // GET FORM DATA
+            // ========================================
+
+            const patientName =
+                document
+                    .getElementById(
+                        "patientName"
+                    )
+                    .value
+                    .trim();
+
+
+            const selectedSpecies =
+                species.value;
+
+
+            const otherSpecies =
+                document
+                    .getElementById(
+                        "otherSpecies"
+                    )
+                    .value
+                    .trim();
+
+
+            const breed =
+                document
+                    .getElementById(
+                        "breed"
+                    )
+                    .value
+                    .trim();
+
+
+            const sex =
+                document
+                    .getElementById(
+                        "sex"
+                    )
+                    .value;
+
+
+            const dateOfBirth =
+                document
+                    .getElementById(
+                        "dateOfBirth"
+                    )
+                    .value;
+
+
+            const weight =
+                document
+                    .getElementById(
+                        "weight"
+                    )
+                    .value;
+
+
+            const ownerName =
+                document
+                    .getElementById(
+                        "ownerName"
+                    )
+                    .value
+                    .trim();
+
+
+            const phone =
+                document
+                    .getElementById(
+                        "phone"
+                    )
+                    .value
+                    .trim();
+
+
+            const address =
+                document
+                    .getElementById(
+                        "address"
+                    )
+                    .value
+                    .trim();
+
+
+            // ========================================
+            // VALIDATION
+            // ========================================
+
+            if (
+                !patientName ||
+                !selectedSpecies ||
+                !sex ||
+                !ownerName
+            ) {
+
+                throw new Error(
+                    "Patient Name, Species, Sex, dan Owner Name wajib diisi."
+                );
+
+            }
+
+
+            if (
+                selectedSpecies === "Other" &&
+                !otherSpecies
+            ) {
+
+                throw new Error(
+                    "Masukkan species."
+                );
+
+            }
+
+
+            const finalSpecies =
+                selectedSpecies === "Other"
+                    ? otherSpecies
+                    : selectedSpecies;
+
+
+            // ========================================
+            // GET CLINIC
+            // ========================================
+
+            const clinicId =
+                await getCurrentClinic();
+
+
+            if (!clinicId) {
+
+                throw new Error(
+                    "Clinic ID tidak ditemukan."
+                );
+
+            }
+
+
+            console.log(
+                "INSERT USING CLINIC ID:",
+                clinicId
+            );
+
+
+            // ========================================
+            // INSERT PATIENT
+            // ========================================
+
+            const {
+                data: newPatient,
+                error
+            } =
+                await supabaseClient
+                    .from("patients")
+                    .insert({
+
+                        clinic_id:
+                            clinicId,
+
+                        name:
+                            patientName,
+
+                        species:
+                            finalSpecies,
+
+                        breed:
+                            breed ||
+                            null,
+
+                        sex:
+                            sex,
+
+                        date_of_birth:
+                            dateOfBirth ||
+                            null,
+
+                        weight:
+                            weight
+                                ? Number(weight)
+                                : null,
+
+                        owner:
+                            ownerName,
+
+                        owner_phone:
+                            phone ||
+                            null,
+
+                        owner_address:
+                            address ||
+                            null
+
+                    })
+                    .select()
+                    .single();
+
+
+            // ========================================
+            // ERROR
+            // ========================================
+
+            if (error) {
+
+                console.error(
+                    "SUPABASE INSERT ERROR:",
+                    error
+                );
+
+                throw new Error(
+                    error.message
+                );
+
+            }
+
+
+            // ========================================
+            // VERIFY RESULT
+            // ========================================
+
+            console.log(
+                "NEW PATIENT:",
+                newPatient
+            );
+
+
+            if (
+                !newPatient ||
+                !newPatient.clinic_id
+            ) {
+
+                throw new Error(
+                    "Patient tersimpan tetapi clinic_id tidak terisi."
+                );
+
+            }
+
+
+            // ========================================
+            // SUCCESS
+            // ========================================
+
+            message.textContent =
+                "Patient berhasil ditambahkan!";
+
+            message.className =
+                "message success";
+
+
+            alert(
+                "Patient berhasil ditambahkan!"
+            );
+
+
+            // RESET
+
+            form.reset();
+
+
+            document.getElementById(
+                "otherSpeciesGroup"
+            ).style.display =
+                "none";
+
+
+            // Kembali ke Patients
+
+            setTimeout(
+                function() {
+
+                    window.location.href =
+                        "patients.html";
+
+                },
+                500
+            );
+
+
+        } catch (error) {
+
+
+            console.error(
+                "SAVE PATIENT ERROR:",
+                error
+            );
+
+
+            message.textContent =
+                error.message;
+
+            message.className =
+                "message error";
+
+
+            saveButton.disabled =
+                false;
+
+
+            saveButton.textContent =
+                "Save Patient";
+
+        }
+
+    });
+
+
+</script>
 
 </body>
+
 </html>

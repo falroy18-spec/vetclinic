@@ -1,54 +1,53 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-
 const SUPABASE_URL =
-"https://zltbjbbofvvndxirlipf.supabase.co";
+    "https://zltbjbbofvvndxirlipf.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
+    "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
 
 const supabaseClient =
-supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
-// =========================
+// ========================================
 // ELEMENTS
-// =========================
+// ========================================
 
 const saveButton =
-document.getElementById("saveButton");
+    document.getElementById("saveButton");
 
 const cancelButton =
-document.getElementById("cancelButton");
+    document.getElementById("cancelButton");
 
 const message =
-document.getElementById("message");
+    document.getElementById("message");
 
 const patientList =
-document.getElementById("patientList");
+    document.getElementById("patientList");
 
 const speciesSelect =
-document.getElementById("species");
+    document.getElementById("species");
 
 const otherSpeciesContainer =
-document.getElementById("otherSpeciesContainer");
+    document.getElementById("otherSpeciesContainer");
 
 const otherSpeciesInput =
-document.getElementById("otherSpecies");
+    document.getElementById("otherSpecies");
 
 const formTitle =
-document.getElementById("formTitle");
+    document.getElementById("formTitle");
 
 let editingPatientId = null;
 
 
-// =========================
-// GET CURRENT CLINIC
-// =========================
+// ========================================
+// GET LOGGED-IN USER + CLINIC
+// ========================================
 
 async function getCurrentClinic() {
 
@@ -58,7 +57,7 @@ async function getCurrentClinic() {
     } = await supabaseClient.auth.getSession();
 
     if (sessionError) {
-        console.error(sessionError);
+        console.error("Session error:", sessionError);
         return null;
     }
 
@@ -78,21 +77,27 @@ async function getCurrentClinic() {
         data: membership,
         error: membershipError
     } =
-    await supabaseClient
-        .from("clinic_members")
-        .select("clinic_id")
-        .eq(
-            "user_id",
-            session.user.id
-        )
-        .maybeSingle();
+        await supabaseClient
+            .from("clinic_members")
+            .select("clinic_id")
+            .eq(
+                "user_id",
+                session.user.id
+            )
+            .limit(1)
+            .maybeSingle();
 
 
     if (membershipError) {
 
         console.error(
-            "Membership error:",
+            "Clinic membership error:",
             membershipError
+        );
+
+        alert(
+            "Gagal mendapatkan klinik: " +
+            membershipError.message
         );
 
         return null;
@@ -116,9 +121,9 @@ async function getCurrentClinic() {
 }
 
 
-// =========================
-// SHOW / HIDE OTHER SPECIES
-// =========================
+// ========================================
+// SPECIES
+// ========================================
 
 speciesSelect.addEventListener(
     "change",
@@ -139,16 +144,14 @@ speciesSelect.addEventListener(
                 "none";
 
             otherSpeciesInput.value = "";
-
         }
-
     }
 );
 
 
-// =========================
+// ========================================
 // LOAD PATIENTS
-// =========================
+// ========================================
 
 async function loadPatients() {
 
@@ -183,24 +186,27 @@ async function loadPatients() {
         data,
         error
     } =
-    await supabaseClient
-        .from("patients")
-        .select("*")
-        .eq(
-            "clinic_id",
-            clinicId
-        )
-        .order(
-            "created_at",
-            {
-                ascending: false
-            }
-        );
+        await supabaseClient
+            .from("patients")
+            .select("*")
+            .eq(
+                "clinic_id",
+                clinicId
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
 
 
     if (error) {
 
-        console.error(error);
+        console.error(
+            "Load patients error:",
+            error
+        );
 
         patientList.innerHTML = `
             <tr>
@@ -242,7 +248,6 @@ async function loadPatients() {
 
 
             row.innerHTML = `
-
                 <td>
                     ${patient.name || "-"}
                 </td>
@@ -264,46 +269,38 @@ async function loadPatients() {
                 </td>
 
                 <td>
-
                     <div class="action-buttons">
 
                         <button
                             class="btn-primary"
                             type="button"
-                            onclick="editPatient('${patient.id}')">
-
+                            onclick="editPatient('${patient.id}')"
+                        >
                             Edit
-
                         </button>
-
 
                         <button
                             class="btn-danger"
                             type="button"
-                            onclick="deletePatient('${patient.id}')">
-
+                            onclick="deletePatient('${patient.id}')"
+                        >
                             Delete
-
                         </button>
 
                     </div>
-
                 </td>
-
             `;
 
 
             patientList.appendChild(row);
-
         }
     );
-
 }
 
 
-// =========================
+// ========================================
 // RESET FORM
-// =========================
+// ========================================
 
 function resetForm() {
 
@@ -345,13 +342,12 @@ function resetForm() {
 
     message.className =
         "message";
-
 }
 
 
-// =========================
+// ========================================
 // EDIT PATIENT
-// =========================
+// ========================================
 
 async function editPatient(id) {
 
@@ -359,11 +355,11 @@ async function editPatient(id) {
         data: patient,
         error
     } =
-    await supabaseClient
-        .from("patients")
-        .select("*")
-        .eq("id", id)
-        .single();
+        await supabaseClient
+            .from("patients")
+            .select("*")
+            .eq("id", id)
+            .single();
 
 
     if (error) {
@@ -371,6 +367,30 @@ async function editPatient(id) {
         alert(
             "Gagal mengambil data patient: " +
             error.message
+        );
+
+        return;
+    }
+
+
+    const clinicId =
+        await getCurrentClinic();
+
+
+    if (!clinicId) {
+        return;
+    }
+
+
+    // SECURITY:
+    // Patient harus milik clinic akun ini
+
+    if (
+        patient.clinic_id !== clinicId
+    ) {
+
+        alert(
+            "Patient tidak ditemukan di klinik ini."
         );
 
         return;
@@ -425,7 +445,6 @@ async function editPatient(id) {
 
         otherSpeciesInput.value =
             patient.species || "";
-
     }
 
 
@@ -443,13 +462,12 @@ async function editPatient(id) {
         top: 0,
         behavior: "smooth"
     });
-
 }
 
 
-// =========================
+// ========================================
 // SAVE / UPDATE PATIENT
-// =========================
+// ========================================
 
 saveButton.addEventListener(
     "click",
@@ -491,9 +509,9 @@ saveButton.addEventListener(
                 .value;
 
 
-        // =========================
+        // ========================================
         // VALIDATION
-        // =========================
+        // ========================================
 
         if (
             !name ||
@@ -545,9 +563,9 @@ saveButton.addEventListener(
             "message";
 
 
-        // =========================
-        // GET CLINIC
-        // =========================
+        // ========================================
+        // GET CLINIC FROM LOGIN ACCOUNT
+        // ========================================
 
         const clinicId =
             await getCurrentClinic();
@@ -568,48 +586,57 @@ saveButton.addEventListener(
         }
 
 
-        // =========================
+        console.log(
+            "Current clinic:",
+            clinicId
+        );
+
+
+        // ========================================
         // UPDATE
-        // =========================
+        // ========================================
 
         if (editingPatientId) {
 
             const {
                 error
             } =
-            await supabaseClient
-                .from("patients")
-                .update({
+                await supabaseClient
+                    .from("patients")
+                    .update({
 
-                    name:
-                        name,
+                        name:
+                            name,
 
-                    species:
-                        finalSpecies,
+                        species:
+                            finalSpecies,
 
-                    breed:
-                        breed || null,
+                        breed:
+                            breed || null,
 
-                    sex:
-                        sex || null,
+                        sex:
+                            sex || null,
 
-                    date_of_birth:
-                        date_of_birth || null
+                        date_of_birth:
+                            date_of_birth || null
 
-                })
-                .eq(
-                    "id",
-                    editingPatientId
-                )
-                .eq(
-                    "clinic_id",
-                    clinicId
-                );
+                    })
+                    .eq(
+                        "id",
+                        editingPatientId
+                    )
+                    .eq(
+                        "clinic_id",
+                        clinicId
+                    );
 
 
             if (error) {
 
-                console.error(error);
+                console.error(
+                    "Update patient error:",
+                    error
+                );
 
                 message.textContent =
                     "Gagal mengubah: " +
@@ -651,45 +678,85 @@ saveButton.addEventListener(
         }
 
 
-        // =========================
+        // ========================================
         // INSERT NEW PATIENT
-        // =========================
+        // ========================================
 
         const {
+            data: newPatient,
             error
         } =
-        await supabaseClient
-            .from("patients")
-            .insert({
+            await supabaseClient
+                .from("patients")
+                .insert({
 
-                clinic_id:
-                    clinicId,
+                    // WAJIB clinic_id
+                    clinic_id:
+                        clinicId,
 
-                name:
-                    name,
+                    name:
+                        name,
 
-                species:
-                    finalSpecies,
+                    species:
+                        finalSpecies,
 
-                breed:
-                    breed || null,
+                    breed:
+                        breed || null,
 
-                sex:
-                    sex || null,
+                    sex:
+                        sex || null,
 
-                date_of_birth:
-                    date_of_birth || null
+                    date_of_birth:
+                        date_of_birth || null
 
-            });
+                })
+                .select()
+                .single();
 
 
         if (error) {
 
-            console.error(error);
+            console.error(
+                "Insert patient error:",
+                error
+            );
 
             message.textContent =
                 "Gagal menyimpan: " +
                 error.message;
+
+            message.className =
+                "message error";
+
+            saveButton.disabled =
+                false;
+
+            return;
+        }
+
+
+        console.log(
+            "NEW PATIENT:",
+            newPatient
+        );
+
+
+        // PENTING:
+        // Pastikan patient benar-benar
+        // tersimpan dengan clinic_id
+
+        if (
+            !newPatient ||
+            !newPatient.clinic_id
+        ) {
+
+            console.error(
+                "Patient tersimpan tanpa clinic_id:",
+                newPatient
+            );
+
+            message.textContent =
+                "Patient tersimpan tetapi clinic tidak terhubung.";
 
             message.className =
                 "message error";
@@ -726,9 +793,9 @@ saveButton.addEventListener(
 );
 
 
-// =========================
+// ========================================
 // CANCEL EDIT
-// =========================
+// ========================================
 
 cancelButton.addEventListener(
     "click",
@@ -740,9 +807,9 @@ cancelButton.addEventListener(
 );
 
 
-// =========================
+// ========================================
 // DELETE PATIENT
-// =========================
+// ========================================
 
 async function deletePatient(id) {
 
@@ -761,7 +828,6 @@ async function deletePatient(id) {
 
 
     if (!clinicId) {
-
         return;
     }
 
@@ -769,17 +835,17 @@ async function deletePatient(id) {
     const {
         error
     } =
-    await supabaseClient
-        .from("patients")
-        .delete()
-        .eq(
-            "id",
-            id
-        )
-        .eq(
-            "clinic_id",
-            clinicId
-        );
+        await supabaseClient
+            .from("patients")
+            .delete()
+            .eq(
+                "id",
+                id
+            )
+            .eq(
+                "clinic_id",
+                clinicId
+            );
 
 
     if (error) {
@@ -798,9 +864,9 @@ async function deletePatient(id) {
 }
 
 
-// =========================
+// ========================================
 // INITIALIZE
-// =========================
+// ========================================
 
 async function init() {
 
@@ -809,7 +875,6 @@ async function init() {
 
 
     if (!clinicId) {
-
         return;
     }
 
