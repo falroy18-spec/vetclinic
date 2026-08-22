@@ -111,7 +111,7 @@ required
 >
 
 <option value="">
-Select patient
+Loading patients...
 </option>
 
 </select>
@@ -259,7 +259,10 @@ Cancel
 </button>
 
 
-<button type="submit">
+<button
+type="submit"
+id="saveButton"
+>
 Save Medical Record
 </button>
 
@@ -275,326 +278,818 @@ Save Medical Record
 </div>
 
 
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
 <script>
 
-let records =
-JSON.parse(
-localStorage.getItem(
-"medicalRecords"
-)
-) || [];
+
+/* =====================================================
+   SUPABASE CONFIG
+===================================================== */
+
+const SUPABASE_URL =
+"https://zltbjbbofvvndxirlipf.supabase.co";
 
 
-const patients =
-JSON.parse(
-localStorage.getItem(
-"patients"
-)
-) || [];
+const SUPABASE_KEY =
+"HIDDEN";
 
 
-const params =
-new URLSearchParams(
-window.location.search
+const supabaseClient =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY,
+    {
+        auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true,
+            storage: window.localStorage
+        }
+    }
 );
 
 
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const patientSelect =
+document.getElementById(
+    "patientId"
+);
+
+const visitDate =
+document.getElementById(
+    "visitDate"
+);
+
+const subjective =
+document.getElementById(
+    "subjective"
+);
+
+const objective =
+document.getElementById(
+    "objective"
+);
+
+const assessment =
+document.getElementById(
+    "assessment"
+);
+
+const plan =
+document.getElementById(
+    "plan"
+);
+
+const medication =
+document.getElementById(
+    "medication"
+);
+
+const procedureField =
+document.getElementById(
+    "procedure"
+);
+
+const followUp =
+document.getElementById(
+    "followUp"
+);
+
+const recordForm =
+document.getElementById(
+    "recordForm"
+);
+
+const saveButton =
+document.getElementById(
+    "saveButton"
+);
+
+
+/* =====================================================
+   URL PARAMETERS
+===================================================== */
+
+const params =
+new URLSearchParams(
+    window.location.search
+);
+
 const editId =
 params.get("editId");
-
 
 const selectedPatientId =
 params.get("patientId");
 
 
-const patientSelect =
-document.getElementById(
-"patientId"
-);
-
-
-/* PATIENT OPTIONS */
-
-patients.forEach(
-patient => {
-
-const option =
-document.createElement(
-"option"
-);
-
-
-option.value =
-patient.id;
-
-
-option.textContent =
-`${patient.name || "Unnamed"} • ${
-patient.species || "-"
-}`;
-
-
-patientSelect.appendChild(
-option
-);
-
-});
-
-
-/* EDIT */
-
+let currentUser = null;
+let currentClinic = null;
 let editingRecord = null;
 
 
-if (editId) {
+/* =====================================================
+   GET CURRENT USER + CLINIC
+===================================================== */
 
-editingRecord =
-records.find(
-record =>
-String(record.id) ===
-String(editId)
+async function getCurrentClinic() {
+
+    console.log(
+        "Checking Supabase session..."
+    );
+
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .auth
+        .getSession();
+
+
+    console.log(
+        "Supabase session:",
+        data?.session
+    );
+
+
+    if (error) {
+
+        console.error(
+            "Session error:",
+            error
+        );
+
+        return null;
+    }
+
+
+    if (!data?.session) {
+
+        console.error(
+            "NO ACTIVE SUPABASE SESSION"
+        );
+
+        alert(
+            "Your session has expired. Please login again."
+        );
+
+        window.location.href =
+            "login.html";
+
+        return null;
+    }
+
+
+    currentUser =
+        data.session.user;
+
+
+    console.log(
+        "Logged in user:",
+        currentUser.id
+    );
+
+
+    const {
+        data: membership,
+        error: membershipError
+    } =
+    await supabaseClient
+        .from("clinic_members")
+        .select(`
+            clinic_id,
+            role,
+            clinics (
+                id,
+                name
+            )
+        `)
+        .eq(
+            "user_id",
+            currentUser.id
+        )
+        .maybeSingle();
+
+
+    if (membershipError) {
+
+        console.error(
+            "Clinic lookup error:",
+            membershipError
+        );
+
+        alert(
+            "Unable to load clinic information."
+        );
+
+        return null;
+    }
+
+
+    if (
+        !membership ||
+        !membership.clinics
+    ) {
+
+        console.error(
+            "User belum terhubung ke clinic."
+        );
+
+        alert(
+            "Your account is not connected to a clinic."
+        );
+
+        return null;
+    }
+
+
+    currentClinic = {
+
+        clinicId:
+            membership.clinic_id,
+
+        clinicName:
+            membership.clinics.name,
+
+        role:
+            membership.role
+
+    };
+
+
+    console.log(
+        "Current clinic:",
+        currentClinic
+    );
+
+
+    return currentClinic;
+
+}
+
+
+/* =====================================================
+   LOAD PATIENTS FROM SUPABASE
+===================================================== */
+
+async function loadPatients() {
+
+    console.log(
+        "Loading patients..."
+    );
+
+
+    patientSelect.innerHTML = "";
+
+    const loadingOption =
+        document.createElement(
+            "option"
+        );
+
+    loadingOption.value = "";
+
+    loadingOption.textContent =
+        "Loading patients...";
+
+    patientSelect.appendChild(
+        loadingOption
+    );
+
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .from("patients")
+        .select("*")
+        .eq(
+            "clinic_id",
+            currentClinic.clinicId
+        )
+        .order(
+            "name",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Patients loading error:",
+            error
+        );
+
+        patientSelect.innerHTML = "";
+
+        const errorOption =
+            document.createElement(
+                "option"
+            );
+
+        errorOption.value = "";
+
+        errorOption.textContent =
+            "Unable to load patients";
+
+        patientSelect.appendChild(
+            errorOption
+        );
+
+        return false;
+    }
+
+
+    console.log(
+        "Patients loaded:",
+        data
+    );
+
+
+    patientSelect.innerHTML = "";
+
+
+    const defaultOption =
+        document.createElement(
+            "option"
+        );
+
+    defaultOption.value = "";
+
+    defaultOption.textContent =
+        data.length
+        ? "Select patient"
+        : "No patients found";
+
+
+    patientSelect.appendChild(
+        defaultOption
+    );
+
+
+    data.forEach(
+        patient => {
+
+            const option =
+            document.createElement(
+                "option"
+            );
+
+
+            option.value =
+                patient.id;
+
+
+            const name =
+                patient.name ||
+                "Unnamed";
+
+
+            const species =
+                patient.species ||
+                "-";
+
+
+            const breed =
+                patient.breed ||
+                "";
+
+
+            option.textContent =
+                breed
+                ? `${name} • ${species} • ${breed}`
+                : `${name} • ${species}`;
+
+
+            patientSelect.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    /*
+     * Kalau halaman dibuka dari patient detail
+     * dengan ?patientId=...
+     */
+
+    if (
+        selectedPatientId &&
+        !editId
+    ) {
+
+        patientSelect.value =
+            selectedPatientId;
+
+    }
+
+
+    return true;
+
+}
+
+
+/* =====================================================
+   LOAD EXISTING RECORD FOR EDIT
+===================================================== */
+
+async function loadExistingRecord() {
+
+    if (!editId) {
+
+        return;
+
+    }
+
+
+    console.log(
+        "Loading medical record:",
+        editId
+    );
+
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .from("medical_records")
+        .select("*")
+        .eq(
+            "id",
+            editId
+        )
+        .eq(
+            "clinic_id",
+            currentClinic.clinicId
+        )
+        .maybeSingle();
+
+
+    if (error) {
+
+        console.error(
+            "Medical record loading error:",
+            error
+        );
+
+        alert(
+            "Unable to load medical record."
+        );
+
+        return;
+
+    }
+
+
+    if (!data) {
+
+        alert(
+            "Medical record not found."
+        );
+
+        return;
+
+    }
+
+
+    editingRecord =
+        data;
+
+
+    document.getElementById(
+        "pageTitle"
+    ).textContent =
+        "Edit Medical Record";
+
+
+    patientSelect.value =
+        data.patient_id || "";
+
+
+    visitDate.value =
+        data.visit_date || "";
+
+
+    subjective.value =
+        data.subjective || "";
+
+
+    objective.value =
+        data.objective || "";
+
+
+    assessment.value =
+        data.assessment || "";
+
+
+    plan.value =
+        data.plan || "";
+
+
+    medication.value =
+        data.medication || "";
+
+
+    procedureField.value =
+        data.procedure || "";
+
+
+    followUp.value =
+        data.follow_up || "";
+
+
+    console.log(
+        "Medical record loaded:",
+        data
+    );
+
+}
+
+
+/* =====================================================
+   DEFAULT DATE
+===================================================== */
+
+function setDefaultDate() {
+
+    if (
+        !visitDate.value
+    ) {
+
+        visitDate.value =
+            new Date()
+            .toISOString()
+            .split("T")[0];
+
+    }
+
+}
+
+
+/* =====================================================
+   SAVE MEDICAL RECORD
+===================================================== */
+
+recordForm.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        if (!currentClinic) {
+
+            alert(
+                "Clinic information is not available."
+            );
+
+            return;
+
+        }
+
+
+        if (!patientSelect.value) {
+
+            alert(
+                "Please select a patient."
+            );
+
+            patientSelect.focus();
+
+            return;
+
+        }
+
+
+        saveButton.disabled =
+            true;
+
+        saveButton.textContent =
+            "Saving...";
+
+
+        const recordData = {
+
+            clinic_id:
+                currentClinic.clinicId,
+
+            patient_id:
+                patientSelect.value,
+
+            visit_date:
+                visitDate.value,
+
+            subjective:
+                subjective.value.trim(),
+
+            objective:
+                objective.value.trim(),
+
+            assessment:
+                assessment.value.trim(),
+
+            plan:
+                plan.value.trim(),
+
+            medication:
+                medication.value.trim(),
+
+            procedure:
+                procedureField.value.trim(),
+
+            follow_up:
+                followUp.value.trim()
+
+        };
+
+
+        console.log(
+            "Saving medical record:",
+            recordData
+        );
+
+
+        try {
+
+            if (editingRecord) {
+
+                const {
+                    data,
+                    error
+                } =
+                await supabaseClient
+                    .from("medical_records")
+                    .update(
+                        recordData
+                    )
+                    .eq(
+                        "id",
+                        editingRecord.id
+                    )
+                    .eq(
+                        "clinic_id",
+                        currentClinic.clinicId
+                    )
+                    .select()
+                    .single();
+
+
+                if (error) {
+
+                    throw error;
+
+                }
+
+
+                console.log(
+                    "Medical record updated:",
+                    data
+                );
+
+
+                alert(
+                    "Medical record updated successfully."
+                );
+
+            }
+
+            else {
+
+                const {
+                    data,
+                    error
+                } =
+                await supabaseClient
+                    .from("medical_records")
+                    .insert(
+                        recordData
+                    )
+                    .select()
+                    .single();
+
+
+                if (error) {
+
+                    throw error;
+
+                }
+
+
+                console.log(
+                    "Medical record created:",
+                    data
+                );
+
+
+                alert(
+                    "Medical record saved successfully."
+                );
+
+            }
+
+
+            window.location.href =
+                "medical-records.html";
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "SAVE MEDICAL RECORD ERROR:",
+                error
+            );
+
+
+            alert(
+                "Failed to save medical record:\n\n" +
+                error.message
+            );
+
+
+            saveButton.disabled =
+                false;
+
+            saveButton.textContent =
+                "Save Medical Record";
+
+        }
+
+    }
 );
 
 
-if (editingRecord) {
+/* =====================================================
+   CANCEL
+===================================================== */
 
 document.getElementById(
-"pageTitle"
-).textContent =
-"Edit Medical Record";
-
-
-patientSelect.value =
-editingRecord.patientId || "";
-
-
-document.getElementById(
-"visitDate"
-).value =
-editingRecord.visitDate || "";
-
-
-document.getElementById(
-"subjective"
-).value =
-editingRecord.subjective || "";
-
-
-document.getElementById(
-"objective"
-).value =
-editingRecord.objective || "";
-
-
-document.getElementById(
-"assessment"
-).value =
-editingRecord.assessment || "";
-
-
-document.getElementById(
-"plan"
-).value =
-editingRecord.plan || "";
-
-
-document.getElementById(
-"medication"
-).value =
-editingRecord.medication || "";
-
-
-document.getElementById(
-"procedure"
-).value =
-editingRecord.procedure || "";
-
-
-document.getElementById(
-"followUp"
-).value =
-editingRecord.followUp || "";
-
-}
-
-}
-
-
-/* PRESELECT PATIENT */
-
-if (
-!editId &&
-selectedPatientId
-) {
-
-patientSelect.value =
-selectedPatientId;
-
-}
-
-
-/* DEFAULT DATE */
-
-if (
-!editId &&
-!document.getElementById(
-"visitDate"
-).value
-) {
-
-document.getElementById(
-"visitDate"
-).value =
-new Date()
-.toISOString()
-.split("T")[0];
-
-}
-
-
-/* SAVE */
-
-document.getElementById(
-"recordForm"
+    "cancelButton"
 ).addEventListener(
-"submit",
-function(event) {
+    "click",
+    function() {
 
-event.preventDefault();
+        window.location.href =
+            "medical-records.html";
 
-
-if (!patientSelect.value) {
-
-alert(
-"Please select a patient."
+    }
 );
 
-return;
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+async function init() {
+
+    console.log(
+        "Add Medical Record: starting..."
+    );
+
+
+    const clinic =
+        await getCurrentClinic();
+
+
+    if (!clinic) {
+
+        return;
+
+    }
+
+
+    const patientsLoaded =
+        await loadPatients();
+
+
+    if (!patientsLoaded) {
+
+        return;
+
+    }
+
+
+    setDefaultDate();
+
+
+    await loadExistingRecord();
 
 }
 
 
-const record = {
-
-id:
-editingRecord
-? editingRecord.id
-: Date.now(),
-
-patientId:
-patientSelect.value,
-
-visitDate:
-document.getElementById(
-"visitDate"
-).value,
-
-subjective:
-document.getElementById(
-"subjective"
-).value.trim(),
-
-objective:
-document.getElementById(
-"objective"
-).value.trim(),
-
-assessment:
-document.getElementById(
-"assessment"
-).value.trim(),
-
-plan:
-document.getElementById(
-"plan"
-).value.trim(),
-
-medication:
-document.getElementById(
-"medication"
-).value.trim(),
-
-procedure:
-document.getElementById(
-"procedure"
-).value.trim(),
-
-followUp:
-document.getElementById(
-"followUp"
-).value.trim(),
-
-updatedAt:
-new Date().toISOString()
-
-};
-
-
-if (editingRecord) {
-
-const index =
-records.findIndex(
-item =>
-String(item.id) ===
-String(editingRecord.id)
-);
-
-
-if (index !== -1) {
-
-records[index] =
-record;
-
-}
-
-}
-else {
-
-record.createdAt =
-new Date().toISOString();
-
-records.push(
-record
-);
-
-}
-
-
-localStorage.setItem(
-"medicalRecords",
-JSON.stringify(
-records
-)
-);
-
-
-alert(
-editingRecord
-? "Medical record updated."
-: "Medical record saved."
-);
-
-
-window.location.href =
-"medical-records.html";
-
-}
-);
-
-
-/* CANCEL */
-
-document.getElementById(
-"cancelButton"
-).addEventListener(
-"click",
-function() {
-
-window.location.href =
-"medical-records.html";
-
-}
-);
+init();
 
 </script>
 
