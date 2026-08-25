@@ -374,6 +374,13 @@ td {
                 Loading clinic...
             </span>
 
+            <div class="clinic-contact">
+                Jl. Veteran No.19, Trimulyo I, Kepek, Kec. Wonosari,
+                Kabupaten Gunungkidul, Daerah Istimewa Yogyakarta 55813
+                <br>
+                WhatsApp: 0882005270642
+            </div>
+
         </div>
 
         <div class="refresh-info">
@@ -2458,6 +2465,25 @@ async function printInvoice(
         invoice.patients;
 
 
+    const invoiceDateTime =
+        invoice.created_at
+        ? new Intl.DateTimeFormat(
+            "id-ID",
+            {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+                timeZone: "Asia/Jakarta"
+            }
+          ).format(
+              new Date(invoice.created_at)
+          ) + " WIB"
+        : "-";
+
+
     const printWindow =
         window.open(
             "",
@@ -2479,448 +2505,307 @@ async function printInvoice(
     )} - Invoice
 </title>
 
-
 <style>
 
 @page {
-
     size: 58mm auto;
-
     margin: 0;
-
 }
-
 
 * {
-
-    box-sizing:
-        border-box;
-
+    box-sizing: border-box;
 }
-
 
 html,
 body {
-
-    width:
-        58mm;
-
-    margin:
-        0;
-
-    padding:
-        0;
-
-    background:
-        white;
-
-    color:
-        #000;
-
-    font-family:
-        Arial,
-        sans-serif;
-
-    font-size:
-        9px;
-
+    width: 58mm;
+    margin: 0;
+    padding: 0;
+    background: white;
+    color: #111827;
+    font-family: Arial, sans-serif;
+    font-size: 8px;
 }
-
 
 body {
-
-    padding:
-        3mm;
-
+    padding: 2.5mm;
 }
-
 
 .invoice {
-
-    width:
-        52mm;
-
-    margin:
-        0 auto;
-
+    width: 53mm;
+    margin: 0 auto;
 }
 
+.header {
+    text-align: center;
+}
 
 .clinic {
-
-    text-align:
-        center;
-
-    font-size:
-        15px;
-
-    font-weight:
-        bold;
-
-    margin-bottom:
-        2mm;
-
-    word-wrap:
-        break-word;
-
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1mm;
+    word-wrap: break-word;
 }
 
+.clinic-contact {
+    font-size: 7px;
+    line-height: 1.35;
+    color: #374151;
+    word-wrap: break-word;
+}
+
+.clinic-type {
+    font-size: 7px;
+    color: #6b7280;
+    margin-top: 0.8mm;
+}
+
+.divider {
+    border: 0;
+    border-top: 1px dashed #9ca3af;
+    margin: 2mm 0;
+}
+
+.invoice-title {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    margin: 1.5mm 0;
+}
 
 .meta {
-
-    font-size:
-        9px;
-
-    line-height:
-        1.4;
-
+    font-size: 7.5px;
+    line-height: 1.45;
+    color: #374151;
 }
 
-
-hr {
-
-    border:
-        0;
-
-    border-top:
-        1px dashed #000;
-
-    margin:
-        2mm 0;
-
+.patient-box {
+    margin-top: 1.8mm;
+    padding: 1.5mm 0;
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
 }
 
-
-h2 {
-
-    text-align:
-        center;
-
-    font-size:
-        13px;
-
-    margin:
-        2mm 0;
-
+.patient-name {
+    font-size: 9px;
+    font-weight: 700;
+    margin-bottom: 0.8mm;
 }
-
-
-h3 {
-
-    font-size:
-        10px;
-
-    margin:
-        3mm 0 1mm;
-
-}
-
 
 table {
-
-    width:
-        100%;
-
-    border-collapse:
-        collapse;
-
-    margin-top:
-        3mm;
-
-    table-layout:
-        fixed;
-
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2mm;
+    table-layout: fixed;
 }
-
 
 th,
 td {
-
-    padding:
-        1.5mm 0.5mm;
-
-    border-bottom:
-        1px dashed #999;
-
-    text-align:
-        left;
-
-    font-size:
-        8px;
-
-    word-wrap:
-        break-word;
-
+    padding: 1mm 0.4mm;
+    border-bottom: 1px dashed #d1d5db;
+    text-align: left;
+    font-size: 7px;
+    line-height: 1.25;
+    word-wrap: break-word;
 }
 
+th {
+    font-weight: 700;
+}
 
 th:nth-child(1),
 td:nth-child(1) {
-
-    width:
-        42%;
-
+    width: 42%;
 }
-
 
 th:nth-child(2),
 td:nth-child(2) {
-
-    width:
-        12%;
-
-    text-align:
-        center;
-
+    width: 12%;
+    text-align: center;
 }
-
 
 th:nth-child(3),
 td:nth-child(3) {
-
-    width:
-        23%;
-
-    text-align:
-        right;
-
+    width: 23%;
+    text-align: right;
 }
-
 
 th:nth-child(4),
 td:nth-child(4) {
-
-    width:
-        23%;
-
-    text-align:
-        right;
-
+    width: 23%;
+    text-align: right;
 }
 
-
-.total {
-
-    text-align:
-        right;
-
-    font-size:
-        13px;
-
-    font-weight:
-        bold;
-
-    margin-top:
-        3mm;
-
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2.5mm;
+    padding-top: 1.5mm;
+    border-top: 1px solid #111827;
+    font-size: 9px;
+    font-weight: 700;
 }
 
+.total-value {
+    font-size: 10px;
+}
 
-.thank-you {
-
-    text-align:
-        center;
-
-    font-size:
-        8px;
-
-    margin-top:
-        6mm;
-
+.footer {
+    text-align: center;
+    font-size: 7px;
+    color: #6b7280;
+    line-height: 1.4;
+    margin-top: 4mm;
 }
 
 </style>
 
 </head>
 
-
 <body>
-
 
 <div class="invoice">
 
+    <div class="header">
 
-<div class="clinic">
+        <div class="clinic">
+            ${escapeHTML(
+                currentClinic.clinicName
+            )}
+        </div>
 
-    ${escapeHTML(
-        currentClinic.clinicName
-    )}
+        <div class="clinic-contact">
+            Jl. Veteran No.19, Trimulyo I, Kepek, Kec. Wonosari,
+            Kabupaten Gunungkidul, Daerah Istimewa Yogyakarta 55813
+            <br>
+            WhatsApp: 0882005270642
+        </div>
 
-</div>
+        <div class="clinic-type">
+            Veterinary Clinic
+        </div>
 
+    </div>
 
-<div class="meta">
+    <hr class="divider">
 
-    Veterinary Clinic
+    <div class="invoice-title">
+        INVOICE
+    </div>
 
-</div>
-
-
-<hr>
-
-
-<h2>
-    INVOICE
-</h2>
-
-
-<div class="meta">
-
-    Invoice:
-
-    ${
-        escapeHTML(
+    <div class="meta">
+        Invoice:
+        ${escapeHTML(
             invoice.invoice_number ||
             "-"
-        )
-    }
-
-    <br>
-
-    Date:
-
-    ${invoice.invoice_date}
-
-    <br>
-
-    Status:
-
-    ${invoice.status}
-
-</div>
-
-
-<h3>
-
-    Patient:
-
-    ${
-        escapeHTML(
-            patient?.name ||
-            "-"
-        )
-    }
-
-</h3>
-
-
-<div class="meta">
-
-    Species:
-
-    ${
-        escapeHTML(
-            patient?.species ||
-            "-"
-        )
-    }
-
-    <br>
-
-    Breed:
-
-    ${
-        escapeHTML(
-            patient?.breed ||
-            "-"
-        )
-    }
-
-    <br>
-
-    Owner:
-
-    ${
-        escapeHTML(
-            patient?.owner ||
-            "-"
-        )
-    }
-
-    ${
-        patient?.owner_phone
-        ? `
-            <br>
-            Phone:
-            ${escapeHTML(
-                patient.owner_phone
-            )}
-          `
-        : ""
-    }
-
-</div>
-
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-    Description
-</th>
-
-<th>
-    Qty
-</th>
-
-<th>
-    Price
-</th>
-
-<th>
-    Total
-</th>
-
-</tr>
-
-</thead>
-
-
-<tbody>
-
-${rows}
-
-</tbody>
-
-</table>
-
-
-<div class="total">
-
-    TOTAL:
-
-    ${money(
-        invoice.total
-    )}
-
-</div>
-
-
-<p class="thank-you">
-
-    Thank you for trusting
-
-    <strong>
-        ${escapeHTML(
-            currentClinic.clinicName
         )}
-    </strong>.
+        <br>
+        Date:
+        ${invoice.invoice_date}
+        <br>
+        Time:
+        ${invoiceDateTime}
+        <br>
+        Status:
+        ${escapeHTML(
+            invoice.status ||
+            "-"
+        )}
+    </div>
 
-</p>
+    <div class="patient-box">
 
+        <div class="patient-name">
+            ${escapeHTML(
+                patient?.name ||
+                "-"
+            )}
+        </div>
+
+        <div class="meta">
+            ${
+                escapeHTML(
+                    patient?.species ||
+                    "-"
+                )
+            }
+            ${
+                patient?.breed
+                ? " · " +
+                  escapeHTML(
+                      patient.breed
+                  )
+                : ""
+            }
+            <br>
+            Owner:
+            ${
+                escapeHTML(
+                    patient?.owner ||
+                    "-"
+                )
+            }
+            ${
+                patient?.owner_phone
+                ? " · " +
+                  escapeHTML(
+                      patient.owner_phone
+                  )
+                : ""
+            }
+        </div>
+
+    </div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+            ${rows}
+        </tbody>
+
+    </table>
+
+    <div class="total-row">
+        <span>TOTAL</span>
+        <span class="total-value">
+            ${money(
+                invoice.total
+            )}
+        </span>
+    </div>
+
+    <div class="footer">
+        Thank you for trusting
+        <strong>
+            ${escapeHTML(
+                currentClinic.clinicName
+            )}
+        </strong>.
+        <br>
+        Please keep this invoice as proof of payment.
+    </div>
 
 </div>
-
 
 </body>
 
 </html>
 
 `);
-
 
     printWindow.document.close();
 
