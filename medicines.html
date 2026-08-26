@@ -424,10 +424,12 @@ supabase.createClient(
 
 
 
-/* LOGIN CHECK */
+/* LOGIN CHECK + CLINIC */
+
+let currentClinicId = null;
 
 supabaseClient.auth.getSession().then(
-    ({ data: { session } }) => {
+    async ({ data: { session } }) => {
 
         if (!session) {
 
@@ -437,6 +439,31 @@ supabaseClient.auth.getSession().then(
             return;
 
         }
+
+        const {
+            data: clinicMember,
+            error
+        } = await supabaseClient
+            .from("clinic_members")
+            .select("clinic_id")
+            .eq("user_id", session.user.id)
+            .limit(1)
+            .single();
+
+        if (error || !clinicMember) {
+
+            console.error(error);
+
+            alert(
+                "Clinic user tidak ditemukan."
+            );
+
+            return;
+
+        }
+
+        currentClinicId =
+            clinicMember.clinic_id;
 
         loadMedicines();
 
@@ -814,7 +841,10 @@ saveButton.addEventListener(
                     minimum_stock,
 
                 notes:
-                    notes || null
+                    notes || null,
+
+                clinic_id:
+                    currentClinicId
 
             });
 
