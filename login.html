@@ -2,10 +2,15 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>Login - VetClinic</title>
+
 
     <style>
 
@@ -13,162 +18,242 @@
             box-sizing: border-box;
         }
 
+
         body {
+
             margin: 0;
+
             font-family: Arial, sans-serif;
+
             background: #f4f6fb;
+
             min-height: 100vh;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
         }
 
-        .login-container {
+
+        .container {
+
             width: 100%;
+
             max-width: 420px;
+
             padding: 20px;
+
         }
 
-        .login-card {
+
+        .card {
+
             background: white;
+
             border-radius: 16px;
+
             padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.08);
+
         }
+
 
         .logo {
+
             text-align: center;
+
             margin-bottom: 30px;
+
         }
+
 
         .logo h1 {
+
             margin: 0;
+
             font-size: 28px;
+
             color: #252d3d;
+
         }
+
 
         .logo p {
+
             color: #6b7280;
+
             margin-bottom: 0;
+
         }
+
 
         label {
+
             display: block;
+
             margin-bottom: 7px;
+
             font-weight: 600;
+
             color: #374151;
+
         }
+
 
         input {
+
             width: 100%;
+
             padding: 13px;
+
             border: 1px solid #d1d5db;
+
             border-radius: 8px;
+
             margin-bottom: 10px;
+
             font-size: 15px;
+
         }
+
 
         button {
+
             width: 100%;
+
             border: none;
+
             padding: 14px;
+
             border-radius: 8px;
+
             background: #5146e5;
+
             color: white;
+
             font-size: 16px;
+
             font-weight: 600;
+
             cursor: pointer;
+
         }
+
 
         button:disabled {
+
             opacity: 0.6;
+
             cursor: not-allowed;
+
         }
+
 
         .show-password {
+
             display: flex;
+
             align-items: center;
+
             gap: 7px;
-            margin-bottom: 10px;
+
+            margin-bottom: 12px;
+
             font-size: 14px;
+
             font-weight: normal;
+
             color: #4b5563;
-            cursor: pointer;
+
         }
+
 
         .show-password input {
+
             width: auto;
+
             margin: 0;
-            cursor: pointer;
+
         }
+
 
         .forgot-password {
+
             display: block;
+
             text-align: right;
-            margin-top: 0;
+
             margin-bottom: 18px;
+
             color: #5146e5;
+
             font-size: 14px;
+
             text-decoration: none;
+
         }
 
-        .forgot-password:hover {
-            text-decoration: underline;
-        }
 
         .register-link {
+
             display: block;
+
             text-align: center;
+
             margin-top: 18px;
+
             color: #5146e5;
+
             font-size: 14px;
+
             text-decoration: none;
+
         }
 
-        .register-link:hover {
-            text-decoration: underline;
-        }
-
-        .resend-button {
-            display: none;
-            margin-top: 10px;
-            background: white;
-            color: #5146e5;
-            border: 1px solid #5146e5;
-        }
-
-        .resend-button:hover {
-            background: #f5f3ff;
-        }
 
         #message {
+
             margin-top: 18px;
+
             text-align: center;
+
             font-size: 14px;
+
             line-height: 1.5;
+
         }
+
 
         .error {
+
             color: #dc2626;
+
         }
+
 
         .success {
-            color: #16a34a;
-        }
 
-        .info {
-            color: #5146e5;
+            color: #16a34a;
+
         }
 
     </style>
 
 </head>
 
+
 <body>
 
-<div class="login-container">
 
-    <div class="login-card">
+<div class="container">
+
+    <div class="card">
+
 
         <div class="logo">
 
@@ -203,8 +288,6 @@
         >
 
 
-        <!-- SHOW PASSWORD -->
-
         <label class="show-password">
 
             <input
@@ -221,35 +304,32 @@
             href="#"
             id="forgotPassword"
             class="forgot-password">
+
             Forgot Password?
+
         </a>
 
 
         <button
             id="loginButton"
             type="button">
+
             Login
-        </button>
 
-
-        <!-- RESEND CONFIRMATION -->
-
-        <button
-            id="resendButton"
-            class="resend-button"
-            type="button">
-            Resend Confirmation Email
         </button>
 
 
         <a
             href="register.html"
             class="register-link">
+
             Don't have an account? Register
+
         </a>
 
 
         <div id="message"></div>
+
 
     </div>
 
@@ -261,79 +341,43 @@
 
 <script>
 
-/* =====================================================
-   SUPABASE
-===================================================== */
-
 const SUPABASE_URL =
-    "https://zltbjbbofvvndxirlipf.supabase.co";
+"https://zltbjbbofvvndxirlipf.supabase.co";
+
 
 const SUPABASE_KEY =
-    "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
+"sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
+
 
 const supabaseClient =
-    supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
-
-/* =====================================================
-   ELEMENTS
-===================================================== */
 
 const emailInput =
-    document.getElementById("email");
+document.getElementById("email");
 
 const passwordInput =
-    document.getElementById("password");
+document.getElementById("password");
 
 const showPassword =
-    document.getElementById("showPassword");
+document.getElementById("showPassword");
 
 const loginButton =
-    document.getElementById("loginButton");
-
-const resendButton =
-    document.getElementById("resendButton");
+document.getElementById("loginButton");
 
 const forgotPassword =
-    document.getElementById("forgotPassword");
+document.getElementById("forgotPassword");
 
 const message =
-    document.getElementById("message");
+document.getElementById("message");
 
 
-/* =====================================================
-   REDIRECT URL
-===================================================== */
-
-const LOGIN_URL =
-    "https://falroy18-spec.github.io/vetclinic/login.html";
-
-const RESET_PASSWORD_URL =
-    "https://falroy18-spec.github.io/vetclinic/reset-password.html";
-
-
-/* =====================================================
-   MESSAGE HELPER
-===================================================== */
-
-function showMessage(
-    text,
-    type = ""
-) {
-
-    message.textContent = text;
-
-    message.className = type;
-
-}
-
-
-/* =====================================================
-   SHOW / HIDE PASSWORD
-===================================================== */
+/* =========================
+   SHOW PASSWORD
+========================= */
 
 showPassword.addEventListener(
     "change",
@@ -341,195 +385,95 @@ showPassword.addEventListener(
 
         passwordInput.type =
             showPassword.checked
-                ? "text"
-                : "password";
+            ? "text"
+            : "password";
 
     }
 );
 
 
-/* =====================================================
+/* =========================
    LOGIN
-===================================================== */
+========================= */
 
 loginButton.addEventListener(
     "click",
     async function() {
 
         const email =
-            emailInput.value
-                .trim()
-                .toLowerCase();
+            emailInput.value.trim();
 
         const password =
             passwordInput.value;
 
 
-        resendButton.style.display =
-            "none";
+        if (!email || !password) {
 
+            message.textContent =
+                "Email dan password wajib diisi.";
 
-        /* VALIDATION */
-
-        if (!email) {
-
-            showMessage(
-                "Email wajib diisi.",
-                "error"
-            );
-
-            emailInput.focus();
+            message.className =
+                "error";
 
             return;
+
         }
 
-
-        if (!password) {
-
-            showMessage(
-                "Password wajib diisi.",
-                "error"
-            );
-
-            passwordInput.focus();
-
-            return;
-        }
-
-
-        /* LOADING */
 
         loginButton.disabled =
             true;
 
-        showMessage(
-            "Checking login...",
-            "info"
-        );
+        message.textContent =
+            "Logging in...";
+
+        message.className = "";
 
 
         try {
 
-            /*
-             * SIGN IN
-             */
-
             const {
                 data,
                 error
             } =
             await supabaseClient.auth
-                .signInWithPassword({
+            .signInWithPassword({
 
-                    email: email,
+                email: email,
 
-                    password: password
+                password: password
 
-                });
+            });
 
 
             console.log(
-                "LOGIN RESULT:",
+                "Login result:",
                 data,
                 error
             );
 
 
-            /* ERROR */
-
             if (error) {
 
-                console.error(
-                    "LOGIN ERROR:",
-                    error
-                );
+                message.textContent =
+                    "Login gagal: " +
+                    error.message;
 
-
-                /*
-                 * EMAIL BELUM DIKONFIRMASI
-                 */
-
-                if (
-                    error.code ===
-                    "email_not_confirmed"
-                    ||
-                    error.message
-                        ?.toLowerCase()
-                        .includes(
-                            "email not confirmed"
-                        )
-                ) {
-
-                    showMessage(
-                        "Email kamu belum dikonfirmasi. Silakan cek inbox/spam.",
-                        "error"
-                    );
-
-
-                    resendButton.style.display =
-                        "block";
-
-                    loginButton.disabled =
-                        false;
-
-                    return;
-                }
-
-
-                /*
-                 * PASSWORD SALAH /
-                 * ACCOUNT TIDAK VALID
-                 */
-
-                showMessage(
-                    "Login gagal. Email atau password tidak benar.",
-                    "error"
-                );
-
+                message.className =
+                    "error";
 
                 loginButton.disabled =
                     false;
 
                 return;
+
             }
 
 
-            /*
-             * DOUBLE CHECK SESSION
-             */
+            message.textContent =
+                "Login berhasil!";
 
-            const {
-                data: sessionData
-            } =
-            await supabaseClient.auth
-                .getSession();
-
-
-            if (
-                !sessionData ||
-                !sessionData.session
-            ) {
-
-                showMessage(
-                    "Login belum menghasilkan session. Silakan coba lagi.",
-                    "error"
-                );
-
-                loginButton.disabled =
-                    false;
-
-                return;
-            }
-
-
-            /*
-             * SUCCESS
-             */
-
-            showMessage(
-                "Login berhasil. Membuka dashboard...",
-                "success"
-            );
+            message.className =
+                "success";
 
 
             setTimeout(
@@ -539,25 +483,20 @@ loginButton.addEventListener(
                         "index.html";
 
                 },
-                500
-            );
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Unexpected login error:",
-                error
+                700
             );
 
 
-            showMessage(
+        } catch (error) {
+
+            console.error(error);
+
+            message.textContent =
                 "Terjadi kesalahan: " +
-                error.message,
-                "error"
-            );
+                error.message;
 
+            message.className =
+                "error";
 
             loginButton.disabled =
                 false;
@@ -568,119 +507,9 @@ loginButton.addEventListener(
 );
 
 
-/* =====================================================
-   RESEND CONFIRMATION EMAIL
-===================================================== */
-
-resendButton.addEventListener(
-    "click",
-    async function() {
-
-        const email =
-            emailInput.value
-                .trim()
-                .toLowerCase();
-
-
-        if (!email) {
-
-            showMessage(
-                "Masukkan email terlebih dahulu.",
-                "error"
-            );
-
-            emailInput.focus();
-
-            return;
-        }
-
-
-        resendButton.disabled =
-            true;
-
-        showMessage(
-            "Mengirim ulang email konfirmasi...",
-            "info"
-        );
-
-
-        try {
-
-            const {
-                error
-            } =
-            await supabaseClient.auth
-                .resend({
-
-                    type: "signup",
-
-                    email: email,
-
-                    options: {
-
-                        emailRedirectTo:
-                            LOGIN_URL
-
-                    }
-
-                });
-
-
-            if (error) {
-
-                console.error(
-                    "RESEND ERROR:",
-                    error
-                );
-
-
-                showMessage(
-                    "Gagal mengirim email konfirmasi: " +
-                    error.message,
-                    "error"
-                );
-
-
-                resendButton.disabled =
-                    false;
-
-                return;
-            }
-
-
-            showMessage(
-                "Email konfirmasi sudah dikirim ulang. Silakan cek inbox atau folder spam.",
-                "success"
-            );
-
-
-            resendButton.disabled =
-                false;
-
-        }
-
-        catch (error) {
-
-            console.error(error);
-
-            showMessage(
-                "Error: " +
-                error.message,
-                "error"
-            );
-
-            resendButton.disabled =
-                false;
-
-        }
-
-    }
-);
-
-
-/* =====================================================
+/* =========================
    FORGOT PASSWORD
-===================================================== */
+========================= */
 
 forgotPassword.addEventListener(
     "click",
@@ -690,21 +519,21 @@ forgotPassword.addEventListener(
 
 
         const email =
-            emailInput.value
-                .trim()
-                .toLowerCase();
+            emailInput.value.trim();
 
 
         if (!email) {
 
-            showMessage(
-                "Masukkan email terlebih dahulu.",
-                "error"
-            );
+            message.textContent =
+                "Masukkan email terlebih dahulu.";
+
+            message.className =
+                "error";
 
             emailInput.focus();
 
             return;
+
         }
 
 
@@ -712,10 +541,10 @@ forgotPassword.addEventListener(
             "none";
 
 
-        showMessage(
-            "Mengirim link reset password...",
-            "info"
-        );
+        message.textContent =
+            "Mengirim link reset password...";
+
+        message.className = "";
 
 
         try {
@@ -724,122 +553,59 @@ forgotPassword.addEventListener(
                 error
             } =
             await supabaseClient.auth
-                .resetPasswordForEmail(
+            .resetPasswordForEmail(
 
-                    email,
+                email,
 
-                    {
+                {
 
-                        redirectTo:
-                            RESET_PASSWORD_URL
+                    redirectTo:
+                    "https://falroy18-spec.github.io/vetclinic/reset-password.html"
 
-                    }
+                }
 
-                );
+            );
 
 
             if (error) {
 
-                console.error(
-                    "RESET ERROR:",
-                    error
-                );
+                console.error(error);
 
-
-                showMessage(
+                message.textContent =
                     "Gagal mengirim reset password: " +
-                    error.message,
-                    "error"
-                );
+                    error.message;
 
+                message.className =
+                    "error";
 
                 forgotPassword.style.pointerEvents =
                     "auto";
 
                 return;
+
             }
 
 
-            showMessage(
-                "Link reset password sudah dikirim. Silakan cek inbox atau spam.",
-                "success"
-            );
+            message.textContent =
+                "Link reset password sudah dikirim. Silakan cek inbox atau spam.";
+
+            message.className =
+                "success";
 
 
-        }
-
-        catch (error) {
+        } catch (error) {
 
             console.error(error);
 
-            showMessage(
-                "Error: " +
-                error.message,
-                "error"
-            );
+            message.textContent =
+                "Terjadi kesalahan: " +
+                error.message;
 
-        }
+            message.className =
+                "error";
 
-
-        forgotPassword.style.pointerEvents =
-            "auto";
-
-    }
-);
-
-
-/* =====================================================
-   HANDLE EMAIL CONFIRMATION REDIRECT
-===================================================== */
-
-supabaseClient.auth.onAuthStateChange(
-    function(event, session) {
-
-        console.log(
-            "AUTH EVENT:",
-            event,
-            session
-        );
-
-        /*
-         * Setelah user klik confirmation email,
-         * Supabase akan mendeteksi session.
-         *
-         * Kita biarkan user tetap di login page
-         * supaya bisa melihat status.
-         */
-
-        if (
-            event === "SIGNED_IN" &&
-            session
-        ) {
-
-            /*
-             * Jika datang dari email confirmation,
-             * session sudah valid.
-             */
-
-            if (
-                window.location.hash
-                    .includes("access_token")
-            ) {
-
-                showMessage(
-                    "Email berhasil dikonfirmasi. Kamu sudah bisa masuk ke VetClinic.",
-                    "success"
-                );
-
-                setTimeout(
-                    function() {
-
-                        window.location.href =
-                            "index.html";
-
-                    },
-                    700
-                );
-
-            }
+            forgotPassword.style.pointerEvents =
+                "auto";
 
         }
 
@@ -847,6 +613,7 @@ supabaseClient.auth.onAuthStateChange(
 );
 
 </script>
+
 
 </body>
 

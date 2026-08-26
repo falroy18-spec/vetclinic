@@ -2,16 +2,10 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Register - VetClinic</title>
-
 
     <style>
 
@@ -19,280 +13,137 @@
             box-sizing: border-box;
         }
 
-
         body {
-
             margin: 0;
-
-            font-family:
-                Arial,
-                sans-serif;
-
-            background:
-                #f4f6fb;
-
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
             min-height: 100vh;
-
             display: flex;
-
             align-items: center;
-
             justify-content: center;
-
         }
-
 
         .container {
-
             width: 100%;
-
-            max-width: 440px;
-
+            max-width: 420px;
             padding: 20px;
-
         }
-
 
         .card {
-
             background: white;
-
             border-radius: 16px;
-
             padding: 40px;
-
-            box-shadow:
-                0 10px 30px
-                rgba(0,0,0,0.08);
-
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
         }
-
 
         .logo {
-
             text-align: center;
-
             margin-bottom: 30px;
-
         }
-
 
         .logo h1 {
-
             margin: 0;
-
             font-size: 28px;
-
             color: #252d3d;
-
         }
-
 
         .logo p {
-
             color: #6b7280;
-
             margin-bottom: 0;
-
         }
-
 
         label {
-
             display: block;
-
             margin-bottom: 7px;
-
             font-weight: 600;
-
             color: #374151;
-
         }
-
 
         input {
-
             width: 100%;
-
             padding: 13px;
-
-            border:
-                1px solid #d1d5db;
-
+            border: 1px solid #d1d5db;
             border-radius: 8px;
-
-            margin-bottom: 10px;
-
+            margin-bottom: 15px;
             font-size: 15px;
-
         }
-
-
-        input:focus {
-
-            outline: none;
-
-            border-color:
-                #5146e5;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(81,70,229,0.1);
-
-        }
-
 
         button {
-
             width: 100%;
-
             border: none;
-
             padding: 14px;
-
             border-radius: 8px;
-
-            background:
-                #5146e5;
-
+            background: #5146e5;
             color: white;
-
             font-size: 16px;
-
             font-weight: 600;
-
             cursor: pointer;
-
         }
-
 
         button:disabled {
-
             opacity: 0.6;
-
             cursor: not-allowed;
-
         }
-
 
         .show-password {
-
             display: flex;
-
             align-items: center;
-
             gap: 7px;
-
-            margin-bottom: 18px;
-
+            margin-top: -5px;
+            margin-bottom: 15px;
             font-size: 14px;
-
             font-weight: normal;
-
             color: #4b5563;
-
             cursor: pointer;
-
         }
-
 
         .show-password input {
-
             width: auto;
-
             margin: 0;
-
-            cursor: pointer;
-
         }
 
-
-        .back-login {
-
+        .login-link {
             display: block;
-
             text-align: center;
-
             margin-top: 18px;
-
             color: #5146e5;
-
             font-size: 14px;
-
             text-decoration: none;
-
         }
-
-
-        .back-login:hover {
-
-            text-decoration:
-                underline;
-
-        }
-
 
         #message {
-
             margin-top: 18px;
-
             text-align: center;
-
             font-size: 14px;
-
             line-height: 1.5;
-
         }
-
 
         .error {
-
             color: #dc2626;
-
         }
-
 
         .success {
-
             color: #16a34a;
-
-        }
-
-
-        .info {
-
-            color: #5146e5;
-
         }
 
     </style>
 
 </head>
 
-
 <body>
-
 
 <div class="container">
 
-
     <div class="card">
-
 
         <div class="logo">
 
-            <h1>
-                🐾 VetClinic
-            </h1>
+            <h1>🐾 VetClinic</h1>
 
-            <p>
-                Create Clinic Account
-            </p>
+            <p>Create Clinic Account</p>
 
         </div>
 
-
-        <!-- CLINIC NAME -->
 
         <label for="clinicName">
             Clinic Name
@@ -306,8 +157,6 @@
         >
 
 
-        <!-- EMAIL -->
-
         <label for="email">
             Email
         </label>
@@ -315,12 +164,10 @@
         <input
             type="email"
             id="email"
-            placeholder="Enter clinic email"
+            placeholder="Enter email"
             autocomplete="email"
         >
 
-
-        <!-- PASSWORD -->
 
         <label for="password">
             Password
@@ -329,7 +176,7 @@
         <input
             type="password"
             id="password"
-            placeholder="Create password"
+            placeholder="Minimum 6 characters"
             autocomplete="new-password"
         >
 
@@ -346,8 +193,6 @@
         </label>
 
 
-        <!-- CONFIRM PASSWORD -->
-
         <label for="confirmPassword">
             Confirm Password
         </label>
@@ -355,7 +200,7 @@
         <input
             type="password"
             id="confirmPassword"
-            placeholder="Confirm password"
+            placeholder="Repeat password"
             autocomplete="new-password"
         >
 
@@ -372,141 +217,79 @@
         </label>
 
 
-        <!-- REGISTER -->
-
         <button
             id="registerButton"
-            type="button"
-        >
-            Register
+            type="button">
+
+            Create Account
+
         </button>
 
 
-        <!-- LOGIN -->
-
         <a
             href="login.html"
-            class="back-login"
-        >
+            class="login-link">
+
             Already have an account? Login
+
         </a>
 
 
         <div id="message"></div>
-
 
     </div>
 
 </div>
 
 
-<script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
 
-/* =====================================================
-   SUPABASE
-===================================================== */
-
 const SUPABASE_URL =
-    "https://zltbjbbofvvndxirlipf.supabase.co";
+"https://zltbjbbofvvndxirlipf.supabase.co";
 
 
 const SUPABASE_KEY =
-    "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
+"sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
 
 
 const supabaseClient =
-    supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
-
-/* =====================================================
-   REDIRECT
-===================================================== */
-
-const LOGIN_URL =
-    "https://falroy18-spec.github.io/vetclinic/login.html";
-
-
-/* =====================================================
-   ELEMENTS
-===================================================== */
 
 const clinicNameInput =
-    document.getElementById(
-        "clinicName"
-    );
-
+document.getElementById("clinicName");
 
 const emailInput =
-    document.getElementById(
-        "email"
-    );
-
+document.getElementById("email");
 
 const passwordInput =
-    document.getElementById(
-        "password"
-    );
-
+document.getElementById("password");
 
 const confirmPasswordInput =
-    document.getElementById(
-        "confirmPassword"
-    );
-
+document.getElementById("confirmPassword");
 
 const showPassword =
-    document.getElementById(
-        "showPassword"
-    );
-
+document.getElementById("showPassword");
 
 const showConfirmPassword =
-    document.getElementById(
-        "showConfirmPassword"
-    );
-
+document.getElementById("showConfirmPassword");
 
 const registerButton =
-    document.getElementById(
-        "registerButton"
-    );
-
+document.getElementById("registerButton");
 
 const message =
-    document.getElementById(
-        "message"
-    );
+document.getElementById("message");
 
 
-/* =====================================================
-   MESSAGE
-===================================================== */
-
-function showMessage(
-    text,
-    type = ""
-) {
-
-    message.textContent =
-        text;
-
-    message.className =
-        type;
-
-}
-
-
-/* =====================================================
+/* =========================
    SHOW PASSWORD
-===================================================== */
+========================= */
 
 showPassword.addEventListener(
     "change",
@@ -514,16 +297,12 @@ showPassword.addEventListener(
 
         passwordInput.type =
             showPassword.checked
-                ? "text"
-                : "password";
+            ? "text"
+            : "password";
 
     }
 );
 
-
-/* =====================================================
-   SHOW CONFIRM PASSWORD
-===================================================== */
 
 showConfirmPassword.addEventListener(
     "change",
@@ -531,16 +310,16 @@ showConfirmPassword.addEventListener(
 
         confirmPasswordInput.type =
             showConfirmPassword.checked
-                ? "text"
-                : "password";
+            ? "text"
+            : "password";
 
     }
 );
 
 
-/* =====================================================
+/* =========================
    REGISTER
-===================================================== */
+========================= */
 
 registerButton.addEventListener(
     "click",
@@ -549,259 +328,160 @@ registerButton.addEventListener(
         const clinicName =
             clinicNameInput.value.trim();
 
-
         const email =
-            emailInput.value
-                .trim()
-                .toLowerCase();
-
+            emailInput.value.trim();
 
         const password =
             passwordInput.value;
-
 
         const confirmPassword =
             confirmPasswordInput.value;
 
 
-        /* =============================================
-           VALIDATION
-        ============================================= */
+        if (!clinicName || !email || !password || !confirmPassword) {
 
-        if (
-            !clinicName ||
-            !email ||
-            !password ||
-            !confirmPassword
-        ) {
+            message.textContent =
+                "Semua kolom wajib diisi.";
 
-            showMessage(
-                "Semua field wajib diisi.",
-                "error"
-            );
+            message.className =
+                "error";
 
             return;
-
         }
 
 
         if (password.length < 6) {
 
-            showMessage(
-                "Password minimal 6 karakter.",
-                "error"
-            );
+            message.textContent =
+                "Password minimal 6 karakter.";
+
+            message.className =
+                "error";
 
             return;
-
         }
 
 
-        if (
-            password !==
-            confirmPassword
-        ) {
+        if (password !== confirmPassword) {
 
-            showMessage(
-                "Password dan konfirmasi password tidak sama.",
-                "error"
-            );
+            message.textContent =
+                "Password dan konfirmasi password tidak sama.";
+
+            message.className =
+                "error";
 
             return;
-
         }
 
 
-        /* =============================================
-           SAVE CLINIC NAME TEMPORARILY
-        ============================================= */
+        registerButton.disabled = true;
 
-        localStorage.setItem(
-            "vetclinic_pending_clinic_name",
-            clinicName
-        );
+        message.textContent =
+            "Creating account...";
 
-
-        localStorage.setItem(
-            "vetclinic_pending_email",
-            email
-        );
-
-
-        /* =============================================
-           LOADING
-        ============================================= */
-
-        registerButton.disabled =
-            true;
-
-
-        showMessage(
-            "Creating your clinic account...",
-            "info"
-        );
+        message.className = "";
 
 
         try {
-
-            /* =========================================
-               CREATE SUPABASE USER
-            ========================================= */
 
             const {
                 data,
                 error
             } =
-            await supabaseClient.auth
-                .signUp({
+            await supabaseClient.auth.signUp({
 
-                    email:
-                        email,
+                email: email,
 
-                    password:
-                        password,
+                password: password,
 
-                    options: {
+                options: {
 
-                        emailRedirectTo:
-                            LOGIN_URL,
-
-                        data: {
-
-                            clinic_name:
-                                clinicName
-
-                        }
-
+                    data: {
+                        clinic_name: clinicName
                     }
 
-                });
+                }
+
+            });
 
 
             console.log(
-                "SIGN UP RESULT:",
+                "Register result:",
                 data,
                 error
             );
 
 
-            /* =========================================
-               SIGNUP ERROR
-            ========================================= */
-
             if (error) {
 
-                console.error(
-                    "SIGNUP ERROR:",
-                    error
-                );
-
-
-                /*
-                 * Jika user sudah terdaftar,
-                 * jangan hapus pending clinic.
-                 */
-
-                showMessage(
+                message.textContent =
                     "Registrasi gagal: " +
-                    error.message,
-                    "error"
-                );
+                    error.message;
 
-
-                registerButton.disabled =
-                    false;
-
-
-                return;
-
-            }
-
-
-            /* =========================================
-               USER CHECK
-            ========================================= */
-
-            if (!data.user) {
-
-                showMessage(
-                    "Registrasi gagal. User tidak berhasil dibuat.",
-                    "error"
-                );
-
+                message.className =
+                    "error";
 
                 registerButton.disabled =
                     false;
 
-
                 return;
-
             }
 
 
-            /* =========================================
-               EMAIL CONFIRMATION AKTIF
-            ========================================= */
+            /*
+                Jika email confirmation OFF,
+                user langsung mendapatkan session.
+            */
 
-            if (!data.session) {
+            if (data.session) {
 
-                showMessage(
-                    "Akun berhasil dibuat! Silakan cek email " +
-                    email +
-                    " untuk mengkonfirmasi akun.",
-                    "success"
+                message.textContent =
+                    "Akun berhasil dibuat! Mengarahkan ke dashboard...";
+
+                message.className =
+                    "success";
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "index.html";
+
+                    },
+                    1000
                 );
 
-
-                /*
-                 * Jangan redirect terlalu cepat.
-                 */
-
-                registerButton.disabled =
-                    false;
-
-
-                /*
-                 * Ubah button agar user tidak
-                 * menekan register berkali-kali.
-                 */
-
-                registerButton.textContent =
-                    "Confirmation Email Sent";
-
-
-                registerButton.disabled =
-                    true;
-
-
                 return;
-
             }
 
 
-            /* =========================================
-               JIKA CONFIRM EMAIL DIMATIKAN
-            ========================================= */
+            /*
+                Jika Supabase masih meminta
+                email confirmation.
+            */
 
-            await createClinic();
+            message.textContent =
+                "Akun berhasil dibuat. Silakan cek email untuk konfirmasi akun.";
 
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "REGISTER ERROR:",
-                error
-            );
+            message.className =
+                "success";
 
 
-            showMessage(
+            registerButton.disabled =
+                false;
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            message.textContent =
                 "Terjadi kesalahan: " +
-                error.message,
-                "error"
-            );
+                error.message;
 
+            message.className =
+                "error";
 
             registerButton.disabled =
                 false;
@@ -811,171 +491,7 @@ registerButton.addEventListener(
     }
 );
 
-
-/* =====================================================
-   CREATE CLINIC
-===================================================== */
-
-async function createClinic() {
-
-    const clinicName =
-        localStorage.getItem(
-            "vetclinic_pending_clinic_name"
-        );
-
-
-    if (!clinicName) {
-
-        throw new Error(
-            "Nama klinik tidak ditemukan."
-        );
-
-    }
-
-
-    showMessage(
-        "Creating clinic...",
-        "info"
-    );
-
-
-    const {
-        data,
-        error
-    } =
-    await supabaseClient
-        .rpc(
-            "create_clinic_for_current_user",
-            {
-                p_clinic_name:
-                    clinicName
-            }
-        );
-
-
-    console.log(
-        "CREATE CLINIC:",
-        data,
-        error
-    );
-
-
-    if (error) {
-
-        console.error(
-            "CREATE CLINIC ERROR:",
-            error
-        );
-
-
-        /*
-         * Jangan hapus pending data.
-         * User masih bisa mencoba lagi.
-         */
-
-        showMessage(
-            "Akun berhasil dibuat, tetapi klinik belum berhasil dibuat: " +
-            error.message,
-            "error"
-        );
-
-
-        return;
-
-    }
-
-
-    /* =============================================
-       SUCCESS
-    ============================================= */
-
-    localStorage.removeItem(
-        "vetclinic_pending_clinic_name"
-    );
-
-
-    localStorage.removeItem(
-        "vetclinic_pending_email"
-    );
-
-
-    showMessage(
-        "Registrasi berhasil! Klinik berhasil dibuat.",
-        "success"
-    );
-
-
-    setTimeout(
-        function() {
-
-            window.location.href =
-                "index.html";
-
-        },
-        800
-    );
-
-}
-
-
-/* =====================================================
-   AUTH STATE
-===================================================== */
-
-supabaseClient.auth.onAuthStateChange(
-    async function(
-        event,
-        session
-    ) {
-
-        console.log(
-            "AUTH EVENT:",
-            event,
-            session
-        );
-
-
-        /*
-         * Jika user langsung mendapat session
-         * setelah signup, buat clinic.
-         */
-
-        if (
-            event === "SIGNED_IN" &&
-            session
-        ) {
-
-            const pendingClinic =
-                localStorage.getItem(
-                    "vetclinic_pending_clinic_name"
-                );
-
-
-            if (pendingClinic) {
-
-                try {
-
-                    await createClinic();
-
-                }
-
-                catch (error) {
-
-                    console.error(
-                        error
-                    );
-
-                }
-
-            }
-
-        }
-
-    }
-);
-
 </script>
-
 
 </body>
 
