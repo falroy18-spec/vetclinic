@@ -1,930 +1,374 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Record Detail - VetClinic</title>
 
-    <title>Edit Medical Record - VetClinic</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #273043;
-        }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
 
-        .layout {
-            display: flex;
-            min-height: 100vh;
-        }
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 190px;
+      background: white;
+      border-right: 1px solid #e5e7eb;
+      padding: 25px 13px;
+    }
 
-        /* SIDEBAR */
-        .sidebar {
-            width: 190px;
-            background: white;
-            border-right: 1px solid #e5e7eb;
-            padding: 22px 13px;
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-        }
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 5px 10px 30px;
+    }
 
-        .logo {
-            font-size: 18px;
-            font-weight: bold;
-            margin: 0 10px 25px;
-        }
+    .nav a {
+      display: block;
+      padding: 10px 11px;
+      margin-bottom: 4px;
+      text-decoration: none;
+      color: #374151;
+      border-radius: 7px;
+      font-size: 14px;
+    }
 
-        .nav a {
-            display: block;
-            text-decoration: none;
-            color: #344054;
-            padding: 10px 11px;
-            margin-bottom: 3px;
-            border-radius: 8px;
-            font-size: 13px;
-        }
+    .nav a.active {
+      background: #111827;
+      color: white;
+    }
 
-        .nav a:hover {
-            background: #f2f4f7;
-        }
+    .main {
+      margin-left: 190px;
+      padding: 35px 28px;
+      max-width: 1200px;
+    }
 
-        .nav a.active {
-            background: #111827;
-            color: white;
-        }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
 
-        /* MAIN */
-        .main {
-            margin-left: 190px;
-            width: calc(100% - 190px);
-            padding: 28px;
-        }
+    h1 {
+      margin: 0;
+      font-size: 25px;
+    }
 
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
+    .subtitle {
+      color: #6b7280;
+      margin-top: 6px;
+      font-size: 14px;
+    }
 
-        h1 {
-            margin: 0;
-            font-size: 24px;
-        }
+    button {
+      border: 0;
+      border-radius: 7px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-weight: 600;
+    }
 
-        .subtitle {
-            margin-top: 6px;
-            color: #667085;
-            font-size: 14px;
-        }
+    .back {
+      background: #111827;
+      color: white;
+    }
 
-        .back-btn {
-            background: #111827;
-            color: white;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 7px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+    .edit {
+      background: #2563eb;
+      color: white;
+    }
 
-        .back-btn:hover {
-            opacity: 0.9;
-        }
+    .card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 22px;
+      margin-bottom: 20px;
+    }
 
-        .card {
-            background: white;
-            border: 1px solid #e4e7ec;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 18px;
-        }
+    .card h2 {
+      margin: 0 0 18px;
+      font-size: 18px;
+    }
 
-        .card-title {
-            font-size: 17px;
-            font-weight: bold;
-            margin-bottom: 18px;
-        }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
 
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-        }
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: bold;
+      color: #6b7280;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
 
-        .full {
-            grid-column: 1 / -1;
-        }
+    .field div {
+      min-height: 22px;
+      white-space: pre-wrap;
+    }
 
-        label {
-            display: block;
-            font-size: 13px;
-            font-weight: bold;
-            margin-bottom: 7px;
-        }
+    .full {
+      grid-column: 1 / -1;
+    }
 
-        input,
-        select,
-        textarea {
-            width: 100%;
-            padding: 11px 12px;
-            border: 1px solid #d0d5dd;
-            border-radius: 7px;
-            font-family: inherit;
-            font-size: 14px;
-            background: white;
-        }
+    .error {
+      background: #fee2e2;
+      color: #b91c1c;
+      padding: 13px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
 
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #6b7280;
+    }
 
-        input:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: #5146e5;
-        }
+    @media (max-width: 700px) {
+      .sidebar {
+        display: none;
+      }
 
-        .patient-info {
-            margin-top: 12px;
-            padding: 12px;
-            background: #f8f9fc;
-            border-radius: 8px;
-            color: #475467;
-            font-size: 13px;
-            line-height: 1.6;
-        }
+      .main {
+        margin-left: 0;
+        padding: 20px;
+      }
 
-        .section-divider {
-            border: none;
-            border-top: 1px solid #eaecf0;
-            margin: 22px 0;
-        }
+      .grid {
+        grid-template-columns: 1fr;
+      }
 
-        .alert {
-            padding: 12px 14px;
-            border-radius: 8px;
-            margin-bottom: 18px;
-            font-size: 14px;
-        }
-
-        .error {
-            background: #fef3f2;
-            color: #b42318;
-            border: 1px solid #fecdca;
-        }
-
-        .success {
-            background: #ecfdf3;
-            color: #027a48;
-            border: 1px solid #abefc6;
-        }
-
-        .actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .cancel-btn {
-            padding: 12px 20px;
-            border: 1px solid #d0d5dd;
-            background: white;
-            color: #344054;
-            border-radius: 7px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .save-btn {
-            padding: 12px 22px;
-            border: none;
-            background: #5146e5;
-            color: white;
-            border-radius: 7px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .save-btn:hover {
-            opacity: 0.9;
-        }
-
-        .save-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 30px;
-            color: #667085;
-        }
-
-        @media (max-width: 800px) {
-
-            .sidebar {
-                width: 160px;
-            }
-
-            .main {
-                margin-left: 160px;
-                width: calc(100% - 160px);
-                padding: 18px;
-            }
-
-            .grid {
-                grid-template-columns: 1fr;
-            }
-
-            .full {
-                grid-column: auto;
-            }
-        }
-    </style>
+      .full {
+        grid-column: auto;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="layout">
+  <aside class="sidebar">
+    <div class="logo">🐾 VetClinic</div>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <nav class="nav">
+      <a href="index.html">Dashboard</a>
+      <a href="patients.html">Patients</a>
+      <a href="appointments.html">Appointments</a>
+      <a href="medical-records.html" class="active">Medical Records</a>
+      <a href="medicines.html">Medicines</a>
+      <a href="billing.html">Billing</a>
+      <a href="reports.html">Reports</a>
+      <a href="backup.html">Backup & Restore</a>
+    </nav>
+  </aside>
 
-        <div class="logo">
-            🐾 VetClinic
+  <main class="main">
+
+    <div class="top">
+      <div>
+        <h1>Medical Record</h1>
+        <div class="subtitle">View patient's medical record.</div>
+      </div>
+
+      <div>
+        <button class="back" onclick="history.back()">← Back</button>
+        <button class="edit" id="editBtn">Edit</button>
+      </div>
+    </div>
+
+    <div id="errorBox" class="error"></div>
+
+    <div id="loading" class="loading">
+      Loading medical record...
+    </div>
+
+    <div id="content" style="display:none;">
+
+      <section class="card">
+        <h2>Patient</h2>
+
+        <div class="grid">
+          <div class="field">
+            <label>Patient</label>
+            <div id="patientName">-</div>
+          </div>
+
+          <div class="field">
+            <label>Visit Date</label>
+            <div id="visitDate">-</div>
+          </div>
+
+          <div class="field">
+            <label>Visit Type</label>
+            <div id="visitType">-</div>
+          </div>
+
+          <div class="field">
+            <label>Owner</label>
+            <div id="owner">-</div>
+          </div>
         </div>
+      </section>
 
-        <nav class="nav">
+      <section class="card" id="consultationSection">
+        <h2>Consultation</h2>
 
-            <a href="index.html">
-                Dashboard
-            </a>
+        <div class="grid">
 
-            <a href="patients.html">
-                Patients
-            </a>
+          <div class="field full">
+            <label>Chief Complaint</label>
+            <div id="chiefComplaint">-</div>
+          </div>
 
-            <a href="appointments.html">
-                Appointments
-            </a>
+          <div class="field full">
+            <label>Subjective</label>
+            <div id="subjective">-</div>
+          </div>
 
-            <a href="medical-records.html" class="active">
-                Medical Records
-            </a>
+          <div class="field">
+            <label>Temperature</label>
+            <div id="temperature">-</div>
+          </div>
 
-            <a href="medicines.html">
-                Medicines
-            </a>
+          <div class="field">
+            <label>Heart Rate / Pulse</label>
+            <div id="heartRate">-</div>
+          </div>
 
-            <a href="billing.html">
-                Billing
-            </a>
+          <div class="field">
+            <label>Respiratory Rate</label>
+            <div id="respiratoryRate">-</div>
+          </div>
 
-            <a href="reports.html">
-                Reports
-            </a>
+          <div class="field">
+            <label>Weight</label>
+            <div id="weight">-</div>
+          </div>
 
-            <a href="backup.html">
-                Backup & Restore
-            </a>
+          <div class="field full">
+            <label>Objective</label>
+            <div id="objective">-</div>
+          </div>
 
-        </nav>
+          <div class="field full">
+            <label>Assessment</label>
+            <div id="assessment">-</div>
+          </div>
 
-    </aside>
+          <div class="field full">
+            <label>Diagnosis</label>
+            <div id="diagnosis">-</div>
+          </div>
 
+          <div class="field full">
+            <label>Plan</label>
+            <div id="plan">-</div>
+          </div>
 
-    <!-- MAIN -->
-    <main class="main">
+          <div class="field full">
+            <label>Treatment</label>
+            <div id="treatment">-</div>
+          </div>
 
-        <div class="topbar">
+          <div class="field full">
+            <label>Medication</label>
+            <div id="medication">-</div>
+          </div>
 
-            <div>
-                <h1>Edit Medical Record</h1>
+          <div class="field full">
+            <label>Procedure</label>
+            <div id="procedure">-</div>
+          </div>
 
-                <div class="subtitle">
-                    Create or edit a patient's medical record.
-                </div>
-            </div>
+          <div class="field full">
+            <label>Notes</label>
+            <div id="notes">-</div>
+          </div>
 
-            <button
-                type="button"
-                class="back-btn"
-                onclick="goBack()"
-            >
-                ← Back
-            </button>
+          <div class="field">
+            <label>Follow-up Date</label>
+            <div id="followUpDate">-</div>
+          </div>
 
         </div>
+      </section>
 
-
-        <div id="message"></div>
-
-
-        <form id="recordForm">
-
-            <!-- PATIENT -->
-            <div class="card">
-
-                <div class="card-title">
-                    Patient
-                </div>
-
-                <div>
-
-                    <label for="patient">
-                        Select Patient
-                    </label>
-
-                    <select id="patient" required>
-                        <option value="">
-                            Loading patients...
-                        </option>
-                    </select>
-
-                </div>
-
-                <div
-                    id="patientInfo"
-                    class="patient-info"
-                    style="display:none;"
-                ></div>
-
-            </div>
-
-
-            <!-- VISIT -->
-            <div class="card">
-
-                <div class="card-title">
-                    Visit Information
-                </div>
-
-                <div class="grid">
-
-                    <div>
-
-                        <label for="visitDate">
-                            Visit Date
-                        </label>
-
-                        <input
-                            type="date"
-                            id="visitDate"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div>
-
-                        <label for="visitType">
-                            Visit Type
-                        </label>
-
-                        <select
-                            id="visitType"
-                            required
-                        >
-
-                            <option value="">
-                                Select visit type
-                            </option>
-
-                            <option value="consultation">
-                                Consultation
-                            </option>
-
-                            <option value="grooming">
-                                Grooming
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="full">
-
-                        <label for="chiefComplaint">
-                            Chief Complaint
-                        </label>
-
-                        <textarea
-                            id="chiefComplaint"
-                            placeholder="Main complaint or reason for visit..."
-                        ></textarea>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- SUBJECTIVE -->
-            <div class="card">
-
-                <div class="card-title">
-                    S — Subjective
-                </div>
-
-                <textarea
-                    id="subjective"
-                    placeholder="History, owner's complaint, appetite, drinking, vomiting, diarrhea, urination, defecation, etc."
-                ></textarea>
-
-            </div>
-
-
-            <!-- OBJECTIVE -->
-            <div class="card">
-
-                <div class="card-title">
-                    O — Objective
-                </div>
-
-                <div class="grid">
-
-                    <div>
-
-                        <label for="temperature">
-                            Temperature
-                        </label>
-
-                        <input
-                            type="text"
-                            id="temperature"
-                            placeholder="e.g. 38.5 °C"
-                        >
-
-                    </div>
-
-
-                    <div>
-
-                        <label for="heartRate">
-                            Heart Rate / Pulse
-                        </label>
-
-                        <input
-                            type="text"
-                            id="heartRate"
-                            placeholder="e.g. 120 bpm"
-                        >
-
-                    </div>
-
-
-                    <div>
-
-                        <label for="respiratoryRate">
-                            Respiratory Rate
-                        </label>
-
-                        <input
-                            type="text"
-                            id="respiratoryRate"
-                            placeholder="e.g. 30 rpm"
-                        >
-
-                    </div>
-
-
-                    <div>
-
-                        <label for="weight">
-                            Weight
-                        </label>
-
-                        <input
-                            type="text"
-                            id="weight"
-                            placeholder="e.g. 5.2 kg"
-                        >
-
-                    </div>
-
-
-                    <div class="full">
-
-                        <label for="objective">
-                            Other Objective Findings
-                        </label>
-
-                        <textarea
-                            id="objective"
-                            placeholder="Physical examination findings, mucous membrane, CRT, lymph nodes, abdomen, skin, etc."
-                        ></textarea>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- ASSESSMENT -->
-            <div class="card">
-
-                <div class="card-title">
-                    A — Assessment
-                </div>
-
-                <div class="grid">
-
-                    <div class="full">
-
-                        <label for="assessment">
-                            Assessment
-                        </label>
-
-                        <textarea
-                            id="assessment"
-                            placeholder="Clinical assessment..."
-                        ></textarea>
-
-                    </div>
-
-
-                    <div class="full">
-
-                        <label for="diagnosis">
-                            Diagnosis
-                        </label>
-
-                        <textarea
-                            id="diagnosis"
-                            placeholder="Diagnosis / differential diagnosis..."
-                        ></textarea>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PLAN -->
-            <div class="card">
-
-                <div class="card-title">
-                    P — Plan
-                </div>
-
-                <div class="grid">
-
-                    <div>
-
-                        <label for="treatment">
-                            Treatment
-                        </label>
-
-                        <textarea
-                            id="treatment"
-                            placeholder="Treatment performed..."
-                        ></textarea>
-
-                    </div>
-
-
-                    <div>
-
-                        <label for="medication">
-                            Medication
-                        </label>
-
-                        <textarea
-                            id="medication"
-                            placeholder="Medication, dose, route, frequency..."
-                        ></textarea>
-
-                    </div>
-
-
-                    <div>
-
-                        <label for="procedure">
-                            Procedure
-                        </label>
-
-                        <textarea
-                            id="procedure"
-                            placeholder="Procedure performed..."
-                        ></textarea>
-
-                    </div>
-
-
-                    <div>
-
-                        <label for="followUpDate">
-                            Follow-up Date
-                        </label>
-
-                        <input
-                            type="date"
-                            id="followUpDate"
-                        >
-
-                    </div>
-
-
-                    <div class="full">
-
-                        <label for="plan">
-                            Plan
-                        </label>
-
-                        <textarea
-                            id="plan"
-                            placeholder="Follow-up plan, monitoring, recommendations..."
-                        ></textarea>
-
-                    </div>
-
-
-                    <div class="full">
-
-                        <label for="notes">
-                            Notes
-                        </label>
-
-                        <textarea
-                            id="notes"
-                            placeholder="Additional notes..."
-                        ></textarea>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- ACTIONS -->
-            <div class="actions">
-
-                <button
-                    type="button"
-                    class="cancel-btn"
-                    onclick="goBack()"
-                >
-                    Cancel
-                </button>
-
-                <button
-                    type="submit"
-                    class="save-btn"
-                    id="saveButton"
-                >
-                    Update Medical Record
-                </button>
-
-            </div>
-
-        </form>
-
-    </main>
-
-</div>
-
-
-<!-- SUPABASE -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+    </div>
+  </main>
 
 <script>
-
 /* =====================================================
-   SUPABASE CONFIG
+   SUPABASE CONNECTION
    ===================================================== */
 
 const SUPABASE_URL =
-    "https://zltbjbbofvndxirlipf.supabase.co";
-
+  "https://zltbjbbofvvndxirlipf.supabase.co";
 
 /*
-   MASUKKAN ANON/PUBLISHABLE KEY YANG SAMA
-   DENGAN FILE add-record.html KAMU.
+  PENTING:
+  GANTI bagian di bawah dengan SUPABASE ANON/PUBLISHABLE KEY
+  yang SAMA PERSIS dengan add-record.html
 */
-
 const SUPABASE_ANON_KEY =
-    "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
+  "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
 
-
-const supabaseClient =
-    supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY
-    );
-
-
-/* =====================================================
-   GET RECORD ID FROM URL
-   Contoh:
-   medical-record-detail.html?id=xxxxx
-   ===================================================== */
-
-const urlParams =
-    new URLSearchParams(
-        window.location.search
-    );
-
-const recordId =
-    urlParams.get("id");
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
 
 
 /* =====================================================
-   ELEMENTS
+   GET RECORD ID
    ===================================================== */
 
-const form =
-    document.getElementById("recordForm");
+const params = new URLSearchParams(window.location.search);
+const recordId = params.get("id");
 
-const patientSelect =
-    document.getElementById("patient");
-
-const patientInfo =
-    document.getElementById("patientInfo");
-
-const message =
-    document.getElementById("message");
-
-const saveButton =
-    document.getElementById("saveButton");
+const loading = document.getElementById("loading");
+const content = document.getElementById("content");
+const errorBox = document.getElementById("errorBox");
 
 
 /* =====================================================
-   MESSAGE
+   HELPER
    ===================================================== */
 
-function showMessage(
-    text,
-    type = "error"
-) {
+function setText(id, value) {
+  const element = document.getElementById(id);
 
-    message.innerHTML =
-        `<div class="alert ${type}">
-            ${text}
-        </div>`;
+  if (!element) return;
 
-}
-
-
-/* =====================================================
-   LOAD PATIENTS
-   ===================================================== */
-
-async function loadPatients() {
-
-    const {
-        data,
-        error
-    } =
-    await supabaseClient
-        .from("patients")
-        .select(`
-            id,
-            name,
-            species,
-            breed,
-            sex,
-            date_of_birth,
-            weight,
-            owner,
-            owner_phone,
-            owner_address
-        `)
-        .order(
-            "name",
-            {
-                ascending: true
-            }
-        );
-
-
-    if (error) {
-
-        console.error(
-            "Load patients error:",
-            error
-        );
-
-        showMessage(
-            "Failed to load patients: " +
-            error.message
-        );
-
-        return false;
-    }
-
-
-    patientSelect.innerHTML =
-        `<option value="">
-            Select patient
-        </option>`;
-
-
-    data.forEach(
-        function(patient) {
-
-            const option =
-                document.createElement("option");
-
-            option.value =
-                patient.id;
-
-            option.textContent =
-                `${patient.name} — ${patient.species || ""} — Owner: ${patient.owner || "-"}`;
-
-            option.dataset.patient =
-                JSON.stringify(patient);
-
-            patientSelect.appendChild(
-                option
-            );
-
-        }
-    );
-
-
-    return true;
-}
-
-
-/* =====================================================
-   SHOW PATIENT INFORMATION
-   ===================================================== */
-
-function displayPatientInfo() {
-
-    const selectedOption =
-        patientSelect.options[
-            patientSelect.selectedIndex
-        ];
-
-
-    if (
-        !selectedOption ||
-        !selectedOption.value
-    ) {
-
-        patientInfo.style.display =
-            "none";
-
-        patientInfo.innerHTML =
-            "";
-
-        return;
-    }
-
-
-    const patient =
-        JSON.parse(
-            selectedOption.dataset.patient
-        );
-
-
-    patientInfo.innerHTML = `
-
-        <strong>${escapeHtml(patient.name || "-")}</strong><br>
-
-        Species:
-        ${escapeHtml(patient.species || "-")}
-        <br>
-
-        Breed:
-        ${escapeHtml(patient.breed || "-")}
-        <br>
-
-        Sex:
-        ${escapeHtml(patient.sex || "-")}
-        <br>
-
-        Owner:
-        ${escapeHtml(patient.owner || "-")}
-        <br>
-
-        Owner Phone:
-        ${escapeHtml(patient.owner_phone || "-")}
-
-    `;
-
-
-    patientInfo.style.display =
-        "block";
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+    element.textContent = "-";
+  } else {
+    element.textContent = value;
+  }
 }
 
 
@@ -932,477 +376,152 @@ function displayPatientInfo() {
    LOAD MEDICAL RECORD
    ===================================================== */
 
-async function loadMedicalRecord() {
+async function loadRecord() {
 
-    if (!recordId) {
+  if (!recordId) {
+    showError("Medical record ID tidak ditemukan.");
+    return;
+  }
 
-        showMessage(
-            "Medical record ID tidak ditemukan di URL."
-        );
+  try {
 
-        return;
-    }
-
-
-    const {
-        data,
-        error
-    } =
-    await supabaseClient
-        .from("medical_records")
-        .select(`
-            id,
-            patient_id,
-            visit_date,
-            visit_type,
-            chief_complaint,
-            subjective,
-            objective,
-            assessment,
-            plan,
-            diagnosis,
-            treatment,
-            medication,
-            procedure,
-            notes,
-            follow_up_date
-        `)
-        .eq(
-            "id",
-            recordId
-        )
-        .single();
-
+    const { data, error } = await supabaseClient
+      .from("medical_records")
+      .select("*")
+      .eq("id", recordId)
+      .single();
 
     if (error) {
-
-        console.error(
-            "Load medical record error:",
-            error
-        );
-
-        showMessage(
-            "Failed to load medical record: " +
-            error.message
-        );
-
-        return;
+      throw error;
     }
 
+    if (!data) {
+      throw new Error("Medical record tidak ditemukan.");
+    }
 
-    /* PATIENT */
+    console.log("Medical record:", data);
 
-    patientSelect.value =
-        data.patient_id || "";
+    /* Patient */
+    let patientName = "-";
+    let ownerName = "-";
 
+    if (data.patient_id) {
 
-    displayPatientInfo();
+      const { data: patient, error: patientError } =
+        await supabaseClient
+          .from("patients")
+          .select("*")
+          .eq("id", data.patient_id)
+          .single();
 
+      if (!patientError && patient) {
 
-    /* VISIT */
+        /*
+          Database kamu menggunakan kolom "owner",
+          bukan "owner_name".
+        */
 
-    document.getElementById(
-        "visitDate"
-    ).value =
-        data.visit_date || "";
+        patientName =
+          patient.name ||
+          patient.patient_name ||
+          "-";
 
+        ownerName =
+          patient.owner ||
+          "-";
+      }
+    }
 
-    document.getElementById(
-        "visitType"
-    ).value =
-        data.visit_type || "";
+    setText("patientName", patientName);
+    setText("owner", ownerName);
 
+    /* Basic */
+    setText("visitDate", data.visit_date);
+    setText("visitType", data.visit_type);
 
-    document.getElementById(
-        "chiefComplaint"
-    ).value =
-        data.chief_complaint || "";
-
-
-    /* SUBJECTIVE */
-
-    document.getElementById(
-        "subjective"
-    ).value =
-        data.subjective || "";
-
-
-    /* OBJECTIVE */
-
-    document.getElementById(
-        "objective"
-    ).value =
-        data.objective || "";
-
+    /* Consultation */
+    setText("chiefComplaint", data.chief_complaint);
+    setText("subjective", data.subjective);
+    setText("objective", data.objective);
+    setText("assessment", data.assessment);
+    setText("diagnosis", data.diagnosis);
+    setText("plan", data.plan);
+    setText("treatment", data.treatment);
+    setText("medication", data.medication);
+    setText("procedure", data.procedure);
+    setText("notes", data.notes);
+    setText("followUpDate", data.follow_up_date);
 
     /*
-       Karena database medical_records
-       hanya punya satu kolom objective,
-       kita tidak membuat kolom database baru.
-       
-       Jika data lama menggunakan format:
-       Temperature / HR / RR / Weight
-       di dalam objective, tetap aman.
+      Karena nama kolom pemeriksaan fisik bisa berbeda,
+      cek beberapa kemungkinan.
     */
 
-    /* ASSESSMENT */
+    setText(
+      "temperature",
+      data.temperature ?? data.temp
+    );
 
-    document.getElementById(
-        "assessment"
-    ).value =
-        data.assessment || "";
+    setText(
+      "heartRate",
+      data.heart_rate ?? data.pulse
+    );
 
+    setText(
+      "respiratoryRate",
+      data.respiratory_rate ?? data.resp_rate
+    );
 
-    document.getElementById(
-        "diagnosis"
-    ).value =
-        data.diagnosis || "";
+    setText(
+      "weight",
+      data.weight
+    );
 
+    /* Grooming tidak menampilkan SOAP tambahan */
+    if (data.visit_type === "grooming") {
+      document.getElementById("consultationSection")
+        .querySelector("h2").textContent = "Grooming Health Check";
+    }
 
-    /* PLAN */
+    loading.style.display = "none";
+    content.style.display = "block";
 
-    document.getElementById(
-        "plan"
-    ).value =
-        data.plan || "";
+    /* Edit button */
+    document.getElementById("editBtn").onclick = function() {
+      window.location.href =
+        "add-record.html?id=" + encodeURIComponent(recordId);
+    };
 
+  } catch (error) {
 
-    document.getElementById(
-        "treatment"
-    ).value =
-        data.treatment || "";
+    console.error(error);
 
-
-    document.getElementById(
-        "medication"
-    ).value =
-        data.medication || "";
-
-
-    document.getElementById(
-        "procedure"
-    ).value =
-        data.procedure || "";
-
-
-    document.getElementById(
-        "notes"
-    ).value =
-        data.notes || "";
-
-
-    document.getElementById(
-        "followUpDate"
-    ).value =
-        data.follow_up_date || "";
-
+    showError(
+      "Gagal memuat medical record: " +
+      (error.message || error)
+    );
+  }
 }
 
 
 /* =====================================================
-   UPDATE MEDICAL RECORD
+   ERROR
    ===================================================== */
 
-form.addEventListener(
-    "submit",
-    async function(event) {
+function showError(message) {
 
-        event.preventDefault();
+  loading.style.display = "none";
 
-
-        if (!recordId) {
-
-            showMessage(
-                "Medical record ID tidak ditemukan."
-            );
-
-            return;
-        }
-
-
-        const patientId =
-            patientSelect.value;
-
-
-        const visitDate =
-            document.getElementById(
-                "visitDate"
-            ).value;
-
-
-        const visitType =
-            document.getElementById(
-                "visitType"
-            ).value;
-
-
-        if (!patientId) {
-
-            showMessage(
-                "Please select a patient."
-            );
-
-            return;
-        }
-
-
-        if (!visitDate) {
-
-            showMessage(
-                "Please select visit date."
-            );
-
-            return;
-        }
-
-
-        if (!visitType) {
-
-            showMessage(
-                "Please select visit type."
-            );
-
-            return;
-        }
-
-
-        saveButton.disabled =
-            true;
-
-        saveButton.textContent =
-            "Updating...";
-
-
-        const updateData = {
-
-            patient_id:
-                patientId,
-
-            visit_date:
-                visitDate,
-
-            visit_type:
-                visitType,
-
-            chief_complaint:
-                document.getElementById(
-                    "chiefComplaint"
-                ).value.trim() || null,
-
-            subjective:
-                document.getElementById(
-                    "subjective"
-                ).value.trim() || null,
-
-            objective:
-                document.getElementById(
-                    "objective"
-                ).value.trim() || null,
-
-            assessment:
-                document.getElementById(
-                    "assessment"
-                ).value.trim() || null,
-
-            plan:
-                document.getElementById(
-                    "plan"
-                ).value.trim() || null,
-
-            diagnosis:
-                document.getElementById(
-                    "diagnosis"
-                ).value.trim() || null,
-
-            treatment:
-                document.getElementById(
-                    "treatment"
-                ).value.trim() || null,
-
-            medication:
-                document.getElementById(
-                    "medication"
-                ).value.trim() || null,
-
-            procedure:
-                document.getElementById(
-                    "procedure"
-                ).value.trim() || null,
-
-            notes:
-                document.getElementById(
-                    "notes"
-                ).value.trim() || null,
-
-            follow_up_date:
-                document.getElementById(
-                    "followUpDate"
-                ).value || null
-
-        };
-
-
-        const {
-            error
-        } =
-        await supabaseClient
-            .from("medical_records")
-            .update(
-                updateData
-            )
-            .eq(
-                "id",
-                recordId
-            );
-
-
-        if (error) {
-
-            console.error(
-                "Update error:",
-                error
-            );
-
-            showMessage(
-                "Failed to update medical record: " +
-                error.message
-            );
-
-            saveButton.disabled =
-                false;
-
-            saveButton.textContent =
-                "Update Medical Record";
-
-            return;
-        }
-
-
-        showMessage(
-            "Medical record updated successfully.",
-            "success"
-        );
-
-
-        saveButton.textContent =
-            "Updated ✓";
-
-
-        setTimeout(
-            function() {
-
-                window.location.href =
-                    "medical-records.html";
-
-            },
-            1200
-        );
-
-    }
-);
-
-
-/* =====================================================
-   PATIENT CHANGE
-   ===================================================== */
-
-patientSelect.addEventListener(
-    "change",
-    displayPatientInfo
-);
-
-
-/* =====================================================
-   BACK
-   ===================================================== */
-
-function goBack() {
-
-    if (
-        document.referrer &&
-        document.referrer.includes(
-            window.location.hostname
-        )
-    ) {
-
-        history.back();
-
-    } else {
-
-        window.location.href =
-            "medical-records.html";
-
-    }
-
+  errorBox.textContent = message;
+  errorBox.style.display = "block";
 }
 
 
 /* =====================================================
-   SECURITY / HTML ESCAPE
+   START
    ===================================================== */
 
-function escapeHtml(value) {
-
-    return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
-
-
-/* =====================================================
-   INITIALIZE
-   ===================================================== */
-
-async function initialize() {
-
-    if (
-        SUPABASE_ANON_KEY ===
-        "PASTE_ANON_KEY_DI_SINI"
-    ) {
-
-        showMessage(
-            "Supabase key belum dimasukkan ke medical-record-detail.html."
-        );
-
-        return;
-    }
-
-
-    const patientsLoaded =
-        await loadPatients();
-
-
-    if (!patientsLoaded) {
-
-        return;
-    }
-
-
-    await loadMedicalRecord();
-
-}
-
-
-initialize();
+loadRecord();
 
 </script>
 
