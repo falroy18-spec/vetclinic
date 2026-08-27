@@ -2,843 +2,809 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
+    <title>Medical Record Detail - VetClinic</title>
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
 
-<title>Medical Record Detail - VetClinic</title>
+    <style>
+        .record-form {
+            max-width: 1000px;
+        }
 
-<link rel="stylesheet" href="style.css">
+        .form-section {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 20px;
+        }
 
-<style>
+        .form-section h3 {
+            margin-top: 0;
+            margin-bottom: 18px;
+        }
 
-.record-form {
-    max-width: 1000px;
-}
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
 
-.form-section {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 22px;
-    margin-bottom: 20px;
-}
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
 
-.form-section h3 {
-    margin-top: 0;
-    margin-bottom: 18px;
-}
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
 
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-}
+        .form-group label {
+            font-weight: 600;
+            font-size: 14px;
+        }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 11px 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+        }
 
-.form-group.full {
-    grid-column: 1 / -1;
-}
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
 
-.form-group label {
-    font-weight: 600;
-    font-size: 14px;
-}
+        .patient-box {
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 15px;
+        }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 11px 13px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 14px;
-}
+        .patient-box h3 {
+            margin: 0 0 6px;
+        }
 
-.form-group textarea {
-    min-height: 120px;
-    resize: vertical;
-}
+        .patient-box p {
+            margin: 4px 0;
+            color: #6b7280;
+        }
 
-.patient-box {
-    background: #eef2ff;
-    border: 1px solid #c7d2fe;
-    border-radius: 10px;
-    padding: 16px;
-}
+        .vital-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
 
-.patient-box h3 {
-    margin: 0 0 6px;
-}
+        .unit-wrapper {
+            position: relative;
+        }
 
-.patient-box p {
-    margin: 4px 0;
-    color: #6b7280;
-}
+        .unit-wrapper input {
+            padding-right: 50px;
+        }
 
-.vital-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-}
+        .unit {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            font-size: 13px;
+        }
 
-.unit-wrapper {
-    position: relative;
-}
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
 
-.unit-wrapper input {
-    padding-right: 50px;
-}
+        .cancel-button {
+            text-decoration: none;
+        }
 
-.unit {
-    position: absolute;
-    right: 13px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6b7280;
-    font-size: 13px;
-}
+        button {
+            cursor: pointer;
+        }
 
-.form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-}
+        .save-button {
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-weight: 600;
+        }
 
-.cancel-button {
-    text-decoration: none;
-}
+        .status-message {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
 
-button {
-    cursor: pointer;
-}
+        .status-success {
+            background: #ecfdf5;
+            color: #047857;
+        }
 
-.save-button {
-    border: none;
-    border-radius: 8px;
-    padding: 12px 20px;
-    font-weight: 600;
-}
+        .status-error {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
 
-.status-message {
-    padding: 12px 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    display: none;
-}
+        @media(max-width: 800px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
 
-.status-success {
-    background: #ecfdf5;
-    color: #047857;
-}
+            .vital-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
 
-.status-error {
-    background: #fef2f2;
-    color: #b91c1c;
-}
+        @media(max-width: 500px) {
+            .vital-grid {
+                grid-template-columns: 1fr;
+            }
 
-@media(max-width: 800px) {
+            .form-actions {
+                flex-direction: column;
+            }
 
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .vital-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-}
-
-@media(max-width: 500px) {
-
-    .vital-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .form-actions {
-        flex-direction: column;
-    }
-
-    .form-actions a,
-    .form-actions button {
-        width: 100%;
-        text-align: center;
-        box-sizing: border-box;
-    }
-
-}
-
-</style>
-
+            .form-actions a,
+            .form-actions button {
+                width: 100%;
+                text-align: center;
+                box-sizing: border-box;
+            }
+        }
+    </style>
 </head>
-
 
 <body>
 
-
 <div class="app">
 
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
 
-<!-- SIDEBAR -->
+        <h1>🐾 VetClinic</h1>
 
-<aside class="sidebar">
+        <nav>
 
-    <h1>🐾 VetClinic</h1>
+            <a href="index.html">
+                Dashboard
+            </a>
 
-    <nav>
+            <a href="patients.html">
+                Patients
+            </a>
 
-        <a href="index.html">
-            Dashboard
-        </a>
+            <a href="appointments.html">
+                Appointments
+            </a>
 
-        <a href="patients.html">
-            Patients
-        </a>
+            <a href="medical-records.html"
+               class="active">
+                Medical Records
+            </a>
 
-        <a href="appointments.html">
-            Appointments
-        </a>
+            <a href="medicines.html">
+                Medicines
+            </a>
 
-        <a href="medical-records.html"
-           class="active">
-            Medical Records
-        </a>
+            <a href="billing.html">
+                Billing
+            </a>
 
-        <a href="medicines.html">
-            Medicines
-        </a>
+            <a href="reports.html">
+                Reports
+            </a>
 
-        <a href="billing.html">
-            Billing
-        </a>
+        </nav>
 
-        <a href="reports.html">
-            Reports
-        </a>
-
-    </nav>
-
-</aside>
+    </aside>
 
 
-<!-- MAIN -->
+    <!-- MAIN -->
+    <main class="main-content">
 
-<main class="main-content">
+        <header>
 
+            <div>
 
-<header>
+                <h2 id="pageTitle">
+                    New Medical Record
+                </h2>
 
-    <div>
+                <p>
+                    Create or edit a patient's medical record.
+                </p>
 
-        <h2 id="pageTitle">
-            New Medical Record
-        </h2>
+            </div>
 
-        <p>
-            Create or edit a patient's medical record.
-        </p>
-
-    </div>
-
-
-    <a
-        href="medical-records.html"
-        class="cancel-button"
-    >
-        ← Back
-    </a>
-
-</header>
-
-
-<div class="record-form">
-
-
-<div
-    id="statusMessage"
-    class="status-message"
-></div>
-
-
-<!-- PATIENT -->
-
-<section class="form-section">
-
-    <h3>
-        Patient
-    </h3>
-
-
-    <div class="form-group">
-
-        <label>
-            Select Patient
-        </label>
-
-
-        <select
-            id="patientId"
-            required
-        >
-
-            <option value="">
-                Select patient
-            </option>
-
-        </select>
-
-    </div>
-
-
-    <div
-        id="patientInfo"
-        class="patient-box"
-        style="display:none; margin-top:15px;"
-    >
-
-        <h3 id="patientName">
-            -
-        </h3>
-
-        <p id="patientDetails">
-            -
-        </p>
-
-        <p id="patientOwner">
-            -
-        </p>
-
-    </div>
-
-</section>
-
-
-<!-- CONSULTATION -->
-
-<section class="form-section">
-
-    <h3>
-        Consultation
-    </h3>
-
-
-    <div class="form-grid">
-
-
-        <div class="form-group">
-
-            <label>
-                Visit Date
-            </label>
-
-            <input
-                type="datetime-local"
-                id="visitDate"
+            <a
+                href="medical-records.html"
+                class="cancel-button"
             >
+                ← Back
+            </a>
 
-        </div>
-
-
-        <div class="form-group">
-
-            <label>
-                Chief Complaint
-            </label>
-
-            <input
-                type="text"
-                id="chiefComplaint"
-                placeholder="Main complaint..."
-            >
-
-        </div>
+        </header>
 
 
-        <div class="form-group full">
+        <div class="record-form">
 
-            <label>
-                S — Subjective
-            </label>
-
-            <textarea
-                id="subjective"
-                placeholder="History, owner's complaint, appetite, drinking, vomiting, diarrhea, urination, defecation, etc."
-            ></textarea>
-
-        </div>
+            <div
+                id="statusMessage"
+                class="status-message"
+            ></div>
 
 
-    </div>
+            <!-- PATIENT -->
+            <section class="form-section">
 
-</section>
+                <h3>
+                    Patient
+                </h3>
+
+                <div class="form-group">
+
+                    <label>
+                        Select Patient
+                    </label>
+
+                    <select
+                        id="patientId"
+                        required
+                    >
+
+                        <option value="">
+                            Select patient
+                        </option>
+
+                    </select>
+
+                </div>
 
 
-<!-- OBJECTIVE -->
-
-<section class="form-section">
-
-    <h3>
-        O — Objective
-    </h3>
-
-
-    <div class="vital-grid">
-
-
-        <!-- TEMPERATURE -->
-
-        <div class="form-group">
-
-            <label>
-                Temperature
-            </label>
-
-            <div class="unit-wrapper">
-
-                <input
-                    type="number"
-                    id="temperature"
-                    step="0.1"
-                    min="30"
-                    max="45"
-                    placeholder="38.5"
+                <div
+                    id="patientInfo"
+                    class="patient-box"
+                    style="display:none;"
                 >
 
-                <span class="unit">
-                    °C
-                </span>
+                    <h3 id="patientName">
+                        -
+                    </h3>
+
+                    <p id="patientDetails">
+                        -
+                    </p>
+
+                    <p id="patientOwner">
+                        -
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- CONSULTATION -->
+            <section class="form-section">
+
+                <h3>
+                    Consultation
+                </h3>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Visit Date
+                        </label>
+
+                        <input
+                            type="datetime-local"
+                            id="visitDate"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Visit Type
+                        </label>
+
+                        <select id="visitType">
+
+                            <option value="consultation">
+                                Consultation
+                            </option>
+
+                            <option value="grooming">
+                                Grooming
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Chief Complaint
+                        </label>
+
+                        <input
+                            type="text"
+                            id="chiefComplaint"
+                            placeholder="Main complaint..."
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            S — Subjective
+                        </label>
+
+                        <textarea
+                            id="subjective"
+                            placeholder="History, owner's complaint, appetite, drinking, vomiting, diarrhea, urination, defecation, etc."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- OBJECTIVE -->
+            <section class="form-section">
+
+                <h3>
+                    O — Objective
+                </h3>
+
+                <div class="vital-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Temperature
+                        </label>
+
+                        <div class="unit-wrapper">
+
+                            <input
+                                type="number"
+                                id="temperature"
+                                step="0.1"
+                                min="30"
+                                max="45"
+                                placeholder="38.5"
+                            >
+
+                            <span class="unit">
+                                °C
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Heart Rate / Pulse
+                        </label>
+
+                        <div class="unit-wrapper">
+
+                            <input
+                                type="number"
+                                id="heartRate"
+                                min="0"
+                                placeholder="120"
+                            >
+
+                            <span class="unit">
+                                bpm
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Respiratory Rate
+                        </label>
+
+                        <div class="unit-wrapper">
+
+                            <input
+                                type="number"
+                                id="respiratoryRate"
+                                min="0"
+                                placeholder="30"
+                            >
+
+                            <span class="unit">
+                                /min
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Weight
+                        </label>
+
+                        <div class="unit-wrapper">
+
+                            <input
+                                type="number"
+                                id="weight"
+                                min="0"
+                                step="0.01"
+                                placeholder="4.50"
+                            >
+
+                            <span class="unit">
+                                kg
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            CRT
+                        </label>
+
+                        <div class="unit-wrapper">
+
+                            <input
+                                type="number"
+                                id="crt"
+                                min="0"
+                                step="0.1"
+                                placeholder="2"
+                            >
+
+                            <span class="unit">
+                                sec
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Mucous Membrane
+                        </label>
+
+                        <select id="mucousMembrane">
+
+                            <option value="">
+                                Select
+                            </option>
+
+                            <option value="Pink">
+                                Pink
+                            </option>
+
+                            <option value="Pale">
+                                Pale
+                            </option>
+
+                            <option value="Icteric">
+                                Icteric
+                            </option>
+
+                            <option value="Cyanotic">
+                                Cyanotic
+                            </option>
+
+                            <option value="Hyperemic">
+                                Hyperemic
+                            </option>
+
+                            <option value="Congested">
+                                Congested
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Hydration
+                        </label>
+
+                        <select id="hydration">
+
+                            <option value="">
+                                Select
+                            </option>
+
+                            <option value="Normal">
+                                Normal
+                            </option>
+
+                            <option value="Mild dehydration">
+                                Mild dehydration
+                            </option>
+
+                            <option value="Moderate dehydration">
+                                Moderate dehydration
+                            </option>
+
+                            <option value="Severe dehydration">
+                                Severe dehydration
+                            </option>
+
+                            <option value="Overhydrated">
+                                Overhydrated
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            BCS
+                        </label>
+
+                        <div class="unit-wrapper">
+
+                            <input
+                                type="number"
+                                id="bcs"
+                                min="1"
+                                max="9"
+                                step="1"
+                                placeholder="5"
+                            >
+
+                            <span class="unit">
+                                /9
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="form-group"
+                    style="margin-top:16px;"
+                >
+
+                    <label>
+                        Additional Findings
+                    </label>
+
+                    <textarea
+                        id="additionalFindings"
+                        placeholder="Physical examination findings..."
+                    ></textarea>
+
+                </div>
+
+            </section>
+
+
+            <!-- ASSESSMENT -->
+            <section class="form-section">
+
+                <h3>
+                    A — Assessment
+                </h3>
+
+                <div class="form-group">
+
+                    <label>
+                        Assessment / Diagnosis
+                    </label>
+
+                    <textarea
+                        id="assessment"
+                        placeholder="Differential diagnosis, working diagnosis, interpretation..."
+                    ></textarea>
+
+                </div>
+
+            </section>
+
+
+            <!-- PLAN -->
+            <section class="form-section">
+
+                <h3>
+                    P — Plan
+                </h3>
+
+                <div class="form-grid">
+
+                    <div class="form-group full">
+
+                        <label>
+                            Plan
+                        </label>
+
+                        <textarea
+                            id="plan"
+                            placeholder="Diagnostic plan, treatment plan, monitoring..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Diagnosis
+                        </label>
+
+                        <input
+                            type="text"
+                            id="diagnosis"
+                            placeholder="Final diagnosis"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Medication
+                        </label>
+
+                        <textarea
+                            id="medication"
+                            placeholder="Drug, dose, route, frequency..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Treatment
+                        </label>
+
+                        <textarea
+                            id="treatment"
+                            placeholder="Treatment performed..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Procedure
+                        </label>
+
+                        <textarea
+                            id="procedure"
+                            placeholder="Procedure performed..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Follow-up Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="followUpDate"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Notes
+                        </label>
+
+                        <textarea
+                            id="notes"
+                            placeholder="Additional notes..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ACTIONS -->
+            <div class="form-actions">
+
+                <a
+                    href="medical-records.html"
+                    class="cancel-button"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="button"
+                    class="save-button"
+                    id="saveButton"
+                >
+                    Save Medical Record
+                </button>
 
             </div>
 
         </div>
 
-
-        <!-- HEART RATE -->
-
-        <div class="form-group">
-
-            <label>
-                Heart Rate / Pulse
-            </label>
-
-            <div class="unit-wrapper">
-
-                <input
-                    type="number"
-                    id="heartRate"
-                    min="0"
-                    placeholder="120"
-                >
-
-                <span class="unit">
-                    bpm
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- RESPIRATORY RATE -->
-
-        <div class="form-group">
-
-            <label>
-                Respiratory Rate
-            </label>
-
-            <div class="unit-wrapper">
-
-                <input
-                    type="number"
-                    id="respiratoryRate"
-                    min="0"
-                    placeholder="30"
-                >
-
-                <span class="unit">
-                    /min
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- WEIGHT -->
-
-        <div class="form-group">
-
-            <label>
-                Weight
-            </label>
-
-            <div class="unit-wrapper">
-
-                <input
-                    type="number"
-                    id="weight"
-                    min="0"
-                    step="0.01"
-                    placeholder="4.50"
-                >
-
-                <span class="unit">
-                    kg
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- CRT -->
-
-        <div class="form-group">
-
-            <label>
-                CRT
-            </label>
-
-            <div class="unit-wrapper">
-
-                <input
-                    type="number"
-                    id="crt"
-                    min="0"
-                    step="0.1"
-                    placeholder="2"
-                >
-
-                <span class="unit">
-                    sec
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- MUCOUS MEMBRANE -->
-
-        <div class="form-group">
-
-            <label>
-                Mucous Membrane
-            </label>
-
-            <select id="mucousMembrane">
-
-                <option value="">
-                    Select
-                </option>
-
-                <option value="Pink">
-                    Pink
-                </option>
-
-                <option value="Pale">
-                    Pale
-                </option>
-
-                <option value="Icteric">
-                    Icteric
-                </option>
-
-                <option value="Cyanotic">
-                    Cyanotic
-                </option>
-
-                <option value="Hyperemic">
-                    Hyperemic
-                </option>
-
-                <option value="Congested">
-                    Congested
-                </option>
-
-                <option value="Other">
-                    Other
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <!-- HYDRATION -->
-
-        <div class="form-group">
-
-            <label>
-                Hydration
-            </label>
-
-            <select id="hydration">
-
-                <option value="">
-                    Select
-                </option>
-
-                <option value="Normal">
-                    Normal
-                </option>
-
-                <option value="Mild dehydration">
-                    Mild dehydration
-                </option>
-
-                <option value="Moderate dehydration">
-                    Moderate dehydration
-                </option>
-
-                <option value="Severe dehydration">
-                    Severe dehydration
-                </option>
-
-                <option value="Overhydrated">
-                    Overhydrated
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <!-- BCS -->
-
-        <div class="form-group">
-
-            <label>
-                BCS
-            </label>
-
-            <div class="unit-wrapper">
-
-                <input
-                    type="number"
-                    id="bcs"
-                    min="1"
-                    max="9"
-                    step="1"
-                    placeholder="5"
-                >
-
-                <span class="unit">
-                    /9
-                </span>
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-
-    <div
-        class="form-group"
-        style="margin-top:16px;"
-    >
-
-        <label>
-            Additional Findings
-        </label>
-
-        <textarea
-            id="additionalFindings"
-            placeholder="Physical examination findings..."
-        ></textarea>
-
-    </div>
-
-</section>
-
-
-<!-- ASSESSMENT -->
-
-<section class="form-section">
-
-    <h3>
-        A — Assessment
-    </h3>
-
-
-    <div class="form-group">
-
-        <label>
-            Assessment / Diagnosis
-        </label>
-
-        <textarea
-            id="assessment"
-            placeholder="Differential diagnosis, working diagnosis, interpretation..."
-        ></textarea>
-
-    </div>
-
-</section>
-
-
-<!-- PLAN -->
-
-<section class="form-section">
-
-    <h3>
-        P — Plan
-    </h3>
-
-
-    <div class="form-grid">
-
-
-        <div class="form-group full">
-
-            <label>
-                Plan
-            </label>
-
-            <textarea
-                id="plan"
-                placeholder="Diagnostic plan, treatment plan, monitoring..."
-            ></textarea>
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label>
-                Diagnosis
-            </label>
-
-            <input
-                type="text"
-                id="diagnosis"
-                placeholder="Final diagnosis"
-            >
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label>
-                Medication
-            </label>
-
-            <textarea
-                id="medication"
-                placeholder="Drug, dose, route, frequency..."
-            ></textarea>
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label>
-                Treatment
-            </label>
-
-            <textarea
-                id="treatment"
-                placeholder="Treatment performed..."
-            ></textarea>
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label>
-                Procedure
-            </label>
-
-            <textarea
-                id="procedure"
-                placeholder="Procedure performed..."
-            ></textarea>
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label>
-                Follow-up Date
-            </label>
-
-            <input
-                type="date"
-                id="followUpDate"
-            >
-
-        </div>
-
-
-        <div class="form-group full">
-
-            <label>
-                Notes
-            </label>
-
-            <textarea
-                id="notes"
-                placeholder="Additional notes..."
-            ></textarea>
-
-        </div>
-
-
-    </div>
-
-</section>
-
-
-<!-- ACTIONS -->
-
-<div class="form-actions">
-
-    <a
-        href="medical-records.html"
-        class="cancel-button"
-    >
-        Cancel
-    </a>
-
-
-    <button
-        type="button"
-        class="save-button"
-        id="saveButton"
-    >
-        Save Medical Record
-    </button>
-
-</div>
-
-
-</div>
-
-
-</main>
+    </main>
 
 </div>
 
 
 <!-- SUPABASE -->
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="clinic-context.js"></script>
@@ -846,69 +812,31 @@ button {
 
 <script>
 
-
-/* =====================================================
-   VARIABLES
-===================================================== */
-
-
 let currentClinic = null;
-
 let patients = [];
-
 let recordId = null;
 
 
-/* =====================================================
-   ELEMENTS
-===================================================== */
-
-
 const patientSelect =
-    document.getElementById(
-        "patientId"
-    );
-
+    document.getElementById("patientId");
 
 const patientInfo =
-    document.getElementById(
-        "patientInfo"
-    );
-
+    document.getElementById("patientInfo");
 
 const patientName =
-    document.getElementById(
-        "patientName"
-    );
-
+    document.getElementById("patientName");
 
 const patientDetails =
-    document.getElementById(
-        "patientDetails"
-    );
-
+    document.getElementById("patientDetails");
 
 const patientOwner =
-    document.getElementById(
-        "patientOwner"
-    );
-
+    document.getElementById("patientOwner");
 
 const statusMessage =
-    document.getElementById(
-        "statusMessage"
-    );
-
+    document.getElementById("statusMessage");
 
 const pageTitle =
-    document.getElementById(
-        "pageTitle"
-    );
-
-
-/* =====================================================
-   URL RECORD ID
-===================================================== */
+    document.getElementById("pageTitle");
 
 
 const params =
@@ -916,125 +844,118 @@ const params =
         window.location.search
     );
 
-
 recordId =
-    params.get(
-        "id"
-    );
+    params.get("id");
 
 
-/* =====================================================
-   SHOW MESSAGE
-===================================================== */
+function showMessage(message, type) {
 
-
-function showMessage(
-    message,
-    type
-) {
-
-    statusMessage.textContent =
-        message;
-
+    statusMessage.textContent = message;
 
     statusMessage.className =
         "status-message " +
         (
             type === "success"
-            ? "status-success"
-            : "status-error"
+                ? "status-success"
+                : "status-error"
         );
-
 
     statusMessage.style.display =
         "block";
 
-
-    window.scrollTo(
-        {
-            top: 0,
-            behavior: "smooth"
-        }
-    );
-
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 }
 
 
-/* =====================================================
-   ESCAPE
-===================================================== */
+function formatDateTimeLocal(value) {
 
+    const date =
+        new Date(value);
 
-function escapeHTML(
-    value
-) {
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return "";
+    }
 
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
+    const year =
+        date.getFullYear();
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(2, "0");
+
+    const hours =
+        String(
+            date.getHours()
+        ).padStart(2, "0");
+
+    const minutes =
+        String(
+            date.getMinutes()
+        ).padStart(2, "0");
+
+    return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day +
+        "T" +
+        hours +
+        ":" +
+        minutes
     );
-
 }
 
 
-/* =====================================================
+/* =========================
    LOAD PATIENTS
-===================================================== */
-
+========================= */
 
 async function loadPatients() {
-
 
     const {
         data,
         error
     } =
-    await supabaseClient
+        await supabaseClient
 
-        .from("patients")
+            .from("patients")
 
-        .select(`
-            id,
-            name,
-            species,
-            breed,
-            sex,
-            owner,
-            owner_name,
-            phone,
-            clinic_id
-        `)
+            .select(`
+                id,
+                name,
+                species,
+                breed,
+                sex,
+                owner,
+                phone,
+                clinic_id
+            `)
 
-        .eq(
-            "clinic_id",
-            currentClinic.clinicId
-        )
+            .eq(
+                "clinic_id",
+                currentClinic.clinicId
+            )
 
-        .order(
-            "name",
-            {
-                ascending: true
-            }
-        );
+            .order(
+                "name",
+                {
+                    ascending: true
+                }
+            );
 
 
     if (error) {
@@ -1044,7 +965,6 @@ async function loadPatients() {
             error
         );
 
-
         showMessage(
             "Failed to load patients: " +
             error.message,
@@ -1052,7 +972,6 @@ async function loadPatients() {
         );
 
         return;
-
     }
 
 
@@ -1061,11 +980,9 @@ async function loadPatients() {
 
 
     patientSelect.innerHTML = `
-
         <option value="">
             Select patient
         </option>
-
     `;
 
 
@@ -1077,23 +994,16 @@ async function loadPatients() {
                     "option"
                 );
 
-
             option.value =
                 patient.id;
 
-
             option.textContent =
-
                 patient.name +
-
                 " — " +
-
                 (
-                    patient.owner_name ||
                     patient.owner ||
                     "No owner"
                 );
-
 
             patientSelect.appendChild(
                 option
@@ -1101,20 +1011,16 @@ async function loadPatients() {
 
         }
     );
-
-
 }
 
 
-/* =====================================================
+/* =========================
    PATIENT CHANGE
-===================================================== */
-
+========================= */
 
 patientSelect.addEventListener(
     "change",
     function() {
-
 
         const patient =
             patients.find(
@@ -1130,7 +1036,6 @@ patientSelect.addEventListener(
                 "none";
 
             return;
-
         }
 
 
@@ -1143,37 +1048,29 @@ patientSelect.addEventListener(
 
 
         patientDetails.textContent =
-
             (
                 patient.species ||
                 "-"
-            )
-
-            +
+            ) +
 
             (
                 patient.breed
-                ? " • " +
-                  patient.breed
-                : ""
-            )
-
-            +
+                    ? " • " +
+                      patient.breed
+                    : ""
+            ) +
 
             (
                 patient.sex
-                ? " • " +
-                  patient.sex
-                : ""
+                    ? " • " +
+                      patient.sex
+                    : ""
             );
 
 
         patientOwner.textContent =
-
             "Owner: " +
-
             (
-                patient.owner_name ||
                 patient.owner ||
                 "-"
             );
@@ -1182,13 +1079,11 @@ patientSelect.addEventListener(
 );
 
 
-/* =====================================================
+/* =========================
    LOAD RECORD
-===================================================== */
-
+========================= */
 
 async function loadRecord() {
-
 
     if (!recordId) {
 
@@ -1196,7 +1091,6 @@ async function loadRecord() {
             "New Medical Record";
 
         return;
-
     }
 
 
@@ -1208,23 +1102,23 @@ async function loadRecord() {
         data: record,
         error
     } =
-    await supabaseClient
+        await supabaseClient
 
-        .from("medical_records")
+            .from("medical_records")
 
-        .select("*")
+            .select("*")
 
-        .eq(
-            "id",
-            recordId
-        )
+            .eq(
+                "id",
+                recordId
+            )
 
-        .eq(
-            "clinic_id",
-            currentClinic.clinicId
-        )
+            .eq(
+                "clinic_id",
+                currentClinic.clinicId
+            )
 
-        .maybeSingle();
+            .maybeSingle();
 
 
     if (error) {
@@ -1234,7 +1128,6 @@ async function loadRecord() {
             error
         );
 
-
         showMessage(
             "Failed to load record: " +
             error.message,
@@ -1242,7 +1135,6 @@ async function loadRecord() {
         );
 
         return;
-
     }
 
 
@@ -1254,7 +1146,6 @@ async function loadRecord() {
         );
 
         return;
-
     }
 
 
@@ -1263,10 +1154,25 @@ async function loadRecord() {
 
 
     patientSelect.dispatchEvent(
-        new Event(
-            "change"
-        )
+        new Event("change")
     );
+
+
+    document.getElementById(
+        "visitDate"
+    ).value =
+        record.visit_date
+            ? formatDateTimeLocal(
+                record.visit_date
+            )
+            : "";
+
+
+    document.getElementById(
+        "visitType"
+    ).value =
+        record.visit_type ||
+        "consultation";
 
 
     document.getElementById(
@@ -1401,64 +1307,33 @@ async function loadRecord() {
     ).value =
         record.notes ||
         "";
-
-
-    if (record.visit_date) {
-
-        document.getElementById(
-            "visitDate"
-        ).value =
-            formatDateTimeLocal(
-                record.visit_date
-            );
-
-    }
-
-
 }
 
 
-/* =====================================================
-   EXTRACT ADDITIONAL FINDINGS
-===================================================== */
-
+/* =========================
+   OBJECTIVE
+========================= */
 
 function extractAdditionalFindings(
     objective
 ) {
 
-
     if (!objective) {
-
         return "";
-
     }
 
-
     const text =
-        String(
-            objective
-        );
-
+        String(objective);
 
     const marker =
         "Additional Findings:";
 
-
     const index =
-        text.indexOf(
-            marker
-        );
+        text.indexOf(marker);
 
-
-    if (
-        index === -1
-    ) {
-
+    if (index === -1) {
         return "";
-
     }
-
 
     return text
         .substring(
@@ -1466,276 +1341,178 @@ function extractAdditionalFindings(
             marker.length
         )
         .trim();
-
 }
-
-
-/* =====================================================
-   FORMAT DATETIME
-===================================================== */
-
-
-function formatDateTimeLocal(
-    value
-) {
-
-
-    const date =
-        new Date(
-            value
-        );
-
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-
-        return "";
-
-    }
-
-
-    const year =
-        date.getFullYear();
-
-
-    const month =
-        String(
-            date.getMonth() + 1
-        )
-        .padStart(
-            2,
-            "0"
-        );
-
-
-    const day =
-        String(
-            date.getDate()
-        )
-        .padStart(
-            2,
-            "0"
-        );
-
-
-    const hours =
-        String(
-            date.getHours()
-        )
-        .padStart(
-            2,
-            "0"
-        );
-
-
-    const minutes =
-        String(
-            date.getMinutes()
-        )
-        .padStart(
-            2,
-            "0"
-        );
-
-
-    return (
-
-        year +
-        "-" +
-        month +
-        "-" +
-        day +
-        "T" +
-        hours +
-        ":" +
-        minutes
-
-    );
-
-}
-
-
-/* =====================================================
-   BUILD OBJECTIVE TEXT
-===================================================== */
 
 
 function buildObjective() {
-
 
     const temperature =
         document.getElementById(
             "temperature"
         ).value;
 
-
     const heartRate =
         document.getElementById(
             "heartRate"
         ).value;
-
 
     const respiratoryRate =
         document.getElementById(
             "respiratoryRate"
         ).value;
 
-
     const weight =
         document.getElementById(
             "weight"
         ).value;
-
 
     const crt =
         document.getElementById(
             "crt"
         ).value;
 
-
     const mucous =
         document.getElementById(
             "mucousMembrane"
         ).value;
-
 
     const hydration =
         document.getElementById(
             "hydration"
         ).value;
 
-
     const bcs =
         document.getElementById(
             "bcs"
         ).value;
 
-
     const additional =
         document.getElementById(
             "additionalFindings"
-        ).value
-        .trim();
+        ).value.trim();
 
 
     const lines = [];
 
 
     if (temperature) {
-
         lines.push(
             "Temperature: " +
             temperature +
             " °C"
         );
-
     }
 
 
     if (heartRate) {
-
         lines.push(
             "Heart Rate/Pulse: " +
             heartRate +
             " bpm"
         );
-
     }
 
 
     if (respiratoryRate) {
-
         lines.push(
             "Respiratory Rate: " +
             respiratoryRate +
             " /min"
         );
-
     }
 
 
     if (weight) {
-
         lines.push(
             "Weight: " +
             weight +
             " kg"
         );
-
     }
 
 
     if (crt) {
-
         lines.push(
             "CRT: " +
             crt +
             " sec"
         );
-
     }
 
 
     if (mucous) {
-
         lines.push(
             "Mucous Membrane: " +
             mucous
         );
-
     }
 
 
     if (hydration) {
-
         lines.push(
             "Hydration: " +
             hydration
         );
-
     }
 
 
     if (bcs) {
-
         lines.push(
             "BCS: " +
             bcs +
             "/9"
         );
-
     }
 
 
     if (additional) {
-
         lines.push(
             "Additional Findings: " +
             additional
         );
-
     }
 
 
-    return lines.join(
-        "\n"
-    );
-
+    return lines.join("\n");
 }
 
 
-/* =====================================================
-   SAVE
-===================================================== */
+/* =========================
+   NUMBER
+========================= */
 
+function getNumber(id) {
+
+    const value =
+        document.getElementById(
+            id
+        ).value;
+
+
+    if (
+        value === "" ||
+        value === null
+    ) {
+        return null;
+    }
+
+
+    const number =
+        Number(value);
+
+
+    return Number.isFinite(number)
+        ? number
+        : null;
+}
+
+
+/* =========================
+   SAVE
+========================= */
 
 document
-    .getElementById(
-        "saveButton"
-    )
+    .getElementById("saveButton")
     .addEventListener(
         "click",
         saveRecord
@@ -1743,7 +1520,6 @@ document
 
 
 async function saveRecord() {
-
 
     const patientId =
         patientSelect.value;
@@ -1757,7 +1533,6 @@ async function saveRecord() {
         );
 
         return;
-
     }
 
 
@@ -1776,26 +1551,30 @@ async function saveRecord() {
         visit_date:
             document.getElementById(
                 "visitDate"
-            ).value
-            || null,
+            ).value ||
+            null,
+
+        visit_type:
+            document.getElementById(
+                "visitType"
+            ).value ||
+            "consultation",
 
         chief_complaint:
             document.getElementById(
                 "chiefComplaint"
-            ).value
-            .trim()
-            || null,
+            ).value.trim() ||
+            null,
 
         subjective:
             document.getElementById(
                 "subjective"
-            ).value
-            .trim()
-            || null,
+            ).value.trim() ||
+            null,
 
         objective:
-            objective
-            || null,
+            objective ||
+            null,
 
         temperature:
             getNumber(
@@ -1825,14 +1604,14 @@ async function saveRecord() {
         mucous_membrane:
             document.getElementById(
                 "mucousMembrane"
-            ).value
-            || null,
+            ).value ||
+            null,
 
         hydration:
             document.getElementById(
                 "hydration"
-            ).value
-            || null,
+            ).value ||
+            null,
 
         bcs:
             getNumber(
@@ -1842,58 +1621,50 @@ async function saveRecord() {
         assessment:
             document.getElementById(
                 "assessment"
-            ).value
-            .trim()
-            || null,
+            ).value.trim() ||
+            null,
 
         plan:
             document.getElementById(
                 "plan"
-            ).value
-            .trim()
-            || null,
+            ).value.trim() ||
+            null,
 
         diagnosis:
             document.getElementById(
                 "diagnosis"
-            ).value
-            .trim()
-            || null,
+            ).value.trim() ||
+            null,
 
         medication:
             document.getElementById(
                 "medication"
-            ).value
-            .trim()
-            || null,
+            ).value.trim() ||
+            null,
 
         treatment:
             document.getElementById(
                 "treatment"
-            ).value
-            .trim()
-            || null,
+            ).value.trim() ||
+            null,
 
         procedure:
             document.getElementById(
                 "procedure"
-            ).value
-            .trim()
-            || null,
+            ).value.trim() ||
+            null,
 
         follow_up_date:
             document.getElementById(
                 "followUpDate"
-            ).value
-            || null,
+            ).value ||
+            null,
 
         notes:
             document.getElementById(
                 "notes"
-            ).value
-            .trim()
-            || null
-
+            ).value.trim() ||
+            null
     };
 
 
@@ -1906,7 +1677,6 @@ async function saveRecord() {
     saveButton.disabled =
         true;
 
-
     saveButton.textContent =
         "Saving...";
 
@@ -1914,8 +1684,9 @@ async function saveRecord() {
     let error = null;
 
 
-    if (recordId) {
+    /* EDIT */
 
+    if (recordId) {
 
         const response =
             await supabaseClient
@@ -1942,9 +1713,12 @@ async function saveRecord() {
         error =
             response.error;
 
+    }
 
-    } else {
 
+    /* NEW */
+
+    else {
 
         const response =
             await supabaseClient
@@ -1960,7 +1734,6 @@ async function saveRecord() {
 
         error =
             response.error;
-
     }
 
 
@@ -1970,8 +1743,8 @@ async function saveRecord() {
 
     saveButton.textContent =
         recordId
-        ? "Update Medical Record"
-        : "Save Medical Record";
+            ? "Update Medical Record"
+            : "Save Medical Record";
 
 
     if (error) {
@@ -1981,7 +1754,6 @@ async function saveRecord() {
             error
         );
 
-
         showMessage(
             "Failed to save medical record: " +
             error.message,
@@ -1989,14 +1761,13 @@ async function saveRecord() {
         );
 
         return;
-
     }
 
 
     showMessage(
         recordId
-        ? "Medical record updated successfully."
-        : "Medical record saved successfully.",
+            ? "Medical record updated successfully."
+            : "Medical record saved successfully.",
         "success"
     );
 
@@ -2010,58 +1781,14 @@ async function saveRecord() {
         },
         800
     );
-
 }
 
 
-/* =====================================================
-   NUMBER HELPER
-===================================================== */
-
-
-function getNumber(
-    id
-) {
-
-
-    const value =
-        document.getElementById(
-            id
-        ).value;
-
-
-    if (
-        value === "" ||
-        value === null
-    ) {
-
-        return null;
-
-    }
-
-
-    const number =
-        Number(
-            value
-        );
-
-
-    return Number.isFinite(
-        number
-    )
-    ? number
-    : null;
-
-}
-
-
-/* =====================================================
+/* =========================
    INIT
-===================================================== */
-
+========================= */
 
 async function init() {
-
 
     currentClinic =
         await getCurrentClinic();
@@ -2075,25 +1802,18 @@ async function init() {
         );
 
         return;
-
     }
 
 
     await loadPatients();
 
-
     await loadRecord();
-
-
 }
 
 
 init();
 
-
 </script>
 
-
 </body>
-
 </html>
