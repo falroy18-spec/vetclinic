@@ -28,198 +28,317 @@
 
         .patient-select,
         .visit-type-select {
+
             width: 100%;
             padding: 12px;
+
             border: 1px solid #d1d5db;
             border-radius: 8px;
+
             background: white;
+
             font-size: 14px;
+
         }
 
 
         .patient-card {
+
             background: white;
+
             border: 1px solid #e5e7eb;
+
             border-radius: 12px;
+
             padding: 20px;
+
             margin-bottom: 15px;
+
         }
 
 
         .patient-header {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: flex-start;
+
             gap: 15px;
+
         }
 
 
         .patient-name {
+
             font-size: 18px;
+
             font-weight: 700;
+
             margin-bottom: 5px;
+
         }
 
 
         .patient-info {
+
             color: #6b7280;
+
             font-size: 14px;
+
             line-height: 1.6;
+
         }
 
 
         .record-card {
+
             border-top: 1px solid #e5e7eb;
+
             margin-top: 18px;
+
             padding-top: 18px;
+
         }
 
 
         .record-date {
+
             font-weight: 700;
+
             margin-bottom: 12px;
+
         }
 
 
         .soap-section {
+
             margin-bottom: 14px;
+
         }
 
 
         .soap-title {
+
             font-weight: 700;
+
             margin-bottom: 5px;
+
         }
 
 
         .soap-text {
+
             white-space: pre-wrap;
+
             color: #4b5563;
+
             line-height: 1.6;
+
         }
 
 
         .empty-message {
+
             text-align: center;
+
             padding: 40px;
+
             color: #6b7280;
+
         }
 
 
         .new-record-button {
+
             display: inline-block;
+
             background: #5146e5;
+
             color: white;
+
             padding: 11px 16px;
+
             border-radius: 8px;
+
             text-decoration: none;
+
             font-weight: 600;
+
         }
 
 
         .delete-button {
+
             border: none;
+
             background: #dc2626;
+
             color: white;
+
             padding: 8px 12px;
+
             border-radius: 7px;
+
             cursor: pointer;
+
             margin-left: 5px;
+
         }
 
 
         .view-button {
+
             display: inline-block;
+
             background: #5146e5;
+
             color: white;
+
             padding: 8px 12px;
+
             border-radius: 7px;
+
             text-decoration: none;
+
             font-size: 13px;
+
             font-weight: 600;
+
         }
 
 
         .status-message {
+
             margin-top: 10px;
+
             color: #6b7280;
+
             font-size: 14px;
+
         }
 
 
+        /* VISIT TYPE BADGE */
+
         .visit-type-badge {
+
             display: inline-block;
+
             margin-left: 8px;
+
             padding: 4px 9px;
+
             border-radius: 999px;
+
             font-size: 12px;
+
             font-weight: 700;
+
             vertical-align: middle;
+
         }
 
 
         .visit-type-consultation {
+
             background: #eef2ff;
+
             color: #4338ca;
+
         }
 
 
         .visit-type-grooming {
+
             background: #ecfdf5;
+
             color: #047857;
+
         }
 
 
         .visit-type-unknown {
+
             background: #f3f4f6;
+
             color: #6b7280;
+
         }
 
 
+        /* SUMMARY */
+
         .summary-grid {
+
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
             gap: 12px;
+
             margin-bottom: 20px;
+
         }
 
 
         .summary-card {
+
             background: white;
+
             border: 1px solid #e5e7eb;
+
             border-radius: 10px;
+
             padding: 16px;
+
         }
 
 
         .summary-label {
+
             color: #6b7280;
+
             font-size: 13px;
+
             margin-bottom: 6px;
+
         }
 
 
         .summary-value {
+
             font-size: 24px;
+
             font-weight: 700;
+
             color: #252d3d;
+
         }
 
 
         @media (max-width: 700px) {
 
             .search-row {
+
                 grid-template-columns: 1fr;
+
             }
 
 
             .summary-grid {
+
                 grid-template-columns: 1fr;
+
             }
 
 
             .patient-header {
+
                 flex-direction: column;
+
             }
 
         }
@@ -227,6 +346,7 @@
     </style>
 
 </head>
+
 
 
 <body>
@@ -502,42 +622,17 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
-<!-- CLINIC CONTEXT -->
+<!--
+    PENTING:
+    Koneksi Supabase tetap berasal dari
+    clinic-context.js seperti sistem lama.
+-->
 
 <script src="clinic-context.js?v=72"></script>
 
 
 
 <script>
-
-
-/* =====================================================
-   SUPABASE
-===================================================== */
-
-
-const SUPABASE_URL =
-    "https://zltbjbbofvvndxirlipf.supabase.co";
-
-
-const SUPABASE_KEY =
-    "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
-
-
-const supabaseClient =
-    supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY,
-        {
-            auth: {
-                persistSession: true,
-                autoRefreshToken: true,
-                detectSessionInUrl: true,
-                storage: window.localStorage
-            }
-        }
-    );
-
 
 
 /* =====================================================
@@ -613,11 +708,15 @@ async function init() {
 
     await loadPatients();
 
+
     await loadMedicalRecords();
+
 
     setupSearch();
 
+
     updateSummary();
+
 
     renderMedicalHistory();
 
@@ -631,6 +730,12 @@ async function init() {
 
 
 async function getCurrentClinic() {
+
+
+    /*
+        SUPABASE CLIENT DIAMBIL
+        DARI clinic-context.js
+    */
 
 
     const {
@@ -755,6 +860,11 @@ async function getCurrentClinic() {
 async function loadPatients() {
 
 
+    console.log(
+        "Loading patients..."
+    );
+
+
     const {
         data,
         error
@@ -790,6 +900,13 @@ async function loadPatients() {
         );
 
 
+        document.getElementById(
+            "recordCount"
+        ).textContent =
+            "Failed to load patients: " +
+            error.message;
+
+
         return;
 
     }
@@ -797,6 +914,12 @@ async function loadPatients() {
 
     patients =
         data || [];
+
+
+    console.log(
+        "Patients loaded:",
+        patients
+    );
 
 
     renderPatientFilter();
@@ -856,7 +979,6 @@ function renderPatientFilter() {
                 option
             );
 
-
         }
     );
 
@@ -870,6 +992,11 @@ function renderPatientFilter() {
 
 
 async function loadMedicalRecords() {
+
+
+    console.log(
+        "Loading medical records..."
+    );
 
 
     const {
@@ -903,7 +1030,8 @@ async function loadMedicalRecords() {
         document.getElementById(
             "recordCount"
         ).textContent =
-            "Failed to load medical records.";
+            "Failed to load medical records: " +
+            error.message;
 
 
         medicalRecords = [];
@@ -928,7 +1056,7 @@ async function loadMedicalRecords() {
 
 
 /* =====================================================
-   SEARCH
+   SEARCH / FILTER
 ===================================================== */
 
 
@@ -966,7 +1094,6 @@ function setupSearch() {
 
             renderMedicalHistory();
 
-
         }
     );
 
@@ -982,7 +1109,6 @@ function setupSearch() {
 
             renderMedicalHistory();
 
-
         }
     );
 
@@ -997,7 +1123,6 @@ function setupSearch() {
 
 
             renderMedicalHistory();
-
 
         }
     );
@@ -1027,7 +1152,6 @@ function getPatientById(
                 patientId
             );
 
-
         }
     );
 
@@ -1036,7 +1160,7 @@ function getPatientById(
 
 
 /* =====================================================
-   UPDATE SUMMARY
+   SUMMARY
 ===================================================== */
 
 
@@ -1051,6 +1175,7 @@ function updateSummary() {
         medicalRecords.filter(
             function(record) {
 
+
                 return (
                     record.visit_type ===
                     "consultation"
@@ -1063,6 +1188,7 @@ function updateSummary() {
     const grooming =
         medicalRecords.filter(
             function(record) {
+
 
                 return (
                     record.visit_type ===
@@ -1108,7 +1234,16 @@ function renderMedicalHistory() {
         );
 
 
-    let records =
+    /*
+        FILTER RECORDS
+
+        PENTING:
+        record.patient_id tetap dicocokkan
+        dengan patients.id
+    */
+
+
+    const records =
         medicalRecords.filter(
             function(record) {
 
@@ -1118,6 +1253,11 @@ function renderMedicalHistory() {
                         record.patient_id
                     );
 
+
+                /*
+                    Jangan tampilkan record
+                    jika pasiennya tidak ditemukan.
+                */
 
                 if (!patient) {
 
@@ -1226,7 +1366,7 @@ function renderMedicalHistory() {
     ).textContent =
 
         records.length +
-        " visit" +
+        " medical record" +
         (
             records.length === 1
                 ? ""
@@ -1255,7 +1395,14 @@ function renderMedicalHistory() {
 
 
 
-    /* GROUP BY PATIENT */
+    /*
+        GROUP BY PATIENT
+
+        Ini memastikan semua record
+        milik pasien tetap berada
+        di bawah pasien yang benar.
+    */
+
 
     const grouped = {};
 
@@ -1300,7 +1447,6 @@ function renderMedicalHistory() {
             ].records.push(
                 record
             );
-
 
         }
     );
@@ -1349,13 +1495,16 @@ function renderMedicalHistory() {
                         "visit-type-unknown";
 
 
+
                     if (
                         record.visit_type ===
                         "consultation"
                     ) {
 
+
                         visitTypeLabel =
                             "Consultation";
+
 
                         visitTypeClass =
                             "visit-type-consultation";
@@ -1363,13 +1512,16 @@ function renderMedicalHistory() {
                     }
 
 
+
                     if (
                         record.visit_type ===
                         "grooming"
                     ) {
 
+
                         visitTypeLabel =
                             "Grooming";
+
 
                         visitTypeClass =
                             "visit-type-grooming";
@@ -1411,10 +1563,11 @@ function renderMedicalHistory() {
                                             "
                                         >
 
-                                            ${visitTypeLabel}
+                                            ${
+                                                visitTypeLabel
+                                            }
 
                                         </span>
-
 
                                     </div>
 
@@ -1471,6 +1624,7 @@ function renderMedicalHistory() {
                                                 Chief Complaint
                                             </div>
 
+
                                             <div
                                                 class="soap-text"
                                             >
@@ -1500,6 +1654,7 @@ function renderMedicalHistory() {
                                             >
                                                 Subjective
                                             </div>
+
 
                                             <div
                                                 class="soap-text"
@@ -1531,6 +1686,7 @@ function renderMedicalHistory() {
                                                 Objective
                                             </div>
 
+
                                             <div
                                                 class="soap-text"
                                             >
@@ -1560,6 +1716,7 @@ function renderMedicalHistory() {
                                             >
                                                 Assessment
                                             </div>
+
 
                                             <div
                                                 class="soap-text"
@@ -1591,6 +1748,7 @@ function renderMedicalHistory() {
                                                 Plan
                                             </div>
 
+
                                             <div
                                                 class="soap-text"
                                             >
@@ -1620,6 +1778,7 @@ function renderMedicalHistory() {
                                             >
                                                 Diagnosis
                                             </div>
+
 
                                             <div
                                                 class="soap-text"
@@ -1651,6 +1810,7 @@ function renderMedicalHistory() {
                                                 Treatment
                                             </div>
 
+
                                             <div
                                                 class="soap-text"
                                             >
@@ -1680,6 +1840,7 @@ function renderMedicalHistory() {
                                             >
                                                 Medication
                                             </div>
+
 
                                             <div
                                                 class="soap-text"
@@ -1711,6 +1872,7 @@ function renderMedicalHistory() {
                                                 Procedure
                                             </div>
 
+
                                             <div
                                                 class="soap-text"
                                             >
@@ -1741,6 +1903,7 @@ function renderMedicalHistory() {
                                                 Notes
                                             </div>
 
+
                                             <div
                                                 class="soap-text"
                                             >
@@ -1761,14 +1924,12 @@ function renderMedicalHistory() {
 
                     `;
 
-
                 }
             );
 
 
 
             patientCard.innerHTML = `
-
 
                 <div
                     class="patient-header"
@@ -1794,15 +1955,19 @@ function renderMedicalHistory() {
                         >
 
                             ${
-                                patient.species ||
-                                ""
+                                escapeHTML(
+                                    patient.species ||
+                                    ""
+                                )
                             }
 
 
                             ${
                                 patient.breed
                                     ? " • " +
-                                      patient.breed
+                                      escapeHTML(
+                                          patient.breed
+                                      )
                                     : ""
                             }
 
@@ -1810,7 +1975,9 @@ function renderMedicalHistory() {
                             ${
                                 patient.sex
                                     ? " • " +
-                                      patient.sex
+                                      escapeHTML(
+                                          patient.sex
+                                      )
                                     : ""
                             }
 
@@ -1836,8 +2003,14 @@ function renderMedicalHistory() {
                 </div>
 
 
-                ${recordsHTML}
-
+                ${
+                    recordsHTML ||
+                    `
+                    <div class="empty-message">
+                        No records for this patient.
+                    </div>
+                    `
+                }
 
             `;
 
@@ -1845,7 +2018,6 @@ function renderMedicalHistory() {
             container.appendChild(
                 patientCard
             );
-
 
         }
     );
@@ -1905,7 +2077,8 @@ async function deleteRecord(
 
 
         alert(
-            "Failed to delete medical record."
+            "Failed to delete medical record:\n\n" +
+            error.message
         );
 
 
