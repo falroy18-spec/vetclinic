@@ -2,21 +2,32 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Medical Records - VetClinic</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
     <style>
+
         .search-row {
             display: grid;
-            grid-template-columns: 1fr 180px;
+            grid-template-columns: 1fr 180px 180px;
             gap: 10px;
         }
 
-        .patient-select {
+
+        .patient-select,
+        .visit-type-select {
             width: 100%;
             padding: 12px;
             border: 1px solid #d1d5db;
@@ -24,6 +35,7 @@
             background: white;
             font-size: 14px;
         }
+
 
         .patient-card {
             background: white;
@@ -33,6 +45,7 @@
             margin-bottom: 15px;
         }
 
+
         .patient-header {
             display: flex;
             justify-content: space-between;
@@ -40,11 +53,13 @@
             gap: 15px;
         }
 
+
         .patient-name {
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 5px;
         }
+
 
         .patient-info {
             color: #6b7280;
@@ -52,25 +67,30 @@
             line-height: 1.6;
         }
 
+
         .record-card {
             border-top: 1px solid #e5e7eb;
             margin-top: 18px;
             padding-top: 18px;
         }
 
+
         .record-date {
             font-weight: 700;
             margin-bottom: 12px;
         }
 
+
         .soap-section {
             margin-bottom: 14px;
         }
+
 
         .soap-title {
             font-weight: 700;
             margin-bottom: 5px;
         }
+
 
         .soap-text {
             white-space: pre-wrap;
@@ -78,11 +98,13 @@
             line-height: 1.6;
         }
 
+
         .empty-message {
             text-align: center;
             padding: 40px;
             color: #6b7280;
         }
+
 
         .new-record-button {
             display: inline-block;
@@ -94,6 +116,7 @@
             font-weight: 600;
         }
 
+
         .delete-button {
             border: none;
             background: #dc2626;
@@ -101,7 +124,9 @@
             padding: 8px 12px;
             border-radius: 7px;
             cursor: pointer;
+            margin-left: 5px;
         }
+
 
         .view-button {
             display: inline-block;
@@ -114,83 +139,183 @@
             font-weight: 600;
         }
 
+
         .status-message {
             margin-top: 10px;
             color: #6b7280;
             font-size: 14px;
         }
 
+
+        .visit-type-badge {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 4px 9px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            vertical-align: middle;
+        }
+
+
+        .visit-type-consultation {
+            background: #eef2ff;
+            color: #4338ca;
+        }
+
+
+        .visit-type-grooming {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+
+        .visit-type-unknown {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+
+        .summary-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+
+        .summary-label {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+
+        .summary-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #252d3d;
+        }
+
+
         @media (max-width: 700px) {
+
             .search-row {
                 grid-template-columns: 1fr;
             }
 
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+
             .patient-header {
                 flex-direction: column;
             }
+
         }
+
     </style>
+
 </head>
 
 
 <body>
 
+
 <div class="app">
+
+
+    <!-- SIDEBAR -->
 
     <aside class="sidebar">
 
-        <h1>🐾 VetClinic</h1>
+
+        <h1>
+            🐾 VetClinic
+        </h1>
+
 
         <nav>
+
 
             <a href="index.html">
                 Dashboard
             </a>
 
+
             <a href="patients.html">
                 Patients
             </a>
+
 
             <a href="appointments.html">
                 Appointments
             </a>
 
-            <a href="medical-records.html" class="active">
+
+            <a
+                href="medical-records.html"
+                class="active"
+            >
                 Medical Records
             </a>
+
 
             <a href="medicines.html">
                 Medicines
             </a>
 
+
             <a href="billing.html">
                 Billing
             </a>
+
 
             <a href="reports.html">
                 Reports
             </a>
 
+
         </nav>
+
 
     </aside>
 
 
+
+    <!-- MAIN -->
+
     <main class="main-content">
+
 
         <header>
 
+
             <div>
+
 
                 <h2>
                     Medical Records
                 </h2>
 
+
                 <p>
-                    Manage patient consultation history.
+                    Manage patient consultation and grooming history.
                 </p>
 
+
             </div>
+
 
             <a
                 href="add-record.html"
@@ -199,18 +324,91 @@
                 + New Record
             </a>
 
+
         </header>
+
+
+
+        <!-- SUMMARY -->
+
+        <section class="summary-grid">
+
+
+            <div class="summary-card">
+
+
+                <div class="summary-label">
+                    Total Visits
+                </div>
+
+
+                <div
+                    class="summary-value"
+                    id="totalCount"
+                >
+                    0
+                </div>
+
+
+            </div>
+
+
+
+            <div class="summary-card">
+
+
+                <div class="summary-label">
+                    🩺 Consultation
+                </div>
+
+
+                <div
+                    class="summary-value"
+                    id="consultationCount"
+                >
+                    0
+                </div>
+
+
+            </div>
+
+
+
+            <div class="summary-card">
+
+
+                <div class="summary-label">
+                    ✂️ Grooming
+                </div>
+
+
+                <div
+                    class="summary-value"
+                    id="groomingCount"
+                >
+                    0
+                </div>
+
+
+            </div>
+
+
+        </section>
+
 
 
         <!-- SEARCH -->
 
         <section class="appointments">
 
+
             <h3>
                 Search Medical Records
             </h3>
 
+
             <div class="search-row">
+
 
                 <input
                     type="text"
@@ -218,16 +416,43 @@
                     placeholder="Search patient, owner, or diagnosis..."
                 >
 
+
                 <select
                     id="patientFilter"
                     class="patient-select"
                 >
+
                     <option value="">
                         All Patients
                     </option>
+
                 </select>
 
+
+                <select
+                    id="visitTypeFilter"
+                    class="visit-type-select"
+                >
+
+                    <option value="">
+                        All Visit Types
+                    </option>
+
+
+                    <option value="consultation">
+                        🩺 Consultation
+                    </option>
+
+
+                    <option value="grooming">
+                        ✂️ Grooming
+                    </option>
+
+                </select>
+
+
             </div>
+
 
             <div
                 id="recordCount"
@@ -236,42 +461,89 @@
                 Loading records...
             </div>
 
+
         </section>
+
 
 
         <!-- MEDICAL HISTORY -->
 
         <section class="appointments">
 
+
             <h3>
                 Medical History
             </h3>
 
+
             <div id="medicalHistory">
+
 
                 <div class="empty-message">
                     Loading medical records...
                 </div>
 
+
             </div>
+
 
         </section>
 
+
     </main>
 
+
 </div>
+
 
 
 <!-- SUPABASE -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <!-- CLINIC CONTEXT -->
 
 <script src="clinic-context.js?v=72"></script>
 
 
+
 <script>
+
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
+
+const SUPABASE_URL =
+    "https://zltbjbbofvvndxirlipf.supabase.co";
+
+
+const SUPABASE_KEY =
+    "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
+
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+        {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true,
+                storage: window.localStorage
+            }
+        }
+    );
+
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
 
 let currentClinic = null;
 
@@ -283,12 +555,17 @@ let searchText = "";
 
 let selectedPatientId = "";
 
+let selectedVisitType = "";
+
+
 
 /* =====================================================
    INIT
 ===================================================== */
 
+
 async function init() {
+
 
     console.log(
         "Medical Records: starting..."
@@ -301,21 +578,30 @@ async function init() {
 
     if (!currentClinic) {
 
+
         document.getElementById(
             "recordCount"
         ).textContent =
             "Unable to load clinic information. Please make sure you are logged in.";
 
+
         document.getElementById(
             "medicalHistory"
         ).innerHTML = `
+
             <div class="empty-message">
+
                 Unable to load clinic information.<br>
+
                 Please make sure you are logged in.
+
             </div>
+
         `;
 
+
         return;
+
     }
 
 
@@ -331,61 +617,181 @@ async function init() {
 
     setupSearch();
 
+    updateSummary();
+
     renderMedicalHistory();
 
 }
 
 
+
 /* =====================================================
-   LOAD PATIENTS
+   GET CURRENT CLINIC
 ===================================================== */
 
-async function loadPatients() {
 
-    console.log(
-        "Loading patients..."
-    );
+async function getCurrentClinic() {
 
 
     const {
         data,
         error
     } =
-    await supabaseClient
-        .from("patients")
-        .select(`
-            id,
-            name,
-            species,
-            breed,
-            sex,
-            owner
-        `)
-        .eq(
-            "clinic_id",
-            currentClinic.clinicId
-        )
-        .order(
-            "name",
-            {
-                ascending: true
-            }
-        );
+        await supabaseClient
+            .auth
+            .getSession();
 
 
     if (error) {
+
+
+        console.error(
+            "Session error:",
+            error
+        );
+
+
+        return null;
+
+    }
+
+
+    if (!data?.session) {
+
+
+        window.location.href =
+            "login.html";
+
+
+        return null;
+
+    }
+
+
+    const userId =
+        data.session.user.id;
+
+
+    const {
+        data: membership,
+        error: membershipError
+    } =
+        await supabaseClient
+            .from("clinic_members")
+            .select(`
+                clinic_id,
+                role,
+                clinics (
+                    id,
+                    name
+                )
+            `)
+            .eq(
+                "user_id",
+                userId
+            )
+            .maybeSingle();
+
+
+    if (membershipError) {
+
+
+        console.error(
+            "Clinic lookup error:",
+            membershipError
+        );
+
+
+        return null;
+
+    }
+
+
+    if (
+        !membership ||
+        !membership.clinics
+    ) {
+
+
+        console.error(
+            "User is not connected to a clinic."
+        );
+
+
+        return null;
+
+    }
+
+
+    return {
+
+
+        userId:
+            userId,
+
+
+        clinicId:
+            membership.clinic_id,
+
+
+        clinicName:
+            membership.clinics.name,
+
+
+        role:
+            membership.role
+
+    };
+
+}
+
+
+
+/* =====================================================
+   LOAD PATIENTS
+===================================================== */
+
+
+async function loadPatients() {
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("patients")
+            .select(`
+                id,
+                name,
+                species,
+                breed,
+                sex,
+                owner
+            `)
+            .eq(
+                "clinic_id",
+                currentClinic.clinicId
+            )
+            .order(
+                "name",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (error) {
+
 
         console.error(
             "Patients error:",
             error
         );
 
-        document.getElementById(
-            "recordCount"
-        ).textContent =
-            "Failed to load patients.";
 
         return;
+
     }
 
 
@@ -393,22 +799,19 @@ async function loadPatients() {
         data || [];
 
 
-    console.log(
-        "Patients loaded:",
-        patients
-    );
-
-
     renderPatientFilter();
 
 }
+
 
 
 /* =====================================================
    PATIENT FILTER
 ===================================================== */
 
+
 function renderPatientFilter() {
+
 
     const select =
         document.getElementById(
@@ -417,22 +820,27 @@ function renderPatientFilter() {
 
 
     select.innerHTML = `
+
         <option value="">
             All Patients
         </option>
+
     `;
 
 
     patients.forEach(
         function(patient) {
 
+
             const option =
                 document.createElement(
                     "option"
                 );
 
+
             option.value =
                 patient.id;
+
 
             option.textContent =
                 patient.name +
@@ -443,9 +851,11 @@ function renderPatientFilter() {
                         : ""
                 );
 
+
             select.appendChild(
                 option
             );
+
 
         }
     );
@@ -453,51 +863,54 @@ function renderPatientFilter() {
 }
 
 
+
 /* =====================================================
    LOAD MEDICAL RECORDS
 ===================================================== */
 
-async function loadMedicalRecords() {
 
-    console.log(
-        "Loading medical records..."
-    );
+async function loadMedicalRecords() {
 
 
     const {
         data,
         error
     } =
-    await supabaseClient
-        .from("medical_records")
-        .select("*")
-        .eq(
-            "clinic_id",
-            currentClinic.clinicId
-        )
-        .order(
-            "visit_date",
-            {
-                ascending: false
-            }
-        );
+        await supabaseClient
+            .from("medical_records")
+            .select("*")
+            .eq(
+                "clinic_id",
+                currentClinic.clinicId
+            )
+            .order(
+                "visit_date",
+                {
+                    ascending: false
+                }
+            );
 
 
     if (error) {
+
 
         console.error(
             "Medical records error:",
             error
         );
 
+
         document.getElementById(
             "recordCount"
         ).textContent =
             "Failed to load medical records.";
 
+
         medicalRecords = [];
 
+
         return;
+
     }
 
 
@@ -513,16 +926,20 @@ async function loadMedicalRecords() {
 }
 
 
+
 /* =====================================================
    SEARCH
 ===================================================== */
 
+
 function setupSearch() {
+
 
     const searchInput =
         document.getElementById(
             "searchInput"
         );
+
 
     const patientFilter =
         document.getElementById(
@@ -530,16 +947,25 @@ function setupSearch() {
         );
 
 
+    const visitTypeFilter =
+        document.getElementById(
+            "visitTypeFilter"
+        );
+
+
     searchInput.addEventListener(
         "input",
         function() {
+
 
             searchText =
                 this.value
                     .trim()
                     .toLowerCase();
 
+
             renderMedicalHistory();
+
 
         }
     );
@@ -549,33 +975,58 @@ function setupSearch() {
         "change",
         function() {
 
+
             selectedPatientId =
                 this.value;
 
+
             renderMedicalHistory();
+
+
+        }
+    );
+
+
+    visitTypeFilter.addEventListener(
+        "change",
+        function() {
+
+
+            selectedVisitType =
+                this.value;
+
+
+            renderMedicalHistory();
+
 
         }
     );
 
 }
+
 
 
 /* =====================================================
    FIND PATIENT
 ===================================================== */
 
+
 function getPatientById(
     patientId
 ) {
 
+
     return patients.find(
         function(patient) {
 
+
             return String(
                 patient.id
-            ) === String(
+            ) ===
+            String(
                 patientId
             );
+
 
         }
     );
@@ -583,11 +1034,73 @@ function getPatientById(
 }
 
 
+
+/* =====================================================
+   UPDATE SUMMARY
+===================================================== */
+
+
+function updateSummary() {
+
+
+    const total =
+        medicalRecords.length;
+
+
+    const consultation =
+        medicalRecords.filter(
+            function(record) {
+
+                return (
+                    record.visit_type ===
+                    "consultation"
+                );
+
+            }
+        ).length;
+
+
+    const grooming =
+        medicalRecords.filter(
+            function(record) {
+
+                return (
+                    record.visit_type ===
+                    "grooming"
+                );
+
+            }
+        ).length;
+
+
+    document.getElementById(
+        "totalCount"
+    ).textContent =
+        total;
+
+
+    document.getElementById(
+        "consultationCount"
+    ).textContent =
+        consultation;
+
+
+    document.getElementById(
+        "groomingCount"
+    ).textContent =
+        grooming;
+
+}
+
+
+
 /* =====================================================
    RENDER MEDICAL HISTORY
 ===================================================== */
 
+
 function renderMedicalHistory() {
+
 
     const container =
         document.getElementById(
@@ -598,6 +1111,7 @@ function renderMedicalHistory() {
     let records =
         medicalRecords.filter(
             function(record) {
+
 
                 const patient =
                     getPatientById(
@@ -612,13 +1126,15 @@ function renderMedicalHistory() {
                 }
 
 
+
                 /* PATIENT FILTER */
 
                 if (
                     selectedPatientId &&
                     String(
                         record.patient_id
-                    ) !== String(
+                    ) !==
+                    String(
                         selectedPatientId
                     )
                 ) {
@@ -626,6 +1142,21 @@ function renderMedicalHistory() {
                     return false;
 
                 }
+
+
+
+                /* VISIT TYPE FILTER */
+
+                if (
+                    selectedVisitType &&
+                    record.visit_type !==
+                    selectedVisitType
+                ) {
+
+                    return false;
+
+                }
+
 
 
                 /* SEARCH */
@@ -658,7 +1189,7 @@ function renderMedicalHistory() {
                     ).toLowerCase();
 
 
-                const chiefComplaint =
+                const complaint =
                     (
                         record.chief_complaint ||
                         ""
@@ -679,7 +1210,7 @@ function renderMedicalHistory() {
                         searchText
                     ) ||
 
-                    chiefComplaint.includes(
+                    complaint.includes(
                         searchText
                     )
 
@@ -689,11 +1220,13 @@ function renderMedicalHistory() {
         );
 
 
+
     document.getElementById(
         "recordCount"
     ).textContent =
+
         records.length +
-        " medical record" +
+        " visit" +
         (
             records.length === 1
                 ? ""
@@ -701,31 +1234,36 @@ function renderMedicalHistory() {
         );
 
 
+
     if (!records.length) {
 
+
         container.innerHTML = `
+
             <div class="empty-message">
+
                 No medical records found.
+
             </div>
+
         `;
+
 
         return;
 
     }
 
 
-    /*
-     * GROUP BY PATIENT
-     *
-     * Jadi record Cidol hanya berada
-     * di bagian Cidol.
-     */
+
+    /* GROUP BY PATIENT */
 
     const grouped = {};
 
 
+
     records.forEach(
         function(record) {
+
 
             const patient =
                 getPatientById(
@@ -734,11 +1272,16 @@ function renderMedicalHistory() {
 
 
             if (!patient) {
+
                 return;
+
             }
 
 
-            if (!grouped[patient.id]) {
+            if (
+                !grouped[patient.id]
+            ) {
+
 
                 grouped[patient.id] = {
 
@@ -758,15 +1301,22 @@ function renderMedicalHistory() {
                 record
             );
 
+
         }
     );
 
 
-    container.innerHTML = "";
+
+    container.innerHTML =
+        "";
 
 
-    Object.values(grouped).forEach(
+
+    Object.values(
+        grouped
+    ).forEach(
         function(group) {
+
 
             const patient =
                 group.patient;
@@ -777,198 +1327,460 @@ function renderMedicalHistory() {
                     "div"
                 );
 
+
             patientCard.className =
                 "patient-card";
 
 
-            let recordsHTML = "";
+            let recordsHTML =
+                "";
+
 
 
             group.records.forEach(
                 function(record) {
 
-                    recordsHTML +=
-                    `
-                    <div class="record-card">
 
-                        <div class="patient-header">
+                    let visitTypeLabel =
+                        "Visit";
 
-                            <div>
 
-                                <div class="record-date">
+                    let visitTypeClass =
+                        "visit-type-unknown";
 
-                                    Visit:
-                                    ${
-                                        formatDate(
-                                            record.visit_date
-                                        )
-                                    }
+
+                    if (
+                        record.visit_type ===
+                        "consultation"
+                    ) {
+
+                        visitTypeLabel =
+                            "Consultation";
+
+                        visitTypeClass =
+                            "visit-type-consultation";
+
+                    }
+
+
+                    if (
+                        record.visit_type ===
+                        "grooming"
+                    ) {
+
+                        visitTypeLabel =
+                            "Grooming";
+
+                        visitTypeClass =
+                            "visit-type-grooming";
+
+                    }
+
+
+
+                    recordsHTML += `
+
+                        <div class="record-card">
+
+
+                            <div
+                                class="patient-header"
+                            >
+
+
+                                <div>
+
+
+                                    <div
+                                        class="record-date"
+                                    >
+
+                                        Visit:
+
+                                        ${
+                                            formatDate(
+                                                record.visit_date
+                                            )
+                                        }
+
+
+                                        <span
+                                            class="
+                                                visit-type-badge
+                                                ${visitTypeClass}
+                                            "
+                                        >
+
+                                            ${visitTypeLabel}
+
+                                        </span>
+
+
+                                    </div>
+
 
                                 </div>
 
+
+
+                                <div>
+
+
+                                    <a
+                                        href="
+                                            medical-record-detail.html?id=${record.id}
+                                        "
+                                        class="view-button"
+                                    >
+
+                                        View
+
+                                    </a>
+
+
+                                    <button
+                                        class="delete-button"
+                                        onclick="
+                                            deleteRecord('${record.id}')
+                                        "
+                                    >
+
+                                        Delete
+
+                                    </button>
+
+
+                                </div>
+
+
                             </div>
 
-                            <div>
 
-                                <a
-                                    href="medical-record-detail.html?id=${record.id}"
-                                    class="view-button"
-                                >
-                                    View
-                                </a>
 
-                                <button
-                                    class="delete-button"
-                                    onclick="deleteRecord('${record.id}')"
-                                >
-                                    Delete
-                                </button>
+                            ${
+                                record.chief_complaint
+                                    ? `
 
-                            </div>
+                                        <div
+                                            class="soap-section"
+                                        >
+
+                                            <div
+                                                class="soap-title"
+                                            >
+                                                Chief Complaint
+                                            </div>
+
+                                            <div
+                                                class="soap-text"
+                                            >
+                                                ${escapeHTML(
+                                                    record.chief_complaint
+                                                )}
+                                            </div>
+
+                                        </div>
+
+                                      `
+                                    : ""
+                            }
+
+
+
+                            ${
+                                record.subjective
+                                    ? `
+
+                                        <div
+                                            class="soap-section"
+                                        >
+
+                                            <div
+                                                class="soap-title"
+                                            >
+                                                Subjective
+                                            </div>
+
+                                            <div
+                                                class="soap-text"
+                                            >
+                                                ${escapeHTML(
+                                                    record.subjective
+                                                )}
+                                            </div>
+
+                                        </div>
+
+                                      `
+                                    : ""
+                            }
+
+
+
+                            ${
+                                record.objective
+                                    ? `
+
+                                        <div
+                                            class="soap-section"
+                                        >
+
+                                            <div
+                                                class="soap-title"
+                                            >
+                                                Objective
+                                            </div>
+
+                                            <div
+                                                class="soap-text"
+                                            >
+                                                ${escapeHTML(
+                                                    record.objective
+                                                )}
+                                            </div>
+
+                                        </div>
+
+                                      `
+                                    : ""
+                            }
+
+
+
+                            ${
+                                record.assessment
+                                    ? `
+
+                                        <div
+                                            class="soap-section"
+                                        >
+
+                                            <div
+                                                class="soap-title"
+                                            >
+                                                Assessment
+                                            </div>
+
+                                            <div
+                                                class="soap-text"
+                                            >
+                                                ${escapeHTML(
+                                                    record.assessment
+                                                )}
+                                            </div>
+
+                                        </div>
+
+                                      `
+                                    : ""
+                            }
+
+
+
+                            ${
+                                record.plan
+                                    ? `
+
+                                        <div
+                                            class="soap-section"
+                                        >
+
+                                            <div
+                                                class="soap-title"
+                                            >
+                                                Plan
+                                            </div>
+
+                                            <div
+                                                class="soap-text"
+                                            >
+                                                ${escapeHTML(
+                                                    record.plan
+                                                )}
+                                            </div>
+
+                                        </div>
+
+                                      `
+                                    : ""
+                            }
+
+
+
+                            ${
+                                record.diagnosis
+                                    ? `
+
+                                        <div
+                                            class="soap-section"
+                                        >
+
+                                            <div
+                                                class="soap-title"
+                                            >
+                                                Diagnosis
+                                            </div>
+
+                                            <div
+                                                class="soap-text"
+                                            >
+                                                ${escapeHTML(
+                                                    record.diagnosis
+                                                )}
+                                            </div>
+
+                                        </div>
+
+                                      `
+                                    : ""
+                            }
+
+
+
+                            ${
+                                record.treatment
+                                    ? `
+
+                                        <div
+                                            class="soap-section"
+                                        >
+
+                                            <div
+                                                class="soap-title"
+                                            >
+                                                Treatment
+                                            </div>
+
+                                            <div
+                                                class="soap-text"
+                                            >
+                                                ${escapeHTML(
+                                                    record.treatment
+                                                )}
+                                            </div>
+
+                                        </div>
+
+                                      `
+                                    : ""
+                            }
+
+
+
+                            ${
+                                record.medication
+                                    ? `
+
+                                        <div
+                                            class="soap-section"
+                                        >
+
+                                            <div
+                                                class="soap-title"
+                                            >
+                                                Medication
+                                            </div>
+
+                                            <div
+                                                class="soap-text"
+                                            >
+                                                ${escapeHTML(
+                                                    record.medication
+                                                )}
+                                            </div>
+
+                                        </div>
+
+                                      `
+                                    : ""
+                            }
+
+
+
+                            ${
+                                record.procedure
+                                    ? `
+
+                                        <div
+                                            class="soap-section"
+                                        >
+
+                                            <div
+                                                class="soap-title"
+                                            >
+                                                Procedure
+                                            </div>
+
+                                            <div
+                                                class="soap-text"
+                                            >
+                                                ${escapeHTML(
+                                                    record.procedure
+                                                )}
+                                            </div>
+
+                                        </div>
+
+                                      `
+                                    : ""
+                            }
+
+
+
+                            ${
+                                record.notes
+                                    ? `
+
+                                        <div
+                                            class="soap-section"
+                                        >
+
+                                            <div
+                                                class="soap-title"
+                                            >
+                                                Notes
+                                            </div>
+
+                                            <div
+                                                class="soap-text"
+                                            >
+                                                ${escapeHTML(
+                                                    record.notes
+                                                )}
+                                            </div>
+
+                                        </div>
+
+                                      `
+                                    : ""
+                            }
+
+
 
                         </div>
 
-
-                        ${
-                            record.chief_complaint
-                                ? `
-                                    <div class="soap-section">
-
-                                        <div class="soap-title">
-                                            Chief Complaint
-                                        </div>
-
-                                        <div class="soap-text">
-                                            ${escapeHTML(
-                                                record.chief_complaint
-                                            )}
-                                        </div>
-
-                                    </div>
-                                  `
-                                : ""
-                        }
-
-
-                        ${
-                            record.subjective
-                                ? `
-                                    <div class="soap-section">
-
-                                        <div class="soap-title">
-                                            Subjective
-                                        </div>
-
-                                        <div class="soap-text">
-                                            ${escapeHTML(
-                                                record.subjective
-                                            )}
-                                        </div>
-
-                                    </div>
-                                  `
-                                : ""
-                        }
-
-
-                        ${
-                            record.objective
-                                ? `
-                                    <div class="soap-section">
-
-                                        <div class="soap-title">
-                                            Objective
-                                        </div>
-
-                                        <div class="soap-text">
-                                            ${escapeHTML(
-                                                record.objective
-                                            )}
-                                        </div>
-
-                                    </div>
-                                  `
-                                : ""
-                        }
-
-
-                        ${
-                            record.assessment
-                                ? `
-                                    <div class="soap-section">
-
-                                        <div class="soap-title">
-                                            Assessment
-                                        </div>
-
-                                        <div class="soap-text">
-                                            ${escapeHTML(
-                                                record.assessment
-                                            )}
-                                        </div>
-
-                                    </div>
-                                  `
-                                : ""
-                        }
-
-
-                        ${
-                            record.plan
-                                ? `
-                                    <div class="soap-section">
-
-                                        <div class="soap-title">
-                                            Plan
-                                        </div>
-
-                                        <div class="soap-text">
-                                            ${escapeHTML(
-                                                record.plan
-                                            )}
-                                        </div>
-
-                                    </div>
-                                  `
-                                : ""
-                        }
-
-
-                        ${
-                            record.diagnosis
-                                ? `
-                                    <div class="soap-section">
-
-                                        <div class="soap-title">
-                                            Diagnosis
-                                        </div>
-
-                                        <div class="soap-text">
-                                            ${escapeHTML(
-                                                record.diagnosis
-                                            )}
-                                        </div>
-
-                                    </div>
-                                  `
-                                : ""
-                        }
-
-
-                    </div>
                     `;
+
 
                 }
             );
 
 
+
             patientCard.innerHTML = `
 
-                <div class="patient-header">
+
+                <div
+                    class="patient-header"
+                >
+
 
                     <div>
 
-                        <div class="patient-name">
+
+                        <div
+                            class="patient-name"
+                        >
 
                             ${escapeHTML(
                                 patient.name
@@ -977,12 +1789,15 @@ function renderMedicalHistory() {
                         </div>
 
 
-                        <div class="patient-info">
+                        <div
+                            class="patient-info"
+                        >
 
                             ${
                                 patient.species ||
                                 ""
                             }
+
 
                             ${
                                 patient.breed
@@ -991,6 +1806,7 @@ function renderMedicalHistory() {
                                     : ""
                             }
 
+
                             ${
                                 patient.sex
                                     ? " • " +
@@ -998,29 +1814,30 @@ function renderMedicalHistory() {
                                     : ""
                             }
 
+
                             <br>
 
+
                             Owner:
+
                             ${
-                                patient.owner ||
-                                "-"
+                                escapeHTML(
+                                    patient.owner ||
+                                    "-"
+                                )
                             }
 
                         </div>
 
+
                     </div>
+
 
                 </div>
 
 
-                ${
-                    recordsHTML ||
-                    `
-                    <div class="empty-message">
-                        No records for this patient.
-                    </div>
-                    `
-                }
+                ${recordsHTML}
+
 
             `;
 
@@ -1029,19 +1846,23 @@ function renderMedicalHistory() {
                 patientCard
             );
 
+
         }
     );
 
 }
 
 
+
 /* =====================================================
    DELETE RECORD
 ===================================================== */
 
+
 async function deleteRecord(
     recordId
 ) {
+
 
     const confirmed =
         confirm(
@@ -1050,58 +1871,75 @@ async function deleteRecord(
 
 
     if (!confirmed) {
+
         return;
+
     }
 
 
     const {
         error
     } =
-    await supabaseClient
-        .from("medical_records")
-        .delete()
-        .eq(
-            "id",
-            recordId
-        )
-        .eq(
-            "clinic_id",
-            currentClinic.clinicId
-        );
+        await supabaseClient
+            .from(
+                "medical_records"
+            )
+            .delete()
+            .eq(
+                "id",
+                recordId
+            )
+            .eq(
+                "clinic_id",
+                currentClinic.clinicId
+            );
 
 
     if (error) {
+
 
         console.error(
             "Delete error:",
             error
         );
 
+
         alert(
             "Failed to delete medical record."
         );
 
+
         return;
+
     }
 
 
     await loadMedicalRecords();
+
+
+    updateSummary();
+
 
     renderMedicalHistory();
 
 }
 
 
+
 /* =====================================================
    DATE FORMAT
 ===================================================== */
+
 
 function formatDate(
     value
 ) {
 
+
     if (!value) {
+
         return "-";
+
     }
 
 
@@ -1111,9 +1949,11 @@ function formatDate(
         );
 
 
-    if (Number.isNaN(
-        date.getTime()
-    )) {
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
 
         return value;
 
@@ -1132,48 +1972,65 @@ function formatDate(
 }
 
 
+
 /* =====================================================
    ESCAPE HTML
 ===================================================== */
+
 
 function escapeHTML(
     value
 ) {
 
+
     return String(
         value ?? ""
     )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
+
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
+
 
 
 /* =====================================================
    START
 ===================================================== */
 
+
 init();
 
+
 </script>
+
 
 </body>
 
