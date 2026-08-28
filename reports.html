@@ -2,931 +2,439 @@
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Reports - VetClinic</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <style>
-
-/* =====================================================
-   GENERAL
-===================================================== */
-
 * {
     box-sizing: border-box;
 }
 
 body {
-
     margin: 0;
-
-    font-family:
-        Arial,
-        sans-serif;
-
-    background:
-        #fff9f7;
-
-    color:
-        #343447;
-
+    font-family: Arial, sans-serif;
+    background: #ffffff;
+    color: #343447;
 }
-
 
 .container {
-
-    max-width:
-        1250px;
-
-    margin:
-        auto;
-
-    padding:
-        30px;
-
+    max-width: 1250px;
+    margin: auto;
+    padding: 30px;
 }
 
-
-/* =====================================================
+/* =========================
    HEADER
-===================================================== */
+========================= */
 
 .header {
-
-    display:
-        flex;
-
-    justify-content:
-        space-between;
-
-    align-items:
-        center;
-
-    margin-bottom:
-        25px;
-
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
 }
-
 
 .header h1 {
-
-    margin:
-        0;
-
-    font-size:
-        28px;
-
+    margin: 0;
+    font-size: 28px;
 }
-
 
 .header p {
-
-    margin:
-        7px 0 0;
-
-    color:
-        #77778b;
-
+    margin: 7px 0 0;
+    color: #77778b;
 }
-
 
 .clinic-name {
-
-    color:
-        #7c6ff0;
-
-    font-weight:
-        700;
-
+    color: #7c6ff0;
+    font-weight: 700;
 }
 
-
-/* =====================================================
+/* =========================
    BUTTON
-===================================================== */
+========================= */
 
 .secondary {
-
-    border:
-        none;
-
-    border-radius:
-        11px;
-
-    padding:
-        11px 17px;
-
-    cursor:
-        pointer;
-
-    font-weight:
-        700;
-
-    background:
-        #eeeaff;
-
-    color:
-        #6f60e8;
-
+    border: none;
+    border-radius: 11px;
+    padding: 11px 17px;
+    cursor: pointer;
+    font-weight: 700;
+    background: #eeeaff;
+    color: #6f60e8;
 }
-
 
 .secondary:hover {
-
-    background:
-        #e3defe;
-
+    background: #e3defe;
 }
 
+.generate {
+    padding: 11px 18px;
+    border: none;
+    border-radius: 11px;
+    background: #8b7cf6;
+    color: white;
+    font-family: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
 
-/* =====================================================
+.generate:hover {
+    background: #6f60e8;
+}
+
+/* =========================
    CARD
-===================================================== */
+========================= */
 
 .card {
-
-    background:
-        white;
-
-    border:
-        1px solid #eee9ee;
-
-    border-radius:
-        18px;
-
-    padding:
-        23px;
-
-    margin-bottom:
-        20px;
-
-    box-shadow:
-        0 8px 30px
-        rgba(
-            73,
-            62,
-            100,
-            0.07
-        );
-
+    background: #ffffff;
+    border: 1px solid #eee9ee;
+    border-radius: 18px;
+    padding: 23px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 30px rgba(73, 62, 100, 0.07);
 }
-
 
 .card h2 {
-
-    margin:
-        0 0 20px;
-
-    font-size:
-        18px;
-
+    margin: 0 0 20px;
+    font-size: 18px;
 }
 
-
-/* =====================================================
+/* =========================
    OVERVIEW
-===================================================== */
+========================= */
 
 .stats {
-
-    display:
-        grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap:
-        16px;
-
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
 }
-
 
 .stat {
-
-    border:
-        1px solid #eee9ee;
-
-    border-radius:
-        15px;
-
-    padding:
-        19px;
-
+    border: 1px solid #eee9ee;
+    border-radius: 15px;
+    padding: 19px;
+    background: #ffffff;
 }
-
 
 .stat-label {
-
-    color:
-        #77778b;
-
-    font-size:
-        13px;
-
-    font-weight:
-        600;
-
+    color: #77778b;
+    font-size: 13px;
+    font-weight: 600;
 }
-
 
 .stat-value {
-
-    font-size:
-        25px;
-
-    font-weight:
-        800;
-
-    margin-top:
-        8px;
-
+    font-size: 25px;
+    font-weight: 800;
+    margin-top: 8px;
 }
 
-
-/* =====================================================
-   REVENUE SUMMARY
-===================================================== */
-
-.revenue-grid {
-
-    display:
-        grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap:
-        16px;
-
-}
-
-
-.revenue-card {
-
-    border-radius:
-        17px;
-
-    padding:
-        22px;
-
-    position:
-        relative;
-
-    overflow:
-        hidden;
-
-}
-
-
-.revenue-card.consultation {
-
-    background:
-        #eeeaff;
-
-    color:
-        #6254d9;
-
-}
-
-
-.revenue-card.grooming {
-
-    background:
-        #fff0f4;
-
-    color:
-        #c85c79;
-
-}
-
-
-.revenue-card.total {
-
-    background:
-        #effbf6;
-
-    color:
-        #36936e;
-
-}
-
-
-.revenue-icon {
-
-    font-size:
-        25px;
-
-    margin-bottom:
-        12px;
-
-}
-
-
-.revenue-label {
-
-    font-size:
-        13px;
-
-    font-weight:
-        700;
-
-}
-
-
-.revenue-value {
-
-    margin-top:
-        6px;
-
-    font-size:
-        25px;
-
-    font-weight:
-        800;
-
-}
-
-
-.revenue-count {
-
-    margin-top:
-        7px;
-
-    font-size:
-        12px;
-
-    opacity:
-        0.8;
-
-}
-
-
-/* =====================================================
+/* =========================
    FILTER
-===================================================== */
+========================= */
 
 .filter-row {
-
-    display:
-        flex;
-
-    align-items:
-        flex-end;
-
-    gap:
-        12px;
-
-    flex-wrap:
-        wrap;
-
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
 }
-
 
 .filter-group {
-
-    display:
-        flex;
-
-    flex-direction:
-        column;
-
-    gap:
-        7px;
-
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
 }
-
 
 .filter-group label {
-
-    font-size:
-        12px;
-
-    font-weight:
-        800;
-
-    color:
-        #77778b;
-
+    font-size: 12px;
+    font-weight: 800;
+    color: #77778b;
 }
-
 
 select,
 input {
-
-    padding:
-        11px 13px;
-
-    border:
-        1px solid #e5e1e7;
-
-    border-radius:
-        11px;
-
-    background:
-        white;
-
-    font-family:
-        inherit;
-
-    min-width:
-        170px;
-
-    color:
-        #343447;
-
+    padding: 11px 13px;
+    border: 1px solid #e5e1e7;
+    border-radius: 11px;
+    background: #ffffff;
+    font-family: inherit;
+    min-width: 170px;
+    color: #343447;
 }
-
 
 select:focus,
 input:focus {
-
-    outline:
-        none;
-
-    border-color:
-        #8b7cf6;
-
-    box-shadow:
-        0 0 0 4px
-        rgba(
-            139,
-            124,
-            246,
-            0.10
-        );
-
+    outline: none;
+    border-color: #8b7cf6;
+    box-shadow: 0 0 0 4px rgba(139, 124, 246, 0.10);
 }
-
-
-.generate {
-
-    padding:
-        11px 18px;
-
-    border:
-        none;
-
-    border-radius:
-        11px;
-
-    background:
-        #8b7cf6;
-
-    color:
-        white;
-
-    font-family:
-        inherit;
-
-    font-weight:
-        800;
-
-    cursor:
-        pointer;
-
-}
-
-
-.generate:hover {
-
-    background:
-        #6f60e8;
-
-}
-
 
 .custom-range {
-
-    display:
-        none;
-
-    gap:
-        10px;
-
-    flex-wrap:
-        wrap;
-
+    display: none;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
+/* =========================
+   REVENUE
+========================= */
 
-/* =====================================================
-   SERVICE BREAKDOWN
-===================================================== */
+.revenue-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.revenue-card {
+    border-radius: 17px;
+    padding: 22px;
+    position: relative;
+    overflow: hidden;
+}
+
+.revenue-card.consultation {
+    background: #eeeaff;
+    color: #6254d9;
+}
+
+.revenue-card.grooming {
+    background: #fff0f4;
+    color: #c85c79;
+}
+
+.revenue-card.total {
+    background: #effbf6;
+    color: #36936e;
+}
+
+.revenue-icon {
+    font-size: 25px;
+    margin-bottom: 12px;
+}
+
+.revenue-label {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.revenue-value {
+    margin-top: 6px;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.revenue-count {
+    margin-top: 7px;
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* =========================
+   BREAKDOWN
+========================= */
 
 .breakdown-grid {
-
-    display:
-        grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap:
-        18px;
-
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
 }
-
 
 .breakdown-item {
-
-    display:
-        flex;
-
-    justify-content:
-        space-between;
-
-    align-items:
-        center;
-
-    padding:
-        15px 0;
-
-    border-bottom:
-        1px solid #f0edf1;
-
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0edf1;
 }
-
 
 .breakdown-item:last-child {
-
-    border-bottom:
-        none;
-
+    border-bottom: none;
 }
-
 
 .service-left {
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    gap:
-        11px;
-
+    display: flex;
+    align-items: center;
+    gap: 11px;
 }
-
 
 .service-icon {
-
-    width:
-        40px;
-
-    height:
-        40px;
-
-    border-radius:
-        12px;
-
-    display:
-        flex;
-
-    justify-content:
-        center;
-
-    align-items:
-        center;
-
-    font-size:
-        20px;
-
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
 }
-
 
 .consult-icon {
-
-    background:
-        #eeeaff;
-
+    background: #eeeaff;
 }
-
 
 .groom-icon {
-
-    background:
-        #fff0f4;
-
+    background: #fff0f4;
 }
-
 
 .service-name {
-
-    font-weight:
-        800;
-
+    font-weight: 800;
 }
-
 
 .service-count {
-
-    color:
-        #77778b;
-
-    font-size:
-        12px;
-
-    margin-top:
-        3px;
-
+    color: #77778b;
+    font-size: 12px;
+    margin-top: 3px;
 }
-
 
 .service-money {
-
-    font-weight:
-        800;
-
+    font-weight: 800;
 }
 
-
-/* =====================================================
+/* =========================
    TABLE
-===================================================== */
+========================= */
 
 .table-wrapper {
-
-    overflow-x:
-        auto;
-
+    overflow-x: auto;
 }
-
 
 table {
-
-    width:
-        100%;
-
-    border-collapse:
-        collapse;
-
+    width: 100%;
+    border-collapse: collapse;
 }
-
 
 th {
-
-    padding:
-        13px;
-
-    text-align:
-        left;
-
-    background:
-        #faf8fb;
-
-    color:
-        #77778b;
-
-    font-size:
-        12px;
-
+    padding: 13px;
+    text-align: left;
+    background: #fafafa;
+    color: #77778b;
+    font-size: 12px;
 }
-
 
 td {
-
-    padding:
-        14px 13px;
-
-    border-bottom:
-        1px solid #f0edf1;
-
-    font-size:
-        13px;
-
+    padding: 14px 13px;
+    border-bottom: 1px solid #f0edf1;
+    font-size: 13px;
 }
-
 
 tbody tr:hover {
-
-    background:
-        #fdfbfe;
-
+    background: #fafafa;
 }
-
 
 .status {
-
-    display:
-        inline-block;
-
-    padding:
-        5px 9px;
-
-    border-radius:
-        999px;
-
-    font-size:
-        11px;
-
-    font-weight:
-        800;
-
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
 }
-
 
 .status-paid {
-
-    background:
-        #effbf6;
-
-    color:
-        #2e956c;
-
+    background: #effbf6;
+    color: #2e956c;
 }
-
 
 .status-unpaid {
-
-    background:
-        #fff0f1;
-
-    color:
-        #c95d64;
-
+    background: #fff0f1;
+    color: #c95d64;
 }
-
 
 .status-partial {
-
-    background:
-        #fff8df;
-
-    color:
-        #a87917;
-
+    background: #fff8df;
+    color: #a87917;
 }
 
-
-/* =====================================================
+/* =========================
    EMPTY / ERROR
-===================================================== */
+========================= */
 
 .empty {
-
-    text-align:
-        center;
-
-    padding:
-        30px;
-
-    color:
-        #77778b;
-
+    text-align: center;
+    padding: 30px;
+    color: #77778b;
 }
-
 
 .error {
-
-    background:
-        #fff0f1;
-
-    color:
-        #c95d64;
-
-    padding:
-        13px 15px;
-
-    border-radius:
-        10px;
-
-    margin-bottom:
-        20px;
-
+    background: #fff0f1;
+    color: #c95d64;
+    padding: 13px 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
-
-/* =====================================================
+/* =========================
    RESPONSIVE
-===================================================== */
+========================= */
 
-@media(max-width:900px) {
+@media(max-width: 900px) {
 
     .stats {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-
+        grid-template-columns: repeat(2, 1fr);
     }
-
 
     .revenue-grid {
-
-        grid-template-columns:
-            1fr;
-
+        grid-template-columns: 1fr;
     }
-
 
     .breakdown-grid {
-
-        grid-template-columns:
-            1fr;
-
+        grid-template-columns: 1fr;
     }
-
 }
 
-
-@media(max-width:600px) {
+@media(max-width: 600px) {
 
     .container {
-
-        padding:
-            15px;
-
+        padding: 15px;
     }
-
 
     .header {
-
-        align-items:
-            flex-start;
-
-        flex-direction:
-            column;
-
-        gap:
-            12px;
-
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
     }
-
 
     .stats {
-
-        grid-template-columns:
-            1fr;
-
+        grid-template-columns: 1fr;
     }
-
 
     .filter-row {
-
-        flex-direction:
-            column;
-
-        align-items:
-            stretch;
-
+        flex-direction: column;
+        align-items: stretch;
     }
-
 
     select,
     input {
-
-        width:
-            100%;
-
+        width: 100%;
     }
-
 
     .custom-range {
-
-        flex-direction:
-            column;
-
+        flex-direction: column;
     }
-
 }
-
 </style>
 
 </head>
 
-
 <body>
-
 
 <div class="container">
 
-
-<!-- =====================================================
+<!-- =========================
      HEADER
-===================================================== -->
+========================= -->
 
 <div class="header">
 
     <div>
 
-        <h1>
-            📊 Reports
-        </h1>
+        <h1>📊 Reports</h1>
 
         <p>
-            <span
-                id="clinicName"
-                class="clinic-name"
-            >
+            <span id="clinicName" class="clinic-name">
                 VetClinic
             </span>
 
@@ -935,13 +443,13 @@ tbody tr:hover {
 
     </div>
 
-
     <button
         class="secondary"
         type="button"
-        onclick="window.location.href='index.html'"
-    >
+        onclick="window.location.href='index.html'">
+
         🏠 Dashboard
+
     </button>
 
 </div>
@@ -950,19 +458,15 @@ tbody tr:hover {
 <div id="errorBox"></div>
 
 
-<!-- =====================================================
+<!-- =========================
      OVERVIEW
-===================================================== -->
+========================= -->
 
 <div class="card">
 
-    <h2>
-        🐾 Clinic Overview
-    </h2>
-
+    <h2>🐾 Clinic Overview</h2>
 
     <div class="stats">
-
 
         <div class="stat">
 
@@ -972,9 +476,10 @@ tbody tr:hover {
 
             <div
                 class="stat-value"
-                id="totalPatients"
-            >
+                id="totalPatients">
+
                 -
+
             </div>
 
         </div>
@@ -988,9 +493,10 @@ tbody tr:hover {
 
             <div
                 class="stat-value"
-                id="totalRecords"
-            >
+                id="totalRecords">
+
                 -
+
             </div>
 
         </div>
@@ -1004,9 +510,10 @@ tbody tr:hover {
 
             <div
                 class="stat-value"
-                id="totalAppointments"
-            >
+                id="totalAppointments">
+
                 -
+
             </div>
 
         </div>
@@ -1021,38 +528,32 @@ tbody tr:hover {
             <div
                 class="stat-value"
                 id="periodLabel"
-                style="font-size:18px;"
-            >
+                style="font-size:18px;">
+
                 -
+
             </div>
 
         </div>
-
 
     </div>
 
 </div>
 
 
-<!-- =====================================================
-     FILTER
-===================================================== -->
+<!-- =========================
+     REVENUE PERIOD
+========================= -->
 
 <div class="card">
 
-    <h2>
-        📅 Revenue Period
-    </h2>
-
+    <h2>📅 Revenue Period</h2>
 
     <div class="filter-row">
 
-
         <div class="filter-group">
 
-            <label>
-                PERIOD
-            </label>
+            <label>PERIOD</label>
 
             <select id="period">
 
@@ -1066,9 +567,10 @@ tbody tr:hover {
 
                 <option
                     value="monthly"
-                    selected
-                >
+                    selected>
+
                     Monthly
+
                 </option>
 
                 <option value="yearly">
@@ -1084,98 +586,70 @@ tbody tr:hover {
         </div>
 
 
-        <!-- DAILY -->
-
         <div
             class="filter-group"
             id="dailyGroup"
-            style="display:none;"
-        >
+            style="display:none;">
 
-            <label>
-                DATE
-            </label>
+            <label>DATE</label>
 
             <input
                 type="date"
-                id="dailyDate"
-            >
+                id="dailyDate">
 
         </div>
 
-
-        <!-- MONTHLY -->
 
         <div
             class="filter-group"
-            id="monthlyGroup"
-        >
+            id="monthlyGroup">
 
-            <label>
-                MONTH
-            </label>
+            <label>MONTH</label>
 
             <input
                 type="month"
-                id="monthlyDate"
-            >
+                id="monthlyDate">
 
         </div>
 
-
-        <!-- YEARLY -->
 
         <div
             class="filter-group"
             id="yearlyGroup"
-            style="display:none;"
-        >
+            style="display:none;">
 
-            <label>
-                YEAR
-            </label>
+            <label>YEAR</label>
 
             <input
                 type="number"
                 id="yearlyDate"
                 min="2000"
-                max="2100"
-            >
+                max="2100">
 
         </div>
 
 
-        <!-- CUSTOM -->
-
         <div
             class="custom-range"
-            id="customRange"
-        >
+            id="customRange">
 
             <div class="filter-group">
 
-                <label>
-                    FROM
-                </label>
+                <label>FROM</label>
 
                 <input
                     type="date"
-                    id="fromDate"
-                >
+                    id="fromDate">
 
             </div>
 
-
             <div class="filter-group">
 
-                <label>
-                    TO
-                </label>
+                <label>TO</label>
 
                 <input
                     type="date"
-                    id="toDate"
-                >
+                    id="toDate">
 
             </div>
 
@@ -1184,30 +658,27 @@ tbody tr:hover {
 
         <button
             class="generate"
-            onclick="loadRevenueReport()"
-        >
-            Generate Report
-        </button>
+            type="button"
+            onclick="loadRevenueReport()">
 
+            Generate Report
+
+        </button>
 
     </div>
 
 </div>
 
 
-<!-- =====================================================
+<!-- =========================
      REVENUE
-===================================================== -->
+========================= -->
 
 <div class="card">
 
-    <h2>
-        💰 Revenue
-    </h2>
-
+    <h2>💰 Revenue</h2>
 
     <div class="revenue-grid">
-
 
         <div class="revenue-card consultation">
 
@@ -1221,16 +692,18 @@ tbody tr:hover {
 
             <div
                 class="revenue-value"
-                id="consultationRevenue"
-            >
+                id="consultationRevenue">
+
                 Rp0
+
             </div>
 
             <div
                 class="revenue-count"
-                id="consultationCount"
-            >
+                id="consultationCount">
+
                 0 visits
+
             </div>
 
         </div>
@@ -1248,16 +721,18 @@ tbody tr:hover {
 
             <div
                 class="revenue-value"
-                id="groomingRevenue"
-            >
+                id="groomingRevenue">
+
                 Rp0
+
             </div>
 
             <div
                 class="revenue-count"
-                id="groomingCount"
-            >
+                id="groomingCount">
+
                 0 visits
+
             </div>
 
         </div>
@@ -1275,39 +750,36 @@ tbody tr:hover {
 
             <div
                 class="revenue-value"
-                id="totalRevenue"
-            >
+                id="totalRevenue">
+
                 Rp0
+
             </div>
 
             <div
                 class="revenue-count"
-                id="totalTransactions"
-            >
+                id="totalTransactions">
+
                 0 transactions
+
             </div>
 
         </div>
-
 
     </div>
 
 </div>
 
 
-<!-- =====================================================
-     BREAKDOWN
-===================================================== -->
+<!-- =========================
+     SERVICE BREAKDOWN
+========================= -->
 
 <div class="breakdown-grid">
 
-
     <div class="card">
 
-        <h2>
-            🩺 Consultation
-        </h2>
-
+        <h2>🩺 Consultation</h2>
 
         <div class="breakdown-item">
 
@@ -1325,35 +797,32 @@ tbody tr:hover {
 
                     <div
                         class="service-count"
-                        id="consultationCount2"
-                    >
+                        id="consultationCount2">
+
                         0 visits
+
                     </div>
 
                 </div>
 
             </div>
 
-
             <div
                 class="service-money"
-                id="consultationRevenue2"
-            >
+                id="consultationRevenue2">
+
                 Rp0
+
             </div>
 
         </div>
-
 
     </div>
 
 
     <div class="card">
 
-        <h2>
-            ✂️ Grooming
-        </h2>
-
+        <h2>✂️ Grooming</h2>
 
         <div class="breakdown-item">
 
@@ -1371,64 +840,57 @@ tbody tr:hover {
 
                     <div
                         class="service-count"
-                        id="groomingCount2"
-                    >
+                        id="groomingCount2">
+
                         0 visits
+
                     </div>
 
                 </div>
 
             </div>
 
-
             <div
                 class="service-money"
-                id="groomingRevenue2"
-            >
+                id="groomingRevenue2">
+
                 Rp0
+
             </div>
 
         </div>
 
-
     </div>
-
 
 </div>
 
 
-<!-- =====================================================
+<!-- =========================
      TRANSACTIONS
-===================================================== -->
+========================= -->
 
 <div class="card">
 
-    <h2>
-        💳 Revenue Transactions
-    </h2>
-
+    <h2>💳 Revenue Transactions</h2>
 
     <div
         id="transactions"
-        class="empty"
-    >
-        Loading...
-    </div>
+        class="empty">
 
+        Loading...
+
+    </div>
 
 </div>
 
 
-<!-- =====================================================
+<!-- =========================
      SPECIES
-===================================================== -->
+========================= -->
 
 <div class="card">
 
-    <h2>
-        🐶🐱 Species Distribution
-    </h2>
-
+    <h2>🐶🐱 Species Distribution</h2>
 
     <div class="table-wrapper">
 
@@ -1450,16 +912,16 @@ tbody tr:hover {
 
             </thead>
 
-
             <tbody id="speciesList">
 
                 <tr>
 
                     <td
                         colspan="2"
-                        class="empty"
-                    >
+                        class="empty">
+
                         Loading...
+
                     </td>
 
                 </tr>
@@ -1473,16 +935,13 @@ tbody tr:hover {
 </div>
 
 
-<!-- =====================================================
+<!-- =========================
      RECENT PATIENTS
-===================================================== -->
+========================= -->
 
 <div class="card">
 
-    <h2>
-        🐾 Recent Patients
-    </h2>
-
+    <h2>🐾 Recent Patients</h2>
 
     <div class="table-wrapper">
 
@@ -1492,26 +951,14 @@ tbody tr:hover {
 
                 <tr>
 
-                    <th>
-                        Name
-                    </th>
-
-                    <th>
-                        Species
-                    </th>
-
-                    <th>
-                        Breed
-                    </th>
-
-                    <th>
-                        Created
-                    </th>
+                    <th>Name</th>
+                    <th>Species</th>
+                    <th>Breed</th>
+                    <th>Created</th>
 
                 </tr>
 
             </thead>
-
 
             <tbody id="recentPatients">
 
@@ -1519,9 +966,10 @@ tbody tr:hover {
 
                     <td
                         colspan="4"
-                        class="empty"
-                    >
+                        class="empty">
+
                         Loading...
+
                     </td>
 
                 </tr>
@@ -1533,7 +981,6 @@ tbody tr:hover {
     </div>
 
 </div>
-
 
 </div>
 
@@ -1545,24 +992,16 @@ tbody tr:hover {
 ===================================================== */
 
 const SUPABASE_URL =
-"https://zltbjbbofvvndxirlipf.supabase.co";
-
-
-/*
-   PENTING:
-   Gunakan KEY YANG SAMA dengan
-   appointments.html / billing.html
-*/
+    "https://zltbjbbofvvndxirlipf.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
-
+    "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
 
 const supabaseClient =
-supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
 /* =====================================================
@@ -1587,9 +1026,8 @@ async function checkAuth() {
         }
     } =
         await supabaseClient
-        .auth
-        .getSession();
-
+            .auth
+            .getSession();
 
     if (!session) {
 
@@ -1597,12 +1035,9 @@ async function checkAuth() {
             "login.html";
 
         return false;
-
     }
 
-
     return true;
-
 }
 
 
@@ -1612,19 +1047,14 @@ async function checkAuth() {
 
 async function getClinic() {
 
-    /*
-       Ambil clinic_id dari profile/user metadata.
-    */
-
     const {
         data: {
             user
         }
     } =
         await supabaseClient
-        .auth
-        .getUser();
-
+            .auth
+            .getUser();
 
     if (!user) {
 
@@ -1632,13 +1062,8 @@ async function getClinic() {
             "login.html";
 
         return false;
-
     }
 
-
-    /*
-       Coba ambil dari user_metadata.
-    */
 
     currentClinicId =
         user.user_metadata?.clinic_id ||
@@ -1651,8 +1076,7 @@ async function getClinic() {
 
 
     /*
-       Kalau sistem kamu memakai profiles,
-       coba ambil clinic_id dari profiles.
+       Fallback ke profiles
     */
 
     if (!currentClinicId) {
@@ -1662,15 +1086,15 @@ async function getClinic() {
             error
         } =
             await supabaseClient
-            .from("profiles")
-            .select(
-                "clinic_id, clinic_name"
-            )
-            .eq(
-                "id",
-                user.id
-            )
-            .maybeSingle();
+                .from("profiles")
+                .select(
+                    "clinic_id, clinic_name"
+                )
+                .eq(
+                    "id",
+                    user.id
+                )
+                .maybeSingle();
 
 
         if (
@@ -1685,15 +1109,9 @@ async function getClinic() {
             currentClinicName =
                 profile.clinic_name ||
                 "VetClinic";
-
         }
-
     }
 
-
-    /*
-       Tampilkan nama clinic.
-    */
 
     document.getElementById(
         "clinicName"
@@ -1702,7 +1120,6 @@ async function getClinic() {
 
 
     return true;
-
 }
 
 
@@ -1710,42 +1127,30 @@ async function getClinic() {
    MONEY
 ===================================================== */
 
-function formatMoney(
-    value
-) {
+function formatMoney(value) {
 
     return new Intl.NumberFormat(
         "id-ID",
         {
-            style:
-                "currency",
-
-            currency:
-                "IDR",
-
-            maximumFractionDigits:
-                0
+            style: "currency",
+            currency: "IDR",
+            maximumFractionDigits: 0
         }
     ).format(
         Number(value || 0)
     );
-
 }
 
 
 /* =====================================================
-   DATE
+   DATE HELPERS
 ===================================================== */
 
 function today() {
 
     return new Date()
         .toISOString()
-        .slice(
-            0,
-            10
-        );
-
+        .slice(0, 10);
 }
 
 
@@ -1754,18 +1159,51 @@ function currentMonth() {
     const date =
         new Date();
 
-
     return (
         date.getFullYear() +
         "-" +
         String(
             date.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        )
+        ).padStart(2, "0")
     );
+}
 
+
+function formatDate(value) {
+
+    if (!value) {
+        return "-";
+    }
+
+    const parts =
+        String(value).split("-");
+
+    if (parts.length !== 3) {
+        return value;
+    }
+
+    return (
+        parts[2] +
+        "/" +
+        parts[1] +
+        "/" +
+        parts[0]
+    );
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 
@@ -1780,121 +1218,89 @@ function getDateRange() {
             "period"
         ).value;
 
-
     let from;
     let to;
 
 
     /* DAILY */
 
-    if (
-        type === "daily"
-    ) {
+    if (type === "daily") {
 
         from =
             document.getElementById(
                 "dailyDate"
             ).value;
 
-        to =
-            from;
-
+        to = from;
     }
 
 
     /* WEEKLY */
 
-    else if (
-        type === "weekly"
-    ) {
+    else if (type === "weekly") {
 
         const now =
             new Date();
 
-
         const day =
             now.getDay();
-
 
         const difference =
             day === 0
                 ? -6
                 : 1 - day;
 
-
         const monday =
-            new Date(
-                now
-            );
-
+            new Date(now);
 
         monday.setDate(
             now.getDate() +
             difference
         );
 
-
         const sunday =
-            new Date(
-                monday
-            );
-
+            new Date(monday);
 
         sunday.setDate(
-            monday.getDate() +
-            6
+            monday.getDate() + 6
         );
-
 
         from =
             monday
-            .toISOString()
-            .slice(
-                0,
-                10
-            );
-
+                .toISOString()
+                .slice(0, 10);
 
         to =
             sunday
-            .toISOString()
-            .slice(
-                0,
-                10
-            );
-
+                .toISOString()
+                .slice(0, 10);
     }
 
 
     /* MONTHLY */
 
-    else if (
-        type === "monthly"
-    ) {
+    else if (type === "monthly") {
 
         const month =
             document.getElementById(
                 "monthlyDate"
             ).value;
 
+        if (!month) {
+            return {
+                from: null,
+                to: null
+            };
+        }
 
         const parts =
-            month.split(
-                "-"
-            );
-
+            month.split("-");
 
         const year =
-            Number(
-                parts[0]
-            );
-
+            Number(parts[0]);
 
         const monthNumber =
-            Number(
-                parts[1]
-            );
-
+            Number(parts[1]);
 
         const lastDay =
             new Date(
@@ -1903,36 +1309,35 @@ function getDateRange() {
                 0
             ).getDate();
 
-
         from =
-            `${year}-${String(monthNumber).padStart(2,"0")}-01`;
-
+            `${year}-${String(monthNumber).padStart(2, "0")}-01`;
 
         to =
-            `${year}-${String(monthNumber).padStart(2,"0")}-${String(lastDay).padStart(2,"0")}`;
-
+            `${year}-${String(monthNumber).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
     }
 
 
     /* YEARLY */
 
-    else if (
-        type === "yearly"
-    ) {
+    else if (type === "yearly") {
 
         const year =
             document.getElementById(
                 "yearlyDate"
             ).value;
 
+        if (!year) {
+            return {
+                from: null,
+                to: null
+            };
+        }
 
         from =
             `${year}-01-01`;
 
-
         to =
             `${year}-12-31`;
-
     }
 
 
@@ -1945,12 +1350,10 @@ function getDateRange() {
                 "fromDate"
             ).value;
 
-
         to =
             document.getElementById(
                 "toDate"
             ).value;
-
     }
 
 
@@ -1958,50 +1361,6 @@ function getDateRange() {
         from,
         to
     };
-
-}
-
-
-/* =====================================================
-   DETECT SERVICE
-===================================================== */
-
-function detectService(
-    description
-) {
-
-    const text =
-        String(
-            description || ""
-        )
-        .toLowerCase()
-        .trim();
-
-
-    if (
-        text.includes(
-            "consult"
-        )
-    ) {
-
-        return "consultation";
-
-    }
-
-
-    if (
-        text.includes(
-            "groom"
-        )
-    ) {
-
-        return "grooming";
-
-    }
-
-
-    return null;
-
 }
 
 
@@ -2013,42 +1372,31 @@ async function loadOverview() {
 
     let patientQuery =
         supabaseClient
-        .from("patients")
-        .select(
-            "id,name,species,breed,created_at"
-        )
-        .order(
-            "created_at",
-            {
-                ascending:
-                    false
-            }
-        );
+            .from("patients")
+            .select(
+                "id,name,species,breed,created_at"
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
 
 
     let recordsQuery =
         supabaseClient
-        .from("medical_records")
-        .select(
-            "id"
-        );
+            .from("medical_records")
+            .select("id");
 
 
     let appointmentsQuery =
         supabaseClient
-        .from("appointments")
-        .select(
-            "id"
-        );
+            .from("appointments")
+            .select("id");
 
 
-    /*
-       Filter clinic jika clinic_id tersedia.
-    */
-
-    if (
-        currentClinicId
-    ) {
+    if (currentClinicId) {
 
         patientQuery =
             patientQuery.eq(
@@ -2056,20 +1404,17 @@ async function loadOverview() {
                 currentClinicId
             );
 
-
         recordsQuery =
             recordsQuery.eq(
                 "clinic_id",
                 currentClinicId
             );
 
-
         appointmentsQuery =
             appointmentsQuery.eq(
                 "clinic_id",
                 currentClinicId
             );
-
     }
 
 
@@ -2079,13 +1424,9 @@ async function loadOverview() {
         appointments
     ] =
         await Promise.all([
-
             patientQuery,
-
             recordsQuery,
-
             appointmentsQuery
-
         ]);
 
 
@@ -2101,8 +1442,11 @@ async function loadOverview() {
             appointments.error
         );
 
-        return;
+        showError(
+            "Failed to load clinic overview."
+        );
 
+        return;
     }
 
 
@@ -2124,7 +1468,7 @@ async function loadOverview() {
         appointments.data.length;
 
 
-    /* Species */
+    /* SPECIES */
 
     const species = {};
 
@@ -2136,13 +1480,11 @@ async function loadOverview() {
                 patient.species ||
                 "Unknown";
 
-
             species[name] =
                 (
                     species[name] ||
                     0
                 ) + 1;
-
         }
     );
 
@@ -2152,98 +1494,67 @@ async function loadOverview() {
             "speciesList"
         );
 
-
-    speciesList.innerHTML =
-        "";
+    speciesList.innerHTML = "";
 
 
-    Object.entries(
-        species
-    )
-    .sort(
-        (
-            a,
-            b
-        ) =>
-            b[1] -
-            a[1]
-    )
-    .forEach(
-        (
-            [
-                speciesName,
-                count
-            ]
-        ) => {
+    Object.entries(species)
+        .sort(
+            (a, b) =>
+                b[1] - a[1]
+        )
+        .forEach(
+            ([speciesName, count]) => {
 
-            const row =
-                document.createElement(
-                    "tr"
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+                row.innerHTML = `
+                    <td>
+                        ${escapeHtml(speciesName)}
+                    </td>
+
+                    <td>
+                        ${count}
+                    </td>
+                `;
+
+                speciesList.appendChild(
+                    row
                 );
+            }
+        );
 
 
-            row.innerHTML = `
-
-                <td>
-                    ${escapeHtml(
-                        speciesName
-                    )}
-                </td>
-
-                <td>
-                    ${count}
-                </td>
-
-            `;
-
-
-            speciesList.appendChild(
-                row
-            );
-
-        }
-    );
-
-
-    if (
-        speciesList.children.length === 0
-    ) {
+    if (!speciesList.children.length) {
 
         speciesList.innerHTML = `
-
             <tr>
-
                 <td
                     colspan="2"
-                    class="empty"
-                >
+                    class="empty">
+
                     No data.
+
                 </td>
-
             </tr>
-
         `;
-
     }
 
 
-    /* Recent patients */
+    /* RECENT PATIENTS */
 
     const recent =
         document.getElementById(
             "recentPatients"
         );
 
-
-    recent.innerHTML =
-        "";
+    recent.innerHTML = "";
 
 
     patients.data
-        .slice(
-            0,
-            10
-        )
+        .slice(0, 10)
         .forEach(
             patient => {
 
@@ -2251,7 +1562,6 @@ async function loadOverview() {
                     document.createElement(
                         "tr"
                     );
-
 
                 row.innerHTML = `
 
@@ -2289,14 +1599,11 @@ async function loadOverview() {
 
                 `;
 
-
                 recent.appendChild(
                     row
                 );
-
             }
         );
-
 }
 
 
@@ -2323,7 +1630,6 @@ async function loadRevenueReport() {
         );
 
         return;
-
     }
 
 
@@ -2337,68 +1643,66 @@ async function loadRevenueReport() {
         );
 
         return;
-
     }
 
 
     document.getElementById(
         "transactions"
     ).innerHTML = `
-
         <div class="empty">
             Loading revenue...
         </div>
-
     `;
 
 
-    let invoiceQuery =
-        supabaseClient
-        .from("invoices")
-        .select(
-            `
-            id,
-            invoice_number,
-            invoice_date,
-            total,
-            status,
-            patient_id,
-            patients (
-                name
-            )
-            `
-        )
-        .gte(
-            "invoice_date",
-            range.from
-        )
-        .lte(
-            "invoice_date",
-            range.to
-        )
-        .order(
-            "invoice_date",
-            {
-                ascending:
-                    false
-            }
-        );
-
-
     /*
-       Multi-clinic isolation.
+       IMPORTANT:
+
+       Revenue dibaca dari invoices
+       lalu invoice_items.category.
+
+       Category yang dipakai:
+       consultation
+       grooming
     */
 
-    if (
-        currentClinicId
-    ) {
+    let invoiceQuery =
+        supabaseClient
+            .from("invoices")
+            .select(`
+                id,
+                invoice_number,
+                invoice_date,
+                total,
+                status,
+                patient_id,
+                patients (
+                    name
+                )
+            `)
+            .gte(
+                "invoice_date",
+                range.from
+            )
+            .lte(
+                "invoice_date",
+                range.to
+            )
+            .order(
+                "invoice_date",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (currentClinicId) {
 
         invoiceQuery =
             invoiceQuery.eq(
                 "clinic_id",
                 currentClinicId
             );
-
     }
 
 
@@ -2411,9 +1715,7 @@ async function loadRevenueReport() {
 
     if (error) {
 
-        console.error(
-            error
-        );
+        console.error(error);
 
         showError(
             "Failed to load revenue: " +
@@ -2421,32 +1723,20 @@ async function loadRevenueReport() {
         );
 
         return;
-
     }
 
 
-    let consultationRevenue =
-        0;
+    let consultationRevenue = 0;
+    let groomingRevenue = 0;
 
+    let consultationCount = 0;
+    let groomingCount = 0;
 
-    let groomingRevenue =
-        0;
-
-
-    let consultationCount =
-        0;
-
-
-    let groomingCount =
-        0;
-
-
-    const transactions =
-        [];
+    const transactions = [];
 
 
     /*
-       Get invoice items.
+       LOOP INVOICES
     */
 
     for (
@@ -2454,30 +1744,33 @@ async function loadRevenueReport() {
         of invoices || []
     ) {
 
-        let itemQuery =
-            supabaseClient
-            .from(
-                "invoice_items"
-            )
-            .select(
-                `
-                description,
-                quantity,
-                unit_price,
-                total
-                `
-            )
-            .eq(
-                "invoice_id",
-                invoice.id
-            );
+        /*
+           Ambil item invoice.
 
+           CATEGORY WAJIB DIAMBIL
+           karena Billing menyimpan:
+
+           consultation
+           grooming
+        */
 
         const {
             data: items,
             error: itemError
         } =
-            await itemQuery;
+            await supabaseClient
+                .from("invoice_items")
+                .select(`
+                    description,
+                    quantity,
+                    unit_price,
+                    total,
+                    category
+                `)
+                .eq(
+                    "invoice_id",
+                    invoice.id
+                );
 
 
         if (itemError) {
@@ -2487,7 +1780,6 @@ async function loadRevenueReport() {
             );
 
             continue;
-
         }
 
 
@@ -2496,10 +1788,17 @@ async function loadRevenueReport() {
             of items || []
         ) {
 
-            const service =
-                detectService(
-                    item.description
-                );
+            /*
+               PRIORITAS CATEGORY
+               dari database.
+            */
+
+            const category =
+                String(
+                    item.category || ""
+                )
+                .toLowerCase()
+                .trim();
 
 
             const amount =
@@ -2514,14 +1813,19 @@ async function loadRevenueReport() {
                 ) || 1;
 
 
+            /* =====================
+               CONSULTATION
+            ===================== */
+
             if (
-                service ===
-                "consultation"
+                category ===
+                    "consultation" ||
+                category ===
+                    "consult"
             ) {
 
                 consultationRevenue +=
                     amount;
-
 
                 consultationCount +=
                     quantity;
@@ -2548,20 +1852,24 @@ async function loadRevenueReport() {
 
                     status:
                         invoice.status
-
                 });
 
             }
 
 
+            /* =====================
+               GROOMING
+            ===================== */
+
             else if (
-                service ===
-                "grooming"
+                category ===
+                    "grooming" ||
+                category ===
+                    "groom"
             ) {
 
                 groomingRevenue +=
                     amount;
-
 
                 groomingCount +=
                     quantity;
@@ -2588,24 +1896,25 @@ async function loadRevenueReport() {
 
                     status:
                         invoice.status
-
                 });
-
             }
 
         }
-
     }
 
+
+    /*
+       TOTAL REVENUE
+    */
 
     const totalRevenue =
         consultationRevenue +
         groomingRevenue;
 
 
-    /* =================================================
+    /* =====================
        UPDATE UI
-    ================================================= */
+    ===================== */
 
     document.getElementById(
         "consultationRevenue"
@@ -2637,8 +1946,8 @@ async function loadRevenueReport() {
         consultationCount +
         (
             consultationCount === 1
-            ? " visit"
-            : " visits"
+                ? " visit"
+                : " visits"
         );
 
 
@@ -2648,8 +1957,8 @@ async function loadRevenueReport() {
         groomingCount +
         (
             groomingCount === 1
-            ? " visit"
-            : " visits"
+                ? " visit"
+                : " visits"
         );
 
 
@@ -2659,8 +1968,8 @@ async function loadRevenueReport() {
         transactions.length +
         (
             transactions.length === 1
-            ? " transaction"
-            : " transactions"
+                ? " transaction"
+                : " transactions"
         );
 
 
@@ -2686,8 +1995,8 @@ async function loadRevenueReport() {
         consultationCount +
         (
             consultationCount === 1
-            ? " visit"
-            : " visits"
+                ? " visit"
+                : " visits"
         );
 
 
@@ -2697,8 +2006,8 @@ async function loadRevenueReport() {
         groomingCount +
         (
             groomingCount === 1
-            ? " visit"
-            : " visits"
+                ? " visit"
+                : " visits"
         );
 
 
@@ -2711,7 +2020,6 @@ async function loadRevenueReport() {
     renderTransactions(
         transactions
     );
-
 }
 
 
@@ -2729,9 +2037,7 @@ function renderTransactions(
         );
 
 
-    if (
-        !transactions.length
-    ) {
+    if (!transactions.length) {
 
         container.innerHTML = `
 
@@ -2748,12 +2054,10 @@ function renderTransactions(
         `;
 
         return;
-
     }
 
 
-    let rows =
-        "";
+    let rows = "";
 
 
     transactions.forEach(
@@ -2772,24 +2076,19 @@ function renderTransactions(
 
 
             if (
-                status ===
-                "paid"
+                status === "paid"
             ) {
 
                 statusClass =
                     "status-paid";
-
             }
 
-
             else if (
-                status ===
-                "partial"
+                status === "partial"
             ) {
 
                 statusClass =
                     "status-partial";
-
             }
 
 
@@ -2824,7 +2123,6 @@ function renderTransactions(
                             ? "🩺 Consultation"
 
                             : "✂️ Grooming"
-
                         }
 
                     </td>
@@ -2842,12 +2140,13 @@ function renderTransactions(
                     <td>
 
                         <span
-                            class="status ${statusClass}"
-                        >
+                            class="status ${statusClass}">
+
                             ${escapeHtml(
                                 transaction.status ||
                                 "-"
                             )}
+
                         </span>
 
                     </td>
@@ -2855,7 +2154,6 @@ function renderTransactions(
                 </tr>
 
             `;
-
         }
     );
 
@@ -2870,34 +2168,21 @@ function renderTransactions(
 
                     <tr>
 
-                        <th>
-                            Date
-                        </th>
+                        <th>Date</th>
 
-                        <th>
-                            Invoice
-                        </th>
+                        <th>Invoice</th>
 
-                        <th>
-                            Patient
-                        </th>
+                        <th>Patient</th>
 
-                        <th>
-                            Service
-                        </th>
+                        <th>Service</th>
 
-                        <th>
-                            Revenue
-                        </th>
+                        <th>Revenue</th>
 
-                        <th>
-                            Status
-                        </th>
+                        <th>Status</th>
 
                     </tr>
 
                 </thead>
-
 
                 <tbody>
 
@@ -2910,7 +2195,6 @@ function renderTransactions(
         </div>
 
     `;
-
 }
 
 
@@ -2922,7 +2206,7 @@ document.getElementById(
     "period"
 ).addEventListener(
     "change",
-    function() {
+    function () {
 
         const value =
             this.value;
@@ -2932,128 +2216,53 @@ document.getElementById(
             "dailyGroup"
         ).style.display =
             value === "daily"
-            ? "flex"
-            : "none";
+                ? "flex"
+                : "none";
 
 
         document.getElementById(
             "monthlyGroup"
         ).style.display =
             value === "monthly"
-            ? "flex"
-            : "none";
+                ? "flex"
+                : "none";
 
 
         document.getElementById(
             "yearlyGroup"
         ).style.display =
             value === "yearly"
-            ? "flex"
-            : "none";
+                ? "flex"
+                : "none";
 
 
         document.getElementById(
             "customRange"
         ).style.display =
             value === "custom"
-            ? "flex"
-            : "none";
-
+                ? "flex"
+                : "none";
     }
 );
-
-
-/* =====================================================
-   FORMAT DATE
-===================================================== */
-
-function formatDate(
-    value
-) {
-
-    if (!value) {
-        return "-";
-    }
-
-
-    const parts =
-        String(value)
-        .split("-");
-
-
-    if (
-        parts.length !== 3
-    ) {
-
-        return value;
-
-    }
-
-
-    return (
-        parts[2] +
-        "/" +
-        parts[1] +
-        "/" +
-        parts[0]
-    );
-
-}
-
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHtml(
-    value
-) {
-
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
-
-}
 
 
 /* =====================================================
    ERROR
 ===================================================== */
 
-function showError(
-    text
-) {
+function showError(text) {
 
     document.getElementById(
         "errorBox"
     ).innerHTML = `
 
         <div class="error">
+
             ${escapeHtml(text)}
+
         </div>
 
     `;
-
 }
 
 
@@ -3061,9 +2270,7 @@ function clearError() {
 
     document.getElementById(
         "errorBox"
-    ).innerHTML =
-        "";
-
+    ).innerHTML = "";
 }
 
 
@@ -3087,7 +2294,7 @@ document.getElementById(
     "yearlyDate"
 ).value =
     new Date()
-    .getFullYear();
+        .getFullYear();
 
 
 document.getElementById(
@@ -3128,9 +2335,7 @@ async function initialize() {
 
     await loadOverview();
 
-
     await loadRevenueReport();
-
 }
 
 
@@ -3139,5 +2344,4 @@ initialize();
 </script>
 
 </body>
-
 </html>
