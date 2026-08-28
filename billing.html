@@ -564,16 +564,6 @@ th {
 }
 
 
-.category-medicine {
-
-    background:
-        #eaf7ff;
-
-    color:
-        #26709e;
-
-}
-
 
 @media(max-width:700px) {
 
@@ -1657,10 +1647,7 @@ function addItem() {
                     ✂️ Grooming
                 </option>
 
-                <option value="medicine">
-                    💊 Medicine
-                </option>
-
+        
             </select>
 
         </td>
@@ -1872,8 +1859,14 @@ function getItems() {
                     ) || 0;
 
 
+                const allowedCategories = [
+                    "consultation",
+                    "grooming"
+                ];
+
                 if (
-                    description
+                    description &&
+                    allowedCategories.includes(category)
                 ) {
 
 
@@ -2313,10 +2306,10 @@ function categoryBadge(
 
     return `
         <span
-            class="category-badge
-            category-medicine"
+            class="category-badge"
+            style="background:#f3f4f6;color:#4b5563;"
         >
-            💊 Medicine
+            ${escapeHTML(category || "Other")}
         </span>
     `;
 
