@@ -2,293 +2,1729 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
 <title>Reports - VetClinic</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
 <style>
+
+/* =====================================================
+   GENERAL
+===================================================== */
+
 * {
     box-sizing: border-box;
 }
 
 body {
+
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f6fb;
-    color: #252d3d;
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    background:
+        #fff9f7;
+
+    color:
+        #343447;
+
 }
+
 
 .container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 30px;
+
+    max-width:
+        1250px;
+
+    margin:
+        auto;
+
+    padding:
+        30px;
+
 }
+
+
+/* =====================================================
+   HEADER
+===================================================== */
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    margin-bottom:
+        25px;
+
 }
+
 
 .header h1 {
-    margin: 0;
+
+    margin:
+        0;
+
+    font-size:
+        28px;
+
 }
+
 
 .header p {
-    color: #6b7280;
+
+    margin:
+        7px 0 0;
+
+    color:
+        #77778b;
+
 }
 
-.card {
-    background: white;
-    border-radius: 14px;
-    padding: 25px;
-    margin-bottom: 25px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+
+.clinic-name {
+
+    color:
+        #7c6ff0;
+
+    font-weight:
+        700;
+
 }
 
-.stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-}
 
-.stat {
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 20px;
-}
-
-.stat-label {
-    color: #6b7280;
-    font-size: 13px;
-}
-
-.stat-value {
-    font-size: 28px;
-    font-weight: 700;
-    margin-top: 8px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th,
-td {
-    padding: 12px;
-    border-bottom: 1px solid #e5e7eb;
-    text-align: left;
-}
-
-th {
-    background: #f9fafb;
-}
-
-.empty {
-    text-align: center;
-    padding: 30px;
-    color: #6b7280;
-}
-
-.error {
-    color: #dc2626;
-}
+/* =====================================================
+   BUTTON
+===================================================== */
 
 .secondary {
-    border: none;
-    border-radius: 8px;
-    padding: 11px 16px;
-    cursor: pointer;
-    font-weight: 600;
-    background: #e5e7eb;
-    color: #374151;
+
+    border:
+        none;
+
+    border-radius:
+        11px;
+
+    padding:
+        11px 17px;
+
+    cursor:
+        pointer;
+
+    font-weight:
+        700;
+
+    background:
+        #eeeaff;
+
+    color:
+        #6f60e8;
+
 }
 
-@media(max-width:800px) {
+
+.secondary:hover {
+
+    background:
+        #e3defe;
+
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.card {
+
+    background:
+        white;
+
+    border:
+        1px solid #eee9ee;
+
+    border-radius:
+        18px;
+
+    padding:
+        23px;
+
+    margin-bottom:
+        20px;
+
+    box-shadow:
+        0 8px 30px
+        rgba(
+            73,
+            62,
+            100,
+            0.07
+        );
+
+}
+
+
+.card h2 {
+
+    margin:
+        0 0 20px;
+
+    font-size:
+        18px;
+
+}
+
+
+/* =====================================================
+   OVERVIEW
+===================================================== */
+
+.stats {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap:
+        16px;
+
+}
+
+
+.stat {
+
+    border:
+        1px solid #eee9ee;
+
+    border-radius:
+        15px;
+
+    padding:
+        19px;
+
+}
+
+
+.stat-label {
+
+    color:
+        #77778b;
+
+    font-size:
+        13px;
+
+    font-weight:
+        600;
+
+}
+
+
+.stat-value {
+
+    font-size:
+        25px;
+
+    font-weight:
+        800;
+
+    margin-top:
+        8px;
+
+}
+
+
+/* =====================================================
+   REVENUE SUMMARY
+===================================================== */
+
+.revenue-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap:
+        16px;
+
+}
+
+
+.revenue-card {
+
+    border-radius:
+        17px;
+
+    padding:
+        22px;
+
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+}
+
+
+.revenue-card.consultation {
+
+    background:
+        #eeeaff;
+
+    color:
+        #6254d9;
+
+}
+
+
+.revenue-card.grooming {
+
+    background:
+        #fff0f4;
+
+    color:
+        #c85c79;
+
+}
+
+
+.revenue-card.total {
+
+    background:
+        #effbf6;
+
+    color:
+        #36936e;
+
+}
+
+
+.revenue-icon {
+
+    font-size:
+        25px;
+
+    margin-bottom:
+        12px;
+
+}
+
+
+.revenue-label {
+
+    font-size:
+        13px;
+
+    font-weight:
+        700;
+
+}
+
+
+.revenue-value {
+
+    margin-top:
+        6px;
+
+    font-size:
+        25px;
+
+    font-weight:
+        800;
+
+}
+
+
+.revenue-count {
+
+    margin-top:
+        7px;
+
+    font-size:
+        12px;
+
+    opacity:
+        0.8;
+
+}
+
+
+/* =====================================================
+   FILTER
+===================================================== */
+
+.filter-row {
+
+    display:
+        flex;
+
+    align-items:
+        flex-end;
+
+    gap:
+        12px;
+
+    flex-wrap:
+        wrap;
+
+}
+
+
+.filter-group {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        7px;
+
+}
+
+
+.filter-group label {
+
+    font-size:
+        12px;
+
+    font-weight:
+        800;
+
+    color:
+        #77778b;
+
+}
+
+
+select,
+input {
+
+    padding:
+        11px 13px;
+
+    border:
+        1px solid #e5e1e7;
+
+    border-radius:
+        11px;
+
+    background:
+        white;
+
+    font-family:
+        inherit;
+
+    min-width:
+        170px;
+
+    color:
+        #343447;
+
+}
+
+
+select:focus,
+input:focus {
+
+    outline:
+        none;
+
+    border-color:
+        #8b7cf6;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(
+            139,
+            124,
+            246,
+            0.10
+        );
+
+}
+
+
+.generate {
+
+    padding:
+        11px 18px;
+
+    border:
+        none;
+
+    border-radius:
+        11px;
+
+    background:
+        #8b7cf6;
+
+    color:
+        white;
+
+    font-family:
+        inherit;
+
+    font-weight:
+        800;
+
+    cursor:
+        pointer;
+
+}
+
+
+.generate:hover {
+
+    background:
+        #6f60e8;
+
+}
+
+
+.custom-range {
+
+    display:
+        none;
+
+    gap:
+        10px;
+
+    flex-wrap:
+        wrap;
+
+}
+
+
+/* =====================================================
+   SERVICE BREAKDOWN
+===================================================== */
+
+.breakdown-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:
+        18px;
+
+}
+
+
+.breakdown-item {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    padding:
+        15px 0;
+
+    border-bottom:
+        1px solid #f0edf1;
+
+}
+
+
+.breakdown-item:last-child {
+
+    border-bottom:
+        none;
+
+}
+
+
+.service-left {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        11px;
+
+}
+
+
+.service-icon {
+
+    width:
+        40px;
+
+    height:
+        40px;
+
+    border-radius:
+        12px;
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+    font-size:
+        20px;
+
+}
+
+
+.consult-icon {
+
+    background:
+        #eeeaff;
+
+}
+
+
+.groom-icon {
+
+    background:
+        #fff0f4;
+
+}
+
+
+.service-name {
+
+    font-weight:
+        800;
+
+}
+
+
+.service-count {
+
+    color:
+        #77778b;
+
+    font-size:
+        12px;
+
+    margin-top:
+        3px;
+
+}
+
+
+.service-money {
+
+    font-weight:
+        800;
+
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.table-wrapper {
+
+    overflow-x:
+        auto;
+
+}
+
+
+table {
+
+    width:
+        100%;
+
+    border-collapse:
+        collapse;
+
+}
+
+
+th {
+
+    padding:
+        13px;
+
+    text-align:
+        left;
+
+    background:
+        #faf8fb;
+
+    color:
+        #77778b;
+
+    font-size:
+        12px;
+
+}
+
+
+td {
+
+    padding:
+        14px 13px;
+
+    border-bottom:
+        1px solid #f0edf1;
+
+    font-size:
+        13px;
+
+}
+
+
+tbody tr:hover {
+
+    background:
+        #fdfbfe;
+
+}
+
+
+.status {
+
+    display:
+        inline-block;
+
+    padding:
+        5px 9px;
+
+    border-radius:
+        999px;
+
+    font-size:
+        11px;
+
+    font-weight:
+        800;
+
+}
+
+
+.status-paid {
+
+    background:
+        #effbf6;
+
+    color:
+        #2e956c;
+
+}
+
+
+.status-unpaid {
+
+    background:
+        #fff0f1;
+
+    color:
+        #c95d64;
+
+}
+
+
+.status-partial {
+
+    background:
+        #fff8df;
+
+    color:
+        #a87917;
+
+}
+
+
+/* =====================================================
+   EMPTY / ERROR
+===================================================== */
+
+.empty {
+
+    text-align:
+        center;
+
+    padding:
+        30px;
+
+    color:
+        #77778b;
+
+}
+
+
+.error {
+
+    background:
+        #fff0f1;
+
+    color:
+        #c95d64;
+
+    padding:
+        13px 15px;
+
+    border-radius:
+        10px;
+
+    margin-bottom:
+        20px;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:900px) {
+
+    .stats {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .revenue-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .breakdown-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+
+@media(max-width:600px) {
+
     .container {
-        padding: 15px;
+
+        padding:
+            15px;
+
     }
 
-    .stats {
-        grid-template-columns: repeat(2, 1fr);
+
+    .header {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+        gap:
+            12px;
+
     }
+
+
+    .stats {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .filter-row {
+
+        flex-direction:
+            column;
+
+        align-items:
+            stretch;
+
+    }
+
+
+    select,
+    input {
+
+        width:
+            100%;
+
+    }
+
+
+    .custom-range {
+
+        flex-direction:
+            column;
+
+    }
+
 }
 
-@media(max-width:500px) {
-    .stats {
-        grid-template-columns: 1fr;
-    }
-}
 </style>
 
 </head>
 
+
 <body>
+
 
 <div class="container">
 
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
 <div class="header">
 
-<div>
-<h1>📊 Reports</h1>
-<p>VetClinic Management Reports</p>
+    <div>
+
+        <h1>
+            📊 Reports
+        </h1>
+
+        <p>
+            <span
+                id="clinicName"
+                class="clinic-name"
+            >
+                VetClinic
+            </span>
+
+            · Revenue & Clinic Overview
+        </p>
+
+    </div>
+
+
+    <button
+        class="secondary"
+        type="button"
+        onclick="window.location.href='index.html'"
+    >
+        🏠 Dashboard
+    </button>
+
 </div>
 
-<button
-class="secondary"
-type="button"
-onclick="window.location.href='index.html'">
-Dashboard
-</button>
 
-</div>
+<div id="errorBox"></div>
 
+
+<!-- =====================================================
+     OVERVIEW
+===================================================== -->
 
 <div class="card">
 
-<h2>Overview</h2>
+    <h2>
+        🐾 Clinic Overview
+    </h2>
 
-<div class="stats">
 
-<div class="stat">
-<div class="stat-label">Total Patients</div>
-<div class="stat-value" id="totalPatients">-</div>
+    <div class="stats">
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Total Patients
+            </div>
+
+            <div
+                class="stat-value"
+                id="totalPatients"
+            >
+                -
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Medical Records
+            </div>
+
+            <div
+                class="stat-value"
+                id="totalRecords"
+            >
+                -
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Appointments
+            </div>
+
+            <div
+                class="stat-value"
+                id="totalAppointments"
+            >
+                -
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Report Period
+            </div>
+
+            <div
+                class="stat-value"
+                id="periodLabel"
+                style="font-size:18px;"
+            >
+                -
+            </div>
+
+        </div>
+
+
+    </div>
+
 </div>
 
-<div class="stat">
-<div class="stat-label">Medical Records</div>
-<div class="stat-value" id="totalRecords">-</div>
-</div>
 
-<div class="stat">
-<div class="stat-label">Appointments</div>
-<div class="stat-value" id="totalAppointments">-</div>
-</div>
-
-<div class="stat">
-<div class="stat-label">Paid Revenue</div>
-<div class="stat-value" id="totalRevenue">-</div>
-</div>
-
-</div>
-
-</div>
-
+<!-- =====================================================
+     FILTER
+===================================================== -->
 
 <div class="card">
 
-<h2>Species Distribution</h2>
+    <h2>
+        📅 Revenue Period
+    </h2>
 
-<table>
 
-<thead>
-<tr>
-<th>Species</th>
-<th>Patients</th>
-</tr>
-</thead>
+    <div class="filter-row">
 
-<tbody id="speciesList">
 
-<tr>
-<td colspan="2" class="empty">
-Loading...
-</td>
-</tr>
+        <div class="filter-group">
 
-</tbody>
+            <label>
+                PERIOD
+            </label>
 
-</table>
+            <select id="period">
+
+                <option value="daily">
+                    Daily
+                </option>
+
+                <option value="weekly">
+                    Weekly
+                </option>
+
+                <option
+                    value="monthly"
+                    selected
+                >
+                    Monthly
+                </option>
+
+                <option value="yearly">
+                    Yearly
+                </option>
+
+                <option value="custom">
+                    Custom Date
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- DAILY -->
+
+        <div
+            class="filter-group"
+            id="dailyGroup"
+            style="display:none;"
+        >
+
+            <label>
+                DATE
+            </label>
+
+            <input
+                type="date"
+                id="dailyDate"
+            >
+
+        </div>
+
+
+        <!-- MONTHLY -->
+
+        <div
+            class="filter-group"
+            id="monthlyGroup"
+        >
+
+            <label>
+                MONTH
+            </label>
+
+            <input
+                type="month"
+                id="monthlyDate"
+            >
+
+        </div>
+
+
+        <!-- YEARLY -->
+
+        <div
+            class="filter-group"
+            id="yearlyGroup"
+            style="display:none;"
+        >
+
+            <label>
+                YEAR
+            </label>
+
+            <input
+                type="number"
+                id="yearlyDate"
+                min="2000"
+                max="2100"
+            >
+
+        </div>
+
+
+        <!-- CUSTOM -->
+
+        <div
+            class="custom-range"
+            id="customRange"
+        >
+
+            <div class="filter-group">
+
+                <label>
+                    FROM
+                </label>
+
+                <input
+                    type="date"
+                    id="fromDate"
+                >
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <label>
+                    TO
+                </label>
+
+                <input
+                    type="date"
+                    id="toDate"
+                >
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="generate"
+            onclick="loadRevenueReport()"
+        >
+            Generate Report
+        </button>
+
+
+    </div>
 
 </div>
 
+
+<!-- =====================================================
+     REVENUE
+===================================================== -->
 
 <div class="card">
 
-<h2>Recent Patients</h2>
+    <h2>
+        💰 Revenue
+    </h2>
 
-<table>
 
-<thead>
-<tr>
-<th>Name</th>
-<th>Species</th>
-<th>Breed</th>
-<th>Created</th>
-</tr>
-</thead>
+    <div class="revenue-grid">
 
-<tbody id="recentPatients">
 
-<tr>
-<td colspan="4" class="empty">
-Loading...
-</td>
-</tr>
+        <div class="revenue-card consultation">
 
-</tbody>
+            <div class="revenue-icon">
+                🩺
+            </div>
 
-</table>
+            <div class="revenue-label">
+                Consultation Revenue
+            </div>
+
+            <div
+                class="revenue-value"
+                id="consultationRevenue"
+            >
+                Rp0
+            </div>
+
+            <div
+                class="revenue-count"
+                id="consultationCount"
+            >
+                0 visits
+            </div>
+
+        </div>
+
+
+        <div class="revenue-card grooming">
+
+            <div class="revenue-icon">
+                ✂️
+            </div>
+
+            <div class="revenue-label">
+                Grooming Revenue
+            </div>
+
+            <div
+                class="revenue-value"
+                id="groomingRevenue"
+            >
+                Rp0
+            </div>
+
+            <div
+                class="revenue-count"
+                id="groomingCount"
+            >
+                0 visits
+            </div>
+
+        </div>
+
+
+        <div class="revenue-card total">
+
+            <div class="revenue-icon">
+                💰
+            </div>
+
+            <div class="revenue-label">
+                Total Revenue
+            </div>
+
+            <div
+                class="revenue-value"
+                id="totalRevenue"
+            >
+                Rp0
+            </div>
+
+            <div
+                class="revenue-count"
+                id="totalTransactions"
+            >
+                0 transactions
+            </div>
+
+        </div>
+
+
+    </div>
 
 </div>
 
+
+<!-- =====================================================
+     BREAKDOWN
+===================================================== -->
+
+<div class="breakdown-grid">
+
+
+    <div class="card">
+
+        <h2>
+            🩺 Consultation
+        </h2>
+
+
+        <div class="breakdown-item">
+
+            <div class="service-left">
+
+                <div class="service-icon consult-icon">
+                    🩺
+                </div>
+
+                <div>
+
+                    <div class="service-name">
+                        Consultation
+                    </div>
+
+                    <div
+                        class="service-count"
+                        id="consultationCount2"
+                    >
+                        0 visits
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="service-money"
+                id="consultationRevenue2"
+            >
+                Rp0
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            ✂️ Grooming
+        </h2>
+
+
+        <div class="breakdown-item">
+
+            <div class="service-left">
+
+                <div class="service-icon groom-icon">
+                    ✂️
+                </div>
+
+                <div>
+
+                    <div class="service-name">
+                        Grooming
+                    </div>
+
+                    <div
+                        class="service-count"
+                        id="groomingCount2"
+                    >
+                        0 visits
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="service-money"
+                id="groomingRevenue2"
+            >
+                Rp0
+            </div>
+
+        </div>
+
+
+    </div>
+
+
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- =====================================================
+     TRANSACTIONS
+===================================================== -->
+
+<div class="card">
+
+    <h2>
+        💳 Revenue Transactions
+    </h2>
+
+
+    <div
+        id="transactions"
+        class="empty"
+    >
+        Loading...
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     SPECIES
+===================================================== -->
+
+<div class="card">
+
+    <h2>
+        🐶🐱 Species Distribution
+    </h2>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Species
+                    </th>
+
+                    <th>
+                        Patients
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="speciesList">
+
+                <tr>
+
+                    <td
+                        colspan="2"
+                        class="empty"
+                    >
+                        Loading...
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     RECENT PATIENTS
+===================================================== -->
+
+<div class="card">
+
+    <h2>
+        🐾 Recent Patients
+    </h2>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Name
+                    </th>
+
+                    <th>
+                        Species
+                    </th>
+
+                    <th>
+                        Breed
+                    </th>
+
+                    <th>
+                        Created
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="recentPatients">
+
+                <tr>
+
+                    <td
+                        colspan="4"
+                        class="empty"
+                    >
+                        Loading...
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+</div>
+
 
 <script>
 
-/*
-IMPORTANT:
-Copy the SUPABASE_URL, SUPABASE_KEY
-and createClient section from your
-working appointments.html.
-*/
+/* =====================================================
+   SUPABASE
+===================================================== */
 
 const SUPABASE_URL =
 "https://zltbjbbofvvndxirlipf.supabase.co";
 
+
+/*
+   PENTING:
+   Gunakan KEY YANG SAMA dengan
+   appointments.html / billing.html
+*/
+
 const SUPABASE_KEY =
 "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
+
 
 const supabaseClient =
 supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
-supabaseClient.auth.getSession().then(({ data: { session } }) => {
+
+
+/* =====================================================
+   CLINIC
+===================================================== */
+
+let currentClinicId = null;
+
+let currentClinicName =
+    "VetClinic";
+
+
+/* =====================================================
+   AUTH
+===================================================== */
+
+async function checkAuth() {
+
+    const {
+        data: {
+            session
+        }
+    } =
+        await supabaseClient
+        .auth
+        .getSession();
+
 
     if (!session) {
-        window.location.href = "login.html";
-        return;
+
+        window.location.href =
+            "login.html";
+
+        return false;
+
     }
 
-});
 
-
-function escapeHtml(value) {
-
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return true;
 
 }
 
 
-function formatMoney(value) {
+/* =====================================================
+   GET CLINIC
+===================================================== */
+
+async function getClinic() {
+
+    /*
+       Ambil clinic_id dari profile/user metadata.
+    */
+
+    const {
+        data: {
+            user
+        }
+    } =
+        await supabaseClient
+        .auth
+        .getUser();
+
+
+    if (!user) {
+
+        window.location.href =
+            "login.html";
+
+        return false;
+
+    }
+
+
+    /*
+       Coba ambil dari user_metadata.
+    */
+
+    currentClinicId =
+        user.user_metadata?.clinic_id ||
+        null;
+
+
+    currentClinicName =
+        user.user_metadata?.clinic_name ||
+        "VetClinic";
+
+
+    /*
+       Kalau sistem kamu memakai profiles,
+       coba ambil clinic_id dari profiles.
+    */
+
+    if (!currentClinicId) {
+
+        const {
+            data: profile,
+            error
+        } =
+            await supabaseClient
+            .from("profiles")
+            .select(
+                "clinic_id, clinic_name"
+            )
+            .eq(
+                "id",
+                user.id
+            )
+            .maybeSingle();
+
+
+        if (
+            !error &&
+            profile
+        ) {
+
+            currentClinicId =
+                profile.clinic_id ||
+                null;
+
+            currentClinicName =
+                profile.clinic_name ||
+                "VetClinic";
+
+        }
+
+    }
+
+
+    /*
+       Tampilkan nama clinic.
+    */
+
+    document.getElementById(
+        "clinicName"
+    ).textContent =
+        currentClinicName;
+
+
+    return true;
+
+}
+
+
+/* =====================================================
+   MONEY
+===================================================== */
+
+function formatMoney(
+    value
+) {
 
     return new Intl.NumberFormat(
         "id-ID",
         {
-            style: "currency",
-            currency: "IDR",
-            maximumFractionDigits: 0
+            style:
+                "currency",
+
+            currency:
+                "IDR",
+
+            maximumFractionDigits:
+                0
         }
     ).format(
         Number(value || 0)
@@ -297,10 +1733,286 @@ function formatMoney(value) {
 }
 
 
-async function loadReports() {
+/* =====================================================
+   DATE
+===================================================== */
 
-    const patients =
-        await supabaseClient
+function today() {
+
+    return new Date()
+        .toISOString()
+        .slice(
+            0,
+            10
+        );
+
+}
+
+
+function currentMonth() {
+
+    const date =
+        new Date();
+
+
+    return (
+        date.getFullYear() +
+        "-" +
+        String(
+            date.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        )
+    );
+
+}
+
+
+/* =====================================================
+   DATE RANGE
+===================================================== */
+
+function getDateRange() {
+
+    const type =
+        document.getElementById(
+            "period"
+        ).value;
+
+
+    let from;
+    let to;
+
+
+    /* DAILY */
+
+    if (
+        type === "daily"
+    ) {
+
+        from =
+            document.getElementById(
+                "dailyDate"
+            ).value;
+
+        to =
+            from;
+
+    }
+
+
+    /* WEEKLY */
+
+    else if (
+        type === "weekly"
+    ) {
+
+        const now =
+            new Date();
+
+
+        const day =
+            now.getDay();
+
+
+        const difference =
+            day === 0
+                ? -6
+                : 1 - day;
+
+
+        const monday =
+            new Date(
+                now
+            );
+
+
+        monday.setDate(
+            now.getDate() +
+            difference
+        );
+
+
+        const sunday =
+            new Date(
+                monday
+            );
+
+
+        sunday.setDate(
+            monday.getDate() +
+            6
+        );
+
+
+        from =
+            monday
+            .toISOString()
+            .slice(
+                0,
+                10
+            );
+
+
+        to =
+            sunday
+            .toISOString()
+            .slice(
+                0,
+                10
+            );
+
+    }
+
+
+    /* MONTHLY */
+
+    else if (
+        type === "monthly"
+    ) {
+
+        const month =
+            document.getElementById(
+                "monthlyDate"
+            ).value;
+
+
+        const parts =
+            month.split(
+                "-"
+            );
+
+
+        const year =
+            Number(
+                parts[0]
+            );
+
+
+        const monthNumber =
+            Number(
+                parts[1]
+            );
+
+
+        const lastDay =
+            new Date(
+                year,
+                monthNumber,
+                0
+            ).getDate();
+
+
+        from =
+            `${year}-${String(monthNumber).padStart(2,"0")}-01`;
+
+
+        to =
+            `${year}-${String(monthNumber).padStart(2,"0")}-${String(lastDay).padStart(2,"0")}`;
+
+    }
+
+
+    /* YEARLY */
+
+    else if (
+        type === "yearly"
+    ) {
+
+        const year =
+            document.getElementById(
+                "yearlyDate"
+            ).value;
+
+
+        from =
+            `${year}-01-01`;
+
+
+        to =
+            `${year}-12-31`;
+
+    }
+
+
+    /* CUSTOM */
+
+    else {
+
+        from =
+            document.getElementById(
+                "fromDate"
+            ).value;
+
+
+        to =
+            document.getElementById(
+                "toDate"
+            ).value;
+
+    }
+
+
+    return {
+        from,
+        to
+    };
+
+}
+
+
+/* =====================================================
+   DETECT SERVICE
+===================================================== */
+
+function detectService(
+    description
+) {
+
+    const text =
+        String(
+            description || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    if (
+        text.includes(
+            "consult"
+        )
+    ) {
+
+        return "consultation";
+
+    }
+
+
+    if (
+        text.includes(
+            "groom"
+        )
+    ) {
+
+        return "grooming";
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =====================================================
+   LOAD OVERVIEW
+===================================================== */
+
+async function loadOverview() {
+
+    let patientQuery =
+        supabaseClient
         .from("patients")
         .select(
             "id,name,species,breed,created_at"
@@ -308,48 +2020,89 @@ async function loadReports() {
         .order(
             "created_at",
             {
-                ascending: false
+                ascending:
+                    false
             }
         );
 
 
-    const records =
-        await supabaseClient
+    let recordsQuery =
+        supabaseClient
         .from("medical_records")
-        .select("id");
+        .select(
+            "id"
+        );
 
 
-    const appointments =
-        await supabaseClient
+    let appointmentsQuery =
+        supabaseClient
         .from("appointments")
-        .select("id");
+        .select(
+            "id"
+        );
 
 
-    const invoices =
-        await supabaseClient
-        .from("invoices")
-        .select("total,status");
+    /*
+       Filter clinic jika clinic_id tersedia.
+    */
+
+    if (
+        currentClinicId
+    ) {
+
+        patientQuery =
+            patientQuery.eq(
+                "clinic_id",
+                currentClinicId
+            );
+
+
+        recordsQuery =
+            recordsQuery.eq(
+                "clinic_id",
+                currentClinicId
+            );
+
+
+        appointmentsQuery =
+            appointmentsQuery.eq(
+                "clinic_id",
+                currentClinicId
+            );
+
+    }
+
+
+    const [
+        patients,
+        records,
+        appointments
+    ] =
+        await Promise.all([
+
+            patientQuery,
+
+            recordsQuery,
+
+            appointmentsQuery
+
+        ]);
 
 
     if (
         patients.error ||
         records.error ||
-        appointments.error ||
-        invoices.error
+        appointments.error
     ) {
 
         console.error(
             patients.error ||
             records.error ||
-            appointments.error ||
-            invoices.error
+            appointments.error
         );
 
-        document.getElementById(
-            "totalPatients"
-        ).textContent = "Error";
-
         return;
+
     }
 
 
@@ -371,30 +2124,7 @@ async function loadReports() {
         appointments.data.length;
 
 
-    const revenue =
-        invoices.data
-        .filter(
-            invoice =>
-                invoice.status === "Paid"
-        )
-        .reduce(
-            (
-                sum,
-                invoice
-            ) =>
-                sum +
-                Number(
-                    invoice.total || 0
-                ),
-            0
-        );
-
-
-    document.getElementById(
-        "totalRevenue"
-    ).textContent =
-        formatMoney(revenue);
-
+    /* Species */
 
     const species = {};
 
@@ -402,12 +2132,16 @@ async function loadReports() {
     patients.data.forEach(
         patient => {
 
-            const speciesName =
+            const name =
                 patient.species ||
                 "Unknown";
 
-            species[speciesName] =
-                (species[speciesName] || 0) + 1;
+
+            species[name] =
+                (
+                    species[name] ||
+                    0
+                ) + 1;
 
         }
     );
@@ -418,33 +2152,54 @@ async function loadReports() {
             "speciesList"
         );
 
-    speciesList.innerHTML = "";
+
+    speciesList.innerHTML =
+        "";
 
 
-    Object.entries(species)
+    Object.entries(
+        species
+    )
     .sort(
-        (a, b) =>
-            b[1] - a[1]
+        (
+            a,
+            b
+        ) =>
+            b[1] -
+            a[1]
     )
     .forEach(
-        ([speciesName, count]) => {
+        (
+            [
+                speciesName,
+                count
+            ]
+        ) => {
 
             const row =
                 document.createElement(
                     "tr"
                 );
 
+
             row.innerHTML = `
+
                 <td>
-                    ${escapeHtml(speciesName)}
+                    ${escapeHtml(
+                        speciesName
+                    )}
                 </td>
 
                 <td>
                     ${count}
                 </td>
+
             `;
 
-            speciesList.appendChild(row);
+
+            speciesList.appendChild(
+                row
+            );
 
         }
     );
@@ -455,79 +2210,931 @@ async function loadReports() {
     ) {
 
         speciesList.innerHTML = `
+
             <tr>
+
                 <td
                     colspan="2"
-                    class="empty">
+                    class="empty"
+                >
                     No data.
                 </td>
+
             </tr>
+
         `;
 
     }
 
 
-    const recentPatients =
+    /* Recent patients */
+
+    const recent =
         document.getElementById(
             "recentPatients"
         );
 
-    recentPatients.innerHTML = "";
+
+    recent.innerHTML =
+        "";
 
 
     patients.data
-    .slice(0, 10)
-    .forEach(
-        patient => {
+        .slice(
+            0,
+            10
+        )
+        .forEach(
+            patient => {
 
-            const row =
-                document.createElement(
-                    "tr"
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                row.innerHTML = `
+
+                    <td>
+                        ${escapeHtml(
+                            patient.name
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            patient.species ||
+                            "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            patient.breed ||
+                            "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${
+                            patient.created_at
+                            ? new Date(
+                                patient.created_at
+                            ).toLocaleDateString(
+                                "id-ID"
+                            )
+                            : "-"
+                        }
+                    </td>
+
+                `;
+
+
+                recent.appendChild(
+                    row
                 );
 
-            row.innerHTML = `
+            }
+        );
 
-                <td>
-                    ${escapeHtml(
-                        patient.name
-                    )}
-                </td>
+}
 
-                <td>
-                    ${escapeHtml(
-                        patient.species
-                    )}
-                </td>
 
-                <td>
-                    ${escapeHtml(
-                        patient.breed || "-"
-                    )}
-                </td>
+/* =====================================================
+   LOAD REVENUE REPORT
+===================================================== */
 
-                <td>
-                    ${
-                        patient.created_at
-                        ? new Date(
-                            patient.created_at
-                        ).toLocaleDateString(
-                            "id-ID"
-                        )
-                        : "-"
-                    }
-                </td>
+async function loadRevenueReport() {
 
-            `;
+    clearError();
 
-            recentPatients.appendChild(row);
+
+    const range =
+        getDateRange();
+
+
+    if (
+        !range.from ||
+        !range.to
+    ) {
+
+        showError(
+            "Please select a valid date range."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        range.from >
+        range.to
+    ) {
+
+        showError(
+            "From date cannot be later than To date."
+        );
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "transactions"
+    ).innerHTML = `
+
+        <div class="empty">
+            Loading revenue...
+        </div>
+
+    `;
+
+
+    let invoiceQuery =
+        supabaseClient
+        .from("invoices")
+        .select(
+            `
+            id,
+            invoice_number,
+            invoice_date,
+            total,
+            status,
+            patient_id,
+            patients (
+                name
+            )
+            `
+        )
+        .gte(
+            "invoice_date",
+            range.from
+        )
+        .lte(
+            "invoice_date",
+            range.to
+        )
+        .order(
+            "invoice_date",
+            {
+                ascending:
+                    false
+            }
+        );
+
+
+    /*
+       Multi-clinic isolation.
+    */
+
+    if (
+        currentClinicId
+    ) {
+
+        invoiceQuery =
+            invoiceQuery.eq(
+                "clinic_id",
+                currentClinicId
+            );
+
+    }
+
+
+    const {
+        data: invoices,
+        error
+    } =
+        await invoiceQuery;
+
+
+    if (error) {
+
+        console.error(
+            error
+        );
+
+        showError(
+            "Failed to load revenue: " +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    let consultationRevenue =
+        0;
+
+
+    let groomingRevenue =
+        0;
+
+
+    let consultationCount =
+        0;
+
+
+    let groomingCount =
+        0;
+
+
+    const transactions =
+        [];
+
+
+    /*
+       Get invoice items.
+    */
+
+    for (
+        const invoice
+        of invoices || []
+    ) {
+
+        let itemQuery =
+            supabaseClient
+            .from(
+                "invoice_items"
+            )
+            .select(
+                `
+                description,
+                quantity,
+                unit_price,
+                total
+                `
+            )
+            .eq(
+                "invoice_id",
+                invoice.id
+            );
+
+
+        const {
+            data: items,
+            error: itemError
+        } =
+            await itemQuery;
+
+
+        if (itemError) {
+
+            console.error(
+                itemError
+            );
+
+            continue;
 
         }
+
+
+        for (
+            const item
+            of items || []
+        ) {
+
+            const service =
+                detectService(
+                    item.description
+                );
+
+
+            const amount =
+                Number(
+                    item.total
+                ) || 0;
+
+
+            const quantity =
+                Number(
+                    item.quantity
+                ) || 1;
+
+
+            if (
+                service ===
+                "consultation"
+            ) {
+
+                consultationRevenue +=
+                    amount;
+
+
+                consultationCount +=
+                    quantity;
+
+
+                transactions.push({
+
+                    date:
+                        invoice.invoice_date,
+
+                    invoice:
+                        invoice.invoice_number ||
+                        "-",
+
+                    patient:
+                        invoice.patients?.name ||
+                        "-",
+
+                    service:
+                        "Consultation",
+
+                    amount:
+                        amount,
+
+                    status:
+                        invoice.status
+
+                });
+
+            }
+
+
+            else if (
+                service ===
+                "grooming"
+            ) {
+
+                groomingRevenue +=
+                    amount;
+
+
+                groomingCount +=
+                    quantity;
+
+
+                transactions.push({
+
+                    date:
+                        invoice.invoice_date,
+
+                    invoice:
+                        invoice.invoice_number ||
+                        "-",
+
+                    patient:
+                        invoice.patients?.name ||
+                        "-",
+
+                    service:
+                        "Grooming",
+
+                    amount:
+                        amount,
+
+                    status:
+                        invoice.status
+
+                });
+
+            }
+
+        }
+
+    }
+
+
+    const totalRevenue =
+        consultationRevenue +
+        groomingRevenue;
+
+
+    /* =================================================
+       UPDATE UI
+    ================================================= */
+
+    document.getElementById(
+        "consultationRevenue"
+    ).textContent =
+        formatMoney(
+            consultationRevenue
+        );
+
+
+    document.getElementById(
+        "groomingRevenue"
+    ).textContent =
+        formatMoney(
+            groomingRevenue
+        );
+
+
+    document.getElementById(
+        "totalRevenue"
+    ).textContent =
+        formatMoney(
+            totalRevenue
+        );
+
+
+    document.getElementById(
+        "consultationCount"
+    ).textContent =
+        consultationCount +
+        (
+            consultationCount === 1
+            ? " visit"
+            : " visits"
+        );
+
+
+    document.getElementById(
+        "groomingCount"
+    ).textContent =
+        groomingCount +
+        (
+            groomingCount === 1
+            ? " visit"
+            : " visits"
+        );
+
+
+    document.getElementById(
+        "totalTransactions"
+    ).textContent =
+        transactions.length +
+        (
+            transactions.length === 1
+            ? " transaction"
+            : " transactions"
+        );
+
+
+    document.getElementById(
+        "consultationRevenue2"
+    ).textContent =
+        formatMoney(
+            consultationRevenue
+        );
+
+
+    document.getElementById(
+        "groomingRevenue2"
+    ).textContent =
+        formatMoney(
+            groomingRevenue
+        );
+
+
+    document.getElementById(
+        "consultationCount2"
+    ).textContent =
+        consultationCount +
+        (
+            consultationCount === 1
+            ? " visit"
+            : " visits"
+        );
+
+
+    document.getElementById(
+        "groomingCount2"
+    ).textContent =
+        groomingCount +
+        (
+            groomingCount === 1
+            ? " visit"
+            : " visits"
+        );
+
+
+    document.getElementById(
+        "periodLabel"
+    ).textContent =
+        `${formatDate(range.from)} - ${formatDate(range.to)}`;
+
+
+    renderTransactions(
+        transactions
     );
 
 }
 
 
-loadReports();
+/* =====================================================
+   TRANSACTIONS TABLE
+===================================================== */
+
+function renderTransactions(
+    transactions
+) {
+
+    const container =
+        document.getElementById(
+            "transactions"
+        );
+
+
+    if (
+        !transactions.length
+    ) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                🐾
+                <br><br>
+
+                No Consultation or Grooming
+                revenue found for this period.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    let rows =
+        "";
+
+
+    transactions.forEach(
+        transaction => {
+
+            const status =
+                String(
+                    transaction.status ||
+                    ""
+                )
+                .toLowerCase();
+
+
+            let statusClass =
+                "status-unpaid";
+
+
+            if (
+                status ===
+                "paid"
+            ) {
+
+                statusClass =
+                    "status-paid";
+
+            }
+
+
+            else if (
+                status ===
+                "partial"
+            ) {
+
+                statusClass =
+                    "status-partial";
+
+            }
+
+
+            rows += `
+
+                <tr>
+
+                    <td>
+                        ${formatDate(
+                            transaction.date
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            transaction.invoice
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            transaction.patient
+                        )}
+                    </td>
+
+                    <td>
+
+                        ${
+                            transaction.service ===
+                            "Consultation"
+
+                            ? "🩺 Consultation"
+
+                            : "✂️ Grooming"
+
+                        }
+
+                    </td>
+
+                    <td>
+
+                        <strong>
+                            ${formatMoney(
+                                transaction.amount
+                            )}
+                        </strong>
+
+                    </td>
+
+                    <td>
+
+                        <span
+                            class="status ${statusClass}"
+                        >
+                            ${escapeHtml(
+                                transaction.status ||
+                                "-"
+                            )}
+                        </span>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    container.innerHTML = `
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Invoice
+                        </th>
+
+                        <th>
+                            Patient
+                        </th>
+
+                        <th>
+                            Service
+                        </th>
+
+                        <th>
+                            Revenue
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    ${rows}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   PERIOD UI
+===================================================== */
+
+document.getElementById(
+    "period"
+).addEventListener(
+    "change",
+    function() {
+
+        const value =
+            this.value;
+
+
+        document.getElementById(
+            "dailyGroup"
+        ).style.display =
+            value === "daily"
+            ? "flex"
+            : "none";
+
+
+        document.getElementById(
+            "monthlyGroup"
+        ).style.display =
+            value === "monthly"
+            ? "flex"
+            : "none";
+
+
+        document.getElementById(
+            "yearlyGroup"
+        ).style.display =
+            value === "yearly"
+            ? "flex"
+            : "none";
+
+
+        document.getElementById(
+            "customRange"
+        ).style.display =
+            value === "custom"
+            ? "flex"
+            : "none";
+
+    }
+);
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatDate(
+    value
+) {
+
+    if (!value) {
+        return "-";
+    }
+
+
+    const parts =
+        String(value)
+        .split("-");
+
+
+    if (
+        parts.length !== 3
+    ) {
+
+        return value;
+
+    }
+
+
+    return (
+        parts[2] +
+        "/" +
+        parts[1] +
+        "/" +
+        parts[0]
+    );
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+function showError(
+    text
+) {
+
+    document.getElementById(
+        "errorBox"
+    ).innerHTML = `
+
+        <div class="error">
+            ${escapeHtml(text)}
+        </div>
+
+    `;
+
+}
+
+
+function clearError() {
+
+    document.getElementById(
+        "errorBox"
+    ).innerHTML =
+        "";
+
+}
+
+
+/* =====================================================
+   DEFAULT DATE
+===================================================== */
+
+document.getElementById(
+    "dailyDate"
+).value =
+    today();
+
+
+document.getElementById(
+    "monthlyDate"
+).value =
+    currentMonth();
+
+
+document.getElementById(
+    "yearlyDate"
+).value =
+    new Date()
+    .getFullYear();
+
+
+document.getElementById(
+    "fromDate"
+).value =
+    today();
+
+
+document.getElementById(
+    "toDate"
+).value =
+    today();
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+async function initialize() {
+
+    const authenticated =
+        await checkAuth();
+
+
+    if (!authenticated) {
+        return;
+    }
+
+
+    const clinicLoaded =
+        await getClinic();
+
+
+    if (!clinicLoaded) {
+        return;
+    }
+
+
+    await loadOverview();
+
+
+    await loadRevenueReport();
+
+}
+
+
+initialize();
 
 </script>
 
