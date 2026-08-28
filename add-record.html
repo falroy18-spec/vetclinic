@@ -2,611 +2,670 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>New Medical Record - VetClinic</title>
+<meta charset="UTF-8">
 
-    <link rel="stylesheet" href="style.css">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <style>
-        .patient-search-wrapper {
-            position: relative;
-        }
+<title>Medical Record - VetClinic</title>
 
-        #patientSearch {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 15px;
-            background: white;
-            box-sizing: border-box;
-        }
+<link rel="stylesheet" href="style.css">
 
-        .patient-results {
-            position: absolute;
-            top: calc(100% + 4px);
-            left: 0;
-            right: 0;
-            background: white;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            max-height: 220px;
-            overflow-y: auto;
-            z-index: 1000;
-            display: none;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-        }
+<style>
 
-        .patient-result {
-            padding: 11px 14px;
-            cursor: pointer;
-            border-bottom: 1px solid #f1f1f1;
-        }
+.patient-search-wrapper {
+    position: relative;
+}
 
-        .patient-result:last-child {
-            border-bottom: none;
-        }
+#patientSearch {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    background: white;
+    box-sizing: border-box;
+}
 
-        .patient-result:hover {
-            background: #f4f6fb;
-        }
+.patient-results {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    max-height: 220px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
 
-        .patient-result strong {
-            display: block;
-            color: #252d3d;
-        }
+.patient-result {
+    padding: 11px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f1f1;
+}
 
-        .patient-result small {
-            color: #6b7280;
-        }
+.patient-result:hover {
+    background: #f4f6fb;
+}
 
-        .selected-patient {
-            margin-top: 8px;
-            padding: 10px 12px;
-            background: #eef2ff;
-            border-radius: 7px;
-            color: #374151;
-            font-size: 14px;
-            display: none;
-        }
+.patient-result:last-child {
+    border-bottom: none;
+}
 
-        .visit-type-box {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
+.patient-result strong {
+    display: block;
+    color: #252d3d;
+}
 
-        .visit-option {
-            border: 1px solid #d1d5db;
-            border-radius: 9px;
-            padding: 14px;
-            cursor: pointer;
-            background: white;
-            transition: 0.2s;
-        }
+.patient-result small {
+    color: #6b7280;
+}
 
-        .visit-option:hover {
-            border-color: #6366f1;
-        }
+.selected-patient {
+    margin-top: 8px;
+    padding: 10px 12px;
+    background: #eef2ff;
+    border-radius: 7px;
+    color: #374151;
+    font-size: 14px;
+    display: none;
+}
 
-        .visit-option.selected {
-            border-color: #6366f1;
-            background: #eef2ff;
-        }
+.visit-type-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
 
-        .visit-option input {
-            margin-right: 8px;
-        }
+.visit-option {
+    border: 1px solid #d1d5db;
+    border-radius: 9px;
+    padding: 14px;
+    cursor: pointer;
+    background: white;
+    transition: .2s;
+}
 
-        .visit-option strong {
-            display: block;
-            margin-bottom: 4px;
-        }
+.visit-option:hover {
+    border-color: #6366f1;
+}
 
-        .visit-option small {
-            color: #6b7280;
-        }
+.visit-option.selected {
+    border-color: #6366f1;
+    background: #eef2ff;
+}
 
-        .status-message {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 7px;
-            display: none;
-        }
+.visit-option input {
+    margin-right: 8px;
+}
 
-        .status-success {
-            background: #dcfce7;
-            color: #166534;
-        }
+.visit-option strong {
+    display: block;
+    margin-bottom: 4px;
+}
 
-        .status-error {
-            background: #fee2e2;
-            color: #991b1b;
-        }
+.visit-option small {
+    color: #6b7280;
+}
 
-        .status-loading {
-            background: #f3f4f6;
-            color: #374151;
-        }
+.status-message {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 7px;
+    display: none;
+}
 
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
+.status-success {
+    background: #dcfce7;
+    color: #166534;
+}
 
-        .grooming-note {
-            margin-top: 8px;
-            padding: 10px 12px;
-            background: #f9fafb;
-            border-radius: 7px;
-            color: #6b7280;
-            font-size: 13px;
-        }
+.status-error {
+    background: #fee2e2;
+    color: #991b1b;
+}
 
-        @media (max-width: 700px) {
-            .visit-type-box {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+.status-loading {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.grooming-note {
+    margin-top: 8px;
+    padding: 10px 12px;
+    background: #f9fafb;
+    border-radius: 7px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.edit-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #5b50c7;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+@media (max-width: 700px) {
+
+    .visit-type-box {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
+
 <div class="app">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
 
-        <h1>🐾 VetClinic</h1>
+<!-- SIDEBAR -->
 
-        <nav>
+<aside class="sidebar">
 
-            <a href="index.html">
-                Dashboard
-            </a>
+    <h1>
+        🐾 VetClinic
+    </h1>
 
-            <a href="patients.html">
-                Patients
-            </a>
 
-            <a href="appointments.html">
-                Appointments
-            </a>
+    <nav>
 
-            <a href="medical-records.html" class="active">
-                Medical Records
-            </a>
+        <a href="index.html">
+            Dashboard
+        </a>
 
-            <a href="medicines.html">
-                Medicines
-            </a>
+        <a href="patients.html">
+            Patients
+        </a>
 
-            <a href="billing.html">
-                Billing
-            </a>
+        <a href="appointments.html">
+            Appointments
+        </a>
 
-            <a href="reports.html">
-                Reports
-            </a>
+        <a
+            href="medical-records.html"
+            class="active"
+        >
+            Medical Records
+        </a>
 
-            <a href="backup.html">
-                Backup & Restore
-            </a>
+        <a href="medicines.html">
+            Medicines
+        </a>
 
-        </nav>
+        <a href="billing.html">
+            Billing
+        </a>
 
-    </aside>
+        <a href="reports.html">
+            Reports
+        </a>
 
+        <a href="backup.html">
+            Backup & Restore
+        </a>
 
-    <!-- MAIN -->
-    <main class="main-content">
+    </nav>
 
-        <header>
+</aside>
 
-            <div>
 
-                <h2>
-                    New Medical Record
-                </h2>
 
-                <p>
-                    Create a clinical record for a patient.
-                </p>
+<!-- MAIN -->
 
-            </div>
+<main class="main-content">
 
-            <a
-                href="medical-records.html"
-                class="add-button"
-            >
-                ← Back
-            </a>
 
-        </header>
+<header>
 
+    <div>
 
-        <section class="appointments">
+        <h2 id="pageTitle">
+            New Medical Record
+        </h2>
 
-            <form id="recordForm">
+        <p id="pageSubtitle">
+            Create a clinical record for a patient.
+        </p>
 
-                <!-- =========================================
-                     PATIENT
-                ========================================== -->
+    </div>
 
-                <div class="form-group">
 
-                    <label>
-                        Patient *
-                    </label>
+    <a
+        href="medical-records.html"
+        class="add-button"
+    >
+        ← Back
+    </a>
 
-                    <div class="patient-search-wrapper">
+</header>
 
-                        <input
-                            type="text"
-                            id="patientSearch"
-                            placeholder="Search patient name..."
-                            autocomplete="off"
-                            required
-                        >
 
-                        <div
-                            id="patientResults"
-                            class="patient-results">
-                        </div>
 
-                    </div>
+<section class="appointments">
 
 
-                    <div
-                        id="selectedPatient"
-                        class="selected-patient">
-                    </div>
+<form id="recordForm">
 
 
-                    <!-- IMPORTANT:
-                         This stores the actual UUID
-                         of the selected patient.
-                    -->
+<!-- PATIENT -->
 
-                    <input
-                        type="hidden"
-                        id="patientId"
-                    >
+<div class="form-group">
 
-                </div>
+    <label>
+        Patient *
+    </label>
 
 
-                <!-- =========================================
-                     VISIT DATE
-                ========================================== -->
+    <div class="patient-search-wrapper">
 
-                <div class="form-group">
+        <input
+            type="text"
+            id="patientSearch"
+            placeholder="Search patient name..."
+            autocomplete="off"
+            required
+        >
 
-                    <label>
-                        Visit Date *
-                    </label>
 
-                    <input
-                        type="date"
-                        id="visitDate"
-                        required
-                    >
+        <div
+            id="patientResults"
+            class="patient-results"
+        ></div>
 
-                </div>
+    </div>
 
 
-                <!-- =========================================
-                     VISIT TYPE
-                ========================================== -->
+    <div
+        id="selectedPatient"
+        class="selected-patient"
+    ></div>
 
-                <div class="form-group">
 
-                    <label>
-                        Visit Type *
-                    </label>
-
-
-                    <div class="visit-type-box">
-
-                        <label
-                            class="visit-option selected"
-                            id="consultationOption"
-                        >
-
-                            <input
-                                type="radio"
-                                name="visitType"
-                                value="consultation"
-                                checked
-                            >
-
-                            <strong>
-                                Consultation
-                            </strong>
-
-                            <small>
-                                Patient comes because of a complaint,
-                                illness, or clinical concern.
-                            </small>
-
-                        </label>
-
-
-                        <label
-                            class="visit-option"
-                            id="groomingOption"
-                        >
-
-                            <input
-                                type="radio"
-                                name="visitType"
-                                value="grooming"
-                            >
-
-                            <strong>
-                                Grooming
-                            </strong>
-
-                            <small>
-                                Pre-grooming health check.
-                            </small>
-
-                        </label>
-
-                    </div>
-
-
-                    <div class="grooming-note">
-
-                        For grooming, record the basic health
-                        examination before the grooming procedure.
-
-                    </div>
-
-                </div>
-
-
-                <hr>
-
-
-                <!-- =========================================
-                     CONSULTATION / HEALTH CHECK
-                ========================================== -->
-
-                <h3 class="section-title">
-                    Clinical Examination
-                </h3>
-
-
-                <!-- CHIEF COMPLAINT -->
-
-                <div class="form-group">
-
-                    <label>
-                        Chief Complaint / Reason for Visit
-                    </label>
-
-                    <textarea
-                        id="chiefComplaint"
-                        placeholder="Main reason for consultation or grooming..."
-                    ></textarea>
-
-                </div>
-
-
-                <!-- SUBJECTIVE -->
-
-                <div class="form-group">
-
-                    <label>
-                        Subjective
-                    </label>
-
-                    <textarea
-                        id="subjective"
-                        placeholder="Owner complaints, history, appetite, drinking, vomiting, diarrhea, duration, etc."
-                    ></textarea>
-
-                </div>
-
-
-                <!-- OBJECTIVE -->
-
-                <div class="form-group">
-
-                    <label>
-                        Objective / Physical Examination
-                    </label>
-
-                    <textarea
-                        id="objective"
-                        placeholder="Physical examination findings, general condition, hydration, mucous membrane, skin, eyes, ears, etc."
-                    ></textarea>
-
-                </div>
-
-
-                <!-- ASSESSMENT -->
-
-                <div class="form-group">
-
-                    <label>
-                        Assessment
-                    </label>
-
-                    <textarea
-                        id="assessment"
-                        placeholder="Clinical assessment / pre-grooming health assessment..."
-                    ></textarea>
-
-                </div>
-
-
-                <!-- DIAGNOSIS -->
-
-                <div class="form-group">
-
-                    <label>
-                        Diagnosis
-                    </label>
-
-                    <textarea
-                        id="diagnosis"
-                        placeholder="Diagnosis or clinical impression..."
-                    ></textarea>
-
-                </div>
-
-
-                <!-- PLAN -->
-
-                <div class="form-group">
-
-                    <label>
-                        Plan
-                    </label>
-
-                    <textarea
-                        id="plan"
-                        placeholder="Diagnostic plan, treatment plan, monitoring, or grooming recommendation..."
-                    ></textarea>
-
-                </div>
-
-
-                <!-- TREATMENT -->
-
-                <div class="form-group">
-
-                    <label>
-                        Treatment
-                    </label>
-
-                    <textarea
-                        id="treatment"
-                        placeholder="Treatment performed during consultation or health check..."
-                    ></textarea>
-
-                </div>
-
-
-                <!-- MEDICATION -->
-
-                <div class="form-group">
-
-                    <label>
-                        Prescription / Medication
-                    </label>
-
-                    <textarea
-                        id="medication"
-                        placeholder="Drug name, dose, route, frequency and duration..."
-                    ></textarea>
-
-                </div>
-
-
-                <!-- PROCEDURE -->
-
-                <div class="form-group">
-
-                    <label>
-                        Procedure
-                    </label>
-
-                    <textarea
-                        id="procedure"
-                        placeholder="Procedure performed, including grooming if applicable..."
-                    ></textarea>
-
-                </div>
-
-
-                <!-- NOTES -->
-
-                <div class="form-group">
-
-                    <label>
-                        Additional Notes
-                    </label>
-
-                    <textarea
-                        id="notes"
-                        placeholder="Other important clinical notes..."
-                    ></textarea>
-
-                </div>
-
-
-                <!-- FOLLOW UP -->
-
-                <div class="form-group">
-
-                    <label>
-                        Follow-up Date
-                    </label>
-
-                    <input
-                        type="date"
-                        id="followUpDate"
-                    >
-
-                </div>
-
-
-                <!-- STATUS -->
-
-                <div
-                    id="statusMessage"
-                    class="status-message">
-                </div>
-
-
-                <!-- BUTTONS -->
-
-                <div class="form-actions">
-
-                    <button
-                        type="button"
-                        id="cancelButton"
-                        class="cancel-button"
-                    >
-                        Cancel
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        id="saveButton"
-                    >
-                        Save Medical Record
-                    </button>
-
-                </div>
-
-            </form>
-
-        </section>
-
-    </main>
+    <input
+        type="hidden"
+        id="patientId"
+    >
 
 </div>
 
 
-<!-- =========================================
-     SUPABASE
-========================================== -->
+
+<!-- VISIT DATE -->
+
+<div class="form-group">
+
+    <label>
+        Visit Date *
+    </label>
+
+
+    <input
+        type="date"
+        id="visitDate"
+        required
+    >
+
+</div>
+
+
+
+<!-- VISIT TYPE -->
+
+<div class="form-group">
+
+    <label>
+        Visit Type *
+    </label>
+
+
+    <div class="visit-type-box">
+
+
+        <label
+            class="visit-option selected"
+            id="consultationOption"
+        >
+
+            <input
+                type="radio"
+                name="visitType"
+                value="consultation"
+                checked
+            >
+
+            <strong>
+                Consultation
+            </strong>
+
+            <small>
+                Patient comes because of a complaint,
+                illness, or clinical concern.
+            </small>
+
+        </label>
+
+
+
+        <label
+            class="visit-option"
+            id="groomingOption"
+        >
+
+            <input
+                type="radio"
+                name="visitType"
+                value="grooming"
+            >
+
+            <strong>
+                Grooming
+            </strong>
+
+            <small>
+                Pre-grooming health check.
+            </small>
+
+        </label>
+
+
+    </div>
+
+
+    <div class="grooming-note">
+
+        For grooming, record the basic health
+        examination before the grooming procedure.
+
+    </div>
+
+</div>
+
+
+
+<hr>
+
+
+
+<h3 class="section-title">
+    Clinical Examination
+</h3>
+
+
+
+<!-- CHIEF COMPLAINT -->
+
+<div class="form-group">
+
+    <label>
+        Chief Complaint / Reason for Visit
+    </label>
+
+
+    <textarea
+        id="chiefComplaint"
+        placeholder="Main reason for consultation or grooming..."
+    ></textarea>
+
+</div>
+
+
+
+<!-- SUBJECTIVE -->
+
+<div class="form-group">
+
+    <label>
+        Subjective
+    </label>
+
+
+    <textarea
+        id="subjective"
+        placeholder="Owner complaints, history, appetite, drinking, vomiting, diarrhea, duration, etc."
+    ></textarea>
+
+</div>
+
+
+
+<!-- OBJECTIVE -->
+
+<div class="form-group">
+
+    <label>
+        Objective / Physical Examination
+    </label>
+
+
+    <textarea
+        id="objective"
+        placeholder="Physical examination findings, general condition, hydration, mucous membrane, skin, eyes, ears, etc."
+    ></textarea>
+
+</div>
+
+
+
+<!-- ASSESSMENT -->
+
+<div class="form-group">
+
+    <label>
+        Assessment
+    </label>
+
+
+    <textarea
+        id="assessment"
+        placeholder="Clinical assessment / pre-grooming health assessment..."
+    ></textarea>
+
+</div>
+
+
+
+<!-- DIAGNOSIS -->
+
+<div class="form-group">
+
+    <label>
+        Diagnosis
+    </label>
+
+
+    <textarea
+        id="diagnosis"
+        placeholder="Diagnosis or clinical impression..."
+    ></textarea>
+
+</div>
+
+
+
+<!-- PLAN -->
+
+<div class="form-group">
+
+    <label>
+        Plan
+    </label>
+
+
+    <textarea
+        id="plan"
+        placeholder="Diagnostic plan, treatment plan, monitoring, or grooming recommendation..."
+    ></textarea>
+
+</div>
+
+
+
+<!-- TREATMENT -->
+
+<div class="form-group">
+
+    <label>
+        Treatment
+    </label>
+
+
+    <textarea
+        id="treatment"
+        placeholder="Treatment performed during consultation or health check..."
+    ></textarea>
+
+</div>
+
+
+
+<!-- MEDICATION -->
+
+<div class="form-group">
+
+    <label>
+        Prescription / Medication
+    </label>
+
+
+    <textarea
+        id="medication"
+        placeholder="Drug name, dose, route, frequency and duration..."
+    ></textarea>
+
+</div>
+
+
+
+<!-- PROCEDURE -->
+
+<div class="form-group">
+
+    <label>
+        Procedure
+    </label>
+
+
+    <textarea
+        id="procedure"
+        placeholder="Procedure performed, including grooming if applicable..."
+    ></textarea>
+
+</div>
+
+
+
+<!-- NOTES -->
+
+<div class="form-group">
+
+    <label>
+        Additional Notes
+    </label>
+
+
+    <textarea
+        id="notes"
+        placeholder="Other important clinical notes..."
+    ></textarea>
+
+</div>
+
+
+
+<!-- FOLLOW UP -->
+
+<div class="form-group">
+
+    <label>
+        Follow-up Date
+    </label>
+
+
+    <input
+        type="date"
+        id="followUpDate"
+    >
+
+</div>
+
+
+
+<!-- STATUS -->
+
+<div
+    id="statusMessage"
+    class="status-message"
+></div>
+
+
+
+<!-- BUTTONS -->
+
+<div class="form-actions">
+
+    <button
+        type="button"
+        id="cancelButton"
+        class="cancel-button"
+    >
+        Cancel
+    </button>
+
+
+    <button
+        type="submit"
+        id="saveButton"
+    >
+        Save Medical Record
+    </button>
+
+</div>
+
+
+</form>
+
+
+</section>
+
+
+</main>
+
+
+</div>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
 
+
 /* =====================================================
-   SUPABASE CONFIG
+   SUPABASE
 ===================================================== */
 
 const SUPABASE_URL =
@@ -632,6 +691,7 @@ const supabaseClient =
     );
 
 
+
 /* =====================================================
    VARIABLES
 ===================================================== */
@@ -641,6 +701,37 @@ let currentSession = null;
 let currentClinic = null;
 
 let patients = [];
+
+let editRecordId = null;
+
+let editMode = false;
+
+
+
+/* =====================================================
+   URL PARAMETERS
+===================================================== */
+
+const urlParams =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+/*
+   Kalau ada:
+
+   add-record.html?id=XXXXXXXX
+
+   berarti EDIT MODE.
+*/
+
+editRecordId =
+    urlParams.get("id");
+
+editMode =
+    !!editRecordId;
+
 
 
 /* =====================================================
@@ -689,8 +780,62 @@ const saveButton =
     );
 
 
+const pageTitle =
+    document.getElementById(
+        "pageTitle"
+    );
+
+
+const pageSubtitle =
+    document.getElementById(
+        "pageSubtitle"
+    );
+
+
+
 /* =====================================================
-   STATUS MESSAGE
+   PAGE MODE
+===================================================== */
+
+if (editMode) {
+
+    pageTitle.innerHTML =
+        `Edit Medical Record
+        <span class="edit-badge">
+            EDIT MODE
+        </span>`;
+
+
+    pageSubtitle.textContent =
+        "Update the existing clinical record.";
+
+
+    saveButton.textContent =
+        "Update Medical Record";
+
+}
+
+
+
+else {
+
+    pageTitle.textContent =
+        "New Medical Record";
+
+
+    pageSubtitle.textContent =
+        "Create a clinical record for a patient.";
+
+
+    saveButton.textContent =
+        "Save Medical Record";
+
+}
+
+
+
+/* =====================================================
+   STATUS
 ===================================================== */
 
 function showStatus(
@@ -707,8 +852,77 @@ function showStatus(
 
     statusMessage.style.display =
         "block";
+}
+
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 
 }
+
+
+
+/* =====================================================
+   FORM VALUE
+===================================================== */
+
+function valueOf(
+    id
+) {
+
+    const element =
+        document.getElementById(
+            id
+        );
+
+
+    if (!element) {
+
+        return null;
+
+    }
+
+
+    const value =
+        element.value.trim();
+
+
+    return value === ""
+        ? null
+        : value;
+
+}
+
 
 
 /* =====================================================
@@ -716,10 +930,6 @@ function showStatus(
 ===================================================== */
 
 async function getCurrentClinic() {
-
-    console.log(
-        "Checking Supabase session..."
-    );
 
 
     const {
@@ -736,6 +946,12 @@ async function getCurrentClinic() {
         console.error(
             "Session error:",
             error
+        );
+
+        showStatus(
+            "Session error: " +
+            error.message,
+            "error"
         );
 
         return null;
@@ -757,18 +973,14 @@ async function getCurrentClinic() {
         data.session;
 
 
-    console.log(
-        "Logged in user:",
-        currentSession.user.id
-    );
-
-
     const {
         data: membership,
         error: membershipError
     } =
         await supabaseClient
-            .from("clinic_members")
+            .from(
+                "clinic_members"
+            )
             .select(`
                 clinic_id,
                 role,
@@ -787,7 +999,6 @@ async function getCurrentClinic() {
     if (membershipError) {
 
         console.error(
-            "Clinic lookup error:",
             membershipError
         );
 
@@ -834,125 +1045,10 @@ async function getCurrentClinic() {
     };
 
 
-    console.log(
-        "Current clinic:",
-        currentClinic
-    );
-
-
     return currentClinic;
 
 }
 
-
-/* =====================================================
-   LOAD PATIENTS
-===================================================== */
-
-async function loadPatients() {
-
-    if (!currentClinic) {
-
-        return;
-
-    }
-
-
-    console.log(
-        "Loading patients for clinic:",
-        currentClinic.clinicId
-    );
-
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .from("patients")
-            .select("*")
-            .eq(
-                "clinic_id",
-                currentClinic.clinicId
-            )
-            .order(
-                "name",
-                {
-                    ascending: true
-                }
-            );
-
-
-    if (error) {
-
-        console.error(
-            "Patient loading error:",
-            error
-        );
-
-        showStatus(
-            "Unable to load patients: " +
-            error.message,
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    patients =
-        data || [];
-
-
-    console.log(
-        "Patients loaded:",
-        patients
-    );
-
-
-    /*
-     * If this page is opened from
-     * patients.html using:
-     *
-     * add-record.html?patientId=XXXX
-     *
-     * automatically select that patient.
-     */
-
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    const urlPatientId =
-        params.get(
-            "patientId"
-        );
-
-
-    if (urlPatientId) {
-
-        const patient =
-            patients.find(
-                item =>
-                    String(item.id) ===
-                    String(urlPatientId)
-            );
-
-
-        if (patient) {
-
-            selectPatient(
-                patient
-            );
-
-        }
-
-    }
-
-}
 
 
 /* =====================================================
@@ -1011,6 +1107,102 @@ function getPatientOwner(
 }
 
 
+
+/* =====================================================
+   LOAD PATIENTS
+===================================================== */
+
+async function loadPatients() {
+
+
+    if (!currentClinic) {
+
+        return;
+
+    }
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from(
+                "patients"
+            )
+            .select("*")
+            .eq(
+                "clinic_id",
+                currentClinic.clinicId
+            )
+            .order(
+                "name",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Patient loading error:",
+            error
+        );
+
+        showStatus(
+            "Unable to load patients: " +
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    patients =
+        data || [];
+
+
+    /*
+       Kalau halaman dibuka dari:
+
+       add-record.html?patientId=XXXX
+
+       pilih patient otomatis.
+    */
+
+    const urlPatientId =
+        urlParams.get(
+            "patientId"
+        );
+
+
+    if (urlPatientId) {
+
+        const patient =
+            patients.find(
+                item =>
+                    String(item.id) ===
+                    String(urlPatientId)
+            );
+
+
+        if (patient) {
+
+            selectPatient(
+                patient
+            );
+
+        }
+
+    }
+
+}
+
+
+
 /* =====================================================
    SEARCH PATIENT
 ===================================================== */
@@ -1018,6 +1210,7 @@ function getPatientOwner(
 patientSearch.addEventListener(
     "input",
     function() {
+
 
         const keyword =
             patientSearch.value
@@ -1043,12 +1236,14 @@ patientSearch.addEventListener(
             patients.filter(
                 patient => {
 
+
                     const name =
                         String(
                             getPatientName(
                                 patient
                             )
-                        ).toLowerCase();
+                        )
+                        .toLowerCase();
 
 
                     const species =
@@ -1056,7 +1251,8 @@ patientSearch.addEventListener(
                             getPatientSpecies(
                                 patient
                             )
-                        ).toLowerCase();
+                        )
+                        .toLowerCase();
 
 
                     const breed =
@@ -1064,7 +1260,8 @@ patientSearch.addEventListener(
                             getPatientBreed(
                                 patient
                             )
-                        ).toLowerCase();
+                        )
+                        .toLowerCase();
 
 
                     const owner =
@@ -1072,14 +1269,28 @@ patientSearch.addEventListener(
                             getPatientOwner(
                                 patient
                             )
-                        ).toLowerCase();
+                        )
+                        .toLowerCase();
 
 
                     return (
-                        name.includes(keyword) ||
-                        species.includes(keyword) ||
-                        breed.includes(keyword) ||
-                        owner.includes(keyword)
+
+                        name.includes(
+                            keyword
+                        ) ||
+
+                        species.includes(
+                            keyword
+                        ) ||
+
+                        breed.includes(
+                            keyword
+                        ) ||
+
+                        owner.includes(
+                            keyword
+                        )
+
                     );
 
                 }
@@ -1110,6 +1321,7 @@ patientSearch.addEventListener(
             patientResults.style.display =
                 "block";
 
+
             return;
 
         }
@@ -1117,6 +1329,7 @@ patientSearch.addEventListener(
 
         filtered.forEach(
             patient => {
+
 
                 const item =
                     document.createElement(
@@ -1155,21 +1368,31 @@ patientSearch.addEventListener(
                 item.innerHTML = `
 
                     <strong>
-                        ${escapeHtml(name)}
+                        ${escapeHtml(
+                            name
+                        )}
                     </strong>
 
                     <small>
-                        ${escapeHtml(species)}
+
+                        ${escapeHtml(
+                            species
+                        )}
 
                         ${
                             breed
-                                ? " • " +
-                                  escapeHtml(breed)
-                                : ""
+                            ? " • " +
+                              escapeHtml(
+                                  breed
+                              )
+                            : ""
                         }
 
                         • Owner:
-                        ${escapeHtml(owner)}
+
+                        ${escapeHtml(
+                            owner
+                        )}
 
                     </small>
 
@@ -1203,6 +1426,7 @@ patientSearch.addEventListener(
 );
 
 
+
 /* =====================================================
    SELECT PATIENT
 ===================================================== */
@@ -1211,13 +1435,6 @@ function selectPatient(
     patient
 ) {
 
-    /*
-     * VERY IMPORTANT:
-     * Save the actual UUID here.
-     *
-     * This is what will be inserted
-     * into medical_records.patient_id.
-     */
 
     patientIdInput.value =
         patient.id;
@@ -1236,28 +1453,38 @@ function selectPatient(
         </strong>
 
         ${escapeHtml(
-            getPatientName(patient)
+            getPatientName(
+                patient
+            )
         )}
 
         •
 
         ${escapeHtml(
-            getPatientSpecies(patient)
+            getPatientSpecies(
+                patient
+            )
         )}
 
         ${
-            getPatientBreed(patient)
-                ? " • " +
-                  escapeHtml(
-                      getPatientBreed(patient)
+            getPatientBreed(
+                patient
+            )
+            ? " • " +
+              escapeHtml(
+                  getPatientBreed(
+                      patient
                   )
-                : ""
+              )
+            : ""
         }
 
         • Owner:
 
         ${escapeHtml(
-            getPatientOwner(patient)
+            getPatientOwner(
+                patient
+            )
         )}
 
     `;
@@ -1270,13 +1497,8 @@ function selectPatient(
     patientResults.style.display =
         "none";
 
-
-    console.log(
-        "Selected patient ID:",
-        patient.id
-    );
-
 }
+
 
 
 /* =====================================================
@@ -1302,8 +1524,9 @@ document.addEventListener(
 );
 
 
+
 /* =====================================================
-   VISIT TYPE UI
+   VISIT TYPE
 ===================================================== */
 
 const consultationOption =
@@ -1331,13 +1554,19 @@ visitTypeInputs.forEach(
             "change",
             function() {
 
-                consultationOption.classList.remove(
-                    "selected"
-                );
 
-                groomingOption.classList.remove(
-                    "selected"
-                );
+                consultationOption
+                    .classList
+                    .remove(
+                        "selected"
+                    );
+
+
+                groomingOption
+                    .classList
+                    .remove(
+                        "selected"
+                    );
 
 
                 if (
@@ -1345,9 +1574,11 @@ visitTypeInputs.forEach(
                     "consultation"
                 ) {
 
-                    consultationOption.classList.add(
-                        "selected"
-                    );
+                    consultationOption
+                        .classList
+                        .add(
+                            "selected"
+                        );
 
                 }
 
@@ -1357,9 +1588,11 @@ visitTypeInputs.forEach(
                     "grooming"
                 ) {
 
-                    groomingOption.classList.add(
-                        "selected"
-                    );
+                    groomingOption
+                        .classList
+                        .add(
+                            "selected"
+                        );
 
                 }
 
@@ -1370,80 +1603,331 @@ visitTypeInputs.forEach(
 );
 
 
+
 /* =====================================================
-   ESCAPE HTML
+   SET VISIT TYPE
 ===================================================== */
 
-function escapeHtml(
+function setVisitType(
     value
 ) {
 
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
 
-}
-
-
-/* =====================================================
-   GET FORM VALUE
-===================================================== */
-
-function valueOf(
-    id
-) {
-
-    const element =
-        document.getElementById(
-            id
+    const input =
+        document.querySelector(
+            `input[name="visitType"][value="${value}"]`
         );
 
 
-    if (!element) {
+    if (!input) {
 
-        return null;
+        return;
 
     }
 
 
-    const value =
-        element.value.trim();
+    input.checked =
+        true;
 
 
-    return value === ""
-        ? null
-        : value;
+    consultationOption
+        .classList
+        .remove(
+            "selected"
+        );
+
+
+    groomingOption
+        .classList
+        .remove(
+            "selected"
+        );
+
+
+    if (
+        value ===
+        "grooming"
+    ) {
+
+        groomingOption
+            .classList
+            .add(
+                "selected"
+            );
+
+    }
+
+    else {
+
+        consultationOption
+            .classList
+            .add(
+                "selected"
+            );
+
+    }
 
 }
 
 
+
 /* =====================================================
-   SAVE MEDICAL RECORD
+   LOAD EXISTING MEDICAL RECORD
+===================================================== */
+
+async function loadExistingRecord() {
+
+
+    if (
+        !editMode
+    ) {
+
+        return true;
+
+    }
+
+
+    showStatus(
+        "Loading existing medical record...",
+        "loading"
+    );
+
+
+    const {
+        data: record,
+        error
+    } =
+        await supabaseClient
+            .from(
+                "medical_records"
+            )
+            .select("*")
+            .eq(
+                "id",
+                editRecordId
+            )
+            .eq(
+                "clinic_id",
+                currentClinic.clinicId
+            )
+            .single();
+
+
+    if (error) {
+
+        console.error(
+            "Load record error:",
+            error
+        );
+
+
+        showStatus(
+            "Failed to load medical record: " +
+            error.message,
+            "error"
+        );
+
+
+        return false;
+
+    }
+
+
+    if (!record) {
+
+        showStatus(
+            "Medical record not found.",
+            "error"
+        );
+
+
+        return false;
+
+    }
+
+
+    console.log(
+        "Existing record:",
+        record
+    );
+
+
+    /*
+       PATIENT
+    */
+
+    patientIdInput.value =
+        record.patient_id ||
+        "";
+
+
+    const patient =
+        patients.find(
+            item =>
+                String(item.id) ===
+                String(record.patient_id)
+        );
+
+
+    if (patient) {
+
+        selectPatient(
+            patient
+        );
+
+    }
+
+    else {
+
+        /*
+           Fallback kalau patient
+           tidak ditemukan di cache.
+        */
+
+        patientSearch.value =
+            "Patient";
+
+        selectedPatient.innerHTML = `
+
+            <strong>
+                Selected patient ID:
+            </strong>
+
+            ${escapeHtml(
+                record.patient_id
+            )}
+
+        `;
+
+        selectedPatient.style.display =
+            "block";
+
+    }
+
+
+
+    /*
+       DATE
+    */
+
+    document.getElementById(
+        "visitDate"
+    ).value =
+        record.visit_date ||
+        "";
+
+
+
+    /*
+       VISIT TYPE
+    */
+
+    setVisitType(
+        record.visit_type ||
+        "consultation"
+    );
+
+
+
+    /*
+       CLINICAL FIELDS
+    */
+
+    document.getElementById(
+        "chiefComplaint"
+    ).value =
+        record.chief_complaint ||
+        "";
+
+
+    document.getElementById(
+        "subjective"
+    ).value =
+        record.subjective ||
+        "";
+
+
+    document.getElementById(
+        "objective"
+    ).value =
+        record.objective ||
+        "";
+
+
+    document.getElementById(
+        "assessment"
+    ).value =
+        record.assessment ||
+        "";
+
+
+    document.getElementById(
+        "diagnosis"
+    ).value =
+        record.diagnosis ||
+        "";
+
+
+    document.getElementById(
+        "plan"
+    ).value =
+        record.plan ||
+        "";
+
+
+    document.getElementById(
+        "treatment"
+    ).value =
+        record.treatment ||
+        "";
+
+
+    document.getElementById(
+        "medication"
+    ).value =
+        record.medication ||
+        "";
+
+
+    document.getElementById(
+        "procedure"
+    ).value =
+        record.procedure ||
+        "";
+
+
+    document.getElementById(
+        "notes"
+    ).value =
+        record.notes ||
+        "";
+
+
+    document.getElementById(
+        "followUpDate"
+    ).value =
+        record.follow_up_date ||
+        "";
+
+
+    statusMessage.style.display =
+        "none";
+
+
+    return true;
+
+}
+
+
+
+/* =====================================================
+   SAVE / UPDATE MEDICAL RECORD
 ===================================================== */
 
 recordForm.addEventListener(
     "submit",
     async function(event) {
+
 
         event.preventDefault();
 
@@ -1478,7 +1962,7 @@ recordForm.addEventListener(
         }
 
 
-        /* CHECK VISIT DATE */
+        /* CHECK DATE */
 
         const visitDate =
             document.getElementById(
@@ -1498,7 +1982,7 @@ recordForm.addEventListener(
         }
 
 
-        /* GET VISIT TYPE */
+        /* VISIT TYPE */
 
         const selectedVisitType =
             document.querySelector(
@@ -1522,31 +2006,36 @@ recordForm.addEventListener(
             selectedVisitType.value;
 
 
+        /* DISABLE */
+
         saveButton.disabled =
             true;
 
 
         saveButton.textContent =
-            "Saving...";
+            editMode
+                ? "Updating..."
+                : "Saving...";
 
 
         showStatus(
-            "Saving medical record...",
+            editMode
+                ? "Updating medical record..."
+                : "Saving medical record...",
             "loading"
         );
 
 
         try {
 
+
             /*
-             * IMPORTANT DATABASE RELATION:
-             *
-             * clinic_id  -> current clinic
-             * patient_id -> selected patient UUID
-             *
-             * This keeps the record connected
-             * to the actual patient.
-             */
+               DATA YANG AKAN DISIMPAN.
+
+               clinic_id dan patient_id
+               tetap dipastikan sesuai
+               dengan klinik aktif.
+            */
 
             const recordData = {
 
@@ -1582,14 +2071,14 @@ recordForm.addEventListener(
                         "assessment"
                     ),
 
-                plan:
-                    valueOf(
-                        "plan"
-                    ),
-
                 diagnosis:
                     valueOf(
                         "diagnosis"
+                    ),
+
+                plan:
+                    valueOf(
+                        "plan"
                     ),
 
                 treatment:
@@ -1621,30 +2110,79 @@ recordForm.addEventListener(
 
 
             console.log(
-                "Saving record:",
+                editMode
+                    ? "Updating record:"
+                    : "Creating record:",
                 recordData
             );
+
+
+            let result;
+
+
+            /* =================================================
+               EDIT MODE
+               UPDATE RECORD LAMA
+            ================================================= */
+
+            if (editMode) {
+
+
+                result =
+                    await supabaseClient
+                        .from(
+                            "medical_records"
+                        )
+                        .update(
+                            recordData
+                        )
+                        .eq(
+                            "id",
+                            editRecordId
+                        )
+                        .eq(
+                            "clinic_id",
+                            currentClinic.clinicId
+                        )
+                        .select()
+                        .single();
+
+            }
+
+
+            /* =================================================
+               NEW MODE
+               INSERT RECORD BARU
+            ================================================= */
+
+            else {
+
+
+                result =
+                    await supabaseClient
+                        .from(
+                            "medical_records"
+                        )
+                        .insert(
+                            recordData
+                        )
+                        .select()
+                        .single();
+
+            }
 
 
             const {
                 data,
                 error
             } =
-                await supabaseClient
-                    .from(
-                        "medical_records"
-                    )
-                    .insert(
-                        recordData
-                    )
-                    .select()
-                    .single();
+                result;
 
 
             if (error) {
 
                 console.error(
-                    "Medical record error:",
+                    "Medical record save error:",
                     error
                 );
 
@@ -1654,39 +2192,74 @@ recordForm.addEventListener(
 
 
             console.log(
-                "Medical record saved:",
+                editMode
+                    ? "Medical record updated:"
+                    : "Medical record created:",
                 data
             );
 
 
             showStatus(
-                "Medical record saved successfully.",
+                editMode
+                    ? "Medical record updated successfully."
+                    : "Medical record saved successfully.",
                 "success"
             );
 
 
+            /*
+               Setelah edit:
+               kembali ke detail record
+               yang sama.
+
+               Setelah create:
+               kembali ke medical records.
+            */
+
             setTimeout(
                 function() {
 
-                    window.location.href =
-                        "medical-records.html";
+
+                    if (editMode) {
+
+                        window.location.href =
+                            "medical-record-detail.html?id=" +
+                            encodeURIComponent(
+                                editRecordId
+                            );
+
+                    }
+
+                    else {
+
+                        window.location.href =
+                            "medical-records.html";
+
+                    }
 
                 },
-                800
+                700
             );
+
 
         }
 
+
         catch (error) {
 
+
             console.error(
-                "SAVE ERROR:",
+                "SAVE / UPDATE ERROR:",
                 error
             );
 
 
             showStatus(
-                "Failed to save medical record: " +
+                (
+                    editMode
+                        ? "Failed to update medical record: "
+                        : "Failed to save medical record: "
+                ) +
                 error.message,
                 "error"
             );
@@ -1697,12 +2270,15 @@ recordForm.addEventListener(
 
 
             saveButton.textContent =
-                "Save Medical Record";
+                editMode
+                    ? "Update Medical Record"
+                    : "Save Medical Record";
 
         }
 
     }
 );
+
 
 
 /* =====================================================
@@ -1715,23 +2291,44 @@ document.getElementById(
     "click",
     function() {
 
-        window.location.href =
-            "medical-records.html";
+
+        if (editMode) {
+
+            window.location.href =
+                "medical-record-detail.html?id=" +
+                encodeURIComponent(
+                    editRecordId
+                );
+
+        }
+
+        else {
+
+            window.location.href =
+                "medical-records.html";
+
+        }
 
     }
 );
+
 
 
 /* =====================================================
    DEFAULT DATE
 ===================================================== */
 
-document.getElementById(
-    "visitDate"
-).value =
-    new Date()
-        .toISOString()
-        .split("T")[0];
+if (!editMode) {
+
+    document.getElementById(
+        "visitDate"
+    ).value =
+        new Date()
+            .toISOString()
+            .split("T")[0];
+
+}
+
 
 
 /* =====================================================
@@ -1740,7 +2337,9 @@ document.getElementById(
 
 async function initialize() {
 
+
     try {
+
 
         const clinic =
             await getCurrentClinic();
@@ -1753,11 +2352,44 @@ async function initialize() {
         }
 
 
+        /*
+           Patient harus diload
+           SEBELUM existing record,
+           karena record membutuhkan
+           patient_id untuk memilih patient.
+        */
+
         await loadPatients();
+
+
+        /*
+           Kalau Edit Mode,
+           sekarang load record lama.
+        */
+
+        if (editMode) {
+
+            const loaded =
+                await loadExistingRecord();
+
+
+            if (!loaded) {
+
+                saveButton.disabled =
+                    true;
+
+                return;
+
+            }
+
+        }
+
 
     }
 
+
     catch (error) {
+
 
         console.error(
             "Initialization error:",
@@ -1780,5 +2412,7 @@ initialize();
 
 </script>
 
+
 </body>
+
 </html>
