@@ -12,295 +12,157 @@
 
 <title>Billing - VetClinic</title>
 
-
 <style>
 
 * {
     box-sizing: border-box;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
 }
-
 
 body {
-
     margin: 0;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
+    font-family: Arial, Helvetica, sans-serif;
     background: #ffffff;
-
     color: #252d3d;
-
 }
-
 
 .container {
-
     max-width: 1100px;
-
     margin: auto;
-
     padding: 30px;
-
 }
-
 
 .card {
-
-    background: white;
-
+    background: #ffffff;
     padding: 25px;
-
     border-radius: 15px;
-
     margin-bottom: 25px;
-
-    box-shadow:
-        0 5px 20px
-        rgba(0,0,0,.06);
-
-    border:
-        1px solid #eeeeee;
-
+    box-shadow: 0 5px 20px rgba(0,0,0,.06);
+    border: 1px solid #eeeeee;
 }
-
 
 .header {
-
     display: flex;
-
-    justify-content:
-        space-between;
-
-    align-items:
-        center;
-
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 25px;
-
 }
-
 
 .header h1 {
-
-    margin: 0;
-
+    margin: 0 0 8px 0;
 }
-
 
 .clinic-name {
-
     color: #5146e5;
-
     font-weight: bold;
-
 }
-
 
 .clinic-contact {
-
     font-size: 13px;
-
     color: #6b7280;
-
     margin-top: 5px;
-
+    line-height: 1.5;
 }
-
 
 label {
-
     display: block;
-
     margin-bottom: 6px;
-
     font-weight: bold;
-
 }
-
 
 input,
 select {
-
     width: 100%;
-
     padding: 12px;
-
-    border:
-        1px solid #d1d5db;
-
+    border: 1px solid #d1d5db;
     border-radius: 8px;
-
     margin-bottom: 15px;
-
     background: white;
-
+    font-size: 14px;
 }
-
 
 button {
-
     border: 0;
-
     padding: 12px 18px;
-
     border-radius: 8px;
-
     cursor: pointer;
-
     font-weight: bold;
-
 }
-
 
 button:disabled {
-
     opacity: .6;
-
     cursor: not-allowed;
-
 }
-
 
 .primary {
-
     background: #5146e5;
-
     color: white;
-
 }
-
 
 .secondary {
-
     background: #e5e7eb;
-
     color: #374151;
-
 }
-
 
 .danger {
-
     background: #dc2626;
-
     color: white;
-
 }
-
 
 .form-grid {
-
     display: grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
+    grid-template-columns: 1fr 1fr;
     gap: 15px;
-
 }
-
 
 .full {
-
-    grid-column:
-        1 / -1;
-
+    grid-column: 1 / -1;
 }
-
 
 .search-box {
-
     position: relative;
-
 }
-
 
 .search-results {
-
     position: absolute;
-
     left: 0;
-
     right: 0;
-
     top: 100%;
-
     background: white;
-
-    border:
-        1px solid #d1d5db;
-
+    border: 1px solid #d1d5db;
     border-radius: 8px;
-
-    box-shadow:
-        0 8px 20px
-        rgba(0,0,0,.12);
-
+    box-shadow: 0 8px 20px rgba(0,0,0,.12);
     z-index: 100;
-
     max-height: 300px;
-
     overflow-y: auto;
-
 }
-
 
 .search-result {
-
     padding: 12px 14px;
-
     cursor: pointer;
-
-    border-bottom:
-        1px solid #f0f0f0;
-
+    border-bottom: 1px solid #f0f0f0;
 }
-
 
 .search-result:hover {
-
     background: #f5f5ff;
-
 }
-
 
 .search-result-name {
-
     font-weight: bold;
-
 }
-
 
 .search-result-info {
-
     font-size: 13px;
-
     color: #6b7280;
-
     margin-top: 3px;
-
 }
-
 
 .selected-patient {
-
     background: #f5f5ff;
-
-    border:
-        1px solid #5146e5;
-
+    border: 1px solid #5146e5;
     border-radius: 8px;
-
     padding: 12px;
-
     margin-bottom: 15px;
-
 }
-
 
 .selected-patients-list {
     display: flex;
@@ -339,331 +201,188 @@ button:disabled {
     margin-bottom: 0;
 }
 
-.selected-patient strong {
-
-    display: block;
-
-}
-
-
-.clear-patient {
-
+.refresh-info {
+    font-size: 13px;
+    color: #6b7280;
     margin-top: 8px;
-
-    padding: 7px 10px;
-
-    font-size: 12px;
-
 }
-
 
 .filter-grid {
-
     display: grid;
-
-    grid-template-columns:
-        2fr 1fr;
-
+    grid-template-columns: 2fr 1fr;
     gap: 15px;
-
     margin-bottom: 20px;
-
 }
-
 
 table {
-
     width: 100%;
-
-    border-collapse:
-        collapse;
-
+    border-collapse: collapse;
     margin-top: 15px;
-
 }
-
 
 th,
 td {
-
     padding: 10px;
-
-    border-bottom:
-        1px solid #e5e7eb;
-
+    border-bottom: 1px solid #e5e7eb;
     text-align: left;
-
     vertical-align: top;
-
 }
-
 
 th {
-
     background: #fafafa;
-
 }
-
 
 .total {
-
     text-align: right;
-
     font-size: 20px;
-
     font-weight: bold;
-
     margin-top: 20px;
-
 }
-
 
 .message {
-
     margin-top: 15px;
-
 }
-
 
 .error {
-
     color: #dc2626;
-
 }
-
 
 .success {
-
     color: #16a34a;
-
 }
-
 
 .invoice {
-
-    border:
-        1px solid #e5e7eb;
-
+    border: 1px solid #e5e7eb;
     border-radius: 10px;
-
     padding: 20px;
-
     margin-top: 15px;
-
 }
-
 
 .invoice-header {
-
     display: flex;
-
-    justify-content:
-        space-between;
-
+    justify-content: space-between;
     gap: 15px;
-
 }
-
 
 .actions {
-
     display: flex;
-
     gap: 8px;
-
     flex-wrap: wrap;
-
 }
-
 
 .invoice-meta {
-
     color: #6b7280;
-
     font-size: 13px;
-
     line-height: 1.6;
-
 }
-
 
 .status-badge {
-
     display: inline-block;
-
     padding: 5px 9px;
-
     border-radius: 20px;
-
     font-size: 12px;
-
     font-weight: bold;
-
 }
-
 
 .status-paid {
-
     background: #dcfce7;
-
     color: #166534;
-
 }
-
 
 .status-unpaid {
-
     background: #fee2e2;
-
     color: #991b1b;
-
 }
-
 
 .status-partial {
-
     background: #fef3c7;
-
     color: #92400e;
-
 }
-
-
-.refresh-info {
-
-    font-size: 13px;
-
-    color: #6b7280;
-
-    margin-top: 8px;
-
-}
-
-
-.empty {
-
-    text-align: center;
-
-    padding: 30px;
-
-    color: #6b7280;
-
-}
-
-
-/* CATEGORY */
-
-.category-select {
-
-    min-width: 150px;
-
-}
-
 
 .category-badge {
-
     display: inline-block;
-
-    padding:
-        5px 9px;
-
-    border-radius:
-        999px;
-
-    font-size:
-        11px;
-
-    font-weight:
-        bold;
-
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: bold;
 }
-
 
 .category-consultation {
-
-    background:
-        #eeeaff;
-
-    color:
-        #5b4bc4;
-
+    background: #eeeaff;
+    color: #5b4bc4;
 }
-
 
 .category-grooming {
+    background: #fff0f4;
+    color: #c54f70;
+}
 
-    background:
-        #fff0f4;
-
-    color:
-        #c54f70;
-
+.empty {
+    text-align: center;
+    padding: 30px;
+    color: #6b7280;
 }
 
 
+/* ================================
+   MOBILE
+================================ */
 
 @media(max-width:700px) {
 
     .container {
-
         padding: 15px;
-
     }
-
 
     .form-grid {
-
-        grid-template-columns:
-            1fr;
-
+        grid-template-columns: 1fr;
     }
-
 
     .full {
-
-        grid-column:
-            auto;
-
+        grid-column: auto;
     }
-
 
     .filter-grid {
-
-        grid-template-columns:
-            1fr;
-
+        grid-template-columns: 1fr;
     }
-
 
     .header {
-
-        flex-direction:
-            column;
-
-        align-items:
-            flex-start;
-
+        flex-direction: column;
+        align-items: flex-start;
         gap: 15px;
-
     }
-
 
     .invoice-header {
-
-        flex-direction:
-            column;
-
+        flex-direction: column;
     }
 
-
     table {
-
-        font-size:
-            13px;
-
+        font-size: 13px;
     }
 
 }
+
+
+/* ================================
+   PRINT
+================================ */
+
+@media print {
+
+    body {
+        background: white;
+    }
+
+    .container {
+        padding: 0;
+    }
+
+}
+
+
+/* ================================
+   PRINT WINDOW
+================================ */
 
 </style>
 
@@ -726,9 +445,7 @@ th {
         class="secondary"
         onclick="window.location.href='index.html'"
     >
-
         Dashboard
-
     </button>
 
 </div>
@@ -739,7 +456,6 @@ th {
 
 <div class="card">
 
-
 <h2>
     New Invoice
 </h2>
@@ -748,64 +464,78 @@ th {
 <div class="form-grid">
 
 
-<!-- PATIENTS -->
+<!-- PATIENT -->
 
 <div class="full">
 
-    <label>Patients</label>
+<label>
+    Patients
+</label>
 
-    <div class="search-box">
 
-        <input
-            type="text"
-            id="patientSearch"
-            placeholder="Search patient or owner, then click to add..."
-            autocomplete="off"
-        >
+<div class="search-box">
 
-        <div
-            id="patientResults"
-            class="search-results"
-            style="display:none;"
-        ></div>
+<input
+    type="text"
+    id="patientSearch"
+    placeholder="Search patient or owner, then click to add..."
+    autocomplete="off"
+>
 
-    </div>
 
-    <div
-        id="selectedPatient"
-        class="selected-patient"
-        style="display:none;"
-    >
-        <div id="selectedPatientsList" class="selected-patients-list"></div>
-        <button
-            type="button"
-            class="secondary clear-patient"
-            onclick="clearPatient()"
-        >
-            Clear Patients
-        </button>
-    </div>
-
-    <input type="hidden" id="patient">
+<div
+    id="patientResults"
+    class="search-results"
+    style="display:none;"
+></div>
 
 </div>
 
 
+<div
+    id="selectedPatient"
+    class="selected-patient"
+    style="display:none;"
+>
+
+    <div
+        id="selectedPatientsList"
+        class="selected-patients-list"
+    ></div>
+
+
+    <button
+        type="button"
+        class="secondary"
+        onclick="clearPatient()"
+    >
+        Clear Patients
+    </button>
+
+</div>
+
+
+<input
+    type="hidden"
+    id="patient"
+>
+
+</div>
+
+
+
 <!-- DATE -->
-
-
 
 <div>
 
-    <label>
-        Invoice Date
-    </label>
+<label>
+    Invoice Date
+</label>
 
-
-    <input
-        type="date"
-        id="invoiceDate"
-    >
+<input
+    type="date"
+    id="invoiceDate"
+>
 
 </div>
 
@@ -815,26 +545,28 @@ th {
 
 <div>
 
-    <label>
-        Status
-    </label>
+<label>
+    Status
+</label>
 
+<select id="status">
 
-    <select id="status">
+    <option
+        value="Paid"
+        selected
+    >
+        Paid
+    </option>
 
-        <option value="Unpaid">
-            Unpaid
-        </option>
+    <option value="Unpaid">
+        Unpaid
+    </option>
 
-        <option value="Paid">
-            Paid
-        </option>
+    <option value="Partial">
+        Partial
+    </option>
 
-        <option value="Partial">
-            Partial
-        </option>
-
-    </select>
+</select>
 
 </div>
 
@@ -844,16 +576,15 @@ th {
 
 <div class="full">
 
-    <label>
-        Invoice Number
-    </label>
+<label>
+    Invoice Number
+</label>
 
-
-    <input
-        type="text"
-        id="invoiceNumber"
-        placeholder="Optional"
-    >
+<input
+    type="text"
+    id="invoiceNumber"
+    placeholder="Optional"
+>
 
 </div>
 
@@ -866,18 +597,32 @@ th {
 
 <div class="full service-type-box">
 
-    <label>Service Type</label>
+<label>
+    Service Type
+</label>
 
-    <select id="serviceType">
-        <option value="consultation">🩺 Consultation</option>
-        <option value="grooming">✂️ Grooming</option>
-    </select>
+<select id="serviceType">
 
-    <div class="refresh-info">
-        Pilih satu jenis layanan untuk seluruh invoice ini.
-    </div>
+    <option value="consultation">
+        🩺 Consultation
+    </option>
+
+    <option value="grooming">
+        ✂️ Grooming
+    </option>
+
+</select>
+
+
+<div class="refresh-info">
+
+    Pilih satu jenis layanan
+    untuk seluruh invoice ini.
 
 </div>
+
+</div>
+
 
 
 <!-- ITEMS -->
@@ -893,33 +638,31 @@ th {
 
 <tr>
 
-    <th>
-        Description
-    </th>
+<th>
+    Description
+</th>
 
-    <th>
-        Qty
-    </th>
+<th>
+    Qty
+</th>
 
-    <th>
-        Price
-    </th>
+<th>
+    Price
+</th>
 
-    <th>
-        Total
-    </th>
+<th>
+    Total
+</th>
 
-    <th>
-    </th>
+<th>
+</th>
 
 </tr>
 
 </thead>
 
 
-<tbody id="items">
-
-</tbody>
+<tbody id="items"></tbody>
 
 </table>
 
@@ -932,9 +675,7 @@ th {
     class="secondary"
     onclick="addItem()"
 >
-
     + Add Item
-
 </button>
 
 
@@ -959,17 +700,14 @@ th {
     id="saveButton"
     onclick="saveInvoice()"
 >
-
     Save Invoice
-
 </button>
 
 
 <div
     id="message"
     class="message"
->
-</div>
+></div>
 
 
 </div>
@@ -980,7 +718,6 @@ th {
 
 <div class="card">
 
-
 <h2>
     Invoices
 </h2>
@@ -988,44 +725,40 @@ th {
 
 <div class="filter-grid">
 
-
 <div>
 
-    <input
-        type="text"
-        id="invoiceSearch"
-        placeholder="Search patient, owner, or invoice number..."
-    >
+<input
+    type="text"
+    id="invoiceSearch"
+    placeholder="Search patient, owner, or invoice number..."
+>
 
 </div>
 
 
 <div>
 
-    <select
-        id="invoiceStatusFilter"
-    >
+<select id="invoiceStatusFilter">
 
-        <option value="All">
-            All Status
-        </option>
+<option value="All">
+    All Status
+</option>
 
-        <option value="Paid">
-            Paid
-        </option>
+<option value="Paid">
+    Paid
+</option>
 
-        <option value="Partial">
-            Partial
-        </option>
+<option value="Partial">
+    Partial
+</option>
 
-        <option value="Unpaid">
-            Unpaid
-        </option>
+<option value="Unpaid">
+    Unpaid
+</option>
 
-    </select>
+</select>
 
 </div>
-
 
 </div>
 
@@ -1044,7 +777,9 @@ th {
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script
+src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
 
 
 <script>
@@ -1080,11 +815,10 @@ let selectedPatients = [];
 
 
 /* =====================================================
-   GET CURRENT CLINIC
+   CURRENT CLINIC
 ===================================================== */
 
 async function getCurrentClinic() {
-
 
     const {
         data: {
@@ -1093,8 +827,8 @@ async function getCurrentClinic() {
         error: sessionError
     } =
         await supabaseClient
-        .auth
-        .getSession();
+            .auth
+            .getSession();
 
 
     if (sessionError) {
@@ -1124,20 +858,20 @@ async function getCurrentClinic() {
         error
     } =
         await supabaseClient
-        .from("clinic_members")
-        .select(`
-            clinic_id,
-            role,
-            clinics (
-                id,
-                name
+            .from("clinic_members")
+            .select(`
+                clinic_id,
+                role,
+                clinics (
+                    id,
+                    name
+                )
+            `)
+            .eq(
+                "user_id",
+                session.user.id
             )
-        `)
-        .eq(
-            "user_id",
-            session.user.id
-        )
-        .single();
+            .single();
 
 
     if (error) {
@@ -1200,17 +934,46 @@ function money(value) {
     return new Intl.NumberFormat(
         "id-ID",
         {
-            style:
-                "currency",
-
-            currency:
-                "IDR",
-
-            maximumFractionDigits:
-                0
+            style: "currency",
+            currency: "IDR",
+            maximumFractionDigits: 0
         }
     ).format(
         Number(value || 0)
+    );
+
+}
+
+
+
+/* =====================================================
+   ESCAPE
+===================================================== */
+
+function escapeHTML(value) {
+
+    return String(
+        value || ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
     );
 
 }
@@ -1223,11 +986,8 @@ function money(value) {
 
 async function loadPatients() {
 
-
     if (!currentClinic) {
-
         return;
-
     }
 
 
@@ -1236,26 +996,25 @@ async function loadPatients() {
         error
     } =
         await supabaseClient
-        .from("patients")
-        .select(`
-            id,
-            name,
-            species,
-            breed,
-            owner,
-            owner_phone
-        `)
-        .eq(
-            "clinic_id",
-            currentClinic.clinicId
-        )
-        .order(
-            "created_at",
-            {
-                ascending:
-                    false
-            }
-        );
+            .from("patients")
+            .select(`
+                id,
+                name,
+                species,
+                breed,
+                owner,
+                owner_phone
+            `)
+            .eq(
+                "clinic_id",
+                currentClinic.clinicId
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
 
 
     if (error) {
@@ -1271,7 +1030,9 @@ async function loadPatients() {
 
             `<span class="error">
                 Gagal mengambil patient:
-                ${escapeHTML(error.message)}
+                ${escapeHTML(
+                    error.message
+                )}
             </span>`;
 
         return;
@@ -1281,14 +1042,6 @@ async function loadPatients() {
 
     patientsCache =
         data || [];
-
-
-    renderPatientResults(
-        patientsCache.slice(
-            0,
-            20
-        )
-    );
 
 }
 
@@ -1301,7 +1054,6 @@ async function loadPatients() {
 function searchPatients(
     keyword
 ) {
-
 
     keyword =
         keyword
@@ -1331,24 +1083,28 @@ function searchPatients(
                     (
                         patient.name ||
                         ""
-                    )
-                    .toLowerCase();
+                    ).toLowerCase();
 
 
                 const owner =
                     (
                         patient.owner ||
                         ""
-                    )
-                    .toLowerCase();
+                    ).toLowerCase();
 
 
                 const species =
                     (
                         patient.species ||
                         ""
-                    )
-                    .toLowerCase();
+                    ).toLowerCase();
+
+
+                const breed =
+                    (
+                        patient.breed ||
+                        ""
+                    ).toLowerCase();
 
 
                 return (
@@ -1362,6 +1118,10 @@ function searchPatients(
                     ) ||
 
                     species.includes(
+                        keyword
+                    ) ||
+
+                    breed.includes(
                         keyword
                     )
 
@@ -1383,13 +1143,12 @@ function searchPatients(
 
 
 /* =====================================================
-   RENDER PATIENT RESULTS
+   RENDER PATIENT SEARCH
 ===================================================== */
 
 function renderPatientResults(
     patients
 ) {
-
 
     const resultsBox =
         document.getElementById(
@@ -1413,10 +1172,8 @@ function renderPatientResults(
 
         `;
 
-
         resultsBox.style.display =
             "block";
-
 
         return;
 
@@ -1425,7 +1182,6 @@ function renderPatientResults(
 
     patients.forEach(
         patient => {
-
 
             const item =
                 document.createElement(
@@ -1439,9 +1195,7 @@ function renderPatientResults(
 
             item.innerHTML = `
 
-                <div
-                    class="search-result-name"
-                >
+                <div class="search-result-name">
 
                     ${escapeHTML(
                         patient.name ||
@@ -1450,17 +1204,12 @@ function renderPatientResults(
 
                 </div>
 
+                <div class="search-result-info">
 
-                <div
-                    class="search-result-info"
-                >
-
-                    ${
-                        escapeHTML(
-                            patient.species ||
-                            "-"
-                        )
-                    }
+                    ${escapeHTML(
+                        patient.species ||
+                        "-"
+                    )}
 
                     ${
                         patient.breed
@@ -1513,50 +1262,157 @@ function renderPatientResults(
 
 
 /* =====================================================
-   SELECT / ADD PATIENT
+   SELECT PATIENT
 ===================================================== */
 
-function selectPatient(patient) {
+function selectPatient(
+    patient
+) {
 
-    if (selectedPatients.some(item => item.id === patient.id)) {
-        document.getElementById("patientSearch").value = "";
-        document.getElementById("patientResults").style.display = "none";
+    if (
+        selectedPatients.some(
+            item =>
+                item.id ===
+                patient.id
+        )
+    ) {
+
+        document.getElementById(
+            "patientSearch"
+        ).value = "";
+
+        document.getElementById(
+            "patientResults"
+        ).style.display =
+            "none";
+
         return;
+
     }
 
-    selectedPatients.push(patient);
+
+    selectedPatients.push(
+        patient
+    );
+
+
     renderSelectedPatients();
 
-    document.getElementById("patientSearch").value = "";
-    document.getElementById("patientResults").style.display = "none";
+
+    document.getElementById(
+        "patientSearch"
+    ).value = "";
+
+
+    document.getElementById(
+        "patientResults"
+    ).style.display =
+        "none";
+
 }
+
+
+
+/* =====================================================
+   RENDER SELECTED PATIENTS
+===================================================== */
 
 function renderSelectedPatients() {
 
-    const wrapper = document.getElementById("selectedPatient");
-    const list = document.getElementById("selectedPatientsList");
+    const wrapper =
+        document.getElementById(
+            "selectedPatient"
+        );
 
-    list.innerHTML = "";
 
-    selectedPatients.forEach(patient => {
-        const chip = document.createElement("div");
-        chip.className = "selected-patient-chip";
-        chip.innerHTML = `
-            <span>🐾 ${escapeHTML(patient.name || "-")}</span>
-            <button type="button" aria-label="Remove patient">×</button>
-        `;
+    const list =
+        document.getElementById(
+            "selectedPatientsList"
+        );
 
-        chip.querySelector("button").addEventListener("click", () => {
-            selectedPatients = selectedPatients.filter(item => item.id !== patient.id);
-            renderSelectedPatients();
-        });
 
-        list.appendChild(chip);
-    });
+    list.innerHTML =
+        "";
 
-    wrapper.style.display = selectedPatients.length ? "block" : "none";
-    document.getElementById("patient").value = selectedPatients[0]?.id || "";
+
+    selectedPatients.forEach(
+        patient => {
+
+            const chip =
+                document.createElement(
+                    "div"
+                );
+
+
+            chip.className =
+                "selected-patient-chip";
+
+
+            chip.innerHTML = `
+
+                <span>
+
+                    🐾
+                    ${escapeHTML(
+                        patient.name ||
+                        "-"
+                    )}
+
+                </span>
+
+                <button
+                    type="button"
+                    aria-label="Remove patient"
+                >
+                    ×
+                </button>
+
+            `;
+
+
+            chip
+                .querySelector(
+                    "button"
+                )
+                .addEventListener(
+                    "click",
+                    function() {
+
+                        selectedPatients =
+                            selectedPatients.filter(
+                                item =>
+                                    item.id !==
+                                    patient.id
+                            );
+
+                        renderSelectedPatients();
+
+                    }
+                );
+
+
+            list.appendChild(
+                chip
+            );
+
+        }
+    );
+
+
+    wrapper.style.display =
+        selectedPatients.length
+            ? "block"
+            : "none";
+
+
+    document.getElementById(
+        "patient"
+    ).value =
+        selectedPatients[0]?.id ||
+        "";
+
 }
+
 
 
 /* =====================================================
@@ -1566,45 +1422,36 @@ function renderSelectedPatients() {
 function clearPatient() {
 
     selectedPatients = [];
-    document.getElementById("patient").value = "";
-    document.getElementById("patientSearch").value = "";
-    document.getElementById("selectedPatientsList").innerHTML = "";
-    document.getElementById("selectedPatient").style.display = "none";
-    document.getElementById("patientResults").style.display = "none";
-}
 
 
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
+    document.getElementById(
+        "patient"
+    ).value =
+        "";
 
-function escapeHTML(
-    value
-) {
 
-    return String(
-        value || ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
+    document.getElementById(
+        "patientSearch"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "selectedPatientsList"
+    ).innerHTML =
+        "";
+
+
+    document.getElementById(
+        "selectedPatient"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "patientResults"
+    ).style.display =
+        "none";
 
 }
 
@@ -1616,40 +1463,116 @@ function escapeHTML(
 
 function addItem() {
 
-    const row = document.createElement("tr");
+    const row =
+        document.createElement(
+            "tr"
+        );
+
 
     row.innerHTML = `
+
         <td>
-            <input class="description" type="text" value="" placeholder="Service / item description">
+
+            <input
+                class="description"
+                type="text"
+                placeholder="Service / item description"
+            >
+
         </td>
 
+
         <td>
-            <input class="quantity" type="number" value="1" min="1">
+
+            <input
+                class="quantity"
+                type="number"
+                value="1"
+                min="1"
+            >
+
         </td>
 
+
         <td>
-            <input class="price" type="number" value="" min="0" placeholder="Price">
+
+            <input
+                class="price"
+                type="number"
+                value=""
+                min="0"
+                placeholder="Price"
+            >
+
         </td>
 
-        <td class="itemTotal">Rp0</td>
+
+        <td class="itemTotal">
+
+            Rp0
+
+        </td>
+
 
         <td>
+
             <button
                 type="button"
                 class="danger"
-                onclick="this.closest('tr').remove(); calculateTotal();"
-            >X</button>
+            >
+                X
+            </button>
+
         </td>
+
     `;
 
-    document.getElementById("items").appendChild(row);
 
-    row.querySelectorAll("input").forEach(input => {
-        input.addEventListener("input", calculateTotal);
-    });
+    row
+        .querySelector(
+            ".danger"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                row.remove();
+
+                calculateTotal();
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "items"
+        )
+        .appendChild(
+            row
+        );
+
+
+    row
+        .querySelectorAll(
+            "input"
+        )
+        .forEach(
+            input => {
+
+                input.addEventListener(
+                    "input",
+                    calculateTotal
+                );
+
+            }
+        );
+
 
     calculateTotal();
+
 }
+
 
 
 /* =====================================================
@@ -1658,9 +1581,7 @@ function addItem() {
 
 function calculateTotal() {
 
-
-    let total =
-        0;
+    let total = 0;
 
 
     document
@@ -1670,20 +1591,23 @@ function calculateTotal() {
         .forEach(
             row => {
 
-
                 const quantity =
                     Number(
-                        row.querySelector(
-                            ".quantity"
-                        ).value
+                        row
+                            .querySelector(
+                                ".quantity"
+                            )
+                            .value
                     ) || 0;
 
 
                 const price =
                     Number(
-                        row.querySelector(
-                            ".price"
-                        ).value
+                        row
+                            .querySelector(
+                                ".price"
+                            )
+                            .value
                     ) || 0;
 
 
@@ -1692,9 +1616,11 @@ function calculateTotal() {
                     price;
 
 
-                row.querySelector(
-                    ".itemTotal"
-                ).textContent =
+                row
+                    .querySelector(
+                        ".itemTotal"
+                    )
+                    .textContent =
                     money(
                         itemTotal
                     );
@@ -1722,27 +1648,86 @@ function calculateTotal() {
 
 function getItems() {
 
-    const serviceType = document.getElementById("serviceType").value;
+    const serviceType =
+        document.getElementById(
+            "serviceType"
+        ).value;
+
+
     const items = [];
 
-    document.querySelectorAll("#items tr").forEach(row => {
-        const description = row.querySelector(".description").value.trim();
-        const quantity = Number(row.querySelector(".quantity").value) || 0;
-        const unitPrice = Number(row.querySelector(".price").value) || 0;
 
-        if (description && quantity > 0) {
-            items.push({
-                category: serviceType,
-                description,
-                quantity,
-                unit_price: unitPrice,
-                total: quantity * unitPrice
-            });
-        }
-    });
+    document
+        .querySelectorAll(
+            "#items tr"
+        )
+        .forEach(
+            row => {
+
+                const description =
+                    row
+                        .querySelector(
+                            ".description"
+                        )
+                        .value
+                        .trim();
+
+
+                const quantity =
+                    Number(
+                        row
+                            .querySelector(
+                                ".quantity"
+                            )
+                            .value
+                    ) || 0;
+
+
+                const unitPrice =
+                    Number(
+                        row
+                            .querySelector(
+                                ".price"
+                            )
+                            .value
+                    ) || 0;
+
+
+                if (
+                    description &&
+                    quantity > 0
+                ) {
+
+                    items.push({
+
+                        category:
+                            serviceType,
+
+                        description:
+                            description,
+
+                        quantity:
+                            quantity,
+
+                        unit_price:
+                            unitPrice,
+
+                        total:
+                            quantity *
+                            unitPrice
+
+                    });
+
+                }
+
+            }
+        );
+
 
     return items;
+
 }
+
 
 
 /* =====================================================
@@ -1751,92 +1736,418 @@ function getItems() {
 
 async function saveInvoice() {
 
-    const patientIds = selectedPatients.map(patient => patient.id);
-    const patientId = patientIds[0] || "";
-    const invoiceDate = document.getElementById("invoiceDate").value;
-    const status = document.getElementById("status").value;
-    const invoiceNumber = document.getElementById("invoiceNumber").value.trim();
-    const items = getItems();
+    const patientIds =
+        selectedPatients.map(
+            patient =>
+                patient.id
+        );
+
+
+    const patientId =
+        patientIds[0] ||
+        "";
+
+
+    const invoiceDate =
+        document.getElementById(
+            "invoiceDate"
+        ).value;
+
+
+    const status =
+        document.getElementById(
+            "status"
+        ).value;
+
+
+    const invoiceNumber =
+        document.getElementById(
+            "invoiceNumber"
+        ).value
+        .trim();
+
+
+    const items =
+        getItems();
+
 
     if (!patientIds.length) {
-        alert("Pilih minimal satu patient terlebih dahulu.");
+
+        alert(
+            "Pilih minimal satu patient terlebih dahulu."
+        );
+
         return;
+
     }
+
 
     if (!invoiceDate) {
-        alert("Pilih tanggal invoice.");
+
+        alert(
+            "Pilih tanggal invoice."
+        );
+
         return;
+
     }
+
 
     if (!items.length) {
-        alert("Tambahkan minimal satu service / item.");
+
+        alert(
+            "Tambahkan minimal satu service / item."
+        );
+
         return;
+
     }
 
-    const subtotal = items.reduce((sum, item) => sum + item.total, 0);
-    const saveButton = document.getElementById("saveButton");
-    saveButton.disabled = true;
 
-    const { data: invoice, error } = await supabaseClient
-        .from("invoices")
-        .insert({
-            clinic_id: currentClinic.clinicId,
-            patient_id: patientId,
-            patient_ids: patientIds,
-            invoice_number: invoiceNumber || null,
-            invoice_date: invoiceDate,
-            subtotal,
-            discount: 0,
-            total: subtotal,
-            status
-        })
-        .select()
-        .single();
+    const subtotal =
+        items.reduce(
+            (
+                sum,
+                item
+            ) =>
+                sum +
+                item.total,
+            0
+        );
 
-    if (error) {
-        console.error(error);
-        alert("Gagal menyimpan invoice:\n" + error.message);
-        saveButton.disabled = false;
-        return;
+
+    const saveButton =
+        document.getElementById(
+            "saveButton"
+        );
+
+
+    saveButton.disabled =
+        true;
+
+
+    saveButton.textContent =
+        "Saving...";
+
+
+    try {
+
+
+        /* CREATE INVOICE */
+
+        const {
+            data: invoice,
+            error
+        } =
+            await supabaseClient
+                .from("invoices")
+                .insert({
+
+                    clinic_id:
+                        currentClinic.clinicId,
+
+                    patient_id:
+                        patientId,
+
+                    patient_ids:
+                        patientIds,
+
+                    invoice_number:
+                        invoiceNumber ||
+                        null,
+
+                    invoice_date:
+                        invoiceDate,
+
+                    subtotal:
+                        subtotal,
+
+                    discount:
+                        0,
+
+                    total:
+                        subtotal,
+
+                    status:
+                        status
+
+                })
+                .select()
+                .single();
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        /* CREATE ITEMS */
+
+        const itemRows =
+            items.map(
+                item => ({
+
+                    invoice_id:
+                        invoice.id,
+
+                    category:
+                        item.category,
+
+                    description:
+                        item.description,
+
+                    quantity:
+                        item.quantity,
+
+                    unit_price:
+                        item.unit_price,
+
+                    total:
+                        item.total
+
+                })
+            );
+
+
+        const {
+            error: itemError
+        } =
+            await supabaseClient
+                .from(
+                    "invoice_items"
+                )
+                .insert(
+                    itemRows
+                );
+
+
+        if (itemError) {
+
+            await supabaseClient
+                .from("invoices")
+                .delete()
+                .eq(
+                    "id",
+                    invoice.id
+                )
+                .eq(
+                    "clinic_id",
+                    currentClinic.clinicId
+                );
+
+
+            throw itemError;
+
+        }
+
+
+        document.getElementById(
+            "message"
+        ).textContent =
+            "Invoice berhasil disimpan.";
+
+
+        document.getElementById(
+            "message"
+        ).className =
+            "message success";
+
+
+        clearPatient();
+
+
+        document.getElementById(
+            "invoiceNumber"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "items"
+        ).innerHTML =
+            "";
+
+
+        addItem();
+
+
+        /*
+           Setelah save, status kembali
+           ke Paid secara default.
+        */
+
+        document.getElementById(
+            "status"
+        ).value =
+            "Paid";
+
+
+        saveButton.disabled =
+            false;
+
+
+        saveButton.textContent =
+            "Save Invoice";
+
+
+        await loadInvoices();
+
     }
 
-    const itemRows = items.map(item => ({
-        invoice_id: invoice.id,
-        category: item.category,
-        description: item.description,
-        quantity: item.quantity,
-        unit_price: item.unit_price,
-        total: item.total
-    }));
 
-    const { error: itemError } = await supabaseClient
-        .from("invoice_items")
-        .insert(itemRows);
+    catch (error) {
 
-    if (itemError) {
-        console.error(itemError);
-        await supabaseClient
-            .from("invoices")
-            .delete()
-            .eq("id", invoice.id)
-            .eq("clinic_id", currentClinic.clinicId);
+        console.error(
+            error
+        );
 
-        alert("Gagal menyimpan item:\n" + itemError.message);
-        saveButton.disabled = false;
-        return;
+
+        alert(
+            "Gagal menyimpan invoice:\n" +
+            error.message
+        );
+
+
+        saveButton.disabled =
+            false;
+
+
+        saveButton.textContent =
+            "Save Invoice";
+
     }
 
-    document.getElementById("message").textContent = "Invoice berhasil disimpan.";
-    document.getElementById("message").className = "message success";
-
-    clearPatient();
-    document.getElementById("invoiceNumber").value = "";
-    document.getElementById("items").innerHTML = "";
-    addItem();
-    saveButton.disabled = false;
-
-    await loadInvoices();
 }
+
+
+
+/* =====================================================
+   CATEGORY BADGE
+===================================================== */
+
+function categoryBadge(
+    category
+) {
+
+    if (
+        category ===
+        "consultation"
+    ) {
+
+        return `
+
+            <span
+                class="category-badge
+                category-consultation"
+            >
+                🩺 Consultation
+            </span>
+
+        `;
+
+    }
+
+
+    if (
+        category ===
+        "grooming"
+    ) {
+
+        return `
+
+            <span
+                class="category-badge
+                category-grooming"
+            >
+                ✂️ Grooming
+            </span>
+
+        `;
+
+    }
+
+
+    return `
+
+        <span
+            class="category-badge"
+        >
+            ${escapeHTML(
+                category ||
+                "Other"
+            )}
+        </span>
+
+    `;
+
+}
+
+
+
+/* =====================================================
+   GET INVOICE PATIENTS
+===================================================== */
+
+function getInvoicePatients(
+    invoice
+) {
+
+    const ids =
+        Array.isArray(
+            invoice.patient_ids
+        ) &&
+        invoice.patient_ids.length
+
+        ? invoice.patient_ids
+
+        : [
+            invoice.patient_id
+        ].filter(
+            Boolean
+        );
+
+
+    const map =
+        new Map(
+            patientsCache.map(
+                patient =>
+                    [
+                        patient.id,
+                        patient
+                    ]
+            )
+        );
+
+
+    const patients =
+        ids
+            .map(
+                id =>
+                    map.get(id)
+            )
+            .filter(
+                Boolean
+            );
+
+
+    if (
+        !patients.length &&
+        invoice.patients
+    ) {
+
+        return [
+            invoice.patients
+        ];
+
+    }
+
+
+    return patients;
+
+}
+
 
 
 /* =====================================================
@@ -1844,7 +2155,6 @@ async function saveInvoice() {
 ===================================================== */
 
 async function loadInvoices() {
-
 
     const list =
         document.getElementById(
@@ -1861,29 +2171,28 @@ async function loadInvoices() {
         error
     } =
         await supabaseClient
-        .from("invoices")
-        .select(`
-            *,
-            patients (
-                id,
-                name,
-                species,
-                breed,
-                owner,
-                owner_phone
+            .from("invoices")
+            .select(`
+                *,
+                patients (
+                    id,
+                    name,
+                    species,
+                    breed,
+                    owner,
+                    owner_phone
+                )
+            `)
+            .eq(
+                "clinic_id",
+                currentClinic.clinicId
             )
-        `)
-        .eq(
-            "clinic_id",
-            currentClinic.clinicId
-        )
-        .order(
-            "created_at",
-            {
-                ascending:
-                    false
-            }
-        );
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
 
 
     if (error) {
@@ -1905,7 +2214,6 @@ async function loadInvoices() {
 
         `;
 
-
         return;
 
     }
@@ -1922,83 +2230,10 @@ async function loadInvoices() {
 
 
 /* =====================================================
-   CATEGORY BADGE
-===================================================== */
-
-function categoryBadge(
-    category
-) {
-
-    if (
-        category ===
-        "consultation"
-    ) {
-
-        return `
-            <span
-                class="category-badge
-                category-consultation"
-            >
-                🩺 Consultation
-            </span>
-        `;
-
-    }
-
-
-    if (
-        category ===
-        "grooming"
-    ) {
-
-        return `
-            <span
-                class="category-badge
-                category-grooming"
-            >
-                ✂️ Grooming
-            </span>
-        `;
-
-    }
-
-
-    return `
-        <span
-            class="category-badge"
-            style="background:#f3f4f6;color:#4b5563;"
-        >
-            ${escapeHTML(category || "Other")}
-        </span>
-    `;
-
-}
-
-
-
-function getInvoicePatients(invoice) {
-
-    const ids = Array.isArray(invoice.patient_ids) && invoice.patient_ids.length
-        ? invoice.patient_ids
-        : [invoice.patient_id].filter(Boolean);
-
-    const map = new Map(patientsCache.map(patient => [patient.id, patient]));
-    const patients = ids.map(id => map.get(id)).filter(Boolean);
-
-    if (!patients.length && invoice.patients) {
-        return [invoice.patients];
-    }
-
-    return patients;
-}
-
-
-/* =====================================================
    RENDER INVOICES
 ===================================================== */
 
 async function renderInvoices() {
-
 
     const list =
         document.getElementById(
@@ -2009,7 +2244,8 @@ async function renderInvoices() {
     const search =
         document.getElementById(
             "invoiceSearch"
-        ).value
+        )
+        .value
         .trim()
         .toLowerCase();
 
@@ -2017,24 +2253,41 @@ async function renderInvoices() {
     const statusFilter =
         document.getElementById(
             "invoiceStatusFilter"
-        ).value;
+        )
+        .value;
 
 
     let filtered =
         invoicesCache.filter(
             invoice => {
 
-                const invoicePatients = getInvoicePatients(invoice);
 
-                const patientName = invoicePatients
-                    .map(p => p?.name || "")
-                    .join(" ")
-                    .toLowerCase();
+                const invoicePatients =
+                    getInvoicePatients(
+                        invoice
+                    );
 
-                const owner = invoicePatients
-                    .map(p => p?.owner || "")
-                    .join(" ")
-                    .toLowerCase();
+
+                const patientName =
+                    invoicePatients
+                        .map(
+                            patient =>
+                                patient?.name ||
+                                ""
+                        )
+                        .join(" ")
+                        .toLowerCase();
+
+
+                const owner =
+                    invoicePatients
+                        .map(
+                            patient =>
+                                patient?.owner ||
+                                ""
+                        )
+                        .join(" ")
+                        .toLowerCase();
 
 
                 const invoiceNumber =
@@ -2072,10 +2325,8 @@ async function renderInvoices() {
 
 
                 return (
-
                     matchesSearch &&
                     matchesStatus
-
                 );
 
             }
@@ -2138,30 +2389,35 @@ async function renderInvoices() {
     ) {
 
 
-        const invoicePatients = getInvoicePatients(invoice);
-        const patient = invoicePatients[0] || invoice.patients;
+        const invoicePatients =
+            getInvoicePatients(
+                invoice
+            );
+
+
+        const patient =
+            invoicePatients[0] ||
+            invoice.patients;
 
 
         const {
             data: items
         } =
             await supabaseClient
-            .from(
-                "invoice_items"
-            )
-            .select(
-                `
-                category,
-                description,
-                quantity,
-                unit_price,
-                total
-                `
-            )
-            .eq(
-                "invoice_id",
-                invoice.id
-            );
+                .from(
+                    "invoice_items"
+                )
+                .select(`
+                    category,
+                    description,
+                    quantity,
+                    unit_price,
+                    total
+                `)
+                .eq(
+                    "invoice_id",
+                    invoice.id
+                );
 
 
         let itemHTML =
@@ -2173,38 +2429,30 @@ async function renderInvoices() {
         ).forEach(
             item => {
 
-
                 itemHTML += `
 
                     <tr>
 
                         <td>
-                            ${escapeHTML(item.description)}
+                            ${escapeHTML(
+                                item.description
+                            )}
                         </td>
 
-
                         <td>
-
                             ${item.quantity}
-
                         </td>
 
-
                         <td>
-
                             ${money(
                                 item.unit_price
                             )}
-
                         </td>
 
-
                         <td>
-
                             ${money(
                                 item.total
                             )}
-
                         </td>
 
                     </tr>
@@ -2260,27 +2508,87 @@ async function renderInvoices() {
                 <div>
 
                     <h3>
-                        ${invoicePatients.length > 1
+
+                        ${
+                            invoicePatients.length > 1
+
                             ? `${invoicePatients.length} Patients`
-                            : escapeHTML(patient?.name || "Unknown Patient")}
+
+                            : escapeHTML(
+                                patient?.name ||
+                                "Unknown Patient"
+                            )
+
+                        }
+
                     </h3>
 
-                    <div class="invoice-meta">
-                        ${invoicePatients.map(p => `
-                            <div>
-                                🐾 ${escapeHTML(p.name || "-")}
-                                ${p.species ? " · " + escapeHTML(p.species) : ""}
-                                ${p.breed ? " · " + escapeHTML(p.breed) : ""}
-                                ${p.owner ? " · Owner: " + escapeHTML(p.owner) : ""}
-                            </div>
-                        `).join("")}
+
+                    <div
+                        class="invoice-meta"
+                    >
+
+                        ${
+                            invoicePatients
+                                .map(
+                                    p => `
+
+                                        <div>
+
+                                            🐾
+                                            ${escapeHTML(
+                                                p.name ||
+                                                "-"
+                                            )}
+
+                                            ${
+                                                p.species
+                                                ? " · " +
+                                                  escapeHTML(
+                                                      p.species
+                                                  )
+                                                : ""
+                                            }
+
+                                            ${
+                                                p.breed
+                                                ? " · " +
+                                                  escapeHTML(
+                                                      p.breed
+                                                  )
+                                                : ""
+                                            }
+
+                                            ${
+                                                p.owner
+                                                ? " · Owner: " +
+                                                  escapeHTML(
+                                                      p.owner
+                                                  )
+                                                : ""
+                                            }
+
+                                        </div>
+
+                                    `
+                                )
+                                .join("")
+                        }
+
 
                         <br>
+
 
                         Service:
-                        ${categoryBadge((items || [])[0]?.category || "")}
+
+                        ${categoryBadge(
+                            (items || [])[0]?.category ||
+                            ""
+                        )}
+
 
                         <br>
+
 
                         Invoice:
 
@@ -2291,13 +2599,19 @@ async function renderInvoices() {
                             )
                         }
 
+
                         <br>
+
 
                         Date:
 
-                        ${invoice.invoice_date}
+                        ${escapeHTML(
+                            invoice.invoice_date
+                        )}
+
 
                         <br>
+
 
                         <span
                             class="status-badge
@@ -2316,7 +2630,6 @@ async function renderInvoices() {
 
 
                 <div class="actions">
-
 
                     <button
                         class="primary"
@@ -2344,7 +2657,6 @@ async function renderInvoices() {
                         Delete
 
                     </button>
-
 
                 </div>
 
@@ -2416,7 +2728,6 @@ async function deleteInvoice(
     id
 ) {
 
-
     if (
         !confirm(
             "Hapus invoice ini?"
@@ -2443,16 +2754,18 @@ async function deleteInvoice(
         error
     } =
         await supabaseClient
-        .from("invoices")
-        .delete()
-        .eq(
-            "id",
-            id
-        )
-        .eq(
-            "clinic_id",
-            currentClinic.clinicId
-        );
+            .from(
+                "invoices"
+            )
+            .delete()
+            .eq(
+                "id",
+                id
+            )
+            .eq(
+                "clinic_id",
+                currentClinic.clinicId
+            );
 
 
     if (error) {
@@ -2487,26 +2800,26 @@ async function printInvoice(
         error
     } =
         await supabaseClient
-        .from("invoices")
-        .select(`
-            *,
-            patients (
-                name,
-                species,
-                breed,
-                owner,
-                owner_phone
+            .from("invoices")
+            .select(`
+                *,
+                patients (
+                    name,
+                    species,
+                    breed,
+                    owner,
+                    owner_phone
+                )
+            `)
+            .eq(
+                "id",
+                id
             )
-        `)
-        .eq(
-            "id",
-            id
-        )
-        .eq(
-            "clinic_id",
-            currentClinic.clinicId
-        )
-        .single();
+            .eq(
+                "clinic_id",
+                currentClinic.clinicId
+            )
+            .single();
 
 
     if (error) {
@@ -2521,46 +2834,106 @@ async function printInvoice(
     }
 
 
-    const printPatientIds = Array.isArray(invoice.patient_ids) && invoice.patient_ids.length
+    const printPatientIds =
+        Array.isArray(
+            invoice.patient_ids
+        ) &&
+        invoice.patient_ids.length
+
         ? invoice.patient_ids
-        : [invoice.patient_id].filter(Boolean);
 
-    let printPatients = [];
+        : [
+            invoice.patient_id
+        ].filter(
+            Boolean
+        );
 
-    if (printPatientIds.length) {
-        const { data: patientRows, error: patientError } = await supabaseClient
-            .from("patients")
-            .select("id,name,species,breed,owner,owner_phone")
-            .in("id", printPatientIds)
-            .eq("clinic_id", currentClinic.clinicId);
+
+    let printPatients =
+        [];
+
+
+    if (
+        printPatientIds.length
+    ) {
+
+        const {
+            data: patientRows,
+            error: patientError
+        } =
+            await supabaseClient
+                .from("patients")
+                .select(`
+                    id,
+                    name,
+                    species,
+                    breed,
+                    owner,
+                    owner_phone
+                `)
+                .in(
+                    "id",
+                    printPatientIds
+                )
+                .eq(
+                    "clinic_id",
+                    currentClinic.clinicId
+                );
+
 
         if (!patientError) {
-            printPatients = patientRows || [];
+
+            printPatients =
+                patientRows || [];
+
         }
+
     }
 
-    const printPatientMap = new Map(printPatients.map(patient => [patient.id, patient]));
-    const orderedPrintPatients = printPatientIds.map(id => printPatientMap.get(id)).filter(Boolean);
+
+    const printPatientMap =
+        new Map(
+            printPatients.map(
+                patient =>
+                    [
+                        patient.id,
+                        patient
+                    ]
+            )
+        );
+
+
+    const orderedPrintPatients =
+        printPatientIds
+            .map(
+                id =>
+                    printPatientMap.get(
+                        id
+                    )
+            )
+            .filter(
+                Boolean
+            );
 
 
     const {
         data: items
     } =
         await supabaseClient
-        .from("invoice_items")
-        .select(
-            `
-            category,
-            description,
-            quantity,
-            unit_price,
-            total
-            `
-        )
-        .eq(
-            "invoice_id",
-            id
-        );
+            .from(
+                "invoice_items"
+            )
+            .select(`
+                category,
+                description,
+                quantity,
+                unit_price,
+                total
+            `)
+            .eq(
+                "invoice_id",
+                id
+            );
 
 
     let rows =
@@ -2572,42 +2945,30 @@ async function printInvoice(
     ).forEach(
         item => {
 
-
             rows += `
 
                 <tr>
 
                     <td>
-
                         ${escapeHTML(
                             item.description
                         )}
-
                     </td>
 
-
                     <td>
-
                         ${item.quantity}
-
                     </td>
 
-
                     <td>
-
                         ${money(
                             item.unit_price
                         )}
-
                     </td>
 
-
                     <td>
-
                         ${money(
                             item.total
                         )}
-
                     </td>
 
                 </tr>
@@ -2618,33 +2979,26 @@ async function printInvoice(
     );
 
 
-    const patient =
-        orderedPrintPatients[0] || invoice.patients;
-
-
     const invoiceTime =
         invoice.created_at
+
         ? new Intl.DateTimeFormat(
             "id-ID",
             {
-                hour:
-                    "2-digit",
-
-                minute:
-                    "2-digit",
-
-                hour12:
-                    false,
-
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
                 timeZone:
                     "Asia/Jakarta"
             }
-        ).format(
+        )
+        .format(
             new Date(
                 invoice.created_at
             )
         ) +
         " WIB"
+
         : "-";
 
 
@@ -2655,505 +3009,564 @@ async function printInvoice(
         );
 
 
+    if (!printWindow) {
+
+        alert(
+            "Popup print diblokir browser. Izinkan popup untuk halaman ini."
+        );
+
+        return;
+
+    }
+
+
     printWindow.document.write(`
 
-        <!DOCTYPE html>
+<!DOCTYPE html>
 
-        <html>
+<html>
 
-        <head>
+<head>
 
-        <title>
-            ${escapeHTML(
-                currentClinic.clinicName
-            )}
-            - Invoice
-        </title>
+<meta charset="UTF-8">
 
+<title>
+    ${escapeHTML(
+        currentClinic.clinicName
+    )}
+    - Invoice
+</title>
 
-        <style>
 
-        @page {
-            size: 58mm auto;
-            margin: 0;
-        }
+<style>
 
 
-        * {
-            box-sizing:
-                border-box;
-        }
+@page {
 
+    size: 58mm auto;
 
-        html,
-        body {
+    margin: 0;
 
-            width:
-                58mm;
+}
 
-            margin:
-                0;
 
-            padding:
-                0;
+* {
 
-            background:
-                white;
+    box-sizing: border-box;
 
-            color:
-                #111827;
+}
 
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
 
-            font-size:
-                9.5px;
+html,
+body {
 
-        }
+    width: 58mm;
 
+    margin: 0;
 
-        body {
+    padding: 0;
 
-            width:
-                58mm;
+    background: white;
 
-            padding:
-                2mm 2.5mm;
+    color: #000000;
 
-            line-height:
-                1.35;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-        }
+    font-size: 11px;
 
+    font-weight: 500;
 
-        .invoice {
+    line-height: 1.45;
 
-            width:
-                53mm;
+}
 
-            max-width:
-                53mm;
 
-            margin:
-                0 auto;
+body {
 
-        }
+    width: 58mm;
 
+    padding:
+        2.5mm 2.5mm;
 
-        .header {
+}
 
-            text-align:
-                center;
 
-        }
+.invoice {
 
+    width: 53mm;
 
-        .clinic {
+    max-width: 53mm;
 
-            font-size:
-                11px;
+    margin: 0 auto;
 
-            font-weight:
-                600;
+}
 
-            margin-bottom:
-                1mm;
 
-        }
+.header {
 
+    text-align: center;
 
-        .clinic-contact {
+}
 
-            font-size:
-                8px;
 
-            color:
-                #374151;
+.clinic {
 
-        }
+    font-size: 13px;
 
+    font-weight: 700;
 
-        .divider {
+    margin-bottom: 1.5mm;
 
-            border:
-                0;
+}
 
-            border-top:
-                1px dashed
-                #9ca3af;
 
-            margin:
-                2mm 0;
+.clinic-contact {
 
-        }
+    font-size: 9.5px;
 
+    font-weight: 500;
 
-        .invoice-title {
+    color: #000000;
 
-            text-align:
-                center;
+    line-height: 1.45;
 
-            font-size:
-                9.5px;
+}
 
-            font-weight:
-                600;
 
-            margin:
-                1.5mm 0;
+.divider {
 
-        }
+    border: 0;
 
+    border-top:
+        1px dashed #000000;
 
-        .meta {
+    margin:
+        2.5mm 0;
 
-            font-size:
-                8px;
+}
 
-            line-height:
-                1.5;
 
-            color:
-                #374151;
+.invoice-title {
 
-        }
+    text-align: center;
 
+    font-size: 12px;
 
-        .patient-box {
+    font-weight: 700;
 
-            margin-top:
-                1.8mm;
+    margin:
+        2mm 0;
 
-            padding:
-                1.5mm 0;
+}
 
-            border-top:
-                1px solid
-                #e5e7eb;
 
-            border-bottom:
-                1px solid
-                #e5e7eb;
+.meta {
 
-        }
+    font-size: 9.5px;
 
+    font-weight: 500;
 
-        .patient-name {
+    line-height: 1.55;
 
-            font-size:
-                9.5px;
+    color: #000000;
 
-            font-weight:
-                600;
+}
 
-            margin-bottom:
-                .8mm;
 
-        }
+.patient-box {
 
+    margin-top: 2mm;
 
-        table {
+    padding:
+        1.8mm 0;
 
-            width:
-                100%;
+    border-top:
+        1px solid #000000;
 
-            border-collapse:
-                collapse;
+    border-bottom:
+        1px solid #000000;
 
-            margin-top:
-                2mm;
+}
 
-            table-layout:
-                fixed;
 
-        }
+.patient-name {
 
+    font-size: 11px;
 
-        th,
-        td {
+    font-weight: 700;
 
-            padding:
-                1.1mm .3mm;
+    margin-bottom: 1mm;
 
-            border-bottom:
-                1px dashed
-                #b6bcc6;
+}
 
-            font-size:
-                8.5px;
 
-            line-height:
-                1.35;
+table {
 
-        }
+    width: 100%;
 
+    border-collapse:
+        collapse;
 
-        th:nth-child(1),
-        td:nth-child(1) {
+    margin-top: 2.5mm;
 
-            width:
-                40%;
+    table-layout: fixed;
 
-        }
+}
 
 
-        th:nth-child(2),
-        td:nth-child(2) {
+th,
+td {
 
-            width:
-                11%;
+    padding:
+        1.4mm .3mm;
 
-            text-align:
-                center;
+    border-bottom:
+        1px dashed #555555;
 
-        }
+    font-size: 9.5px;
 
+    font-weight: 500;
 
-        th:nth-child(3),
-        td:nth-child(3) {
+    line-height: 1.4;
 
-            width:
-                24%;
+}
 
-            text-align:
-                right;
 
-        }
+th {
 
+    font-weight: 700;
 
-        th:nth-child(4),
-        td:nth-child(4) {
+}
 
-            width:
-                24%;
 
-            text-align:
-                right;
+th:nth-child(1),
+td:nth-child(1) {
 
-        }
+    width: 39%;
 
+}
 
-        .total-row {
 
-            display:
-                flex;
+th:nth-child(2),
+td:nth-child(2) {
 
-            justify-content:
-                space-between;
+    width: 11%;
 
-            margin-top:
-                2.5mm;
+    text-align: center;
 
-            padding-top:
-                1.5mm;
+}
 
-            border-top:
-                1px solid
-                #111827;
 
-            font-weight:
-                600;
+th:nth-child(3),
+td:nth-child(3) {
 
-        }
+    width: 25%;
 
+    text-align: right;
 
-        .footer {
+}
 
-            text-align:
-                center;
 
-            font-size:
-                8px;
+th:nth-child(4),
+td:nth-child(4) {
 
-            color:
-                #6b7280;
+    width: 25%;
 
-            margin-top:
-                4mm;
+    text-align: right;
 
-        }
+}
 
 
-        </style>
+.total-row {
 
-        </head>
+    display: flex;
 
+    justify-content:
+        space-between;
 
-        <body>
+    margin-top: 3mm;
 
+    padding-top: 2mm;
 
-        <div class="invoice">
+    border-top:
+        2px solid #000000;
 
+    font-size: 12px;
 
-            <div class="header">
+    font-weight: 700;
 
-                <div class="clinic">
+}
 
-                    ${escapeHTML(
-                        currentClinic.clinicName
-                    )}
 
-                </div>
+.footer {
 
+    text-align: center;
 
-                <div class="clinic-contact">
+    font-size: 9px;
 
-                    Jl. Veteran No.19,
-                    Trimulyo I, Kepek,
-                    Kec. Wonosari,
-                    Kabupaten Gunungkidul,
-                    Daerah Istimewa Yogyakarta 55813
+    font-weight: 500;
 
-                    <br>
+    color: #000000;
 
-                    WhatsApp:
-                    0882005270642
+    margin-top: 4mm;
 
-                </div>
+    line-height: 1.5;
 
-            </div>
+}
 
 
-            <hr class="divider">
+</style>
 
+</head>
 
-            <div class="invoice-title">
 
-                INVOICE
+<body>
 
-            </div>
 
+<div class="invoice">
 
-            <div class="meta">
 
-                Invoice:
-                ${escapeHTML(
-                    invoice.invoice_number ||
-                    "-"
-                )}
+<div class="header">
 
-                <br>
 
-                Date:
-                ${invoice.invoice_date}
+    <div class="clinic">
 
-                <br>
+        ${escapeHTML(
+            currentClinic.clinicName
+        )}
 
-                Time:
-                ${invoiceTime}
+    </div>
 
-                <br>
 
-                Status:
-                ${escapeHTML(
-                    invoice.status ||
-                    "-"
-                )}
+    <div class="clinic-contact">
 
-            </div>
+        Jl. Veteran No.19,
+        Trimulyo I, Kepek,
+        Kec. Wonosari,
+        Kabupaten Gunungkidul,
+        Daerah Istimewa Yogyakarta 55813
 
+        <br>
 
-            <div class="patient-box">
-                ${orderedPrintPatients.map((p, index) => `
+        WhatsApp:
+        0882005270642
+
+    </div>
+
+
+</div>
+
+
+<hr class="divider">
+
+
+<div class="invoice-title">
+
+    INVOICE
+
+</div>
+
+
+<div class="meta">
+
+    Invoice:
+    ${escapeHTML(
+        invoice.invoice_number ||
+        "-"
+    )}
+
+    <br>
+
+    Date:
+    ${escapeHTML(
+        invoice.invoice_date
+    )}
+
+    <br>
+
+    Time:
+    ${invoiceTime}
+
+    <br>
+
+    Status:
+    <strong>
+        ${escapeHTML(
+            invoice.status ||
+            "-"
+        )}
+    </strong>
+
+</div>
+
+
+<div class="patient-box">
+
+
+    ${
+        orderedPrintPatients.length
+
+        ? orderedPrintPatients
+            .map(
+                (
+                    p,
+                    index
+                ) => `
+
                     <div class="patient-name">
-                        ${escapeHTML(p.name || "-")}
+
+                        ${escapeHTML(
+                            p.name ||
+                            "-"
+                        )}
+
                     </div>
+
+
                     <div class="meta">
-                        ${escapeHTML(p.species || "-")}
-                        ${p.breed ? " · " + escapeHTML(p.breed) : ""}
+
+                        ${escapeHTML(
+                            p.species ||
+                            "-"
+                        )}
+
+                        ${
+                            p.breed
+                            ? " · " +
+                              escapeHTML(
+                                  p.breed
+                              )
+                            : ""
+                        }
+
                         <br>
-                        Owner: ${escapeHTML(p.owner || "-")}
+
+                        Owner:
+                        ${escapeHTML(
+                            p.owner ||
+                            "-"
+                        )}
+
                     </div>
-                    ${index < orderedPrintPatients.length - 1 ? '<hr class="divider">' : ''}
-                `).join("")}
-            </div>
 
 
-            <table>
+                    ${
+                        index <
+                        orderedPrintPatients.length - 1
 
-                <thead>
+                        ? '<hr class="divider">'
 
-                    <tr>
+                        : ""
+                    }
 
-                        <th>
-                            Description
-                        </th>
+                `
+            )
+            .join("")
 
-                        <th>
-                            Qty
-                        </th>
+        : `
 
-                        <th>
-                            Price
-                        </th>
+            <div class="patient-name">
 
-                        <th>
-                            Total
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody>
-
-                    ${rows}
-
-                </tbody>
-
-            </table>
-
-
-            <div class="total-row">
-
-                <span>
-                    TOTAL
-                </span>
-
-                <span>
-                    ${money(
-                        invoice.total
-                    )}
-                </span>
+                ${escapeHTML(
+                    invoice.patients?.name ||
+                    "-"
+                )}
 
             </div>
 
+        `
 
-            <div class="footer">
-
-                Thank you for trusting
-
-                <strong>
-                    ${escapeHTML(
-                        currentClinic.clinicName
-                    )}
-                </strong>
-
-                .
-
-                <br>
-
-                Please keep this invoice
-                as proof of payment.
-
-            </div>
+    }
 
 
-        </div>
+</div>
 
 
-        </body>
+<table>
 
-        </html>
+<thead>
+
+<tr>
+
+    <th>
+        Description
+    </th>
+
+    <th>
+        Qty
+    </th>
+
+    <th>
+        Price
+    </th>
+
+    <th>
+        Total
+    </th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+    ${rows}
+
+</tbody>
+
+</table>
+
+
+<div class="total-row">
+
+    <span>
+        TOTAL
+    </span>
+
+    <span>
+        ${money(
+            invoice.total
+        )}
+    </span>
+
+</div>
+
+
+<div class="footer">
+
+    Thank you for trusting
+
+    <strong>
+        ${escapeHTML(
+            currentClinic.clinicName
+        )}
+    </strong>
+
+    .
+
+    <br>
+
+    Please keep this invoice
+    as proof of payment.
+
+</div>
+
+
+</div>
+
+
+</body>
+
+</html>
 
     `);
 
 
     printWindow.document.close();
-
 
     printWindow.focus();
 
@@ -3211,7 +3624,6 @@ document.addEventListener(
     "click",
     function(event) {
 
-
         const searchBox =
             document.querySelector(
                 ".search-box"
@@ -3237,7 +3649,9 @@ document.addEventListener(
 
 
 
-/* INVOICE SEARCH */
+/* =====================================================
+   INVOICE SEARCH
+===================================================== */
 
 document
     .getElementById(
@@ -3351,11 +3765,25 @@ async function init() {
             );
 
 
-    await loadPatients();
+    /*
+       DEFAULT STATUS = PAID
+    */
 
+    document.getElementById(
+        "status"
+    ).value =
+        "Paid";
+
+
+    await loadPatients();
 
     await loadInvoices();
 
+
+    /*
+       Minimal satu item
+       langsung tersedia.
+    */
 
     addItem();
 
