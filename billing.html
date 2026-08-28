@@ -5,7 +5,10 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>Billing - VetClinic</title>
 
@@ -16,333 +19,621 @@
     box-sizing: border-box;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
-    text-rendering: optimizeLegibility;
 }
 
 
 body {
+
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f4f6fb;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #ffffff;
+
     color: #252d3d;
+
 }
 
 
 .container {
+
     max-width: 1100px;
+
     margin: auto;
+
     padding: 30px;
+
 }
 
 
 .card {
+
     background: white;
+
     padding: 25px;
+
     border-radius: 15px;
+
     margin-bottom: 25px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.06);
+
+    box-shadow:
+        0 5px 20px
+        rgba(0,0,0,.06);
+
+    border:
+        1px solid #eeeeee;
+
 }
 
 
 .header {
+
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
     margin-bottom: 25px;
+
 }
 
 
 .header h1 {
+
     margin: 0;
+
 }
 
 
 .clinic-name {
+
     color: #5146e5;
+
     font-weight: bold;
+
+}
+
+
+.clinic-contact {
+
+    font-size: 13px;
+
+    color: #6b7280;
+
+    margin-top: 5px;
+
 }
 
 
 label {
+
     display: block;
+
     margin-bottom: 6px;
+
     font-weight: bold;
+
 }
 
 
 input,
 select {
+
     width: 100%;
+
     padding: 12px;
-    border: 1px solid #d1d5db;
+
+    border:
+        1px solid #d1d5db;
+
     border-radius: 8px;
+
     margin-bottom: 15px;
+
+    background: white;
+
 }
 
 
 button {
+
     border: 0;
+
     padding: 12px 18px;
+
     border-radius: 8px;
+
     cursor: pointer;
+
     font-weight: bold;
+
 }
 
 
 button:disabled {
+
     opacity: .6;
+
     cursor: not-allowed;
+
 }
 
 
 .primary {
+
     background: #5146e5;
+
     color: white;
+
 }
 
 
 .secondary {
+
     background: #e5e7eb;
+
     color: #374151;
+
 }
 
 
 .danger {
+
     background: #dc2626;
+
     color: white;
+
 }
 
 
 .form-grid {
+
     display: grid;
-    grid-template-columns: 1fr 1fr;
+
+    grid-template-columns:
+        1fr 1fr;
+
     gap: 15px;
+
 }
 
 
 .full {
-    grid-column: 1 / -1;
+
+    grid-column:
+        1 / -1;
+
 }
 
 
 .search-box {
+
     position: relative;
+
 }
 
 
 .search-results {
+
     position: absolute;
+
     left: 0;
+
     right: 0;
+
     top: 100%;
+
     background: white;
-    border: 1px solid #d1d5db;
+
+    border:
+        1px solid #d1d5db;
+
     border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(0,0,0,.12);
+
+    box-shadow:
+        0 8px 20px
+        rgba(0,0,0,.12);
+
     z-index: 100;
+
     max-height: 300px;
+
     overflow-y: auto;
+
 }
 
 
 .search-result {
+
     padding: 12px 14px;
+
     cursor: pointer;
-    border-bottom: 1px solid #f0f0f0;
+
+    border-bottom:
+        1px solid #f0f0f0;
+
 }
 
 
 .search-result:hover {
+
     background: #f5f5ff;
+
 }
 
 
 .search-result-name {
+
     font-weight: bold;
+
 }
 
 
 .search-result-info {
+
     font-size: 13px;
+
     color: #6b7280;
+
     margin-top: 3px;
+
 }
 
 
 .selected-patient {
+
     background: #f5f5ff;
-    border: 1px solid #5146e5;
+
+    border:
+        1px solid #5146e5;
+
     border-radius: 8px;
+
     padding: 12px;
+
     margin-bottom: 15px;
+
 }
 
 
 .selected-patient strong {
+
     display: block;
+
 }
 
 
 .clear-patient {
+
     margin-top: 8px;
+
     padding: 7px 10px;
+
     font-size: 12px;
+
 }
 
 
 .filter-grid {
+
     display: grid;
-    grid-template-columns: 2fr 1fr;
+
+    grid-template-columns:
+        2fr 1fr;
+
     gap: 15px;
+
     margin-bottom: 20px;
+
 }
 
 
 table {
+
     width: 100%;
-    border-collapse: collapse;
+
+    border-collapse:
+        collapse;
+
     margin-top: 15px;
+
 }
 
 
 th,
 td {
+
     padding: 10px;
-    border-bottom: 1px solid #e5e7eb;
+
+    border-bottom:
+        1px solid #e5e7eb;
+
     text-align: left;
+
     vertical-align: top;
+
+}
+
+
+th {
+
+    background: #fafafa;
+
 }
 
 
 .total {
+
     text-align: right;
+
     font-size: 20px;
+
     font-weight: bold;
+
     margin-top: 20px;
+
 }
 
 
 .message {
+
     margin-top: 15px;
+
 }
 
 
 .error {
+
     color: #dc2626;
+
 }
 
 
 .success {
+
     color: #16a34a;
+
 }
 
 
 .invoice {
-    border: 1px solid #e5e7eb;
+
+    border:
+        1px solid #e5e7eb;
+
     border-radius: 10px;
+
     padding: 20px;
+
     margin-top: 15px;
+
 }
 
 
 .invoice-header {
+
     display: flex;
-    justify-content: space-between;
+
+    justify-content:
+        space-between;
+
     gap: 15px;
+
 }
 
 
 .actions {
+
     display: flex;
+
     gap: 8px;
+
     flex-wrap: wrap;
+
 }
 
 
 .invoice-meta {
+
     color: #6b7280;
+
     font-size: 13px;
+
     line-height: 1.6;
+
 }
 
 
 .status-badge {
+
     display: inline-block;
+
     padding: 5px 9px;
+
     border-radius: 20px;
+
     font-size: 12px;
+
     font-weight: bold;
+
 }
 
 
 .status-paid {
+
     background: #dcfce7;
+
     color: #166534;
+
 }
 
 
 .status-unpaid {
+
     background: #fee2e2;
+
     color: #991b1b;
+
 }
 
 
 .status-partial {
+
     background: #fef3c7;
+
     color: #92400e;
+
 }
 
 
 .refresh-info {
+
     font-size: 13px;
+
     color: #6b7280;
+
     margin-top: 8px;
+
 }
 
 
 .empty {
+
     text-align: center;
+
     padding: 30px;
+
     color: #6b7280;
+
+}
+
+
+/* CATEGORY */
+
+.category-select {
+
+    min-width: 150px;
+
+}
+
+
+.category-badge {
+
+    display: inline-block;
+
+    padding:
+        5px 9px;
+
+    border-radius:
+        999px;
+
+    font-size:
+        11px;
+
+    font-weight:
+        bold;
+
+}
+
+
+.category-consultation {
+
+    background:
+        #eeeaff;
+
+    color:
+        #5b4bc4;
+
+}
+
+
+.category-grooming {
+
+    background:
+        #fff0f4;
+
+    color:
+        #c54f70;
+
+}
+
+
+.category-medicine {
+
+    background:
+        #eaf7ff;
+
+    color:
+        #26709e;
+
 }
 
 
 @media(max-width:700px) {
 
     .container {
+
         padding: 15px;
+
     }
 
 
     .form-grid {
-        grid-template-columns: 1fr;
+
+        grid-template-columns:
+            1fr;
+
     }
 
 
     .full {
-        grid-column: auto;
+
+        grid-column:
+            auto;
+
     }
 
 
     .filter-grid {
-        grid-template-columns: 1fr;
+
+        grid-template-columns:
+            1fr;
+
     }
 
 
     .header {
-        flex-direction: column;
-        align-items: flex-start;
+
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
+
         gap: 15px;
+
     }
 
 
     .invoice-header {
-        flex-direction: column;
+
+        flex-direction:
+            column;
+
     }
 
 
     table {
-        font-size: 13px;
+
+        font-size:
+            13px;
+
     }
 
 }
@@ -358,15 +649,15 @@ td {
 <div class="container">
 
 
-<!-- =========================================
-     HEADER
-========================================= -->
+<!-- HEADER -->
 
 <div class="header">
 
     <div>
 
-        <h1>💰 Billing</h1>
+        <h1>
+            💰 Billing
+        </h1>
 
         <div>
 
@@ -378,17 +669,26 @@ td {
             </span>
 
             <div class="clinic-contact">
-                Jl. Veteran No.19, Trimulyo I, Kepek, Kec. Wonosari,
-                Kabupaten Gunungkidul, Daerah Istimewa Yogyakarta 55813
+
+                Jl. Veteran No.19,
+                Trimulyo I, Kepek,
+                Kec. Wonosari,
+                Kabupaten Gunungkidul,
+                Daerah Istimewa Yogyakarta 55813
+
                 <br>
-                WhatsApp: 0882005270642
+
+                WhatsApp:
+                0882005270642
+
             </div>
 
         </div>
 
         <div class="refresh-info">
 
-            Patient and invoice data update automatically.
+            Patient and invoice data
+            update automatically.
 
         </div>
 
@@ -408,9 +708,7 @@ td {
 
 
 
-<!-- =========================================
-     NEW INVOICE
-========================================= -->
+<!-- NEW INVOICE -->
 
 <div class="card">
 
@@ -423,87 +721,90 @@ td {
 <div class="form-grid">
 
 
-<!-- PATIENT SEARCH -->
+<!-- PATIENT -->
 
 <div class="full">
 
-
-<label>
-    Patient
-</label>
-
-
-<div class="search-box">
+    <label>
+        Patient
+    </label>
 
 
-<input
-    type="text"
-    id="patientSearch"
-    placeholder="Search patient or owner..."
-    autocomplete="off"
->
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="patientSearch"
+            placeholder="Search patient or owner..."
+            autocomplete="off"
+        >
 
 
-<div
-    id="patientResults"
-    class="search-results"
-    style="display:none;"
->
-</div>
+        <div
+            id="patientResults"
+            class="search-results"
+            style="display:none;"
+        >
+
+        </div>
+
+    </div>
 
 
-</div>
-
-
-<div
-    id="selectedPatient"
-    class="selected-patient"
-    style="display:none;"
->
-
-    <strong id="selectedPatientName">
-    </strong>
-
-    <span id="selectedPatientInfo">
-    </span>
-
-    <br>
-
-    <button
-        type="button"
-        class="secondary clear-patient"
-        onclick="clearPatient()"
+    <div
+        id="selectedPatient"
+        class="selected-patient"
+        style="display:none;"
     >
 
-        Change Patient
+        <strong
+            id="selectedPatientName"
+        >
+        </strong>
 
-    </button>
+        <span
+            id="selectedPatientInfo"
+        >
+        </span>
+
+        <br>
+
+
+        <button
+            type="button"
+            class="secondary clear-patient"
+            onclick="clearPatient()"
+        >
+
+            Change Patient
+
+        </button>
+
+    </div>
+
+
+    <input
+        type="hidden"
+        id="patient"
+    >
 
 </div>
 
 
-<input
-    type="hidden"
-    id="patient"
->
 
-</div>
-
-
-
-<!-- INVOICE DATE -->
+<!-- DATE -->
 
 <div>
 
-<label>
-    Invoice Date
-</label>
+    <label>
+        Invoice Date
+    </label>
 
 
-<input
-    type="date"
-    id="invoiceDate"
->
+    <input
+        type="date"
+        id="invoiceDate"
+    >
 
 </div>
 
@@ -513,26 +814,26 @@ td {
 
 <div>
 
-<label>
-    Status
-</label>
+    <label>
+        Status
+    </label>
 
 
-<select id="status">
+    <select id="status">
 
-    <option value="Unpaid">
-        Unpaid
-    </option>
+        <option value="Unpaid">
+            Unpaid
+        </option>
 
-    <option value="Paid">
-        Paid
-    </option>
+        <option value="Paid">
+            Paid
+        </option>
 
-    <option value="Partial">
-        Partial
-    </option>
+        <option value="Partial">
+            Partial
+        </option>
 
-</select>
+    </select>
 
 </div>
 
@@ -542,16 +843,16 @@ td {
 
 <div class="full">
 
-<label>
-    Invoice Number
-</label>
+    <label>
+        Invoice Number
+    </label>
 
 
-<input
-    type="text"
-    id="invoiceNumber"
-    placeholder="Optional"
->
+    <input
+        type="text"
+        id="invoiceNumber"
+        placeholder="Optional"
+    >
 
 </div>
 
@@ -572,6 +873,10 @@ td {
 <thead>
 
 <tr>
+
+    <th>
+        Category
+    </th>
 
     <th>
         Description
@@ -598,8 +903,8 @@ td {
 
 
 <tbody id="items">
-</tbody>
 
+</tbody>
 
 </table>
 
@@ -656,9 +961,7 @@ td {
 
 
 
-<!-- =========================================
-     INVOICE LIST
-========================================= -->
+<!-- INVOICE LIST -->
 
 <div class="card">
 
@@ -673,36 +976,38 @@ td {
 
 <div>
 
-<input
-    type="text"
-    id="invoiceSearch"
-    placeholder="Search patient, owner, or invoice number..."
->
+    <input
+        type="text"
+        id="invoiceSearch"
+        placeholder="Search patient, owner, or invoice number..."
+    >
 
 </div>
 
 
 <div>
 
-<select id="invoiceStatusFilter">
+    <select
+        id="invoiceStatusFilter"
+    >
 
-    <option value="All">
-        All Status
-    </option>
+        <option value="All">
+            All Status
+        </option>
 
-    <option value="Paid">
-        Paid
-    </option>
+        <option value="Paid">
+            Paid
+        </option>
 
-    <option value="Partial">
-        Partial
-    </option>
+        <option value="Partial">
+            Partial
+        </option>
 
-    <option value="Unpaid">
-        Unpaid
-    </option>
+        <option value="Unpaid">
+            Unpaid
+        </option>
 
-</select>
+    </select>
 
 </div>
 
@@ -724,15 +1029,15 @@ td {
 
 
 
-<!-- =========================================
-     SUPABASE
-========================================= -->
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
 
+
+/* =====================================================
+   SUPABASE
+===================================================== */
 
 const SUPABASE_URL =
     "https://zltbjbbofvvndxirlipf.supabase.co";
@@ -757,9 +1062,9 @@ let invoicesCache = [];
 
 
 
-/* =========================================
+/* =====================================================
    GET CURRENT CLINIC
-========================================= */
+===================================================== */
 
 async function getCurrentClinic() {
 
@@ -770,7 +1075,7 @@ async function getCurrentClinic() {
         },
         error: sessionError
     } =
-    await supabaseClient
+        await supabaseClient
         .auth
         .getSession();
 
@@ -801,7 +1106,7 @@ async function getCurrentClinic() {
         data,
         error
     } =
-    await supabaseClient
+        await supabaseClient
         .from("clinic_members")
         .select(`
             clinic_id,
@@ -869,18 +1174,23 @@ async function getCurrentClinic() {
 
 
 
-/* =========================================
+/* =====================================================
    MONEY
-========================================= */
+===================================================== */
 
 function money(value) {
 
     return new Intl.NumberFormat(
         "id-ID",
         {
-            style: "currency",
-            currency: "IDR",
-            maximumFractionDigits: 0
+            style:
+                "currency",
+
+            currency:
+                "IDR",
+
+            maximumFractionDigits:
+                0
         }
     ).format(
         Number(value || 0)
@@ -890,9 +1200,9 @@ function money(value) {
 
 
 
-/* =========================================
+/* =====================================================
    LOAD PATIENTS
-========================================= */
+===================================================== */
 
 async function loadPatients() {
 
@@ -908,7 +1218,7 @@ async function loadPatients() {
         data,
         error
     } =
-    await supabaseClient
+        await supabaseClient
         .from("patients")
         .select(`
             id,
@@ -925,7 +1235,8 @@ async function loadPatients() {
         .order(
             "created_at",
             {
-                ascending: false
+                ascending:
+                    false
             }
         );
 
@@ -943,7 +1254,7 @@ async function loadPatients() {
 
             `<span class="error">
                 Gagal mengambil patient:
-                ${error.message}
+                ${escapeHTML(error.message)}
             </span>`;
 
         return;
@@ -956,18 +1267,23 @@ async function loadPatients() {
 
 
     renderPatientResults(
-        patientsCache.slice(0, 20)
+        patientsCache.slice(
+            0,
+            20
+        )
     );
 
 }
 
 
 
-/* =========================================
+/* =====================================================
    SEARCH PATIENT
-========================================= */
+===================================================== */
 
-function searchPatients(keyword) {
+function searchPatients(
+    keyword
+) {
 
 
     keyword =
@@ -979,7 +1295,10 @@ function searchPatients(keyword) {
     if (!keyword) {
 
         renderPatientResults(
-            patientsCache.slice(0, 20)
+            patientsCache.slice(
+                0,
+                20
+            )
         );
 
         return;
@@ -995,30 +1314,39 @@ function searchPatients(keyword) {
                     (
                         patient.name ||
                         ""
-                    ).toLowerCase();
+                    )
+                    .toLowerCase();
 
 
                 const owner =
                     (
                         patient.owner ||
                         ""
-                    ).toLowerCase();
+                    )
+                    .toLowerCase();
 
 
                 const species =
                     (
                         patient.species ||
                         ""
-                    ).toLowerCase();
+                    )
+                    .toLowerCase();
 
 
                 return (
 
-                    name.includes(keyword) ||
+                    name.includes(
+                        keyword
+                    ) ||
 
-                    owner.includes(keyword) ||
+                    owner.includes(
+                        keyword
+                    ) ||
 
-                    species.includes(keyword)
+                    species.includes(
+                        keyword
+                    )
 
                 );
 
@@ -1027,16 +1355,19 @@ function searchPatients(keyword) {
 
 
     renderPatientResults(
-        results.slice(0, 30)
+        results.slice(
+            0,
+            30
+        )
     );
 
 }
 
 
 
-/* =========================================
+/* =====================================================
    RENDER PATIENT RESULTS
-========================================= */
+===================================================== */
 
 function renderPatientResults(
     patients
@@ -1065,8 +1396,10 @@ function renderPatientResults(
 
         `;
 
+
         resultsBox.style.display =
             "block";
+
 
         return;
 
@@ -1162,9 +1495,9 @@ function renderPatientResults(
 
 
 
-/* =========================================
+/* =====================================================
    SELECT PATIENT
-========================================= */
+===================================================== */
 
 function selectPatient(
     patient
@@ -1194,11 +1527,14 @@ function selectPatient(
     ).textContent =
 
         patient.species +
+
         (
             patient.breed
-            ? " · " + patient.breed
+            ? " · " +
+              patient.breed
             : ""
         ) +
+
         (
             patient.owner
             ? " · Owner: " +
@@ -1222,9 +1558,9 @@ function selectPatient(
 
 
 
-/* =========================================
+/* =====================================================
    CLEAR PATIENT
-========================================= */
+===================================================== */
 
 function clearPatient() {
 
@@ -1256,9 +1592,9 @@ function clearPatient() {
 
 
 
-/* =========================================
+/* =====================================================
    ESCAPE HTML
-========================================= */
+===================================================== */
 
 function escapeHTML(
     value
@@ -1292,9 +1628,9 @@ function escapeHTML(
 
 
 
-/* =========================================
+/* =====================================================
    ADD ITEM
-========================================= */
+===================================================== */
 
 function addItem() {
 
@@ -1306,6 +1642,29 @@ function addItem() {
 
 
     row.innerHTML = `
+
+        <td>
+
+            <select
+                class="category category-select"
+            >
+
+                <option value="consultation">
+                    🩺 Consultation
+                </option>
+
+                <option value="grooming">
+                    ✂️ Grooming
+                </option>
+
+                <option value="medicine">
+                    💊 Medicine
+                </option>
+
+            </select>
+
+        </td>
+
 
         <td>
 
@@ -1372,12 +1731,18 @@ function addItem() {
 
 
     document
-        .getElementById("items")
-        .appendChild(row);
+        .getElementById(
+            "items"
+        )
+        .appendChild(
+            row
+        );
 
 
     row
-        .querySelectorAll("input")
+        .querySelectorAll(
+            "input"
+        )
         .forEach(
             input => {
 
@@ -1396,14 +1761,15 @@ function addItem() {
 
 
 
-/* =========================================
+/* =====================================================
    CALCULATE TOTAL
-========================================= */
+===================================================== */
 
 function calculateTotal() {
 
 
-    let total = 0;
+    let total =
+        0;
 
 
     document
@@ -1431,7 +1797,8 @@ function calculateTotal() {
 
 
                 const itemTotal =
-                    quantity * price;
+                    quantity *
+                    price;
 
 
                 row.querySelector(
@@ -1458,14 +1825,15 @@ function calculateTotal() {
 
 
 
-/* =========================================
+/* =====================================================
    GET ITEMS
-========================================= */
+===================================================== */
 
 function getItems() {
 
 
-    const items = [];
+    const items =
+        [];
 
 
     document
@@ -1474,6 +1842,12 @@ function getItems() {
         )
         .forEach(
             row => {
+
+
+                const category =
+                    row.querySelector(
+                        ".category"
+                    ).value;
 
 
                 const description =
@@ -1498,10 +1872,15 @@ function getItems() {
                     ) || 0;
 
 
-                if (description) {
+                if (
+                    description
+                ) {
 
 
                     items.push({
+
+                        category:
+                            category,
 
                         description:
                             description,
@@ -1530,9 +1909,9 @@ function getItems() {
 
 
 
-/* =========================================
+/* =====================================================
    SAVE INVOICE
-========================================= */
+===================================================== */
 
 async function saveInvoice() {
 
@@ -1620,11 +1999,15 @@ async function saveInvoice() {
         true;
 
 
+    /* ================================================
+       SAVE INVOICE
+    ================================================= */
+
     const {
         data: invoice,
         error
     } =
-    await supabaseClient
+        await supabaseClient
         .from("invoices")
         .insert({
 
@@ -1664,18 +2047,26 @@ async function saveInvoice() {
             error
         );
 
+
         alert(
             "Gagal menyimpan invoice:\n" +
             error.message
         );
 
+
         saveButton.disabled =
             false;
+
 
         return;
 
     }
 
+
+
+    /* ================================================
+       SAVE ITEMS
+    ================================================= */
 
     const itemRows =
         items.map(
@@ -1683,6 +2074,13 @@ async function saveInvoice() {
 
                 invoice_id:
                     invoice.id,
+
+                /*
+                   CATEGORY BARU
+                */
+
+                category:
+                    item.category,
 
                 description:
                     item.description,
@@ -1703,7 +2101,7 @@ async function saveInvoice() {
     const {
         error: itemError
     } =
-    await supabaseClient
+        await supabaseClient
         .from("invoice_items")
         .insert(
             itemRows
@@ -1716,6 +2114,12 @@ async function saveInvoice() {
             itemError
         );
 
+
+        /*
+           Jika item gagal,
+           hapus invoice supaya
+           tidak ada invoice kosong.
+        */
 
         await supabaseClient
             .from("invoices")
@@ -1735,10 +2139,13 @@ async function saveInvoice() {
         saveButton.disabled =
             false;
 
+
         return;
 
     }
 
+
+    /* SUCCESS */
 
     document.getElementById(
         "message"
@@ -1780,9 +2187,9 @@ async function saveInvoice() {
 
 
 
-/* =========================================
+/* =====================================================
    LOAD INVOICES
-========================================= */
+===================================================== */
 
 async function loadInvoices() {
 
@@ -1801,7 +2208,7 @@ async function loadInvoices() {
         data,
         error
     } =
-    await supabaseClient
+        await supabaseClient
         .from("invoices")
         .select(`
             *,
@@ -1821,7 +2228,8 @@ async function loadInvoices() {
         .order(
             "created_at",
             {
-                ascending: false
+                ascending:
+                    false
             }
         );
 
@@ -1837,11 +2245,14 @@ async function loadInvoices() {
 
             <p class="error">
 
-                ${error.message}
+                ${escapeHTML(
+                    error.message
+                )}
 
             </p>
 
         `;
+
 
         return;
 
@@ -1858,9 +2269,64 @@ async function loadInvoices() {
 
 
 
-/* =========================================
+/* =====================================================
+   CATEGORY BADGE
+===================================================== */
+
+function categoryBadge(
+    category
+) {
+
+    if (
+        category ===
+        "consultation"
+    ) {
+
+        return `
+            <span
+                class="category-badge
+                category-consultation"
+            >
+                🩺 Consultation
+            </span>
+        `;
+
+    }
+
+
+    if (
+        category ===
+        "grooming"
+    ) {
+
+        return `
+            <span
+                class="category-badge
+                category-grooming"
+            >
+                ✂️ Grooming
+            </span>
+        `;
+
+    }
+
+
+    return `
+        <span
+            class="category-badge
+            category-medicine"
+        >
+            💊 Medicine
+        </span>
+    `;
+
+}
+
+
+
+/* =====================================================
    RENDER INVOICES
-========================================= */
+===================================================== */
 
 async function renderInvoices() {
 
@@ -1898,21 +2364,24 @@ async function renderInvoices() {
                     (
                         patient?.name ||
                         ""
-                    ).toLowerCase();
+                    )
+                    .toLowerCase();
 
 
                 const owner =
                     (
                         patient?.owner ||
                         ""
-                    ).toLowerCase();
+                    )
+                    .toLowerCase();
 
 
                 const invoiceNumber =
                     (
                         invoice.invoice_number ||
                         ""
-                    ).toLowerCase();
+                    )
+                    .toLowerCase();
 
 
                 const matchesSearch =
@@ -1935,24 +2404,22 @@ async function renderInvoices() {
                 const matchesStatus =
 
                     statusFilter ===
-                        "All" ||
+                    "All" ||
 
                     invoice.status ===
-                        statusFilter;
+                    statusFilter;
 
 
                 return (
+
                     matchesSearch &&
                     matchesStatus
+
                 );
 
             }
         );
 
-
-    /*
-       Terbaru selalu di atas.
-    */
 
     filtered.sort(
         (
@@ -1975,7 +2442,8 @@ async function renderInvoices() {
 
 
             return (
-                dateB - dateA
+                dateB -
+                dateA
             );
 
         }
@@ -2003,12 +2471,6 @@ async function renderInvoices() {
         "";
 
 
-    /*
-       Ambil invoice item
-       untuk invoice yang
-       sedang ditampilkan.
-    */
-
     for (
         const invoice
         of filtered
@@ -2022,10 +2484,18 @@ async function renderInvoices() {
         const {
             data: items
         } =
-        await supabaseClient
-            .from("invoice_items")
+            await supabaseClient
+            .from(
+                "invoice_items"
+            )
             .select(
-                "description,quantity,unit_price,total"
+                `
+                category,
+                description,
+                quantity,
+                unit_price,
+                total
+                `
             )
             .eq(
                 "invoice_id",
@@ -2048,25 +2518,45 @@ async function renderInvoices() {
                     <tr>
 
                         <td>
+
+                            ${categoryBadge(
+                                item.category
+                            )}
+
+                        </td>
+
+
+                        <td>
+
                             ${escapeHTML(
                                 item.description
                             )}
+
                         </td>
 
+
                         <td>
+
                             ${item.quantity}
+
                         </td>
 
+
                         <td>
+
                             ${money(
                                 item.unit_price
                             )}
+
                         </td>
 
+
                         <td>
+
                             ${money(
                                 item.total
                             )}
+
                         </td>
 
                     </tr>
@@ -2090,6 +2580,7 @@ async function renderInvoices() {
                 "status-paid";
 
         }
+
 
         else if (
             invoice.status ===
@@ -2181,10 +2672,13 @@ async function renderInvoices() {
                         <br>
 
                         <span
-                            class="status-badge ${statusClass}"
+                            class="status-badge
+                            ${statusClass}"
                         >
 
-                            ${invoice.status}
+                            ${escapeHTML(
+                                invoice.status
+                            )}
 
                         </span>
 
@@ -2194,6 +2688,7 @@ async function renderInvoices() {
 
 
                 <div class="actions">
+
 
                     <button
                         class="primary"
@@ -2222,6 +2717,7 @@ async function renderInvoices() {
 
                     </button>
 
+
                 </div>
 
             </div>
@@ -2232,6 +2728,10 @@ async function renderInvoices() {
                 <thead>
 
                     <tr>
+
+                        <th>
+                            Category
+                        </th>
 
                         <th>
                             Description
@@ -2284,9 +2784,9 @@ async function renderInvoices() {
 
 
 
-/* =========================================
+/* =====================================================
    DELETE INVOICE
-========================================= */
+===================================================== */
 
 async function deleteInvoice(
     id
@@ -2305,7 +2805,9 @@ async function deleteInvoice(
 
 
     await supabaseClient
-        .from("invoice_items")
+        .from(
+            "invoice_items"
+        )
         .delete()
         .eq(
             "invoice_id",
@@ -2316,7 +2818,7 @@ async function deleteInvoice(
     const {
         error
     } =
-    await supabaseClient
+        await supabaseClient
         .from("invoices")
         .delete()
         .eq(
@@ -2347,9 +2849,9 @@ async function deleteInvoice(
 
 
 
-/* =========================================
-   PRINT INVOICE 58 MM
-========================================= */
+/* =====================================================
+   PRINT INVOICE
+===================================================== */
 
 async function printInvoice(
     id
@@ -2360,7 +2862,7 @@ async function printInvoice(
         data: invoice,
         error
     } =
-    await supabaseClient
+        await supabaseClient
         .from("invoices")
         .select(`
             *,
@@ -2398,10 +2900,16 @@ async function printInvoice(
     const {
         data: items
     } =
-    await supabaseClient
+        await supabaseClient
         .from("invoice_items")
         .select(
-            "description,quantity,unit_price,total"
+            `
+            category,
+            description,
+            quantity,
+            unit_price,
+            total
+            `
         )
         .eq(
             "invoice_id",
@@ -2473,14 +2981,24 @@ async function printInvoice(
         ? new Intl.DateTimeFormat(
             "id-ID",
             {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false,
-                timeZone: "Asia/Jakarta"
+                hour:
+                    "2-digit",
+
+                minute:
+                    "2-digit",
+
+                hour12:
+                    false,
+
+                timeZone:
+                    "Asia/Jakarta"
             }
-          ).format(
-              new Date(invoice.created_at)
-          ) + " WIB"
+        ).format(
+            new Date(
+                invoice.created_at
+            )
+        ) +
+        " WIB"
         : "-";
 
 
@@ -2493,326 +3011,530 @@ async function printInvoice(
 
     printWindow.document.write(`
 
-<!DOCTYPE html>
+        <!DOCTYPE html>
 
-<html>
+        <html>
 
-<head>
+        <head>
 
-<title>
-    ${escapeHTML(
-        currentClinic.clinicName
-    )} - Invoice
-</title>
-
-<style>
-
-@page {
-    size: 58mm auto;
-    margin: 0;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-    width: 58mm;
-    margin: 0;
-    padding: 0;
-    background: white;
-    color: #111827;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 9.5px;
-}
-
-body {
-    width: 58mm;
-    padding: 2mm 2.5mm;
-    margin: 0;
-    zoom: 1;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 9.5px;
-    line-height: 1.35;
-}
-
-.invoice {
-    width: 53mm;
-    max-width: 53mm;
-    margin: 0 auto;
-}
-
-.header {
-    text-align: center;
-}
-
-.clinic {
-    font-size: 11px;
-    font-weight: 600;
-    line-height: 1.2;
-    margin-bottom: 1mm;
-    word-wrap: break-word;
-}
-
-.clinic-contact {
-    font-size: 8px;
-    line-height: 1.35;
-    color: #374151;
-    word-wrap: break-word;
-}
-
-.clinic-type {
-    font-size: 8px;
-    color: #6b7280;
-    margin-top: 0.8mm;
-}
-
-.divider {
-    border: 0;
-    border-top: 1px dashed #9ca3af;
-    margin: 2mm 0;
-}
-
-.invoice-title {
-    text-align: center;
-    font-size: 9.5px;
-    font-weight: 600;
-    letter-spacing: 0.4px;
-    margin: 1.5mm 0;
-}
-
-.meta {
-    font-size: 8px;
-    line-height: 1.5;
-    color: #374151;
-}
-
-.patient-box {
-    margin-top: 1.8mm;
-    padding: 1.5mm 0;
-    border-top: 1px solid #e5e7eb;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.patient-name {
-    font-size: 9.5px;
-    font-weight: 600;
-    margin-bottom: 0.8mm;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 2mm;
-    table-layout: fixed;
-}
-
-th,
-td {
-    padding: 1.1mm 0.3mm;
-    border-bottom: 1px dashed #b6bcc6;
-    text-align: left;
-    font-size: 8.5px;
-    line-height: 1.35;
-    word-wrap: break-word;
-}
-
-th {
-    font-weight: 600;
-}
-
-th:nth-child(1),
-td:nth-child(1) {
-    width: 40%;
-}
-
-th:nth-child(2),
-td:nth-child(2) {
-    width: 11%;
-    text-align: center;
-}
-
-th:nth-child(3),
-td:nth-child(3) {
-    width: 24%;
-    text-align: right;
-}
-
-th:nth-child(4),
-td:nth-child(4) {
-    width: 24%;
-    text-align: right;
-}
-
-.total-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 2.5mm;
-    padding-top: 1.5mm;
-    border-top: 1px solid #111827;
-    font-size: 9.5px;
-    font-weight: 600;
-}
-
-.total-value {
-    font-size: 10px;
-}
-
-.footer {
-    text-align: center;
-    font-size: 8px;
-    color: #6b7280;
-    line-height: 1.4;
-    margin-top: 4mm;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="invoice">
-
-    <div class="header">
-
-        <div class="clinic">
+        <title>
             ${escapeHTML(
                 currentClinic.clinicName
             )}
-        </div>
+            - Invoice
+        </title>
 
-        <div class="clinic-contact">
-            Jl. Veteran No.19, Trimulyo I, Kepek, Kec. Wonosari,
-            Kabupaten Gunungkidul, Daerah Istimewa Yogyakarta 55813
-            <br>
-            WhatsApp: 0882005270642
-        </div>
 
-        <div class="clinic-type">
-            Veterinary Clinic
-        </div>
+        <style>
 
-    </div>
+        @page {
+            size: 58mm auto;
+            margin: 0;
+        }
 
-    <hr class="divider">
 
-    <div class="invoice-title">
-        INVOICE
-    </div>
+        * {
+            box-sizing:
+                border-box;
+        }
 
-    <div class="meta">
-        Invoice:
-        ${escapeHTML(
-            invoice.invoice_number ||
-            "-"
-        )}
-        <br>
-        Date:
-        ${invoice.invoice_date}
-        <br>
-        Time:
-        ${invoiceTime}
-        <br>
-        Status:
-        ${escapeHTML(
-            invoice.status ||
-            "-"
-        )}
-    </div>
 
-    <div class="patient-box">
+        html,
+        body {
 
-        <div class="patient-name">
-            ${escapeHTML(
-                patient?.name ||
-                "-"
-            )}
-        </div>
+            width:
+                58mm;
 
-        <div class="meta">
-            ${
-                escapeHTML(
-                    patient?.species ||
+            margin:
+                0;
+
+            padding:
+                0;
+
+            background:
+                white;
+
+            color:
+                #111827;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-size:
+                9.5px;
+
+        }
+
+
+        body {
+
+            width:
+                58mm;
+
+            padding:
+                2mm 2.5mm;
+
+            line-height:
+                1.35;
+
+        }
+
+
+        .invoice {
+
+            width:
+                53mm;
+
+            max-width:
+                53mm;
+
+            margin:
+                0 auto;
+
+        }
+
+
+        .header {
+
+            text-align:
+                center;
+
+        }
+
+
+        .clinic {
+
+            font-size:
+                11px;
+
+            font-weight:
+                600;
+
+            margin-bottom:
+                1mm;
+
+        }
+
+
+        .clinic-contact {
+
+            font-size:
+                8px;
+
+            color:
+                #374151;
+
+        }
+
+
+        .divider {
+
+            border:
+                0;
+
+            border-top:
+                1px dashed
+                #9ca3af;
+
+            margin:
+                2mm 0;
+
+        }
+
+
+        .invoice-title {
+
+            text-align:
+                center;
+
+            font-size:
+                9.5px;
+
+            font-weight:
+                600;
+
+            margin:
+                1.5mm 0;
+
+        }
+
+
+        .meta {
+
+            font-size:
+                8px;
+
+            line-height:
+                1.5;
+
+            color:
+                #374151;
+
+        }
+
+
+        .patient-box {
+
+            margin-top:
+                1.8mm;
+
+            padding:
+                1.5mm 0;
+
+            border-top:
+                1px solid
+                #e5e7eb;
+
+            border-bottom:
+                1px solid
+                #e5e7eb;
+
+        }
+
+
+        .patient-name {
+
+            font-size:
+                9.5px;
+
+            font-weight:
+                600;
+
+            margin-bottom:
+                .8mm;
+
+        }
+
+
+        table {
+
+            width:
+                100%;
+
+            border-collapse:
+                collapse;
+
+            margin-top:
+                2mm;
+
+            table-layout:
+                fixed;
+
+        }
+
+
+        th,
+        td {
+
+            padding:
+                1.1mm .3mm;
+
+            border-bottom:
+                1px dashed
+                #b6bcc6;
+
+            font-size:
+                8.5px;
+
+            line-height:
+                1.35;
+
+        }
+
+
+        th:nth-child(1),
+        td:nth-child(1) {
+
+            width:
+                40%;
+
+        }
+
+
+        th:nth-child(2),
+        td:nth-child(2) {
+
+            width:
+                11%;
+
+            text-align:
+                center;
+
+        }
+
+
+        th:nth-child(3),
+        td:nth-child(3) {
+
+            width:
+                24%;
+
+            text-align:
+                right;
+
+        }
+
+
+        th:nth-child(4),
+        td:nth-child(4) {
+
+            width:
+                24%;
+
+            text-align:
+                right;
+
+        }
+
+
+        .total-row {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            margin-top:
+                2.5mm;
+
+            padding-top:
+                1.5mm;
+
+            border-top:
+                1px solid
+                #111827;
+
+            font-weight:
+                600;
+
+        }
+
+
+        .footer {
+
+            text-align:
+                center;
+
+            font-size:
+                8px;
+
+            color:
+                #6b7280;
+
+            margin-top:
+                4mm;
+
+        }
+
+
+        </style>
+
+        </head>
+
+
+        <body>
+
+
+        <div class="invoice">
+
+
+            <div class="header">
+
+                <div class="clinic">
+
+                    ${escapeHTML(
+                        currentClinic.clinicName
+                    )}
+
+                </div>
+
+
+                <div class="clinic-contact">
+
+                    Jl. Veteran No.19,
+                    Trimulyo I, Kepek,
+                    Kec. Wonosari,
+                    Kabupaten Gunungkidul,
+                    Daerah Istimewa Yogyakarta 55813
+
+                    <br>
+
+                    WhatsApp:
+                    0882005270642
+
+                </div>
+
+            </div>
+
+
+            <hr class="divider">
+
+
+            <div class="invoice-title">
+
+                INVOICE
+
+            </div>
+
+
+            <div class="meta">
+
+                Invoice:
+                ${escapeHTML(
+                    invoice.invoice_number ||
                     "-"
-                )
-            }
-            ${
-                patient?.breed
-                ? " · " +
-                  escapeHTML(
-                      patient.breed
-                  )
-                : ""
-            }
-            <br>
-            Owner:
-            ${
-                escapeHTML(
-                    patient?.owner ||
+                )}
+
+                <br>
+
+                Date:
+                ${invoice.invoice_date}
+
+                <br>
+
+                Time:
+                ${invoiceTime}
+
+                <br>
+
+                Status:
+                ${escapeHTML(
+                    invoice.status ||
                     "-"
-                )
-            }
-            ${
-                patient?.owner_phone
-                ? " · " +
-                  escapeHTML(
-                      patient.owner_phone
-                  )
-                : ""
-            }
+                )}
+
+            </div>
+
+
+            <div class="patient-box">
+
+                <div class="patient-name">
+
+                    ${escapeHTML(
+                        patient?.name ||
+                        "-"
+                    )}
+
+                </div>
+
+
+                <div class="meta">
+
+                    ${
+                        escapeHTML(
+                            patient?.species ||
+                            "-"
+                        )
+                    }
+
+                    ${
+                        patient?.breed
+                        ? " · " +
+                          escapeHTML(
+                              patient.breed
+                          )
+                        : ""
+                    }
+
+                    <br>
+
+                    Owner:
+
+                    ${
+                        escapeHTML(
+                            patient?.owner ||
+                            "-"
+                        )
+                    }
+
+                </div>
+
+            </div>
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Description
+                        </th>
+
+                        <th>
+                            Qty
+                        </th>
+
+                        <th>
+                            Price
+                        </th>
+
+                        <th>
+                            Total
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    ${rows}
+
+                </tbody>
+
+            </table>
+
+
+            <div class="total-row">
+
+                <span>
+                    TOTAL
+                </span>
+
+                <span>
+                    ${money(
+                        invoice.total
+                    )}
+                </span>
+
+            </div>
+
+
+            <div class="footer">
+
+                Thank you for trusting
+
+                <strong>
+                    ${escapeHTML(
+                        currentClinic.clinicName
+                    )}
+                </strong>
+
+                .
+
+                <br>
+
+                Please keep this invoice
+                as proof of payment.
+
+            </div>
+
+
         </div>
 
-    </div>
 
-    <table>
+        </body>
 
-        <thead>
+        </html>
 
-            <tr>
-                <th>Description</th>
-                <th>Qty</th>
-                <th>Price</th>
-                <th>Total</th>
-            </tr>
+    `);
 
-        </thead>
-
-        <tbody>
-            ${rows}
-        </tbody>
-
-    </table>
-
-    <div class="total-row">
-        <span>TOTAL</span>
-        <span class="total-value">
-            ${money(
-                invoice.total
-            )}
-        </span>
-    </div>
-
-    <div class="footer">
-        Thank you for trusting
-        <strong>
-            ${escapeHTML(
-                currentClinic.clinicName
-            )}
-        </strong>.
-        <br>
-        Please keep this invoice as proof of payment.
-    </div>
-
-</div>
-
-</body>
-
-</html>
-
-`);
 
     printWindow.document.close();
 
@@ -2833,9 +3555,9 @@ td:nth-child(4) {
 
 
 
-/* =========================================
-   PATIENT SEARCH EVENTS
-========================================= */
+/* =====================================================
+   EVENTS
+===================================================== */
 
 document
     .getElementById(
@@ -2869,40 +3591,37 @@ document
     );
 
 
-document
-    .addEventListener(
-        "click",
-        function(event) {
+document.addEventListener(
+    "click",
+    function(event) {
 
 
-            const searchBox =
-                document.querySelector(
-                    ".search-box"
-                );
+        const searchBox =
+            document.querySelector(
+                ".search-box"
+            );
 
 
-            if (
-                searchBox &&
-                !searchBox.contains(
-                    event.target
-                )
-            ) {
+        if (
+            searchBox &&
+            !searchBox.contains(
+                event.target
+            )
+        ) {
 
-                document.getElementById(
-                    "patientResults"
-                ).style.display =
-                    "none";
-
-            }
+            document.getElementById(
+                "patientResults"
+            ).style.display =
+                "none";
 
         }
-    );
+
+    }
+);
 
 
 
-/* =========================================
-   INVOICE SEARCH
-========================================= */
+/* INVOICE SEARCH */
 
 document
     .getElementById(
@@ -2933,9 +3652,9 @@ document
 
 
 
-/* =========================================
+/* =====================================================
    AUTO REFRESH
-========================================= */
+===================================================== */
 
 function startAutoRefresh() {
 
@@ -2962,7 +3681,6 @@ function startAutoRefresh() {
     setInterval(
         async function() {
 
-
             if (
                 document.visibilityState ===
                 "visible"
@@ -2982,9 +3700,9 @@ function startAutoRefresh() {
 
 
 
-/* =========================================
+/* =====================================================
    INITIALIZE
-========================================= */
+===================================================== */
 
 async function init() {
 
@@ -3022,11 +3740,6 @@ async function init() {
 
     await loadInvoices();
 
-
-    /*
-       Satu baris item kosong.
-       Tidak ada Jasa Dokter.
-    */
 
     addItem();
 
