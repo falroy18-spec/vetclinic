@@ -338,7 +338,12 @@ registerButton.addEventListener(
             confirmPasswordInput.value;
 
 
-        if (!clinicName || !email || !password || !confirmPassword) {
+        if (
+            !clinicName ||
+            !email ||
+            !password ||
+            !confirmPassword
+        ) {
 
             message.textContent =
                 "Semua kolom wajib diisi.";
@@ -396,8 +401,20 @@ registerButton.addEventListener(
 
                 options: {
 
+                    /*
+                     * IMPORTANT:
+                     * Setelah email dikonfirmasi,
+                     * user diarahkan kembali ke aplikasi
+                     * VetClinic, bukan ke root GitHub Pages.
+                     */
+                    emailRedirectTo:
+                        "https://falroy18-spec.github.io/vetclinic/",
+
                     data: {
-                        clinic_name: clinicName
+
+                        clinic_name:
+                            clinicName
+
                     }
 
                 }
@@ -429,9 +446,9 @@ registerButton.addEventListener(
 
 
             /*
-                Jika email confirmation OFF,
-                user langsung mendapatkan session.
-            */
+             * Jika email confirmation OFF,
+             * user langsung mendapatkan session.
+             */
 
             if (data.session) {
 
@@ -457,9 +474,9 @@ registerButton.addEventListener(
 
 
             /*
-                Jika Supabase masih meminta
-                email confirmation.
-            */
+             * Jika Supabase meminta
+             * email confirmation.
+             */
 
             message.textContent =
                 "Akun berhasil dibuat. Silakan cek email untuk konfirmasi akun.";
