@@ -142,6 +142,22 @@ th {
     color: #6b7280;
 }
 
+.medicine-search {
+    margin-bottom: 18px;
+}
+.medicine-search input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+}
+.medicine-search input:focus {
+    outline: none;
+    border-color: #5146e5;
+    box-shadow: 0 0 0 3px rgba(81,70,229,.10);
+}
+
 .stock-controls {
     display: flex;
     align-items: center;
@@ -363,6 +379,15 @@ th {
 
     <h2>Medicine Inventory</h2>
 
+    <div class="medicine-search">
+        <input
+            id="medicineSearch"
+            type="text"
+            placeholder="🔎 Search medicine..."
+            autocomplete="off"
+        >
+    </div>
+
 
     <table>
 
@@ -489,6 +514,8 @@ document.getElementById(
     "medicineList"
 );
 
+let allMedicines = [];
+
 
 
 /* MESSAGE */
@@ -513,238 +540,176 @@ function showMessage(
 
 async function loadMedicines() {
 
-
     medicineList.innerHTML = `
-
         <tr>
-
-            <td
-                colspan="7"
-                class="empty">
-
+            <td colspan="7" class="empty">
                 Loading medicines...
-
             </td>
-
         </tr>
-
     `;
 
-
-    const {
-        data,
-        error
-    } =
-    await supabaseClient
-        .from("medicines")
-        .select("*")
-        .order(
-            "created_at",
-            {
-                ascending: false
-            }
-        );
-
+    const { data, error } =
+        await supabaseClient
+            .from("medicines")
+            .select("*")
+            .order("created_at", { ascending: false });
 
     if (error) {
-
         console.error(error);
-
         medicineList.innerHTML = `
-
             <tr>
-
-                <td
-                    colspan="7"
-                    class="empty error">
-
+                <td colspan="7" class="empty error">
                     ${error.message}
-
                 </td>
-
             </tr>
-
         `;
-
         return;
-
     }
 
+    allMedicines = data || [];
+    renderMedicines(
+        document.getElementById("medicineSearch")?.value || ""
+    );
+}
 
-    if (
-        !data ||
-        data.length === 0
-    ) {
 
+function renderMedicines(searchValue = "") {
+
+    const keyword =
+        String(searchValue || "").trim().toLowerCase();
+
+    const filtered =
+        allMedicines.filter(medicine => {
+
+            const name =
+                String(medicine.name || "").toLowerCase();
+
+            const strength =
+                String(medicine.strength || "").toLowerCase();
+
+            const unit =
+                String(medicine.unit || "").toLowerCase();
+
+            const notes =
+                String(medicine.notes || "").toLowerCase();
+
+            return (
+                !keyword ||
+                name.includes(keyword) ||
+                strength.includes(keyword) ||
+                unit.includes(keyword) ||
+                notes.includes(keyword)
+            );
+        });
+
+    if (!filtered.length) {
         medicineList.innerHTML = `
-
             <tr>
-
-                <td
-                    colspan="7"
-                    class="empty">
-
-                    No medicines yet.
-
+                <td colspan="7" class="empty">
+                    ${keyword ? "No medicine found." : "No medicines yet."}
                 </td>
-
             </tr>
-
         `;
-
         return;
-
     }
-
 
     medicineList.innerHTML = "";
 
+    filtered.forEach(medicine => {
 
-    data.forEach(
-        medicine => {
+        const stock =
+            Number(medicine.stock || 0);
 
+        const minimum =
+            Number(medicine.minimum_stock || 0);
 
-            const stock =
-                Number(
-                    medicine.stock || 0
-                );
+        const isLow =
+            stock <= minimum;
 
+        const row =
+            document.createElement("tr");
 
-            const minimum =
-                Number(
-                    medicine.minimum_stock || 0
-                );
+        row.innerHTML = `
 
+            <td>${medicine.name || "-"}</td>
 
-            const isLow =
-                stock <= minimum;
+            <td>${medicine.strength || "-"}</td>
 
+            <td>${medicine.unit || "-"}</td>
 
-            const row =
-                document.createElement(
-                    "tr"
-                );
+            <td>
+                <div class="stock-controls">
 
+                    <button
+                        class="secondary"
+                        onclick="changeStock('${medicine.id}', -1)">
+                        −
+                    </button>
 
-            row.innerHTML = `
+                    <span class="stock-number">
+                        ${stock}
+                    </span>
 
-                <td>
-                    ${medicine.name || "-"}
-                </td>
+                    <button
+                        class="success"
+                        onclick="changeStock('${medicine.id}', 1)">
+                        +
+                    </button>
 
+                </div>
+            </td>
 
-                <td>
-                    ${medicine.strength || "-"}
-                </td>
+            <td>${minimum}</td>
 
+            <td>
+                ${
+                    isLow
+                    ? `<span class="status-low">Low Stock</span>`
+                    : `<span class="status-ok">Available</span>`
+                }
+            </td>
 
-                <td>
-                    ${medicine.unit || "-"}
-                </td>
+            <td>
+                <div class="action-buttons">
 
+                    <button
+                        class="warning"
+                        onclick="editStock('${medicine.id}', ${stock})">
+                        Edit Stock
+                    </button>
 
-                <td>
+                    <button
+                        class="danger"
+                        onclick="deleteMedicine('${medicine.id}')">
+                        Delete
+                    </button>
 
-                    <div class="stock-controls">
+                </div>
+            </td>
 
-                        <button
-                            class="secondary"
-                            onclick="changeStock('${medicine.id}', -1)">
+        `;
 
-                            −
-
-                        </button>
-
-
-                        <span
-                            class="stock-number">
-
-                            ${stock}
-
-                        </span>
-
-
-                        <button
-                            class="success"
-                            onclick="changeStock('${medicine.id}', 1)">
-
-                            +
-
-                        </button>
-
-                    </div>
-
-                </td>
-
-
-                <td>
-                    ${minimum}
-                </td>
-
-
-                <td>
-
-                    ${
-                        isLow
-
-                        ?
-
-                        `<span class="status-low">
-                            Low Stock
-                        </span>`
-
-                        :
-
-                        `<span class="status-ok">
-                            Available
-                        </span>`
-                    }
-
-                </td>
-
-
-                <td>
-
-                    <div class="action-buttons">
-
-
-                        <button
-                            class="warning"
-                            onclick="editStock(
-                                '${medicine.id}',
-                                ${stock}
-                            )">
-
-                            Edit Stock
-
-                        </button>
-
-
-                        <button
-                            class="danger"
-                            onclick="deleteMedicine(
-                                '${medicine.id}'
-                            )">
-
-                            Delete
-
-                        </button>
-
-
-                    </div>
-
-                </td>
-
-            `;
-
-
-            medicineList.appendChild(row);
-
-        }
-    );
-
+        medicineList.appendChild(row);
+    });
 }
 
+
+
+/* MEDICINE SEARCH */
+
+const medicineSearch =
+    document.getElementById(
+        "medicineSearch"
+    );
+
+medicineSearch.addEventListener(
+    "input",
+    function() {
+        renderMedicines(
+            this.value
+        );
+    }
+);
 
 
 /* ADD MEDICINE */
