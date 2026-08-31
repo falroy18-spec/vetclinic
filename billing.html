@@ -893,117 +893,64 @@ let selectedPatients = [];
 async function getCurrentClinic() {
 
     const {
-        data: {
-            session
-        },
+        data: { session },
         error: sessionError
-    } =
-        await supabaseClient
-            .auth
-            .getSession();
-
+    } = await supabaseClient.auth.getSession();
 
     if (sessionError) {
-
-        console.error(
-            "Session error:",
-            sessionError
-        );
-
+        console.error("Session error:", sessionError);
         return null;
-
     }
-
 
     if (!session) {
-
-        window.location.href =
-            "login.html";
-
+        window.location.href = "login.html";
         return null;
-
     }
-
 
     const {
-        data,
+        data: memberships,
         error
-    } =
-        await supabaseClient
-            .from("clinic_members")
-            .select(`
-                clinic_id,
-                role,
-                clinics (
-                    id,
-                    name,
-                    address,
-                    phone
-                )
-            `)
-            .eq(
-                "user_id",
-                session.user.id
+    } = await supabaseClient
+        .from("clinic_members")
+        .select(`
+            clinic_id,
+            role,
+            clinics (
+                id,
+                name,
+                address,
+                phone
             )
-            .single();
-
+        `)
+        .eq("user_id", session.user.id);
 
     if (error) {
-
-        console.error(
-            "Clinic lookup error:",
-            error
-        );
-
-        alert(
-            "Klinik tidak ditemukan: " +
-            error.message
-        );
-
+        console.error("Clinic lookup error:", error);
+        alert("Klinik tidak ditemukan: " + error.message);
         return null;
-
     }
 
-
-    if (
-        !data ||
-        !data.clinics
-    ) {
-
-        alert(
-            "Akun belum terhubung ke klinik."
-        );
-
+    if (!memberships || memberships.length === 0) {
+        alert("Akun belum terhubung ke klinik.");
         return null;
-
     }
 
+    const membership = memberships.find(item => item.clinics);
+
+    if (!membership || !membership.clinics) {
+        alert("Data klinik untuk akun ini tidak ditemukan.");
+        return null;
+    }
 
     return {
-
-        userId:
-            session.user.id,
-
-        clinicId:
-            data.clinic_id,
-
-        clinicName:
-            data.clinics.name || "",
-
-        clinicAddress:
-            data.clinics.address || "",
-
-        clinicPhone:
-            data.clinics.phone || "",
-
-        role:
-            data.role
-
+        userId: session.user.id,
+        clinicId: membership.clinic_id,
+        clinicName: membership.clinics.name || "",
+        clinicAddress: membership.clinics.address || "",
+        clinicPhone: membership.clinics.phone || "",
+        role: membership.role
     };
-
 }
-
-
 
 /* =====================================================
    SAVE CLINIC CONTACT
