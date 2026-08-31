@@ -368,7 +368,7 @@ th {
 ================================ */
 .clinic-settings { margin-top: 14px; padding: 14px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fafafa; }
 .clinic-settings-title { font-weight: bold; font-size: 13px; margin-bottom: 10px; }
-.clinic-settings-grid { display: grid; grid-template-columns: 2fr 1fr auto; gap: 8px; align-items: end; }
+.clinic-settings-grid { display: grid; grid-template-columns: 1.5fr 2fr 1fr auto; gap: 8px; align-items: end; }
 .clinic-settings-grid input { margin-bottom: 0; }
 .clinic-settings-note { margin-top: 7px; font-size: 11px; color: #6b7280; }
 
@@ -475,7 +475,7 @@ th {
         <div class="refresh-info">
 
             Patient and invoice data
-            update automatically.
+            update when the page is refreshed.
 
         </div>
 
@@ -484,6 +484,11 @@ th {
             <div class="clinic-settings-title">Clinic Contact</div>
 
             <div class="clinic-settings-grid">
+
+                <div>
+                    <label for="clinicNameInput">Clinic Name</label>
+                    <input type="text" id="clinicNameInput" placeholder="Clinic name">
+                </div>
 
                 <div>
                     <label for="clinicAddress">Address</label>
@@ -501,7 +506,7 @@ th {
 
             </div>
 
-            <div class="clinic-settings-note">Contact information is saved separately for each clinic.</div>
+            <div class="clinic-settings-note">Clinic name, address, and phone are saved separately for each clinic.</div>
 
         </div>
 
@@ -983,7 +988,7 @@ async function getCurrentClinic() {
             data.clinic_id,
 
         clinicName:
-            data.clinics.name,
+            data.clinics.name || "",
 
         clinicAddress:
             data.clinics.address || "",
@@ -1008,42 +1013,86 @@ async function saveClinicContact() {
 
     if (!currentClinic) return;
 
-    const address = document.getElementById("clinicAddress").value.trim();
-    const phone = document.getElementById("clinicPhone").value.trim();
-    const button = document.getElementById("saveClinicContactButton");
+    const name =
+        document.getElementById("clinicNameInput")
+            .value.trim();
+
+    const address =
+        document.getElementById("clinicAddress")
+            .value.trim();
+
+    const phone =
+        document.getElementById("clinicPhone")
+            .value.trim();
+
+    const button =
+        document.getElementById(
+            "saveClinicContactButton"
+        );
+
+    if (!name) {
+        alert("Clinic name tidak boleh kosong.");
+        return;
+    }
 
     button.disabled = true;
     button.textContent = "Saving...";
 
     try {
 
-        const { error } = await supabaseClient
-            .from("clinics")
-            .update({
-                address: address || null,
-                phone: phone || null
-            })
-            .eq("id", currentClinic.clinicId);
+        const { error } =
+            await supabaseClient
+                .from("clinics")
+                .update({
+                    name: name,
+                    address: address || null,
+                    phone: phone || null
+                })
+                .eq(
+                    "id",
+                    currentClinic.clinicId
+                );
 
         if (error) throw error;
 
+        currentClinic.clinicName = name;
         currentClinic.clinicAddress = address;
         currentClinic.clinicPhone = phone;
 
-        document.getElementById("clinicContactDisplay").innerHTML =
-            `${escapeHTML(address)}<br>${escapeHTML(phone)}`;
+        document.getElementById(
+            "clinicName"
+        ).textContent = name;
 
-        alert("Clinic contact berhasil disimpan.");
+        document.getElementById(
+            "clinicContactDisplay"
+        ).innerHTML =
+            address
+                ? `${escapeHTML(address)}<br>${escapeHTML(phone)}`
+                : escapeHTML(phone);
+
+        alert(
+            "Data klinik berhasil disimpan."
+        );
 
     } catch (error) {
 
-        console.error("Save clinic contact error:", error);
-        alert("Gagal menyimpan contact klinik:\n" + error.message);
+        console.error(
+            "Save clinic contact error:",
+            error
+        );
+
+        alert(
+            "Gagal menyimpan data klinik:\n" +
+            error.message
+        );
 
     } finally {
+
         button.disabled = false;
         button.textContent = "Save Contact";
+
     }
+
 }
 
 
@@ -3807,54 +3856,6 @@ document
 
 
 /* =====================================================
-   AUTO REFRESH
-===================================================== */
-
-function startAutoRefresh() {
-
-
-    document.addEventListener(
-        "visibilitychange",
-        async function() {
-
-            if (
-                document.visibilityState ===
-                "visible"
-            ) {
-
-                await loadPatients();
-
-                await loadInvoices();
-
-            }
-
-        }
-    );
-
-
-    setInterval(
-        async function() {
-
-            if (
-                document.visibilityState ===
-                "visible"
-            ) {
-
-                await loadPatients();
-
-                await loadInvoices();
-
-            }
-
-        },
-        10000
-    );
-
-}
-
-
-
-/* =====================================================
    INITIALIZE
 ===================================================== */
 
@@ -3877,6 +3878,9 @@ async function init() {
     ).textContent =
         currentClinic.clinicName;
 
+    document.getElementById("clinicNameInput").value =
+        currentClinic.clinicName || "";
+
     document.getElementById("clinicAddress").value =
         currentClinic.clinicAddress || "";
 
@@ -3884,7 +3888,9 @@ async function init() {
         currentClinic.clinicPhone || "";
 
     document.getElementById("clinicContactDisplay").innerHTML =
-        `${escapeHTML(currentClinic.clinicAddress || "")}<br>${escapeHTML(currentClinic.clinicPhone || "")}`;
+        currentClinic.clinicAddress
+            ? `${escapeHTML(currentClinic.clinicAddress)}<br>${escapeHTML(currentClinic.clinicPhone || "")}`
+            : escapeHTML(currentClinic.clinicPhone || "");
 
 
     document.getElementById(
@@ -3919,9 +3925,6 @@ async function init() {
     */
 
     addItem();
-
-
-    startAutoRefresh();
 
 }
 
