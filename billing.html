@@ -642,6 +642,30 @@ th {
 
 </div>
 
+<div>
+
+<label>
+    Payment Method
+</label>
+
+<select id="paymentMethod">
+
+    <option value="Cash" selected>
+        Cash
+    </option>
+
+    <option value="Transfer">
+        Transfer
+    </option>
+
+    <option value="QRIS">
+        QRIS
+    </option>
+
+</select>
+
+</div>
+
 
 
 <!-- INVOICE NUMBER -->
@@ -1987,7 +2011,12 @@ async function saveInvoice() {
                         subtotal,
 
                     status:
-                        status
+                        status,
+
+                    payment_method:
+                        document.getElementById(
+                            "paymentMethod"
+                        ).value
 
                 })
                 .select()
@@ -2100,6 +2129,11 @@ async function saveInvoice() {
             "status"
         ).value =
             "Paid";
+
+        document.getElementById(
+            "paymentMethod"
+        ).value =
+            "Cash";
 
 
         saveButton.disabled =
@@ -2741,6 +2775,16 @@ async function renderInvoices() {
                             )}
 
                         </span>
+
+                        <br>
+
+                        Payment:
+                        <strong>
+                            ${escapeHTML(
+                                invoice.payment_method ||
+                                "-"
+                            )}
+                        </strong>
 
                     </div>
 
@@ -3520,6 +3564,16 @@ td:nth-child(4) {
         )}
     </strong>
 
+    <br>
+
+    Payment:
+    <strong>
+        ${escapeHTML(
+            invoice.payment_method ||
+            "-"
+        )}
+    </strong>
+
 </div>
 
 
@@ -3859,6 +3913,11 @@ async function init() {
         "status"
     ).value =
         "Paid";
+
+    document.getElementById(
+        "paymentMethod"
+    ).value =
+        "Cash";
 
 
     await loadPatients();
