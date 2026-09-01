@@ -1011,9 +1011,10 @@ async function loadMedicalRecords() {
                 currentClinic.clinicId
             )
             .order(
-                "visit_date",
+                "created_at",
                 {
-                    ascending: false
+                    ascending: false,
+                    nullsFirst: false
                 }
             );
 
@@ -1553,6 +1554,14 @@ function renderMedicalHistory() {
                                             formatDate(
                                                 record.visit_date
                                             )
+                                        }
+
+                                        ${
+                                            record.created_at
+                                                ? `<span style="font-weight:400; color:#6b7280; margin-left:6px;">
+                                                    ${formatTime(record.created_at)}
+                                                   </span>`
+                                                : ""
                                         }
 
 
@@ -2144,6 +2153,39 @@ function formatDate(
 
 }
 
+
+
+/* =====================================================
+   FORMAT ENTRY TIME
+===================================================== */
+
+function formatTime(value) {
+
+    if (!value) {
+        return "";
+    }
+
+    const date = new Date(value);
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return "";
+    }
+
+    return date.toLocaleTimeString(
+        "id-ID",
+        {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+            timeZone: "Asia/Jakarta"
+        }
+    ) + " WIB";
+
+}
 
 
 /* =====================================================
