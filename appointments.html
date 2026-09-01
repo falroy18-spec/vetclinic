@@ -2,395 +2,714 @@
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Appointments - VetClinic</title>
+    <meta charset="UTF-8">
 
-<style>
-* {
-    box-sizing: border-box;
-}
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f6fb;
-    color: #252d3d;
-}
+    <title>Appointments - VetClinic</title>
 
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 30px;
-}
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-}
+    <style>
 
-.header h1 {
-    margin: 0;
-}
+        * {
+            box-sizing: border-box;
+        }
 
-.header p {
-    color: #6b7280;
-}
 
-.card {
-    background: white;
-    border-radius: 14px;
-    padding: 25px;
-    margin-bottom: 25px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
-}
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            color: #252d3d;
+        }
 
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
-}
 
-.full {
-    grid-column: 1 / -1;
-}
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px;
+        }
 
-label {
-    display: block;
-    margin-bottom: 7px;
-    font-weight: 600;
-}
 
-input,
-select,
-textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: inherit;
-}
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
 
-textarea {
-    min-height: 90px;
-    resize: vertical;
-}
 
-button {
-    border: none;
-    border-radius: 8px;
-    padding: 11px 16px;
-    cursor: pointer;
-    font-weight: 600;
-}
+        .header h1 {
+            margin: 0;
+        }
 
-.primary {
-    background: #5146e5;
-    color: white;
-}
 
-.danger {
-    background: #dc2626;
-    color: white;
-}
+        .header p {
+            color: #6b7280;
+        }
 
-.secondary {
-    background: #e5e7eb;
-    color: #374151;
-}
 
-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
 
-.actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
 
-.message {
-    margin-top: 15px;
-    font-size: 14px;
-}
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
 
-.error {
-    color: #dc2626;
-}
 
-.success {
-    color: #16a34a;
-}
+        .full {
+            grid-column: 1 / -1;
+        }
 
-.appointment {
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 15px;
-}
 
-.appointment-header {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    align-items: flex-start;
-}
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
 
-.appointment h3 {
-    margin: 0 0 6px;
-}
 
-.meta {
-    color: #6b7280;
-    font-size: 13px;
-    line-height: 1.6;
-}
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            background: white;
+        }
 
-.status {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 5px 10px;
-    border-radius: 20px;
-    background: #eef2ff;
-    font-size: 12px;
-    font-weight: 600;
-}
 
-.empty {
-    text-align: center;
-    padding: 30px;
-    color: #6b7280;
-}
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
 
-@media(max-width:700px) {
-    .container {
-        padding: 15px;
-    }
 
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 11px 16px;
+            cursor: pointer;
+            font-weight: 600;
+        }
 
-    .full {
-        grid-column: auto;
-    }
 
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
 
-    .appointment-header {
-        flex-direction: column;
-    }
-}
-</style>
+
+        .primary {
+            background: #5146e5;
+            color: white;
+        }
+
+
+        .danger {
+            background: #dc2626;
+            color: white;
+        }
+
+
+        .secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+
+        .message {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+
+        .error {
+            color: #dc2626;
+        }
+
+
+        .success {
+            color: #16a34a;
+        }
+
+
+        /* =========================
+           SEARCH & FILTER
+        ========================= */
+
+        .search-filter {
+            display: grid;
+            grid-template-columns: 1fr 220px 220px;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+
+        .search-box {
+            position: relative;
+        }
+
+
+        .search-box input {
+            padding-left: 40px;
+        }
+
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            pointer-events: none;
+        }
+
+
+        .result-info {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+
+        /* =========================
+           APPOINTMENT CARD
+        ========================= */
+
+        .appointment {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            background: white;
+        }
+
+
+        .appointment-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+
+        .appointment h3 {
+            margin: 0 0 6px;
+        }
+
+
+        .meta {
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        .status {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #eef2ff;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #6b7280;
+        }
+
+
+        .no-result {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
+        }
+
+
+        .no-result-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+
+        @media(max-width:700px) {
+
+            .container {
+                padding: 15px;
+            }
+
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .full {
+                grid-column: auto;
+            }
+
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+
+            .appointment-header {
+                flex-direction: column;
+            }
+
+
+            .search-filter {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
 
 </head>
 
+
 <body>
+
 
 <div class="container">
 
-<div class="header">
 
-<div>
-<h1>📅 Appointments</h1>
-<p>VetClinic Appointment Management</p>
-</div>
+    <!-- =========================
+         HEADER
+    ========================= -->
 
-<button
-class="secondary"
-type="button"
-onclick="window.location.href='index.html'">
-Dashboard
-</button>
+    <div class="header">
 
-</div>
+        <div>
 
+            <h1>📅 Appointments</h1>
 
-<div class="card">
+            <p>
+                VetClinic Appointment Management
+            </p>
 
-<h2>New Appointment</h2>
-
-<div class="form-grid">
-
-<div class="full">
-
-<label>Patient</label>
-
-<select id="patient">
-<option value="">Select patient</option>
-</select>
-
-</div>
+        </div>
 
 
-<div>
+        <button
+            class="secondary"
+            type="button"
+            onclick="window.location.href='index.html'"
+        >
+            Dashboard
+        </button>
 
-<label>Date</label>
-
-<input
-type="date"
-id="appointment_date">
-
-</div>
-
-
-<div>
-
-<label>Time</label>
-
-<input
-type="time"
-id="appointment_time">
-
-</div>
+    </div>
 
 
-<div>
+    <!-- =========================
+         NEW APPOINTMENT
+    ========================= -->
 
-<label>Status</label>
+    <div class="card">
 
-<select id="status">
-
-<option value="Scheduled">
-Scheduled
-</option>
-
-<option value="Confirmed">
-Confirmed
-</option>
-
-<option value="Completed">
-Completed
-</option>
-
-<option value="Cancelled">
-Cancelled
-</option>
-
-</select>
-
-</div>
+        <h2>New Appointment</h2>
 
 
-<div>
-
-<label>Reason</label>
-
-<input
-type="text"
-id="reason"
-placeholder="Reason for appointment">
-
-</div>
+        <div class="form-grid">
 
 
-<div class="full">
+            <div class="full">
 
-<label>Notes</label>
-
-<textarea
-id="notes"
-placeholder="Additional notes..."></textarea>
-
-</div>
-
-</div>
+                <label>
+                    Patient
+                </label>
 
 
-<div class="actions">
+                <select id="patient">
 
-<button
-class="primary"
-id="saveButton"
-type="button">
+                    <option value="">
+                        Select patient
+                    </option>
 
-Save Appointment
+                </select>
 
-</button>
-
-</div>
+            </div>
 
 
-<div
-id="message"
-class="message">
-</div>
+            <div>
 
-</div>
+                <label>
+                    Date
+                </label>
 
 
-<div class="card">
+                <input
+                    type="date"
+                    id="appointment_date"
+                >
 
-<h2>Appointments</h2>
+            </div>
 
-<div id="appointmentList">
 
-<div class="empty">
-Loading appointments...
-</div>
+            <div>
 
-</div>
+                <label>
+                    Time
+                </label>
 
-</div>
+
+                <input
+                    type="time"
+                    id="appointment_time"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Status
+                </label>
+
+
+                <select id="status">
+
+                    <option value="Scheduled">
+                        Scheduled
+                    </option>
+
+                    <option value="Confirmed">
+                        Confirmed
+                    </option>
+
+                    <option value="Completed">
+                        Completed
+                    </option>
+
+                    <option value="Cancelled">
+                        Cancelled
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Reason
+                </label>
+
+
+                <input
+                    type="text"
+                    id="reason"
+                    placeholder="Reason for appointment"
+                >
+
+            </div>
+
+
+            <div class="full">
+
+                <label>
+                    Notes
+                </label>
+
+
+                <textarea
+                    id="notes"
+                    placeholder="Additional notes..."
+                ></textarea>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="actions">
+
+            <button
+                class="primary"
+                id="saveButton"
+                type="button"
+            >
+                Save Appointment
+            </button>
+
+        </div>
+
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+    </div>
+
+
+    <!-- =========================
+         APPOINTMENT LIST
+    ========================= -->
+
+    <div class="card">
+
+        <h2>
+            Appointments
+        </h2>
+
+
+        <!-- SEARCH + FILTER -->
+
+        <div class="search-filter">
+
+
+            <div class="search-box">
+
+                <span class="search-icon">
+                    🔎
+                </span>
+
+
+                <input
+                    type="text"
+                    id="appointmentSearch"
+                    placeholder="Search patient, species, breed, reason..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <select id="statusFilter">
+
+                <option value="">
+                    All Status
+                </option>
+
+                <option value="Scheduled">
+                    Scheduled
+                </option>
+
+                <option value="Confirmed">
+                    Confirmed
+                </option>
+
+                <option value="Completed">
+                    Completed
+                </option>
+
+                <option value="Cancelled">
+                    Cancelled
+                </option>
+
+            </select>
+
+
+            <select id="dateFilter">
+
+                <option value="">
+                    All Dates
+                </option>
+
+                <option value="today">
+                    Today
+                </option>
+
+                <option value="tomorrow">
+                    Tomorrow
+                </option>
+
+                <option value="week">
+                    This Week
+                </option>
+
+            </select>
+
+
+        </div>
+
+
+        <div
+            id="resultInfo"
+            class="result-info"
+        >
+            Loading appointments...
+        </div>
+
+
+        <div id="appointmentList">
+
+            <div class="empty">
+                Loading appointments...
+            </div>
+
+        </div>
+
+
+    </div>
+
 
 </div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <script>
+
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
 
 const SUPABASE_URL =
 "https://zltbjbbofvvndxirlipf.supabase.co";
 
+
 const SUPABASE_KEY =
 "sb_publishable_MWH4JPfiiJ2gvIqYpKE_Yw_UAoAlnFJ";
+
 
 const supabaseClient =
 supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
-supabaseClient.auth.getSession().then(({ data: { session } }) => {
 
-    if (!session) {
-        window.location.href = "login.html";
-        return;
+
+/* =====================================================
+   AUTH CHECK
+===================================================== */
+
+
+supabaseClient.auth.getSession()
+.then(
+    function({ data: { session } }) {
+
+        if (!session) {
+
+            window.location.href =
+                "login.html";
+
+        }
+
     }
+);
 
-});
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
 
 const patientSelect =
-document.getElementById("patient");
+document.getElementById(
+    "patient"
+);
+
 
 const appointmentList =
-document.getElementById("appointmentList");
+document.getElementById(
+    "appointmentList"
+);
+
 
 const saveButton =
-document.getElementById("saveButton");
+document.getElementById(
+    "saveButton"
+);
+
 
 const message =
-document.getElementById("message");
+document.getElementById(
+    "message"
+);
+
+
+const appointmentSearch =
+document.getElementById(
+    "appointmentSearch"
+);
+
+
+const statusFilter =
+document.getElementById(
+    "statusFilter"
+);
+
+
+const dateFilter =
+document.getElementById(
+    "dateFilter"
+);
+
+
+const resultInfo =
+document.getElementById(
+    "resultInfo"
+);
+
+
+/* =====================================================
+   DATA
+===================================================== */
+
+
+let allAppointments = [];
+
+
+/* =====================================================
+   DEFAULT DATE
+===================================================== */
 
 
 document.getElementById(
     "appointment_date"
 ).value =
-    new Date()
+new Date()
     .toISOString()
     .split("T")[0];
 
 
+/* =====================================================
+   LOAD PATIENTS
+===================================================== */
+
+
 async function loadPatients() {
+
 
     const {
         data,
@@ -398,8 +717,12 @@ async function loadPatients() {
     } =
     await supabaseClient
         .from("patients")
-        .select("id, name, species")
-        .order("name");
+        .select(
+            "id, name, species"
+        )
+        .order(
+            "name"
+        );
 
 
     if (error) {
@@ -412,6 +735,7 @@ async function loadPatients() {
             "message error";
 
         return;
+
     }
 
 
@@ -422,28 +746,44 @@ async function loadPatients() {
     `;
 
 
-    data.forEach(patient => {
+    (data || []).forEach(
+        function(patient) {
 
-        const option =
-            document.createElement("option");
 
-        option.value =
-            patient.id;
+            const option =
+                document.createElement(
+                    "option"
+                );
 
-        option.textContent =
-            patient.name +
-            " (" +
-            patient.species +
-            ")";
 
-        patientSelect.appendChild(option);
+            option.value =
+                patient.id;
 
-    });
+
+            option.textContent =
+                patient.name +
+                " (" +
+                patient.species +
+                ")";
+
+
+            patientSelect.appendChild(
+                option
+            );
+
+        }
+    );
 
 }
 
 
+/* =====================================================
+   LOAD APPOINTMENTS
+===================================================== */
+
+
 async function loadAppointments() {
+
 
     appointmentList.innerHTML = `
         <div class="empty">
@@ -466,176 +806,584 @@ async function loadAppointments() {
                 breed
             )
         `)
-        .order("appointment_date", {
-            ascending: true
-        });
+        .order(
+            "appointment_date",
+            {
+                ascending: true
+            }
+        );
 
 
     if (error) {
 
         appointmentList.innerHTML = `
             <div class="empty error">
-                ${error.message}
+                ${escapeHtml(
+                    error.message
+                )}
             </div>
         `;
 
+        resultInfo.textContent =
+            "Failed to load appointments.";
+
         return;
+
     }
 
 
-    if (!data || data.length === 0) {
+    allAppointments =
+        data || [];
+
+
+    renderAppointments();
+
+}
+
+
+/* =====================================================
+   RENDER APPOINTMENTS
+===================================================== */
+
+
+function renderAppointments() {
+
+
+    const search =
+        appointmentSearch.value
+            .trim()
+            .toLowerCase();
+
+
+    const selectedStatus =
+        statusFilter.value;
+
+
+    const selectedDate =
+        dateFilter.value;
+
+
+    let filtered =
+        allAppointments.filter(
+            function(appointment) {
+
+
+                const patient =
+                    appointment.patients || {};
+
+
+                /*
+                 * SEARCH
+                 */
+
+                const searchableText = [
+
+                    patient.name,
+
+                    patient.species,
+
+                    patient.breed,
+
+                    appointment.reason,
+
+                    appointment.notes,
+
+                    appointment.appointment_date,
+
+                    appointment.appointment_time,
+
+                    appointment.status
+
+                ]
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
+
+
+                const matchesSearch =
+                    !search ||
+                    searchableText.includes(
+                        search
+                    );
+
+
+                /*
+                 * STATUS
+                 */
+
+                const matchesStatus =
+                    !selectedStatus ||
+                    appointment.status ===
+                        selectedStatus;
+
+
+                /*
+                 * DATE
+                 */
+
+                const matchesDate =
+                    matchesDateFilter(
+                        appointment.appointment_date,
+                        selectedDate
+                    );
+
+
+                return (
+                    matchesSearch &&
+                    matchesStatus &&
+                    matchesDate
+                );
+
+            }
+        );
+
+
+    /*
+     * SORT
+     * Date then time
+     */
+
+    filtered.sort(
+        function(a, b) {
+
+            const dateA =
+                (
+                    a.appointment_date ||
+                    ""
+                ) +
+                " " +
+                (
+                    a.appointment_time ||
+                    ""
+                );
+
+
+            const dateB =
+                (
+                    b.appointment_date ||
+                    ""
+                ) +
+                " " +
+                (
+                    b.appointment_time ||
+                    ""
+                );
+
+
+            return dateA.localeCompare(
+                dateB
+            );
+
+        }
+    );
+
+
+    /*
+     * RESULT COUNT
+     */
+
+    resultInfo.textContent =
+        filtered.length +
+        " appointment" +
+        (
+            filtered.length === 1
+                ? ""
+                : "s"
+        ) +
+        " found";
+
+
+    /*
+     * NO DATA
+     */
+
+    if (
+        filtered.length === 0
+    ) {
 
         appointmentList.innerHTML = `
-            <div class="empty">
-                No appointments yet.
+            <div class="no-result">
+
+                <div class="no-result-icon">
+                    🔎
+                </div>
+
+                <strong>
+                    No appointments found
+                </strong>
+
+                <div style="margin-top:6px">
+                    Try another search or filter.
+                </div>
+
             </div>
         `;
 
         return;
+
     }
 
+
+    /*
+     * RENDER
+     */
 
     appointmentList.innerHTML = "";
 
 
-    data.forEach(appointment => {
-
-        const patient =
-            appointment.patients;
+    filtered.forEach(
+        function(appointment) {
 
 
-        const div =
-            document.createElement("div");
-
-        div.className =
-            "appointment";
+            const patient =
+                appointment.patients ||
+                {};
 
 
-        div.innerHTML = `
+            const div =
+                document.createElement(
+                    "div"
+                );
 
-            <div class="appointment-header">
 
-                <div>
+            div.className =
+                "appointment";
 
-                    <h3>
-                        ${escapeHtml(
-                            patient?.name ||
-                            "Unknown Patient"
-                        )}
-                    </h3>
 
-                    <div class="meta">
+            const patientName =
+                patient.name ||
+                "Unknown Patient";
 
-                        ${escapeHtml(
-                            patient?.species || ""
-                        )}
 
-                        ${patient?.breed
-                            ? " • " +
-                              escapeHtml(patient.breed)
-                            : ""
-                        }
+            const species =
+                patient.species ||
+                "";
 
-                        <br>
 
-                        📅
-                        ${appointment.appointment_date || "-"}
+            const breed =
+                patient.breed ||
+                "";
+
+
+            const date =
+                formatDate(
+                    appointment.appointment_date
+                );
+
+
+            const time =
+                appointment.appointment_time
+                    ? formatTime(
+                        appointment.appointment_time
+                    )
+                    : "";
+
+
+            div.innerHTML = `
+
+                <div class="appointment-header">
+
+                    <div>
+
+                        <h3>
+                            ${escapeHtml(
+                                patientName
+                            )}
+                        </h3>
+
+
+                        <div class="meta">
+
+                            ${escapeHtml(
+                                species
+                            )}
+
+                            ${
+                                breed
+                                    ? " • " +
+                                      escapeHtml(
+                                          breed
+                                      )
+                                    : ""
+                            }
+
+
+                            <br>
+
+
+                            📅
+                            ${escapeHtml(
+                                date
+                            )}
+
+
+                            ${
+                                time
+                                    ? " • ⏰ " +
+                                      escapeHtml(
+                                          time
+                                      )
+                                    : ""
+                            }
+
+
+                            <br>
+
+
+                            Reason:
+                            ${escapeHtml(
+                                appointment.reason ||
+                                "-"
+                            )}
+
+                        </div>
+
+
+                        <span class="status">
+
+                            ${escapeHtml(
+                                appointment.status ||
+                                "Scheduled"
+                            )}
+
+                        </span>
+
 
                         ${
-                            appointment.appointment_time
-                            ? " • ⏰ " +
-                              appointment.appointment_time
-                            : ""
+                            appointment.notes
+                                ? `
+                                    <div
+                                        class="meta"
+                                        style="margin-top:10px"
+                                    >
+
+                                        Notes:
+                                        ${escapeHtml(
+                                            appointment.notes
+                                        )}
+
+                                    </div>
+                                `
+                                : ""
                         }
-
-                        <br>
-
-                        Reason:
-                        ${escapeHtml(
-                            appointment.reason ||
-                            "-"
-                        )}
 
                     </div>
 
-                    <span class="status">
-                        ${escapeHtml(
-                            appointment.status ||
-                            "Scheduled"
-                        )}
-                    </span>
 
-                    ${
-                        appointment.notes
-                        ? `
-                        <div class="meta" style="margin-top:10px">
-                            Notes:
-                            ${escapeHtml(
-                                appointment.notes
-                            )}
-                        </div>
-                        `
-                        : ""
-                    }
+                    <button
+                        class="danger"
+                        type="button"
+                        onclick="deleteAppointment(
+                            '${appointment.id}'
+                        )"
+                    >
+
+                        Delete
+
+                    </button>
+
 
                 </div>
 
-
-                <button
-                    class="danger"
-                    type="button"
-                    onclick="deleteAppointment(
-                        '${appointment.id}'
-                    )">
-
-                    Delete
-
-                </button>
-
-            </div>
-
-        `;
+            `;
 
 
-        appointmentList.appendChild(div);
+            appointmentList.appendChild(
+                div
+            );
 
-    });
+        }
+    );
 
 }
+
+
+/* =====================================================
+   DATE FILTER
+===================================================== */
+
+
+function matchesDateFilter(
+    appointmentDate,
+    filter
+) {
+
+
+    if (!filter) {
+
+        return true;
+
+    }
+
+
+    if (!appointmentDate) {
+
+        return false;
+
+    }
+
+
+    const today =
+        new Date();
+
+
+    today.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+
+    const appointment =
+        new Date(
+            appointmentDate +
+            "T00:00:00"
+        );
+
+
+    if (
+        filter === "today"
+    ) {
+
+        return (
+            appointment.getTime() ===
+            today.getTime()
+        );
+
+    }
+
+
+    if (
+        filter === "tomorrow"
+    ) {
+
+        const tomorrow =
+            new Date(today);
+
+
+        tomorrow.setDate(
+            tomorrow.getDate() + 1
+        );
+
+
+        return (
+            appointment.getTime() ===
+            tomorrow.getTime()
+        );
+
+    }
+
+
+    if (
+        filter === "week"
+    ) {
+
+        const day =
+            today.getDay();
+
+
+        const monday =
+            new Date(today);
+
+
+        const difference =
+            day === 0
+                ? -6
+                : 1 - day;
+
+
+        monday.setDate(
+            monday.getDate() +
+            difference
+        );
+
+
+        monday.setHours(
+            0,
+            0,
+            0,
+            0
+        );
+
+
+        const sunday =
+            new Date(monday);
+
+
+        sunday.setDate(
+            sunday.getDate() + 6
+        );
+
+
+        sunday.setHours(
+            23,
+            59,
+            59,
+            999
+        );
+
+
+        return (
+            appointment >= monday &&
+            appointment <= sunday
+        );
+
+    }
+
+
+    return true;
+
+}
+
+
+/* =====================================================
+   SAVE APPOINTMENT
+===================================================== */
 
 
 saveButton.addEventListener(
     "click",
     async function() {
 
+
         const patient_id =
             patientSelect.value;
+
 
         const appointment_date =
             document.getElementById(
                 "appointment_date"
             ).value;
 
+
         const appointment_time =
             document.getElementById(
                 "appointment_time"
             ).value;
+
 
         const status =
             document.getElementById(
                 "status"
             ).value;
 
+
         const reason =
             document.getElementById(
                 "reason"
             ).value.trim();
+
 
         const notes =
             document.getElementById(
                 "notes"
             ).value.trim();
 
+
+        /*
+         * VALIDATION
+         */
 
         if (!patient_id) {
 
@@ -646,6 +1394,7 @@ saveButton.addEventListener(
                 "message error";
 
             return;
+
         }
 
 
@@ -658,17 +1407,25 @@ saveButton.addEventListener(
                 "message error";
 
             return;
+
         }
 
 
-        saveButton.disabled = true;
+        saveButton.disabled =
+            true;
+
 
         message.textContent =
             "Saving appointment...";
 
+
         message.className =
             "message";
 
+
+        /*
+         * INSERT
+         */
 
         const {
             error
@@ -684,16 +1441,19 @@ saveButton.addEventListener(
                     appointment_date,
 
                 appointment_time:
-                    appointment_time || null,
+                    appointment_time ||
+                    null,
 
                 reason:
-                    reason || null,
+                    reason ||
+                    null,
 
                 status:
                     status,
 
                 notes:
-                    notes || null
+                    notes ||
+                    null
 
             });
 
@@ -702,59 +1462,95 @@ saveButton.addEventListener(
 
             console.error(error);
 
+
             message.textContent =
                 "Gagal menyimpan: " +
                 error.message;
 
+
             message.className =
                 "message error";
+
 
             saveButton.disabled =
                 false;
 
+
             return;
+
         }
 
 
+        /*
+         * SUCCESS
+         */
+
         message.textContent =
             "Appointment berhasil disimpan!";
+
 
         message.className =
             "message success";
 
 
-        patientSelect.value = "";
+        /*
+         * RESET
+         */
+
+        patientSelect.value =
+            "";
+
 
         document.getElementById(
             "appointment_time"
-        ).value = "";
+        ).value =
+            "";
+
 
         document.getElementById(
             "reason"
-        ).value = "";
+        ).value =
+            "";
+
 
         document.getElementById(
             "notes"
-        ).value = "";
+        ).value =
+            "";
 
 
         saveButton.disabled =
             false;
 
 
-        loadAppointments();
+        /*
+         * RELOAD
+         */
+
+        await loadAppointments();
 
     }
 );
 
 
-async function deleteAppointment(id) {
+/* =====================================================
+   DELETE APPOINTMENT
+===================================================== */
 
-    if (!confirm(
-        "Delete this appointment?"
-    )) {
+
+async function deleteAppointment(
+    id
+) {
+
+
+    if (
+        !confirm(
+            "Delete this appointment?"
+        )
+    ) {
 
         return;
+
     }
 
 
@@ -764,7 +1560,10 @@ async function deleteAppointment(id) {
     await supabaseClient
         .from("appointments")
         .delete()
-        .eq("id", id);
+        .eq(
+            "id",
+            id
+        );
 
 
     if (error) {
@@ -775,31 +1574,182 @@ async function deleteAppointment(id) {
         );
 
         return;
+
     }
 
 
-    loadAppointments();
+    await loadAppointments();
 
 }
 
 
-function escapeHtml(value) {
+/* =====================================================
+   SEARCH
+===================================================== */
 
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+
+appointmentSearch.addEventListener(
+    "input",
+    function() {
+
+        renderAppointments();
+
+    }
+);
+
+
+/* =====================================================
+   STATUS FILTER
+===================================================== */
+
+
+statusFilter.addEventListener(
+    "change",
+    function() {
+
+        renderAppointments();
+
+    }
+);
+
+
+/* =====================================================
+   DATE FILTER
+===================================================== */
+
+
+dateFilter.addEventListener(
+    "change",
+    function() {
+
+        renderAppointments();
+
+    }
+);
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+
+function formatDate(
+    value
+) {
+
+
+    if (!value) {
+
+        return "-";
+
+    }
+
+
+    const parts =
+        value.split("-");
+
+
+    if (
+        parts.length !== 3
+    ) {
+
+        return value;
+
+    }
+
+
+    return (
+        parts[2] +
+        "/" +
+        parts[1] +
+        "/" +
+        parts[0]
+    );
 
 }
 
 
-loadPatients();
+/* =====================================================
+   FORMAT TIME
+===================================================== */
 
-loadAppointments();
+
+function formatTime(
+    value
+) {
+
+
+    if (!value) {
+
+        return "";
+
+    }
+
+
+    return value.slice(
+        0,
+        5
+    );
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+
+function escapeHtml(
+    value
+) {
+
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+
+async function init() {
+
+    await loadPatients();
+
+    await loadAppointments();
+
+}
+
+
+init();
+
 
 </script>
+
 
 </body>
 
