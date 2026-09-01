@@ -10,13 +10,11 @@ content="width=device-width, initial-scale=1.0">
 
 <title>Patients - VetClinic</title>
 
-
 <style>
 
 * {
     box-sizing: border-box;
 }
-
 
 body {
     margin: 0;
@@ -25,13 +23,11 @@ body {
     color: #252d3d;
 }
 
-
 .container {
     max-width: 1200px;
     margin: auto;
     padding: 30px;
 }
-
 
 .header {
     display: flex;
@@ -40,16 +36,13 @@ body {
     margin-bottom: 25px;
 }
 
-
 .header h1 {
     margin: 0;
 }
 
-
 .header p {
     color: #6b7280;
 }
-
 
 button {
     border: none;
@@ -59,30 +52,35 @@ button {
     font-weight: 600;
 }
 
-
 button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }
-
 
 .btn-primary {
     background: #5146e5;
     color: white;
 }
 
-
 .btn-secondary {
     background: #6b7280;
     color: white;
 }
 
+.btn-success {
+    background: #16a34a;
+    color: white;
+}
 
 .btn-danger {
     background: #dc2626;
     color: white;
 }
 
+.btn-light {
+    background: #eef2ff;
+    color: #4338ca;
+}
 
 .card {
     background: white;
@@ -92,25 +90,21 @@ button:disabled {
     margin-bottom: 25px;
 }
 
-
 .form-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 18px;
 }
 
-
 .form-full {
     grid-column: 1 / -1;
 }
-
 
 label {
     display: block;
     margin-bottom: 7px;
     font-weight: 600;
 }
-
 
 input,
 select,
@@ -123,30 +117,66 @@ textarea {
     font-family: Arial, sans-serif;
 }
 
+input:read-only,
+textarea:read-only {
+    background: #f3f4f6;
+    color: #6b7280;
+}
 
 textarea {
     min-height: 90px;
     resize: vertical;
 }
 
-
 .other-species {
     display: none;
 }
-
 
 .form-actions {
     margin-top: 20px;
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
+.owner-info {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.owner-info-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.owner-info-text {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.search-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-container input {
+    flex: 1;
+}
+
+.patient-count {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
 
 table {
     width: 100%;
     border-collapse: collapse;
 }
-
 
 th,
 td {
@@ -156,11 +186,9 @@ td {
     vertical-align: top;
 }
 
-
 th {
     background: #f9fafb;
 }
-
 
 .action-buttons {
     display: flex;
@@ -168,35 +196,33 @@ th {
     flex-wrap: wrap;
 }
 
-
 .empty {
     text-align: center;
     padding: 30px;
     color: #6b7280;
 }
 
-
 .message {
     margin-top: 15px;
     font-size: 14px;
 }
 
-
 .error {
     color: #dc2626;
 }
 
-
 .success {
     color: #16a34a;
 }
-
 
 .owner-address {
     max-width: 250px;
     white-space: normal;
 }
 
+.hidden {
+    display: none;
+}
 
 @media(max-width:700px) {
 
@@ -214,11 +240,15 @@ th {
 
     table {
         font-size: 13px;
-        min-width: 900px;
+        min-width: 1100px;
     }
 
     .card {
         overflow-x: auto;
+    }
+
+    .search-container {
+        flex-direction: column;
     }
 
 }
@@ -271,6 +301,31 @@ Dashboard
 <h2 id="formTitle">
 Add New Patient
 </h2>
+
+
+<!-- EXISTING OWNER INFO -->
+
+<div
+id="existingOwnerInfo"
+class="owner-info hidden"
+>
+
+<div class="owner-info-title">
+
+🐾 Adding another pet for:
+
+<span id="existingOwnerName"></span>
+
+</div>
+
+<div
+id="existingOwnerDetails"
+class="owner-info-text"
+>
+</div>
+
+</div>
+
 
 
 <div class="form-grid">
@@ -514,7 +569,7 @@ type="button"
 style="display:none;"
 >
 
-Cancel Edit
+Cancel
 
 </button>
 
@@ -541,6 +596,36 @@ class="message"
 <h2>
 Patient List
 </h2>
+
+
+<!-- SEARCH -->
+
+<div class="search-container">
+
+<input
+id="searchInput"
+type="text"
+placeholder="🔎 Search patient, owner, phone, species..."
+>
+
+<button
+id="clearSearchButton"
+class="btn-secondary"
+type="button"
+>
+
+Clear
+
+</button>
+
+</div>
+
+
+<div
+id="patientCount"
+class="patient-count"
+>
+</div>
 
 
 <table>
@@ -643,50 +728,77 @@ document.getElementById(
     "saveButton"
 );
 
-
 const cancelButton =
 document.getElementById(
     "cancelButton"
 );
-
 
 const message =
 document.getElementById(
     "message"
 );
 
-
 const patientList =
 document.getElementById(
     "patientList"
 );
-
 
 const speciesSelect =
 document.getElementById(
     "species"
 );
 
-
 const otherSpeciesContainer =
 document.getElementById(
     "otherSpeciesContainer"
 );
-
 
 const otherSpeciesInput =
 document.getElementById(
     "otherSpecies"
 );
 
-
 const formTitle =
 document.getElementById(
     "formTitle"
 );
 
+const searchInput =
+document.getElementById(
+    "searchInput"
+);
+
+const clearSearchButton =
+document.getElementById(
+    "clearSearchButton"
+);
+
+const patientCount =
+document.getElementById(
+    "patientCount"
+);
+
+const existingOwnerInfo =
+document.getElementById(
+    "existingOwnerInfo"
+);
+
+const existingOwnerName =
+document.getElementById(
+    "existingOwnerName"
+);
+
+const existingOwnerDetails =
+document.getElementById(
+    "existingOwnerDetails"
+);
+
 
 let editingPatientId = null;
+
+let patientsData = [];
+
+let addingPetForOwner = null;
 
 
 
@@ -695,7 +807,6 @@ let editingPatientId = null;
 // ========================================
 
 async function getCurrentClinic() {
-
 
     const {
         data: sessionData,
@@ -788,13 +899,33 @@ async function getCurrentClinic() {
 
 
 // ========================================
+// ESCAPE HTML
+// ========================================
+
+function escapeHtml(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+
+// ========================================
 // SPECIES
 // ========================================
 
 speciesSelect.addEventListener(
     "change",
     function() {
-
 
         if (
             speciesSelect.value ===
@@ -828,7 +959,6 @@ speciesSelect.addEventListener(
 // ========================================
 
 async function loadPatients() {
-
 
     patientList.innerHTML = `
 
@@ -895,7 +1025,7 @@ async function loadPatients() {
                     class="empty error"
                 >
 
-                    ${error.message}
+                    ${escapeHtml(error.message)}
 
                 </td>
 
@@ -908,9 +1038,72 @@ async function loadPatients() {
     }
 
 
+    patientsData =
+    data || [];
+
+
+    renderPatients();
+
+}
+
+
+
+// ========================================
+// RENDER PATIENTS
+// ========================================
+
+function renderPatients() {
+
+    const keyword =
+    searchInput.value
+        .trim()
+        .toLowerCase();
+
+
+    let filteredPatients =
+    patientsData.filter(
+        function(patient) {
+
+            if (!keyword) {
+                return true;
+            }
+
+            const searchableText = [
+
+                patient.name,
+
+                patient.species,
+
+                patient.breed,
+
+                patient.sex,
+
+                patient.owner,
+
+                patient.owner_phone,
+
+                patient.owner_address
+
+            ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+
+            return searchableText.includes(
+                keyword
+            );
+
+        }
+    );
+
+
+    patientCount.textContent =
+    `Showing ${filteredPatients.length} of ${patientsData.length} patients`;
+
+
     if (
-        !data ||
-        data.length === 0
+        filteredPatients.length === 0
     ) {
 
         patientList.innerHTML = `
@@ -922,7 +1115,11 @@ async function loadPatients() {
                     class="empty"
                 >
 
-                    No patients yet.
+                    ${
+                        keyword
+                        ? "No patients found."
+                        : "No patients yet."
+                    }
 
                 </td>
 
@@ -939,9 +1136,8 @@ async function loadPatients() {
     "";
 
 
-    data.forEach(
+    filteredPatients.forEach(
         function(patient) {
-
 
             const row =
             document.createElement(
@@ -952,35 +1148,35 @@ async function loadPatients() {
             row.innerHTML = `
 
                 <td>
-                    ${patient.name || "-"}
+                    ${escapeHtml(patient.name || "-")}
                 </td>
 
                 <td>
-                    ${patient.species || "-"}
+                    ${escapeHtml(patient.species || "-")}
                 </td>
 
                 <td>
-                    ${patient.breed || "-"}
+                    ${escapeHtml(patient.breed || "-")}
                 </td>
 
                 <td>
-                    ${patient.sex || "-"}
+                    ${escapeHtml(patient.sex || "-")}
                 </td>
 
                 <td>
-                    ${patient.date_of_birth || "-"}
+                    ${escapeHtml(patient.date_of_birth || "-")}
                 </td>
 
                 <td>
-                    ${patient.owner || "-"}
+                    ${escapeHtml(patient.owner || "-")}
                 </td>
 
                 <td>
-                    ${patient.owner_phone || "-"}
+                    ${escapeHtml(patient.owner_phone || "-")}
                 </td>
 
                 <td class="owner-address">
-                    ${patient.owner_address || "-"}
+                    ${escapeHtml(patient.owner_address || "-")}
                 </td>
 
                 <td>
@@ -988,9 +1184,22 @@ async function loadPatients() {
                     <div class="action-buttons">
 
                         <button
+                            class="btn-success"
+                            type="button"
+                            onclick="addAnotherPet(
+                                '${patient.id}'
+                            )"
+                        >
+                            + Add Pet
+                        </button>
+
+
+                        <button
                             class="btn-primary"
                             type="button"
-                            onclick="editPatient('${patient.id}')"
+                            onclick="editPatient(
+                                '${patient.id}'
+                            )"
                         >
                             Edit
                         </button>
@@ -999,7 +1208,9 @@ async function loadPatients() {
                         <button
                             class="btn-danger"
                             type="button"
-                            onclick="deletePatient('${patient.id}')"
+                            onclick="deletePatient(
+                                '${patient.id}'
+                            )"
                         >
                             Delete
                         </button>
@@ -1023,13 +1234,231 @@ async function loadPatients() {
 
 
 // ========================================
+// SEARCH
+// ========================================
+
+searchInput.addEventListener(
+    "input",
+    function() {
+
+        renderPatients();
+
+    }
+);
+
+
+clearSearchButton.addEventListener(
+    "click",
+    function() {
+
+        searchInput.value =
+        "";
+
+        renderPatients();
+
+        searchInput.focus();
+
+    }
+);
+
+
+
+// ========================================
+// ADD ANOTHER PET
+// ========================================
+
+function addAnotherPet(id) {
+
+    const patient =
+    patientsData.find(
+        function(item) {
+
+            return item.id === id;
+
+        }
+    );
+
+
+    if (!patient) {
+
+        return;
+
+    }
+
+
+    addingPetForOwner = {
+
+        owner:
+        patient.owner || "",
+
+        owner_phone:
+        patient.owner_phone || "",
+
+        owner_address:
+        patient.owner_address || ""
+
+    };
+
+
+    editingPatientId =
+    null;
+
+
+    formTitle.textContent =
+    "Add New Pet";
+
+
+    saveButton.textContent =
+    "Save Pet";
+
+
+    cancelButton.style.display =
+    "inline-block";
+
+
+    existingOwnerInfo.classList.remove(
+        "hidden"
+    );
+
+
+    existingOwnerName.textContent =
+    patient.owner || "-";
+
+
+    existingOwnerDetails.textContent =
+
+        `Phone: ${
+            patient.owner_phone || "-"
+        } • Address: ${
+            patient.owner_address || "-"
+        }`;
+
+
+    // RESET PET INFORMATION
+
+    document.getElementById(
+        "name"
+    ).value =
+    "";
+
+
+    speciesSelect.value =
+    "";
+
+
+    otherSpeciesInput.value =
+    "";
+
+
+    otherSpeciesContainer.style.display =
+    "none";
+
+
+    document.getElementById(
+        "breed"
+    ).value =
+    "";
+
+
+    document.getElementById(
+        "sex"
+    ).value =
+    "";
+
+
+    document.getElementById(
+        "date_of_birth"
+    ).value =
+    "";
+
+
+    document.getElementById(
+        "weight"
+    ).value =
+    "";
+
+
+    // OWNER DATA AUTOMATIC
+
+    document.getElementById(
+        "owner"
+    ).value =
+    addingPetForOwner.owner;
+
+
+    document.getElementById(
+        "owner_phone"
+    ).value =
+    addingPetForOwner.owner_phone;
+
+
+    document.getElementById(
+        "owner_address"
+    ).value =
+    addingPetForOwner.owner_address;
+
+
+    // MAKE OWNER FIELDS READONLY
+
+    document.getElementById(
+        "owner"
+    ).readOnly =
+    true;
+
+
+    document.getElementById(
+        "owner_phone"
+    ).readOnly =
+    true;
+
+
+    document.getElementById(
+        "owner_address"
+    ).readOnly =
+    true;
+
+
+    message.textContent =
+    "Owner information automatically loaded. Just enter the new pet information.";
+
+    message.className =
+    "message success";
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+
+    setTimeout(
+        function() {
+
+            document.getElementById(
+                "name"
+            ).focus();
+
+        },
+        300
+    );
+
+}
+
+
+
+// ========================================
 // RESET FORM
 // ========================================
 
 function resetForm() {
 
-
     editingPatientId =
+    null;
+
+    addingPetForOwner =
     null;
 
 
@@ -1043,6 +1472,19 @@ function resetForm() {
 
     cancelButton.style.display =
     "none";
+
+
+    existingOwnerInfo.classList.add(
+        "hidden"
+    );
+
+
+    existingOwnerName.textContent =
+    "";
+
+
+    existingOwnerDetails.textContent =
+    "";
 
 
     document.getElementById(
@@ -1105,6 +1547,26 @@ function resetForm() {
     "";
 
 
+    // OWNER FIELDS CAN BE EDITED AGAIN
+
+    document.getElementById(
+        "owner"
+    ).readOnly =
+    false;
+
+
+    document.getElementById(
+        "owner_phone"
+    ).readOnly =
+    false;
+
+
+    document.getElementById(
+        "owner_address"
+    ).readOnly =
+    false;
+
+
     message.textContent =
     "";
 
@@ -1121,7 +1583,6 @@ function resetForm() {
 // ========================================
 
 async function editPatient(id) {
-
 
     const clinicId =
     await getCurrentClinic();
@@ -1168,6 +1629,10 @@ async function editPatient(id) {
     patient.id;
 
 
+    addingPetForOwner =
+    null;
+
+
     formTitle.textContent =
     "Edit Patient";
 
@@ -1180,6 +1645,11 @@ async function editPatient(id) {
     "inline-block";
 
 
+    existingOwnerInfo.classList.add(
+        "hidden"
+    );
+
+
     document.getElementById(
         "name"
     ).value =
@@ -1187,10 +1657,12 @@ async function editPatient(id) {
 
 
     const standardSpecies = [
+
         "Cat",
         "Dog",
         "Rabbit",
         "Bird"
+
     ];
 
 
@@ -1267,9 +1739,30 @@ async function editPatient(id) {
     patient.owner_address || "";
 
 
+    document.getElementById(
+        "owner"
+    ).readOnly =
+    false;
+
+
+    document.getElementById(
+        "owner_phone"
+    ).readOnly =
+    false;
+
+
+    document.getElementById(
+        "owner_address"
+    ).readOnly =
+    false;
+
+
     window.scrollTo({
+
         top: 0,
+
         behavior: "smooth"
+
     });
 
 }
@@ -1283,7 +1776,6 @@ async function editPatient(id) {
 saveButton.addEventListener(
     "click",
     async function() {
-
 
         const name =
         document.getElementById(
@@ -1343,8 +1835,9 @@ saveButton.addEventListener(
         ).value.trim();
 
 
-
+        // ========================================
         // VALIDATION
+        // ========================================
 
         if (
             !name ||
@@ -1387,7 +1880,6 @@ saveButton.addEventListener(
             : selectedSpecies;
 
 
-
         saveButton.disabled =
         true;
 
@@ -1401,11 +1893,6 @@ saveButton.addEventListener(
         message.className =
         "message";
 
-
-
-        // ========================================
-        // GET CLINIC
-        // ========================================
 
         const clinicId =
         await getCurrentClinic();
@@ -1423,11 +1910,10 @@ saveButton.addEventListener(
 
 
         // ========================================
-        // UPDATE
+        // UPDATE EXISTING PATIENT
         // ========================================
 
         if (editingPatientId) {
-
 
             const {
                 error
@@ -1496,7 +1982,6 @@ saveButton.addEventListener(
                 saveButton.disabled =
                 false;
 
-
                 return;
 
             }
@@ -1545,11 +2030,6 @@ saveButton.addEventListener(
             .from("patients")
             .insert({
 
-                // IMPORTANT
-                // INI YANG MEMBUAT
-                // PATIENT MASUK KE KLINIK
-                // USER YANG LOGIN
-
                 clinic_id:
                 clinicId,
 
@@ -1587,7 +2067,6 @@ saveButton.addEventListener(
             .single();
 
 
-
         if (error) {
 
             console.error(
@@ -1608,16 +2087,10 @@ saveButton.addEventListener(
             saveButton.disabled =
             false;
 
-
             return;
 
         }
 
-
-
-        // ========================================
-        // VERIFY CLINIC ID
-        // ========================================
 
         console.log(
             "NEW PATIENT:",
@@ -1625,14 +2098,10 @@ saveButton.addEventListener(
         );
 
 
-        console.log(
-            "CLINIC ID:",
-            data.clinic_id
-        );
-
-
         message.textContent =
-        "Patient berhasil disimpan!";
+        addingPetForOwner
+            ? "Pet berhasil ditambahkan ke owner yang sama! 🐾"
+            : "Patient berhasil disimpan!";
 
 
         message.className =
@@ -1652,7 +2121,7 @@ saveButton.addEventListener(
                 resetForm();
 
             },
-            700
+            900
         );
 
     }
@@ -1661,7 +2130,7 @@ saveButton.addEventListener(
 
 
 // ========================================
-// CANCEL EDIT
+// CANCEL
 // ========================================
 
 cancelButton.addEventListener(
@@ -1680,7 +2149,6 @@ cancelButton.addEventListener(
 // ========================================
 
 async function deletePatient(id) {
-
 
     if (
         !confirm(
@@ -1743,7 +2211,6 @@ async function deletePatient(id) {
 // ========================================
 
 async function init() {
-
 
     const clinicId =
     await getCurrentClinic();
