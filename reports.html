@@ -8,6 +8,7 @@
 <title>Reports - VetClinic</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 * {
@@ -366,11 +367,128 @@ tbody tr:hover {
     margin-bottom: 20px;
 }
 
+
+/* =========================
+   CHART
+========================= */
+
+.chart-wrap {
+    position: relative;
+    height: 330px;
+    width: 100%;
+}
+
+.chart-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.chart-subtitle {
+    color: #77778b;
+    font-size: 12px;
+}
+
+/* =========================
+   PAYMENT METHOD
+========================= */
+
+.payment-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.payment-card {
+    border: 1px solid #eee9ee;
+    border-radius: 15px;
+    padding: 17px;
+    background: #fff;
+}
+
+.payment-label {
+    font-size: 12px;
+    color: #77778b;
+    font-weight: 700;
+}
+
+.payment-value {
+    margin-top: 7px;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.payment-count {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #77778b;
+}
+
+/* =========================
+   PRINT
+========================= */
+
+.print-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+@media print {
+    @page {
+        size: A4;
+        margin: 12mm;
+    }
+
+    body {
+        background: #fff !important;
+        color: #000 !important;
+    }
+
+    .container {
+        max-width: none;
+        padding: 0;
+    }
+
+    .header button,
+    .print-actions,
+    .filter-row,
+    #errorBox {
+        display: none !important;
+    }
+
+    .card {
+        box-shadow: none !important;
+        break-inside: avoid;
+        border: 1px solid #ddd;
+    }
+
+    .chart-wrap {
+        height: 280px;
+    }
+
+    table {
+        page-break-inside: auto;
+    }
+
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+}
+
 /* =========================
    RESPONSIVE
 ========================= */
 
 @media(max-width: 900px) {
+
+    .payment-grid {
+        grid-template-columns: 1fr;
+    }
 
     .stats {
         grid-template-columns: repeat(2, 1fr);
@@ -443,14 +561,21 @@ tbody tr:hover {
 
     </div>
 
-    <button
-        class="secondary"
-        type="button"
-        onclick="window.location.href='index.html'">
+    <div class="print-actions">
+        <button
+            class="secondary"
+            type="button"
+            onclick="window.print()">
+            🖨️ Print Report
+        </button>
 
-        🏠 Dashboard
-
-    </button>
+        <button
+            class="secondary"
+            type="button"
+            onclick="window.location.href='index.html'">
+            🏠 Dashboard
+        </button>
+    </div>
 
 </div>
 
@@ -664,6 +789,61 @@ tbody tr:hover {
             Generate Report
 
         </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     REVENUE CHART
+========================= -->
+
+<div class="card">
+
+    <div class="chart-toolbar">
+        <div>
+            <h2 style="margin-bottom:5px;">📈 Revenue Trend</h2>
+            <div class="chart-subtitle">
+                Revenue automatically grouped according to the selected report period.
+            </div>
+        </div>
+    </div>
+
+    <div class="chart-wrap">
+        <canvas id="revenueChart"></canvas>
+    </div>
+
+</div>
+
+
+<!-- =========================
+     PAYMENT METHOD
+========================= -->
+
+<div class="card">
+
+    <h2>💳 Payment Method</h2>
+
+    <div class="payment-grid">
+
+        <div class="payment-card">
+            <div class="payment-label">💵 CASH</div>
+            <div class="payment-value" id="cashRevenue">Rp0</div>
+            <div class="payment-count" id="cashCount">0 transactions</div>
+        </div>
+
+        <div class="payment-card">
+            <div class="payment-label">🏦 TRANSFER</div>
+            <div class="payment-value" id="transferRevenue">Rp0</div>
+            <div class="payment-count" id="transferCount">0 transactions</div>
+        </div>
+
+        <div class="payment-card">
+            <div class="payment-label">📱 QRIS</div>
+            <div class="payment-value" id="qrisRevenue">Rp0</div>
+            <div class="payment-count" id="qrisCount">0 transactions</div>
+        </div>
 
     </div>
 
@@ -1675,6 +1855,7 @@ async function loadRevenueReport() {
                 invoice_date,
                 total,
                 status,
+                payment_method,
                 patient_id,
                 patients (
                     name
@@ -1734,6 +1915,14 @@ async function loadRevenueReport() {
 
     const transactions = [];
 
+    const paymentSummary = {
+        cash: { amount: 0, count: 0 },
+        transfer: { amount: 0, count: 0 },
+        qris: { amount: 0, count: 0 }
+    };
+
+    const chartBuckets = {};
+
 
     /*
        LOOP INVOICES
@@ -1743,6 +1932,23 @@ async function loadRevenueReport() {
         const invoice
         of invoices || []
     ) {
+
+        const rawPaymentMethod = String(
+            invoice.payment_method || ""
+        ).toLowerCase().trim();
+
+        let paymentMethod = rawPaymentMethod;
+
+        if (paymentMethod.includes("cash")) {
+            paymentMethod = "cash";
+        } else if (
+            paymentMethod.includes("transfer") ||
+            paymentMethod.includes("bank")
+        ) {
+            paymentMethod = "transfer";
+        } else if (paymentMethod.includes("qris")) {
+            paymentMethod = "qris";
+        }
 
         /*
            Ambil item invoice.
@@ -1812,6 +2018,20 @@ async function loadRevenueReport() {
                     item.quantity
                 ) || 1;
 
+            if (paymentSummary[paymentMethod]) {
+                paymentSummary[paymentMethod].amount += amount;
+                paymentSummary[paymentMethod].count += 1;
+            }
+
+            const chartKey = getChartBucket(
+                invoice.invoice_date,
+                range.from,
+                range.to
+            );
+
+            chartBuckets[chartKey] =
+                (chartBuckets[chartKey] || 0) + amount;
+
 
             /* =====================
                CONSULTATION
@@ -1849,6 +2069,9 @@ async function loadRevenueReport() {
 
                     amount:
                         amount,
+
+                    paymentMethod:
+                        paymentMethod || "-",
 
                     status:
                         invoice.status
@@ -1893,6 +2116,9 @@ async function loadRevenueReport() {
 
                     amount:
                         amount,
+
+                    paymentMethod:
+                        paymentMethod || "-",
 
                     status:
                         invoice.status
@@ -2017,8 +2243,237 @@ async function loadRevenueReport() {
         `${formatDate(range.from)} - ${formatDate(range.to)}`;
 
 
+    updatePaymentSummary(paymentSummary);
+
+    renderRevenueChart(
+        chartBuckets,
+        range.from,
+        range.to
+    );
+
     renderTransactions(
         transactions
+    );
+}
+
+
+/* =====================================================
+   PAYMENT / CHART HELPERS
+===================================================== */
+
+function formatPaymentMethod(method) {
+
+    const value = String(method || "")
+        .toLowerCase()
+        .trim();
+
+    if (value === "cash") {
+        return "💵 Cash";
+    }
+
+    if (value === "transfer") {
+        return "🏦 Transfer";
+    }
+
+    if (value === "qris") {
+        return "📱 QRIS";
+    }
+
+    return "—";
+}
+
+
+function updatePaymentSummary(summary) {
+
+    ["cash", "transfer", "qris"].forEach(method => {
+
+        const data = summary[method] || {
+            amount: 0,
+            count: 0
+        };
+
+        document.getElementById(
+            method + "Revenue"
+        ).textContent =
+            formatMoney(data.amount);
+
+        document.getElementById(
+            method + "Count"
+        ).textContent =
+            data.count +
+            (
+                data.count === 1
+                    ? " transaction"
+                    : " transactions"
+            );
+    });
+}
+
+
+function getChartBucket(dateString, from, to) {
+
+    const period =
+        document.getElementById("period").value;
+
+    const date = new Date(
+        dateString + "T00:00:00"
+    );
+
+    if (period === "yearly") {
+
+        return String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
+    }
+
+    if (period === "monthly") {
+
+        return date.toISOString().slice(0, 10);
+    }
+
+    if (period === "weekly") {
+
+        return date.toISOString().slice(0, 10);
+    }
+
+    return date.toISOString().slice(0, 10);
+}
+
+
+let revenueChart = null;
+
+
+function renderRevenueChart(
+    buckets,
+    from,
+    to
+) {
+
+    const canvas =
+        document.getElementById(
+            "revenueChart"
+        );
+
+    if (!canvas || typeof Chart === "undefined") {
+        return;
+    }
+
+    const period =
+        document.getElementById("period").value;
+
+    let labels = [];
+    let values = [];
+
+    if (period === "yearly") {
+
+        labels = [
+            "Jan", "Feb", "Mar", "Apr",
+            "May", "Jun", "Jul", "Aug",
+            "Sep", "Oct", "Nov", "Dec"
+        ];
+
+        values = labels.map(
+            (_, index) =>
+                Number(
+                    buckets[
+                        String(index + 1)
+                            .padStart(2, "0")
+                    ] || 0
+                )
+        );
+
+    } else {
+
+        const start =
+            new Date(from + "T00:00:00");
+
+        const end =
+            new Date(to + "T00:00:00");
+
+        for (
+            let d = new Date(start);
+            d <= end;
+            d.setDate(d.getDate() + 1)
+        ) {
+
+            const key =
+                d.toISOString().slice(0, 10);
+
+            labels.push(
+                d.toLocaleDateString(
+                    "id-ID",
+                    period === "monthly"
+                        ? { day: "2-digit" }
+                        : {
+                            day: "2-digit",
+                            month: "short"
+                        }
+                )
+            );
+
+            values.push(
+                Number(
+                    buckets[key] || 0
+                )
+            );
+        }
+    }
+
+    if (revenueChart) {
+        revenueChart.destroy();
+    }
+
+    revenueChart = new Chart(
+        canvas.getContext("2d"),
+        {
+            type: "line",
+            data: {
+                labels,
+                datasets: [
+                    {
+                        label: "Revenue",
+                        data: values,
+                        borderWidth: 3,
+                        tension: 0.35,
+                        fill: true,
+                        pointRadius: 3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: "index",
+                    intersect: false
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return " " +
+                                    formatMoney(
+                                        context.raw
+                                    );
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return formatMoney(value);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     );
 }
 
@@ -2135,6 +2590,10 @@ function renderTransactions(
                             )}
                         </strong>
 
+                    </td>
+
+                    <td>
+                        ${formatPaymentMethod(transaction.paymentMethod)}
                     </td>
 
                     <td>
