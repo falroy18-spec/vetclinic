@@ -232,15 +232,17 @@ table {
 }
 
 .items-table th:nth-child(1),
-.items-table td:nth-child(1) { width: 35%; }
+.items-table td:nth-child(1) { width: 24%; }
 .items-table th:nth-child(2),
-.items-table td:nth-child(2) { width: 10%; text-align: center; }
+.items-table td:nth-child(2) { width: 15%; }
 .items-table th:nth-child(3),
-.items-table td:nth-child(3) { width: 22%; }
+.items-table td:nth-child(3) { width: 9%; text-align: center; }
 .items-table th:nth-child(4),
-.items-table td:nth-child(4) { width: 23%; text-align: right; white-space: nowrap; }
+.items-table td:nth-child(4) { width: 18%; }
 .items-table th:nth-child(5),
-.items-table td:nth-child(5) { width: 10%; text-align: center; }
+.items-table td:nth-child(5) { width: 22%; text-align: right; white-space: nowrap; }
+.items-table th:nth-child(6),
+.items-table td:nth-child(6) { width: 12%; text-align: center; }
 
 .items-table input {
     width: 100%;
@@ -248,6 +250,14 @@ table {
     margin-bottom: 0;
     padding: 9px 7px;
     font-size: 13px;
+}
+
+.items-table select {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 0;
+    padding: 9px 6px;
+    font-size: 12px;
 }
 
 .items-table .quantity { text-align: center; }
@@ -689,36 +699,17 @@ th {
 
 
 
-<!-- SERVICE TYPE -->
+<!-- SERVICE CATEGORY NOTE -->
 
 <div class="full service-type-box">
 
-<label>
-    Service Type
-</label>
+    <strong>Service Category</strong>
 
-<select id="serviceType">
-
-    <option value="consultation">
-        🩺 Consultation
-    </option>
-
-    <option value="grooming">
-        ✂️ Grooming
-    </option>
-
-</select>
-
-
-<div class="refresh-info">
-
-    Pilih satu jenis layanan
-    untuk seluruh invoice ini.
+    <div class="refresh-info">
+        Pilih kategori pada setiap item. Satu invoice dapat berisi Consultation dan Grooming sekaligus.
+    </div>
 
 </div>
-
-</div>
-
 
 
 <!-- ITEMS -->
@@ -1605,39 +1596,35 @@ function clearPatient() {
 
 function addItem() {
 
-    const row =
-        document.createElement(
-            "tr"
-        );
-
+    const row = document.createElement("tr");
 
     row.innerHTML = `
 
         <td>
-
             <input
                 class="description"
                 type="text"
                 placeholder="Service / item description"
             >
-
         </td>
 
+        <td>
+            <select class="category">
+                <option value="consultation">🩺 Consultation</option>
+                <option value="grooming">✂️ Grooming</option>
+            </select>
+        </td>
 
         <td>
-
             <input
                 class="quantity"
                 type="number"
                 value="1"
                 min="1"
             >
-
         </td>
 
-
         <td>
-
             <input
                 class="price"
                 type="number"
@@ -1645,76 +1632,38 @@ function addItem() {
                 min="0"
                 placeholder="Price"
             >
-
         </td>
-
 
         <td class="itemTotal">
-
             Rp0
-
         </td>
 
-
         <td>
-
             <button
                 type="button"
                 class="danger"
             >
                 X
             </button>
-
         </td>
 
     `;
 
+    row.querySelector(".danger").addEventListener("click", function() {
+        row.remove();
+        calculateTotal();
+    });
 
-    row
-        .querySelector(
-            ".danger"
-        )
-        .addEventListener(
-            "click",
-            function() {
+    document.getElementById("items").appendChild(row);
 
-                row.remove();
-
-                calculateTotal();
-
-            }
-        );
-
-
-    document
-        .getElementById(
-            "items"
-        )
-        .appendChild(
-            row
-        );
-
-
-    row
-        .querySelectorAll(
-            "input"
-        )
-        .forEach(
-            input => {
-
-                input.addEventListener(
-                    "input",
-                    calculateTotal
-                );
-
-            }
-        );
-
+    row.querySelectorAll("input, select").forEach(input => {
+        input.addEventListener("input", calculateTotal);
+        input.addEventListener("change", calculateTotal);
+    });
 
     calculateTotal();
 
 }
-
 
 
 /* =====================================================
@@ -1790,86 +1739,40 @@ function calculateTotal() {
 
 function getItems() {
 
-    const serviceType =
-        document.getElementById(
-            "serviceType"
-        ).value;
-
-
     const items = [];
 
+    document.querySelectorAll("#items tr").forEach(row => {
 
-    document
-        .querySelectorAll(
-            "#items tr"
-        )
-        .forEach(
-            row => {
+        const category =
+            row.querySelector(".category")?.value ||
+            "consultation";
 
-                const description =
-                    row
-                        .querySelector(
-                            ".description"
-                        )
-                        .value
-                        .trim();
+        const description =
+            row.querySelector(".description").value.trim();
 
+        const quantity =
+            Number(row.querySelector(".quantity").value) || 0;
 
-                const quantity =
-                    Number(
-                        row
-                            .querySelector(
-                                ".quantity"
-                            )
-                            .value
-                    ) || 0;
+        const unitPrice =
+            Number(row.querySelector(".price").value) || 0;
 
+        if (description && quantity > 0) {
 
-                const unitPrice =
-                    Number(
-                        row
-                            .querySelector(
-                                ".price"
-                            )
-                            .value
-                    ) || 0;
+            items.push({
+                category,
+                description,
+                quantity,
+                unit_price: unitPrice,
+                total: quantity * unitPrice
+            });
 
+        }
 
-                if (
-                    description &&
-                    quantity > 0
-                ) {
-
-                    items.push({
-
-                        category:
-                            serviceType,
-
-                        description:
-                            description,
-
-                        quantity:
-                            quantity,
-
-                        unit_price:
-                            unitPrice,
-
-                        total:
-                            quantity *
-                            unitPrice
-
-                    });
-
-                }
-
-            }
-        );
-
+    });
 
     return items;
 
 }
-
 
 
 /* =====================================================
@@ -2592,6 +2495,10 @@ async function renderInvoices() {
                         </td>
 
                         <td>
+                            ${item.category === "grooming" ? "Grooming" : "Consultation"}
+                        </td>
+
+                        <td>
                             ${item.quantity}
                         </td>
 
@@ -2731,12 +2638,11 @@ async function renderInvoices() {
                         <br>
 
 
-                        Service:
+                        Services:
 
-                        ${categoryBadge(
-                            (items || [])[0]?.category ||
-                            ""
-                        )}
+                        ${(Array.from(new Set((items || []).map(item => item.category).filter(Boolean)))
+                            .map(category => categoryBadge(category))
+                            .join(" ") || "-")}
 
 
                         <br>
@@ -2833,6 +2739,10 @@ async function renderInvoices() {
 
                         <th>
                             Description
+                        </th>
+
+                        <th>
+                            Category
                         </th>
 
                         <th>
@@ -3115,6 +3025,10 @@ async function printInvoice(
                         ${escapeHTML(
                             item.description
                         )}
+                    </td>
+
+                    <td>
+                        ${item.category === "grooming" ? "Grooming" : "Consultation"}
                     </td>
 
                     <td>
@@ -3406,46 +3320,44 @@ th {
 th:nth-child(3),
 td:nth-child(3),
 th:nth-child(4),
-td:nth-child(4) {
+td:nth-child(4),
+th:nth-child(5),
+td:nth-child(5) {
     white-space: nowrap;
 }
 
 
 th:nth-child(1),
 td:nth-child(1) {
-
-    width: 34%;
-
+    width: 28%;
 }
 
 
 th:nth-child(2),
 td:nth-child(2) {
-
-    width: 10%;
-
+    width: 17%;
     text-align: center;
-
 }
 
 
 th:nth-child(3),
 td:nth-child(3) {
-
-    width: 28%;
-
-    text-align: right;
-
+    width: 9%;
+    text-align: center;
 }
 
 
 th:nth-child(4),
 td:nth-child(4) {
-
-    width: 28%;
-
+    width: 23%;
     text-align: right;
+}
 
+
+th:nth-child(5),
+td:nth-child(5) {
+    width: 23%;
+    text-align: right;
 }
 
 
@@ -3667,6 +3579,10 @@ td:nth-child(4) {
 
     <th>
         Description
+    </th>
+
+    <th>
+        Category
     </th>
 
     <th>
