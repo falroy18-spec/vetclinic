@@ -372,6 +372,17 @@ th {
     color: #6b7280;
 }
 
+.edit-mode-notice {
+    display: inline-block;
+    margin: 0 0 15px 0;
+    padding: 7px 10px;
+    border-radius: 8px;
+    background: #fff7ed;
+    color: #9a3412;
+    font-size: 13px;
+    font-weight: bold;
+}
+
 
 /* ================================
    CLINIC CONTACT SETTINGS
@@ -538,9 +549,13 @@ th {
 
 <div class="card">
 
-<h2>
+<h2 id="invoiceFormTitle">
     New Invoice
 </h2>
+
+<div id="editModeNotice" class="edit-mode-notice" style="display:none;">
+    Editing saved invoice
+</div>
 
 
 <div class="form-grid">
@@ -790,6 +805,15 @@ th {
     Save Invoice
 </button>
 
+<button
+    type="button"
+    class="secondary"
+    id="cancelEditButton"
+    style="display:none; margin-left:8px;"
+    onclick="cancelEdit()"
+>
+    Cancel Edit
+</button>
 
 <div
     id="message"
@@ -898,6 +922,7 @@ let patientsCache = [];
 let invoicesCache = [];
 
 let selectedPatients = [];
+let editingInvoiceId = null;
 
 
 
@@ -1781,299 +1806,283 @@ function getItems() {
 
 async function saveInvoice() {
 
-    const patientIds =
-        selectedPatients.map(
-            patient =>
-                patient.id
-        );
-
-
-    const patientId =
-        patientIds[0] ||
-        "";
-
-
-    const invoiceDate =
-        document.getElementById(
-            "invoiceDate"
-        ).value;
-
-
-    const status =
-        document.getElementById(
-            "status"
-        ).value;
-
-
-    const invoiceNumber =
-        document.getElementById(
-            "invoiceNumber"
-        ).value
-        .trim();
-
-
-    const items =
-        getItems();
-
+    const patientIds = selectedPatients.map(patient => patient.id);
+    const patientId = patientIds[0] || "";
+    const invoiceDate = document.getElementById("invoiceDate").value;
+    const status = document.getElementById("status").value;
+    const invoiceNumber = document.getElementById("invoiceNumber").value.trim();
+    const paymentMethod = document.getElementById("paymentMethod").value;
+    const items = getItems();
 
     if (!patientIds.length) {
-
-        alert(
-            "Pilih minimal satu patient terlebih dahulu."
-        );
-
+        alert("Pilih minimal satu patient terlebih dahulu.");
         return;
-
     }
-
 
     if (!invoiceDate) {
-
-        alert(
-            "Pilih tanggal invoice."
-        );
-
+        alert("Pilih tanggal invoice.");
         return;
-
     }
-
 
     if (!items.length) {
-
-        alert(
-            "Tambahkan minimal satu service / item."
-        );
-
+        alert("Tambahkan minimal satu service / item.");
         return;
-
     }
 
+    const subtotal = items.reduce((sum, item) => sum + item.total, 0);
+    const saveButton = document.getElementById("saveButton");
 
-    const subtotal =
-        items.reduce(
-            (
-                sum,
-                item
-            ) =>
-                sum +
-                item.total,
-            0
-        );
-
-
-    const saveButton =
-        document.getElementById(
-            "saveButton"
-        );
-
-
-    saveButton.disabled =
-        true;
-
-
-    saveButton.textContent =
-        "Saving...";
-
+    saveButton.disabled = true;
+    saveButton.textContent = editingInvoiceId ? "Updating..." : "Saving...";
 
     try {
 
+        let invoiceId = editingInvoiceId;
 
-        /* CREATE INVOICE */
+        if (editingInvoiceId) {
 
-        const {
-            data: invoice,
-            error
-        } =
-            await supabaseClient
+            const { error: invoiceError } = await supabaseClient
+                .from("invoices")
+                .update({
+                    patient_id: patientId,
+                    patient_ids: patientIds,
+                    invoice_number: invoiceNumber || null,
+                    invoice_date: invoiceDate,
+                    subtotal,
+                    discount: 0,
+                    total: subtotal,
+                    status,
+                    payment_method: paymentMethod
+                })
+                .eq("id", editingInvoiceId)
+                .eq("clinic_id", currentClinic.clinicId);
+
+            if (invoiceError) throw invoiceError;
+
+            const { error: deleteItemsError } = await supabaseClient
+                .from("invoice_items")
+                .delete()
+                .eq("invoice_id", editingInvoiceId);
+
+            if (deleteItemsError) throw deleteItemsError;
+
+        } else {
+
+            const { data: invoice, error } = await supabaseClient
                 .from("invoices")
                 .insert({
-
-                    clinic_id:
-                        currentClinic.clinicId,
-
-                    patient_id:
-                        patientId,
-
-                    patient_ids:
-                        patientIds,
-
-                    invoice_number:
-                        invoiceNumber ||
-                        null,
-
-                    invoice_date:
-                        invoiceDate,
-
-                    subtotal:
-                        subtotal,
-
-                    discount:
-                        0,
-
-                    total:
-                        subtotal,
-
-                    status:
-                        status,
-
-                    payment_method:
-                        document.getElementById(
-                            "paymentMethod"
-                        ).value
-
+                    clinic_id: currentClinic.clinicId,
+                    patient_id: patientId,
+                    patient_ids: patientIds,
+                    invoice_number: invoiceNumber || null,
+                    invoice_date: invoiceDate,
+                    subtotal,
+                    discount: 0,
+                    total: subtotal,
+                    status,
+                    payment_method: paymentMethod
                 })
                 .select()
                 .single();
 
-
-        if (error) {
-
-            throw error;
-
+            if (error) throw error;
+            invoiceId = invoice.id;
         }
 
+        const itemRows = items.map(item => ({
+            invoice_id: invoiceId,
+            category: item.category,
+            description: item.description,
+            quantity: item.quantity,
+            unit_price: item.unit_price,
+            total: item.total
+        }));
 
-        /* CREATE ITEMS */
-
-        const itemRows =
-            items.map(
-                item => ({
-
-                    invoice_id:
-                        invoice.id,
-
-                    category:
-                        item.category,
-
-                    description:
-                        item.description,
-
-                    quantity:
-                        item.quantity,
-
-                    unit_price:
-                        item.unit_price,
-
-                    total:
-                        item.total
-
-                })
-            );
-
-
-        const {
-            error: itemError
-        } =
-            await supabaseClient
-                .from(
-                    "invoice_items"
-                )
-                .insert(
-                    itemRows
-                );
-
+        const { error: itemError } = await supabaseClient
+            .from("invoice_items")
+            .insert(itemRows);
 
         if (itemError) {
 
-            await supabaseClient
-                .from("invoices")
-                .delete()
-                .eq(
-                    "id",
-                    invoice.id
-                )
-                .eq(
-                    "clinic_id",
-                    currentClinic.clinicId
-                );
-
+            if (!editingInvoiceId) {
+                await supabaseClient
+                    .from("invoices")
+                    .delete()
+                    .eq("id", invoiceId)
+                    .eq("clinic_id", currentClinic.clinicId);
+            }
 
             throw itemError;
-
         }
 
+        document.getElementById("message").textContent = editingInvoiceId
+            ? "Invoice berhasil diperbarui."
+            : "Invoice berhasil disimpan.";
 
-        document.getElementById(
-            "message"
-        ).textContent =
-            "Invoice berhasil disimpan.";
+        document.getElementById("message").className = "message success";
 
-
-        document.getElementById(
-            "message"
-        ).className =
-            "message success";
-
-
-        clearPatient();
-
-
-        document.getElementById(
-            "invoiceNumber"
-        ).value =
-            "";
-
-
-        document.getElementById(
-            "items"
-        ).innerHTML =
-            "";
-
-
-        addItem();
-
-
-        /*
-           Setelah save, status kembali
-           ke Paid secara default.
-        */
-
-        document.getElementById(
-            "status"
-        ).value =
-            "Paid";
-
-        document.getElementById(
-            "paymentMethod"
-        ).value =
-            "Cash";
-
-
-        saveButton.disabled =
-            false;
-
-
-        saveButton.textContent =
-            "Save Invoice";
-
-
+        resetInvoiceForm();
         await loadInvoices();
 
-    }
+    } catch (error) {
 
+        console.error(error);
 
-    catch (error) {
+        alert("Gagal menyimpan invoice:\n" + error.message);
 
-        console.error(
-            error
-        );
+    } finally {
 
-
-        alert(
-            "Gagal menyimpan invoice:\n" +
-            error.message
-        );
-
-
-        saveButton.disabled =
-            false;
-
-
-        saveButton.textContent =
-            "Save Invoice";
+        saveButton.disabled = false;
+        saveButton.textContent = "Save Invoice";
 
     }
+}
 
+
+/* =====================================================
+   EDIT INVOICE
+===================================================== */
+
+async function editInvoice(id) {
+
+    const { data: invoice, error } = await supabaseClient
+        .from("invoices")
+        .select("*")
+        .eq("id", id)
+        .eq("clinic_id", currentClinic.clinicId)
+        .single();
+
+    if (error) {
+        alert("Gagal mengambil invoice: " + error.message);
+        return;
+    }
+
+    const { data: items, error: itemsError } = await supabaseClient
+        .from("invoice_items")
+        .select("category, description, quantity, unit_price, total")
+        .eq("invoice_id", id)
+        .order("id", { ascending: true });
+
+    if (itemsError) {
+        alert("Gagal mengambil item invoice: " + itemsError.message);
+        return;
+    }
+
+    const patientIds =
+        Array.isArray(invoice.patient_ids) && invoice.patient_ids.length
+            ? invoice.patient_ids
+            : [invoice.patient_id].filter(Boolean);
+
+    selectedPatients = patientIds
+        .map(patientId => patientsCache.find(patient => patient.id === patientId))
+        .filter(Boolean);
+
+    if (!selectedPatients.length && invoice.patient_id) {
+        const patient = patientsCache.find(patient => patient.id === invoice.patient_id);
+        if (patient) selectedPatients = [patient];
+    }
+
+    renderSelectedPatients();
+
+    document.getElementById("invoiceDate").value = invoice.invoice_date || "";
+    document.getElementById("invoiceNumber").value = invoice.invoice_number || "";
+    document.getElementById("status").value = invoice.status || "Paid";
+    document.getElementById("paymentMethod").value = invoice.payment_method || "Cash";
+
+    const itemsBody = document.getElementById("items");
+    itemsBody.innerHTML = "";
+
+    (items || []).forEach(item => {
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>
+                <input class="description" type="text" value="${escapeHTML(item.description || "")}" placeholder="Service / item description">
+            </td>
+            <td>
+                <select class="category">
+                    <option value="consultation" ${item.category === "consultation" ? "selected" : ""}>🩺 Consultation</option>
+                    <option value="grooming" ${item.category === "grooming" ? "selected" : ""}>✂️ Grooming</option>
+                </select>
+            </td>
+            <td>
+                <input class="quantity" type="number" value="${Number(item.quantity) || 1}" min="1">
+            </td>
+            <td>
+                <input class="price" type="number" value="${Number(item.unit_price) || 0}" min="0" placeholder="Price">
+            </td>
+            <td class="itemTotal">${money(item.total)}</td>
+            <td>
+                <button type="button" class="danger">X</button>
+            </td>
+        `;
+
+        row.querySelector(".danger").addEventListener("click", function() {
+            row.remove();
+            calculateTotal();
+        });
+
+        row.querySelectorAll("input, select").forEach(input => {
+            input.addEventListener("input", calculateTotal);
+            input.addEventListener("change", calculateTotal);
+        });
+
+        itemsBody.appendChild(row);
+    });
+
+    if (!items || !items.length) addItem();
+
+    editingInvoiceId = id;
+
+    document.getElementById("invoiceFormTitle").textContent = "Edit Invoice";
+    document.getElementById("editModeNotice").style.display = "inline-block";
+    document.getElementById("saveButton").textContent = "Update Invoice";
+    document.getElementById("cancelEditButton").style.display = "inline-block";
+    document.getElementById("message").textContent = "";
+
+    calculateTotal();
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+
+/* =====================================================
+   RESET / CANCEL EDIT
+===================================================== */
+
+function resetInvoiceForm() {
+
+    editingInvoiceId = null;
+    selectedPatients = [];
+
+    document.getElementById("invoiceFormTitle").textContent = "New Invoice";
+    document.getElementById("editModeNotice").style.display = "none";
+    document.getElementById("cancelEditButton").style.display = "none";
+    document.getElementById("saveButton").textContent = "Save Invoice";
+
+    document.getElementById("patient").value = "";
+    document.getElementById("patientSearch").value = "";
+    document.getElementById("selectedPatientsList").innerHTML = "";
+    document.getElementById("selectedPatient").style.display = "none";
+    document.getElementById("patientResults").style.display = "none";
+
+    document.getElementById("invoiceNumber").value = "";
+    document.getElementById("status").value = "Paid";
+    document.getElementById("paymentMethod").value = "Cash";
+
+    document.getElementById("items").innerHTML = "";
+    addItem();
+    calculateTotal();
+}
+
+
+function cancelEdit() {
+
+    resetInvoiceForm();
+
+    document.getElementById("message").textContent = "Edit dibatalkan.";
+    document.getElementById("message").className = "message";
 }
 
 
@@ -2700,6 +2709,20 @@ async function renderInvoices() {
                 <div class="actions">
 
                     <button
+                        class="secondary"
+                        onclick="
+                            editInvoice(
+                                '${invoice.id}'
+                            )
+                        "
+                    >
+
+                        ✏️ Edit
+
+                    </button>
+
+
+                    <button
                         class="primary"
                         onclick="
                             printInvoice(
@@ -3028,10 +3051,6 @@ async function printInvoice(
                     </td>
 
                     <td>
-                        ${item.category === "grooming" ? "Grooming" : "Consultation"}
-                    </td>
-
-                    <td>
                         ${item.quantity}
                     </td>
 
@@ -3317,47 +3336,39 @@ th {
 
 }
 
-th:nth-child(3),
-td:nth-child(3),
-th:nth-child(4),
-td:nth-child(4),
-th:nth-child(5),
-td:nth-child(5) {
+th:nth-child(2),
+td:nth-child(2) {
+    width: 10%;
+    text-align: center;
     white-space: nowrap;
 }
 
+th:nth-child(3),
+td:nth-child(3),
+th:nth-child(4),
+td:nth-child(4) {
+    white-space: nowrap;
+    text-align: right;
+}
 
 th:nth-child(1),
 td:nth-child(1) {
-    width: 28%;
+    width: 46%;
 }
-
 
 th:nth-child(2),
 td:nth-child(2) {
-    width: 17%;
-    text-align: center;
+    width: 10%;
 }
-
 
 th:nth-child(3),
 td:nth-child(3) {
-    width: 9%;
-    text-align: center;
+    width: 22%;
 }
-
 
 th:nth-child(4),
 td:nth-child(4) {
-    width: 23%;
-    text-align: right;
-}
-
-
-th:nth-child(5),
-td:nth-child(5) {
-    width: 23%;
-    text-align: right;
+    width: 22%;
 }
 
 
@@ -3579,10 +3590,6 @@ td:nth-child(5) {
 
     <th>
         Description
-    </th>
-
-    <th>
-        Category
     </th>
 
     <th>
